@@ -25,18 +25,14 @@
 	</div>
 <div id="md" style="display: none;">
 <!-- markdown -->
-test post
-================
-测试
+测试 修改
 ------------------------
 
 <!-- markdown end -->
 </div>
 <div class="entry" id="main">
 <!-- content -->
-<h1 id="testpost">test post</h1>
-
-<h2>测试</h2>
+<h2 id="xiugai">测试 xiu'gai</h2>
 <!-- content end -->
 </div>
 <br>

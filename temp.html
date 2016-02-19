@@ -25,7 +25,8 @@
 	</div>
 <div id="md" style="display: none;">
 <!-- markdown -->
-~~~~{Java}
+~~~~{java}
+
 package com.woqu.crm.server;
 
 import java.io.UnsupportedEncodingException;
@@ -151,142 +152,141 @@ public class PHPUrlDecoder {
     }
 }
 
+
 ~~~~
+
 <!-- markdown end -->
 </div>
 <div class="entry" id="main">
 <!-- content -->
-<p>~~~~{Java}
-package com.woqu.crm.server;</p>
+<pre class=" language-java"><code class=" language-java">
+<span class="token keyword">package</span> com<span class="token punctuation">.</span>woqu<span class="token punctuation">.</span>crm<span class="token punctuation">.</span>server<span class="token punctuation">;</span>
 
-<p>import java.io.UnsupportedEncodingException;
-import java.util.LinkedList;
-import java.util.List;</p>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>UnsupportedEncodingException<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>LinkedList<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>List<span class="token punctuation">;</span>
 
-<p>/**
+<span class="token comment" spellcheck="true">/**
  * Created by shangrenpeng on 16/2/18.
- */
-public class PHPUrlDecoder {
-    public static byte[] decode(String s, String enc)
-            throws UnsupportedEncodingException {</p>
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PHPUrlDecoder</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">decode<span class="token punctuation">(</span></span>String s<span class="token punctuation">,</span> String enc<span class="token punctuation">)</span>
+            <span class="token keyword">throws</span> UnsupportedEncodingException <span class="token punctuation">{</span>
 
-<pre><code>    int numChars = s.length();
-    List&lt;Byte&gt; sb = new LinkedList&lt;&gt;();
-    int i = 0;
+        <span class="token keyword">int</span> numChars <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">length<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        List<span class="token operator">&lt;</span>Byte&gt; sb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedList</span><span class="token operator">&lt;</span>&gt;<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> i <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span>
 
-    if (enc.length() == 0) {
-        throw new UnsupportedEncodingException ("URLDecoder: empty string enc parameter");
-    }
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>enc<span class="token punctuation">.</span><span class="token function">length<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">==</span><span class="token number"> 0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">UnsupportedEncodingException</span> <span class="token punctuation">(</span><span class="token string">"URLDecoder: empty string enc parameter"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-    char c;
-    byte[] bytes = null;
-    while (i &lt; numChars) {
-        c = s.charAt(i);
-        switch (c) {
-            case '+':
-                addBytes(sb,String.valueOf(' ').getBytes("UTF-8"));
-                i++;
-                break;
-            case '%':
-            /*
-             * Starting with this instance of %, process all
-             * consecutive substrings of the form %xy. Each
-             * substring %xy will yield a byte. Convert all
-             * consecutive  bytes obtained this way to whatever
-             * character(s) they represent in the provided
-             * encoding.
-             */
+        <span class="token keyword">char</span> c<span class="token punctuation">;</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes <span class="token operator">=</span> null<span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>i <span class="token operator">&lt;</span> numChars<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            c <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">charAt<span class="token punctuation">(</span></span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">switch</span> <span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">case</span> <span class="token string">'+'</span><span class="token operator">:</span>
+                    <span class="token function">addBytes<span class="token punctuation">(</span></span>sb<span class="token punctuation">,</span>String<span class="token punctuation">.</span><span class="token function">valueOf<span class="token punctuation">(</span></span><span class="token string">' '</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getBytes<span class="token punctuation">(</span></span><span class="token string">"UTF-8"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    i<span class="token operator">++</span><span class="token punctuation">;</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token keyword">case</span> <span class="token string">'%'</span><span class="token operator">:</span>
+                <span class="token comment" spellcheck="true">/*
+                 * Starting with this instance of %, process all
+                 * consecutive substrings of the form %xy. Each
+                 * substring %xy will yield a byte. Convert all
+                 * consecutive  bytes obtained this way to whatever
+                 * character(s) they represent in the provided
+                 * encoding.
+                 */</span>
 
-                try {
-                    if (!canParse(s ,i)){
-                        addBytes(sb,String.valueOf(c).getBytes("UTF-8"));
-                        i++;
-                        break;
-                    }
+                    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">canParse<span class="token punctuation">(</span></span>s <span class="token punctuation">,</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                            <span class="token function">addBytes<span class="token punctuation">(</span></span>sb<span class="token punctuation">,</span>String<span class="token punctuation">.</span><span class="token function">valueOf<span class="token punctuation">(</span></span>c<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getBytes<span class="token punctuation">(</span></span><span class="token string">"UTF-8"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                            i<span class="token operator">++</span><span class="token punctuation">;</span>
+                            <span class="token keyword">break</span><span class="token punctuation">;</span>
+                        <span class="token punctuation">}</span>
 
-                    // (numChars-i)/3 is an upper bound for the number
-                    // of remaining bytes
-                    if (bytes == null)
-                        bytes = new byte[(numChars-i)/3];
-                    int pos = 0;
+                       <span class="token comment" spellcheck="true"> // (numChars-i)/3 is an upper bound for the number
+</span>                       <span class="token comment" spellcheck="true"> // of remaining bytes
+</span>                        <span class="token keyword">if</span> <span class="token punctuation">(</span>bytes <span class="token operator">==</span> null<span class="token punctuation">)</span>
+                            bytes <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span><span class="token punctuation">(</span>numChars<span class="token operator">-</span>i<span class="token punctuation">)</span><span class="token number">/3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+                        <span class="token keyword">int</span> pos <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span>
 
-                    while ( ((i+2) &lt; numChars) &amp;&amp;
-                            (c=='%')) {
+                        <span class="token keyword">while</span> <span class="token punctuation">(</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>i<span class="token number">+2</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> numChars<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span>
+                                <span class="token punctuation">(</span>c<span class="token operator">==</span><span class="token string">'%'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 
-                        int v = Integer.parseInt(s.substring(i+1,i+3),16);
+                            <span class="token keyword">int</span> v <span class="token operator">=</span> Integer<span class="token punctuation">.</span><span class="token function">parseInt<span class="token punctuation">(</span></span>s<span class="token punctuation">.</span><span class="token function">substring<span class="token punctuation">(</span></span>i<span class="token number">+1</span><span class="token punctuation">,</span>i<span class="token number">+3</span><span class="token punctuation">)</span><span class="token number">,16</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">
+//                            if (v &lt; 0){
+</span><span class="token comment" spellcheck="true">//                                throw new IllegalArgumentException("URLDecoder: Illegal hex characters in escape (%) pattern - negative value");
+</span><span class="token comment" spellcheck="true">//                            }
+</span>
+                            bytes<span class="token punctuation">[</span>pos<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">)</span> v<span class="token punctuation">;</span>
+                            i<span class="token operator">+</span><span class="token operator">=</span><span class="token number"> 3</span><span class="token punctuation">;</span>
+                            <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">&lt;</span> numChars<span class="token punctuation">)</span>
+                                c <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">charAt<span class="token punctuation">(</span></span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token punctuation">}</span>
+                        <span class="token function">addBytes<span class="token punctuation">(</span></span>sb<span class="token punctuation">,</span> bytes<span class="token punctuation">,</span>pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">NumberFormatException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span>
+                                <span class="token string">"URLDecoder: Illegal hex characters in escape (%) pattern - "</span>
+                                        <span class="token operator">+</span> e<span class="token punctuation">.</span><span class="token function">getMessage<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token keyword">default</span><span class="token operator">:</span>
+                    <span class="token function">addBytes<span class="token punctuation">(</span></span>sb<span class="token punctuation">,</span>String<span class="token punctuation">.</span><span class="token function">valueOf<span class="token punctuation">(</span></span>c<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getBytes<span class="token punctuation">(</span></span><span class="token string">"UTF-8"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    i<span class="token operator">++</span><span class="token punctuation">;</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">final</span> Byte<span class="token punctuation">[</span><span class="token punctuation">]</span> ret <span class="token operator">=</span> sb<span class="token punctuation">.</span><span class="token function">toArray<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">Byte</span><span class="token punctuation">[</span>sb<span class="token punctuation">.</span><span class="token function">size<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> <span class="token function">toPrimitive<span class="token punctuation">(</span></span>ret<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> EMPTY_BYTE_ARRAY <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token number">[0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">toPrimitive<span class="token punctuation">(</span></span>Byte<span class="token punctuation">[</span><span class="token punctuation">]</span> array<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>array <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>array<span class="token punctuation">.</span>length <span class="token operator">==</span><span class="token number"> 0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> EMPTY_BYTE_ARRAY<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> result <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span>array<span class="token punctuation">.</span>length<span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> array<span class="token punctuation">.</span>length<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                result<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">byteValue<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">addBytes<span class="token punctuation">(</span></span><span class="token keyword">final</span> List<span class="token operator">&lt;</span>Byte&gt; sb<span class="token punctuation">,</span> <span class="token keyword">final</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes<span class="token punctuation">,</span><span class="token keyword">int</span> pos<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> pos<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            sb<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span>bytes<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">addBytes<span class="token punctuation">(</span></span><span class="token keyword">final</span> List<span class="token operator">&lt;</span>Byte&gt; sb<span class="token punctuation">,</span> <span class="token keyword">final</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> bytes<span class="token punctuation">.</span>length<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            sb<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span>bytes<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">canParse<span class="token punctuation">(</span></span><span class="token keyword">final</span> String s<span class="token punctuation">,</span> <span class="token keyword">final</span> <span class="token keyword">int</span> i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> v <span class="token operator">=</span> Integer<span class="token punctuation">.</span><span class="token function">parseInt<span class="token punctuation">(</span></span>s<span class="token punctuation">.</span><span class="token function">substring<span class="token punctuation">(</span></span>i<span class="token number">+1</span><span class="token punctuation">,</span>i<span class="token number">+3</span><span class="token punctuation">)</span><span class="token number">,16</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+
 </code></pre>
-
-<p>//                            if (v &lt; 0){
-//                                throw new IllegalArgumentException("URLDecoder: Illegal hex characters in escape (%) pattern - negative value");
-//                            }</p>
-
-<pre><code>                        bytes[pos++] = (byte) v;
-                        i+= 3;
-                        if (i &lt; numChars)
-                            c = s.charAt(i);
-                    }
-                    addBytes(sb, bytes,pos);
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException(
-                            "URLDecoder: Illegal hex characters in escape (%) pattern - "
-                                    + e.getMessage());
-                }
-                break;
-            default:
-                addBytes(sb,String.valueOf(c).getBytes("UTF-8"));
-                i++;
-                break;
-        }
-    }
-
-    final Byte[] ret = sb.toArray(new Byte[sb.size()]);
-
-    return toPrimitive(ret);
-}
-
-public static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
-
-public static byte[] toPrimitive(Byte[] array) {
-    if(array == null) {
-        return null;
-    } else if(array.length == 0) {
-        return EMPTY_BYTE_ARRAY;
-    } else {
-        byte[] result = new byte[array.length];
-
-        for(int i = 0; i &lt; array.length; ++i) {
-            result[i] = array[i].byteValue();
-        }
-
-        return result;
-    }
-}
-
-private static void addBytes(final List&lt;Byte&gt; sb, final byte[] bytes,int pos) {
-    for (int j = 0; j &lt; pos; j++){
-        sb.add(bytes[j]);
-    }
-}
-
-private static void addBytes(final List&lt;Byte&gt; sb, final byte[] bytes) {
-    for (int j = 0; j &lt; bytes.length; j++){
-        sb.add(bytes[j]);
-    }
-}
-
-private static boolean canParse(final String s, final int i) {
-    try {
-        int v = Integer.parseInt(s.substring(i+1,i+3),16);
-        return true;
-    } catch (Exception e){
-        return false;
-    }
-}
-</code></pre>
-
-<p>}</p>
-
-<p>~~~~</p>
 <!-- content end -->
 </div>
 <br>

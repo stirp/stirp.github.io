@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/">
     <channel>
         <title>尚弟的小笔记</title>
-        <atom:link href="http://stirp.github.io//rss.xml" rel="self" type="application/rss+xml"/>
+        <atom:link href="http://stirp.github.io/rss.xml" rel="self" type="application/rss+xml"/>
         <link>http://stirp.github.io</link>
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>temp</title><link>http://stirp.github.io//temp.html</link><pubdate>2016-02-19</pubdate><content:encoded>&lt;pre class=" language-java"&gt;&lt;code class=" language-java"&gt;
+    <item xmlns="http://www.w3.org/1999/xhtml"><title>temp</title><link>http://stirp.github.io/temp.html</link><pubdate>2016-02-19</pubdate><content:encoded>&lt;pre class=" language-java"&gt;&lt;code class=" language-java"&gt;
 &lt;span class="token keyword"&gt;package&lt;/span&gt; com&lt;span class="token punctuation"&gt;.&lt;/span&gt;woqu&lt;span class="token punctuation"&gt;.&lt;/span&gt;crm&lt;span class="token punctuation"&gt;.&lt;/span&gt;server&lt;span class="token punctuation"&gt;;&lt;/span&gt;
 
 &lt;span class="token keyword"&gt;import&lt;/span&gt; java&lt;span class="token punctuation"&gt;.&lt;/span&gt;io&lt;span class="token punctuation"&gt;.&lt;/span&gt;UnsupportedEncodingException&lt;span class="token punctuation"&gt;;&lt;/span&gt;
@@ -134,7 +134,7 @@
 &lt;span class="token punctuation"&gt;}&lt;/span&gt;
 
 
-&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://stirp.github.io//temp.html</guid></item><item><title>title</title><link>http://stirp.github.io//test.html</link><pubdate>2016-01-17</pubdate><content:encoded>&lt;pre class=" language-cpp"&gt;&lt;code class=" language-cpp"&gt;&lt;span class="token comment" spellcheck="true"&gt;
+&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://stirp.github.io/temp.html</guid></item><item xmlns="http://www.w3.org/1999/xhtml"><title>title</title><link>http://stirp.github.io/test.html</link><pubdate>2016-01-17</pubdate><content:encoded>&lt;pre class=" language-cpp"&gt;&lt;code class=" language-cpp"&gt;&lt;span class="token comment" spellcheck="true"&gt;
 //#include &amp;lt;iostream&amp;gt;
 &lt;/span&gt;&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;cstdio&amp;gt;&lt;/span&gt;&lt;/span&gt;
 &lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;cstdlib&amp;gt;&lt;/span&gt;&lt;/span&gt;
@@ -264,5 +264,5 @@ iT &lt;span class="token operator"&gt;*&lt;/span&gt;q&lt;span class="token punct
     &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
 &lt;span class="token punctuation"&gt;}&lt;/span&gt;
 
-&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://stirp.github.io//test.html</guid></item></channel>
+&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://stirp.github.io/test.html</guid></item></channel>
 </rss>

@@ -3,7 +3,7 @@
     <channel>
         <title>尚弟的小笔记</title>
         <atom:link href="http://stirp.github.io//rss.xml" rel="self" type="application/rss+xml"/>
-        <link>http://stirp.github.io//rss.xml</link>
+        <link>http://stirp.github.io</link>
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>

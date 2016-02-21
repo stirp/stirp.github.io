@@ -1,1 +1,0 @@
-# stirp.github.io

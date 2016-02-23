@@ -184,7 +184,7 @@ $(document).ready(function() {
                     $("#main").html(tagsHtml);
                 },
                 tag: function(param) {
-                    var tag = param.tag;
+                    var tag = decodeURIRI(param.tag);
                     var group = [{"name": "#"+tag}];
                     var posts = [];
                     for (var i = 0; i < data.posts.length; ++i) {

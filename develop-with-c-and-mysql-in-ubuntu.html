@@ -38,7 +38,7 @@ sudo apt-get install libmysqlclient15-dev
 ```
 ### 二. 检查MySQL服务的状态
 ##### 1. 查看当前的mysql服务状态
-`sudo /etc/init.d/mysql status`
+``sudo /etc/init.d/mysql status``
 ##### 2. 也可以用以下检查mysql服务是否有启动，如果结果为空，则没有启动
 `sudo netstat -tap | grep mysql `或`ps -ef | grep mysql`
 ###三. 启动/停止/重启MySQL服务
@@ -47,20 +47,20 @@ sudo apt-get install libmysqlclient15-dev
 #####3. 重启：`sudo /etc/init.d/mysql restart`
 ###四. 在命令行使用MySQL客户端访问数据库
 #####1. 访问本地主机：
-`mysql -uuser -ppassword db_name`
+``mysql -uuser -ppassword db_name``
 #####2. 访问远程主机：
-`mysql -hhost -uuser -ppassword db_name`
+``mysql -hhost -uuser -ppassword db_name``
 备注：由于默认的配置是只能从本机访问，只要注释掉/etc/mysql/my.cnf里面的bind-address这行，就可以让远程主机访问了。
 #####3、执行管理操作：
 使用mysqladmin及相关参数
 #####4、备份 db_name 数据库：
-`mysqldump -uroot -p --default-character-set=utf8 --opt     --extended-insert=false --triggers -R --hex-blob -x db_name > bak.sql`
+``mysqldump -uroot -p --default-character-set=utf8 --opt     --extended-insert=false --triggers -R --hex-blob -x db_name > bak.sql``
 #####5、恢复db_name数据库：
 `mysql -uroot -p db_name < bak.sql`
 #####6、备份tbl_name 数据表：
-`select * into outfile '/usr/local/mysql/f.txt' fields terminated by '|' from tbl_name;`
+``select * into outfile '/usr/local/mysql/f.txt' fields terminated by '|' from tbl_name;``
 #####7、把文件/home/a.txt导入数据库中的 tbl_name表
-`mysql> load data local infile '/home/a.txt'  into table tbl_name fields terminated by ',' lines terminated by '\r\n';`
+``mysql> load data local infile '/home/a.txt'  into table tbl_name fields terminated by ',' lines terminated by '\r\n';``
 #####8、设置mysql数据库root的初始密码
 
 ```
@@ -69,7 +69,7 @@ mysql> SET PASSWORD FOR ''@'localhost' = PASSWORD('newpwd');
 mysql> SET PASSWORD FOR ''@'host_name' = PASSWORD('newpwd');
 ```
 #####9、为普通用户修改密码：
-`mysql> SET PASSWORD FOR 'user_name'@'host_name' = PASSWORD('newpwd');`
+``mysql> SET PASSWORD FOR 'user_name'@'host_name' = PASSWORD('newpwd');``
 #####10、建立超级用户账户，具有完全的权限可以做任何事情：
 
 ```
@@ -89,15 +89,15 @@ mysql> GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP
 ###五、Linux下C开发MySQL数据库应用程序的简要流程
 编译：`gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm`
 #####1、定义MYSQL变量
-`MYSQL mysql;`
+``MYSQL mysql;``
 #####2、初始化MYSQL变量
-`mysql_init(&mysql);`
+``mysql_init(&mysql);``
 #####3、连接到MySQL数据库
-`mysql_real_connect(&mysql,”hostname”,”username”,”password”,”database”,0,NULL,0);`
+``mysql_real_connect(&mysql,”hostname”,”username”,”password”,”database”,0,NULL,0);``
 #####4、指定本连接的字符集（可选，www.linuxidc.com主要为了确认客户端与服务器之间使用一致的字符集进行通信）
-`mysql_query( &mysql , "SET NAMES 'utf8'");`
+``mysql_query( &mysql , "SET NAMES 'utf8'");``
 #####5、执行SQL语句
-`mysql_real_query( &mysql, SQL, SQL_LEN ) ;`
+``mysql_real_query( &mysql, SQL, SQL_LEN ) ;``
 #####6、获取查询结果
 
 ~~~~{c}
@@ -211,31 +211,34 @@ MySQL的字符集和校对规则有4个级别的默认设置：服务器级、�
 服务器级也就是当服务器启动时根据配置文件中的字符集来加载。当前的服务器字符集和校对规则可以用作character_set_server和collation_server系统变量的值。在运行时能够改变这些变量的值。针对服务器级，我们有两个方法可以解决。
 ######a、重新编译MySQL
 更改设定值的一个方法是通过重新编译。如果希望在从源程序构建时更改默认服务器字符集和校对规则，使用：--with-charset和--with-collation作为configure的参量。例如：
-`shell> ./configure --with-charset=utf8`
+``shell> ./configure --with-charset=utf8``
 ######b、不重新编译，只修改当前配置文件
 打开/etc/mysql/my.cnf修改编码：
-在[mysqld]下添加：default-character-set=utf8
-在[client]下添加：default-character-set=utf8
-在[mysql]下添加：default-character-set=utf8
+在[mysqld]下添加：`default-character-set=utf8`
+在[client]下添加：`default-character-set=utf8`
+在[mysql]下添加：`default-character-set=utf8`
 然后重启mysql应该就可以了！
 #####2、数据库级字符集
 默认数据库的字符集和校对规则可以用作character_set_database和 collation_database系统变量。无论何时默认数据库更改了，服务器都设置这两个变量的值。如果没有 默认数据库，这两个变量与相应的服务器级别的变量（character_set_server和collation_server）具有相同的值。
 ######a、重新建数据库，并指定默认字符集
 数据库级是在新建数据库时指定该数据库默认的字符集。
-`mysql>create database db_name character set charset_name ;`
+``mysql>create database db_name character set charset_name ;``
+
 比如：
-`mysql>create database db_name character set utf8 ;`
+``mysql>create database db_name character set utf8 ;``
 ######b、不重新建数据库，通过alter database来修改数据库的默认字符集
 如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定：     `mysql>alter database db_name character set charset_name ;`
+
 比如：
-`mysql>alter database db_name character set utf8 ;`
+``mysql>alter database db_name character set utf8 ;``
 #####3、表级字符集
 如果在表定义中没有指定表字符集和校对规则，则默认使用数据库字符集和校对规则。
 ######a、重新建表，并指定默认字符集
 表级字符集是在建立表的时候指定该表的默认字符集。
-`mysql>create table tbl_name (column_list) default character set charset_name ;`
+``mysql>create table tbl_name (column_list) default character set charset_name ;``
 ######b、不重新建表，通过alter table来修改表的默认字符集
-如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定：     `mysql>alter table tbl_name default character set charset_name ;`
+如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定：     
+``mysql>alter table tbl_name default character set charset_name ;``
 备注：列级别的字符集和表级别字符集的规则类似，也可以在建表的语句里面指定，若没有指定则默认使用表级别的字符集，若表也没有指定默认字符集，则往上推。 
 #####4、连接级字符集
 从以下几个方面来理解连接级字符集：（类似一种网络协议，服务器、客户端之间预先设置的通信规则）
@@ -246,13 +249,17 @@ MySQL的字符集和校对规则有4个级别的默认设置：服务器级、�
 ######c、服务器发送结果集或返回错误信息到客户端之前应该转换为哪种字符集？
 character_set_results变量指示服务器返回查询结果到客户端使用的字符集。包括结果数据，例如列值和结果元数据（如列名）。
 我们能够调整这些变量的设置，有两个语句影响连接字符集：
-`SET NAMES 'charset_name'`
-`SET CHARACTER SET charset_name`
+``SET NAMES 'charset_name'``
+``SET CHARACTER SET charset_name``
+
 SET NAMES显示客户端发送的SQL语句中使用什么字符集。因此，SET NAMES 'cp1251'语句告诉服务器“将来从这个客户端传来的信息采用字符集cp1251”。它还为服务器发送回客户端的结果指定了字符集。（例如，如果你使用一个SELECT语句，它表示列值使用了什么字符集。）
 SET NAMES 'x'语句与这三个语句等价：
-`mysql> SET character_set_client = x;`
-`mysql> SET character_set_results = x;`
-`mysql> SET character_set_connection = x;`
+
+```
+mysql> SET character_set_client = x;
+mysql> SET character_set_results = x;
+mysql> SET character_set_connection = x;
+```
 要设置连接级的字符集，可以在编写MySQL数据库应用程序时，在客户端程序发
 起连接到服务器后，执行一条语句，如下情形：
 
@@ -263,15 +270,15 @@ mysql_query( &mysql , "SET NAMES 'utf8'");
 这样便可指定本次连接使用的默认字符集为utf8了。
 ###八、一些MYSQL常用的命令
 #####1.列出MYSQL支持的所有字符集： 
-`SHOW CHARACTER SET;`
+``SHOW CHARACTER SET;``
 #####2.当前MYSQL服务器字符集设置 
-`SHOW VARIABLES LIKE 'character_set_%';`
+``SHOW VARIABLES LIKE 'character_set_%';``
 #####3.当前MYSQL服务器字符集校验设置 
-`SHOW VARIABLES LIKE 'collation_%';`
+``SHOW VARIABLES LIKE 'collation_%';``
 #####4.显示某数据库字符集设置 
-`show create database 数据库名;`
+``show create database 数据库名;``
 #####5.显示某数据表字符集设置 
-`show create table 表名;`
+``show create table 表名;``
 #####6.修改数据库字符集 
 ``alter database 数据库名 default character set 'utf8';``
 #####7.修改数据表字符集 
@@ -518,9 +525,9 @@ row <span class="token operator">=</span> <span class="token function">mysql_fet
 <h6 id="b">b、不重新编译，只修改当前配置文件</h6>
 
 <p>打开/etc/mysql/my.cnf修改编码：
-在[mysqld]下添加：default-character-set=utf8
-在[client]下添加：default-character-set=utf8
-在[mysql]下添加：default-character-set=utf8
+在[mysqld]下添加：<code>default-character-set=utf8</code>
+在[client]下添加：<code>default-character-set=utf8</code>
+在[mysql]下添加：<code>default-character-set=utf8</code>
 然后重启mysql应该就可以了！</p>
 
 <h5 id="2">2、数据库级字符集</h5>
@@ -530,14 +537,16 @@ row <span class="token operator">=</span> <span class="token function">mysql_fet
 <h6 id="a">a、重新建数据库，并指定默认字符集</h6>
 
 <p>数据库级是在新建数据库时指定该数据库默认的字符集。
-<code>mysql&gt;create database db_name character set charset_name ;</code>
-比如：
+<code>mysql&gt;create database db_name character set charset_name ;</code></p>
+
+<p>比如：
 <code>mysql&gt;create database db_name character set utf8 ;</code></p>
 
 <h6 id="balterdatabase">b、不重新建数据库，通过alter database来修改数据库的默认字符集</h6>
 
-<p>如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定：     <code>mysql&gt;alter database db_name character set charset_name ;</code>
-比如：
+<p>如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定：     <code>mysql&gt;alter database db_name character set charset_name ;</code></p>
+
+<p>比如：
 <code>mysql&gt;alter database db_name character set utf8 ;</code></p>
 
 <h5 id="3">3、表级字符集</h5>
@@ -551,7 +560,8 @@ row <span class="token operator">=</span> <span class="token function">mysql_fet
 
 <h6 id="baltertable">b、不重新建表，通过alter table来修改表的默认字符集</h6>
 
-<p>如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定：     <code>mysql&gt;alter table tbl_name default character set charset_name ;</code>
+<p>如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定： <br>
+<code>mysql&gt;alter table tbl_name default character set charset_name ;</code>
 备注：列级别的字符集和表级别字符集的规则类似，也可以在建表的语句里面指定，若没有指定则默认使用表级别的字符集，若表也没有指定默认字符集，则往上推。 </p>
 
 <h5 id="4">4、连接级字符集</h5>
@@ -571,13 +581,17 @@ row <span class="token operator">=</span> <span class="token function">mysql_fet
 <p>character<em>set</em>results变量指示服务器返回查询结果到客户端使用的字符集。包括结果数据，例如列值和结果元数据（如列名）。
 我们能够调整这些变量的设置，有两个语句影响连接字符集：
 <code>SET NAMES 'charset_name'</code>
-<code>SET CHARACTER SET charset_name</code>
-SET NAMES显示客户端发送的SQL语句中使用什么字符集。因此，SET NAMES 'cp1251'语句告诉服务器“将来从这个客户端传来的信息采用字符集cp1251”。它还为服务器发送回客户端的结果指定了字符集。（例如，如果你使用一个SELECT语句，它表示列值使用了什么字符集。）
-SET NAMES 'x'语句与这三个语句等价：
-<code>mysql&gt; SET character_set_client = x;</code>
-<code>mysql&gt; SET character_set_results = x;</code>
-<code>mysql&gt; SET character_set_connection = x;</code>
-要设置连接级的字符集，可以在编写MySQL数据库应用程序时，在客户端程序发
+<code>SET CHARACTER SET charset_name</code></p>
+
+<p>SET NAMES显示客户端发送的SQL语句中使用什么字符集。因此，SET NAMES 'cp1251'语句告诉服务器“将来从这个客户端传来的信息采用字符集cp1251”。它还为服务器发送回客户端的结果指定了字符集。（例如，如果你使用一个SELECT语句，它表示列值使用了什么字符集。）
+SET NAMES 'x'语句与这三个语句等价：</p>
+
+<pre><code>mysql&gt; SET character_set_client = x;
+mysql&gt; SET character_set_results = x;
+mysql&gt; SET character_set_connection = x;
+</code></pre>
+
+<p>要设置连接级的字符集，可以在编写MySQL数据库应用程序时，在客户端程序发
 起连接到服务器后，执行一条语句，如下情形：</p>
 
 <p></p><pre class=" language-c"><code class=" language-c"><span class="token function">mysqlrealconnect<span class="token punctuation">(</span></span><span class="token operator">&amp;</span>mysql<span class="token punctuation">,</span>”hostname”<span class="token punctuation">,</span>”username”<span class="token punctuation">,</span>”password”<span class="token punctuation">,</span>”database”<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>NULL<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>

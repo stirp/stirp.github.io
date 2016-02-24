@@ -106,6 +106,7 @@ result = mysql_store_result( &mysql ) ;
 row_count = ( int )mysql_num_rows( result ) ;
 field_count = ( int )mysql_num_fields( result ) ;
 ~~~~
+
 #####7、循环调用mysql_fetch_row ，以便获取查询结果的每一行
 
 ~~~~{c}
@@ -113,16 +114,19 @@ MYSQL_ROW row;
 row = mysql_fetch_row( result ) ;//下一次再调用便自动指向result的下一行
 printf(“%s\n”,row[index]);//注意转换各个字段的类型
 ~~~~
+
 #####8、释放资源
 
 ~~~~{c}
 mysql_free_result( result ) ;
 ~~~~
+
 #####9、关闭MYSQL连接
 
 ~~~~{c}
 mysql_close(&mysql);
 ~~~~
+
 ###六、一个简单的例子
 
 ~~~~{c}
@@ -417,18 +421,26 @@ mysql&gt; GRANT ALL PRIVILEGES ON *.* TO 'monty'@'%'
 result <span class="token operator">=</span> <span class="token function">mysql_store_result<span class="token punctuation">(</span></span> <span class="token operator">&amp;</span>mysql <span class="token punctuation">)</span> <span class="token punctuation">;</span>
 row_count <span class="token operator">=</span> <span class="token punctuation">(</span> <span class="token keyword">int</span> <span class="token punctuation">)</span><span class="token function">mysql_num_rows<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token punctuation">;</span>
 field_count <span class="token operator">=</span> <span class="token punctuation">(</span> <span class="token keyword">int</span> <span class="token punctuation">)</span><span class="token function">mysql_num_fields<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token punctuation">;</span>
-</code></pre>#####7、循环调用mysql_fetch_row ，以便获取查询结果的每一行
+</code></pre>
+
+<h5 id="7mysql_fetch_row">7、循环调用mysql<em>fetch</em>row ，以便获取查询结果的每一行</h5>
 
 <pre class=" language-c"><code class=" language-c">MYSQL_ROW row<span class="token punctuation">;</span>
 row <span class="token operator">=</span> <span class="token function">mysql_fetch_row<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token comment" spellcheck="true">;//下一次再调用便自动指向result的下一行
 </span><span class="token function">printf<span class="token punctuation">(</span></span>“<span class="token operator">%</span>s\n”<span class="token punctuation">,</span>row<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//注意转换各个字段的类型
-</span></code></pre>#####8、释放资源
+</span></code></pre>
+
+<h5 id="8">8、释放资源</h5>
 
 <pre class=" language-c"><code class=" language-c"><span class="token function">mysql_free_result<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token punctuation">;</span>
-</code></pre>#####9、关闭MYSQL连接
+</code></pre>
+
+<h5 id="9mysql">9、关闭MYSQL连接</h5>
 
 <pre class=" language-c"><code class=" language-c"><span class="token function">mysql_close<span class="token punctuation">(</span></span><span class="token operator">&amp;</span>mysql<span class="token punctuation">)</span><span class="token punctuation">;</span>
-</code></pre>###六、一个简单的例子
+</code></pre>
+
+<h3 id="">六、一个简单的例子</h3>
 
 <pre class=" language-c"><code class=" language-c"><span class="token comment" spellcheck="true">//打印出本地主机的pim数据库里面的classmate数据表的第一、第二列。用户名kitty，密码a1。
 </span><span class="token comment" spellcheck="true">//编译：gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm

@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<?xml version="1.0" encoding="utf-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
     <channel>
         <title>尚弟的小笔记</title>
-        <atom:link href="http://stirp.github.io/rss.xml" rel="self" type="application/rss+xml"/>
-        <link>http://stirp.github.io</link>
+        <atom:link href="http://blog.shrp.me//rss.xml" rel="self" type="application/rss+xml"/>
+        <link>http://blog.shrp.me/</link>
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>temp</title><link>http://stirp.github.io/temp.html</link><pubdate>2016-02-19</pubdate><content:encoded>&lt;pre class=" language-java"&gt;&lt;code class=" language-java"&gt;
+    <item><title>temp</title><link>http://blog.shrp.me//temp.html</link><pubdate>2016-02-19</pubdate><content:encoded>&lt;pre class=" language-java"&gt;&lt;code class=" language-java"&gt;
 &lt;span class="token keyword"&gt;package&lt;/span&gt; com&lt;span class="token punctuation"&gt;.&lt;/span&gt;woqu&lt;span class="token punctuation"&gt;.&lt;/span&gt;crm&lt;span class="token punctuation"&gt;.&lt;/span&gt;server&lt;span class="token punctuation"&gt;;&lt;/span&gt;
 
 &lt;span class="token keyword"&gt;import&lt;/span&gt; java&lt;span class="token punctuation"&gt;.&lt;/span&gt;io&lt;span class="token punctuation"&gt;.&lt;/span&gt;UnsupportedEncodingException&lt;span class="token punctuation"&gt;;&lt;/span&gt;
@@ -134,135 +133,401 @@
 &lt;span class="token punctuation"&gt;}&lt;/span&gt;
 
 
-&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://stirp.github.io/temp.html</guid></item><item><title>title</title><link>http://stirp.github.io/test.html</link><pubdate>2016-01-17</pubdate><content:encoded>&lt;pre class=" language-cpp"&gt;&lt;code class=" language-cpp"&gt;&lt;span class="token comment" spellcheck="true"&gt;
-//#include &amp;lt;iostream&amp;gt;
-&lt;/span&gt;&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;cstdio&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;cstdlib&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;cstring&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;cmath&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;algorithm&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;cctype&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span class="token keyword"&gt;using&lt;/span&gt; &lt;span class="token keyword"&gt;namespace&lt;/span&gt; std&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token keyword"&gt;typedef&lt;/span&gt; &lt;span class="token keyword"&gt;long&lt;/span&gt; &lt;span class="token keyword"&gt;long&lt;/span&gt; ll&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token keyword"&gt;typedef&lt;/span&gt; &lt;span class="token keyword"&gt;unsigned&lt;/span&gt; &lt;span class="token keyword"&gt;long&lt;/span&gt; &lt;span class="token keyword"&gt;long&lt;/span&gt; ull&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//temp.html</guid></item><item><title>目标达成</title><link>http://blog.shrp.me//goal-achieved.html</link><pubdate>2011-03-07</pubdate><content:encoded>&lt;p&gt;电脑上的盗版软件一扫而空，心情不由得开始舒畅起来，哈哈。如果说有遗憾，那就是virtual box性能确实不如vmware好，好像也没有端口映射，以后ubuntu怎么远程连接又是个麻烦事了。&lt;/p&gt;
 
-&lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token function"&gt;iRead&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-&lt;span class="token punctuation"&gt;{&lt;/span&gt;
-    &lt;span class="token keyword"&gt;int&lt;/span&gt; ret &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token keyword"&gt;int&lt;/span&gt; ch&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token keyword"&gt;while&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token operator"&gt;!&lt;/span&gt;&lt;span class="token function"&gt;isdigit&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;ch &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;getchar&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token operator"&gt;&amp;amp;&amp;amp;&lt;/span&gt; ch &lt;span class="token operator"&gt;!=&lt;/span&gt; &lt;span class="token string"&gt;'-'&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token keyword"&gt;bool&lt;/span&gt; bm &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;ch &lt;span class="token operator"&gt;==&lt;/span&gt; &lt;span class="token string"&gt;'-'&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt; &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;bm&lt;span class="token punctuation"&gt;)&lt;/span&gt; ch &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;getchar&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token keyword"&gt;while&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;ret &lt;span class="token operator"&gt;=&lt;/span&gt; ret &lt;span class="token operator"&gt;*&lt;/span&gt; &lt;span class="token number"&gt;10&lt;/span&gt; &lt;span class="token operator"&gt;+&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;ch &lt;span class="token operator"&gt;-&lt;/span&gt; &lt;span class="token string"&gt;'0'&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token function"&gt;isdigit&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;ch &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;getchar&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token keyword"&gt;return&lt;/span&gt; bm &lt;span class="token operator"&gt;?&lt;/span&gt; &lt;span class="token operator"&gt;-&lt;/span&gt;ret &lt;span class="token operator"&gt;:&lt;/span&gt; ret&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token punctuation"&gt;}&lt;/span&gt;
+&lt;p&gt;project据说有个gantt什么东西可以画，visio也有类似的在线软件。还要继续寻找。&lt;/p&gt;
 
-&lt;span class="token keyword"&gt;const&lt;/span&gt; &lt;span class="token keyword"&gt;int&lt;/span&gt; N &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token number"&gt;300003&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token keyword"&gt;const&lt;/span&gt; &lt;span class="token keyword"&gt;int&lt;/span&gt; STP &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token number"&gt;100000&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token keyword"&gt;struct&lt;/span&gt; iT&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-iT &lt;span class="token operator"&gt;*&lt;/span&gt;q&lt;span class="token punctuation"&gt;[&lt;/span&gt;N&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token keyword"&gt;struct&lt;/span&gt; iT
-&lt;span class="token punctuation"&gt;{&lt;/span&gt;
-    iT &lt;span class="token operator"&gt;*&lt;/span&gt;fa&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token operator"&gt;*&lt;/span&gt;ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;2&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token keyword"&gt;int&lt;/span&gt; val&lt;span class="token punctuation"&gt;,&lt;/span&gt; s&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token keyword"&gt;bool&lt;/span&gt; rev&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token property"&gt;#define iDir(c) ((c)-&amp;gt;fa-&amp;gt;ch[1] == (c))&lt;/span&gt;
-    &lt;span class="token keyword"&gt;void&lt;/span&gt; &lt;span class="token function"&gt;up&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-        s &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token number"&gt;1&lt;/span&gt; &lt;span class="token operator"&gt;+&lt;/span&gt; 
-            &lt;span class="token punctuation"&gt;(&lt;/span&gt;ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; &lt;span class="token operator"&gt;?&lt;/span&gt; ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;s &lt;span class="token operator"&gt;:&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token operator"&gt;+&lt;/span&gt; 
-            &lt;span class="token punctuation"&gt;(&lt;/span&gt;ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; &lt;span class="token operator"&gt;?&lt;/span&gt; ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;s &lt;span class="token operator"&gt;:&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-    &lt;span class="token keyword"&gt;void&lt;/span&gt; &lt;span class="token function"&gt;down&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-        &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token operator"&gt;!&lt;/span&gt;rev&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token keyword"&gt;return&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        rev &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token function"&gt;swap&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;rev &lt;span class="token operator"&gt;^&lt;/span&gt;&lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;rev &lt;span class="token operator"&gt;^&lt;/span&gt;&lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-    &lt;span class="token keyword"&gt;void&lt;/span&gt; &lt;span class="token function"&gt;rot&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token comment" spellcheck="true"&gt; // 把this转到fa的位置 
-&lt;/span&gt;    &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-        iT &lt;span class="token operator"&gt;*&lt;/span&gt;f &lt;span class="token operator"&gt;=&lt;/span&gt; fa&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;f&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;fa&lt;span class="token punctuation"&gt;)&lt;/span&gt; f&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;fa&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token function"&gt;iDir&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;f&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token keyword"&gt;this&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;int&lt;/span&gt; dr &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;iDir&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token keyword"&gt;this&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        fa &lt;span class="token operator"&gt;=&lt;/span&gt; f&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;fa&lt;span class="token punctuation"&gt;,&lt;/span&gt; f&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;fa &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token keyword"&gt;this&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token operator"&gt;!&lt;/span&gt;dr&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token operator"&gt;!&lt;/span&gt;dr&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;fa &lt;span class="token operator"&gt;=&lt;/span&gt; f&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        f&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;dr&lt;span class="token punctuation"&gt;]&lt;/span&gt; &lt;span class="token operator"&gt;=&lt;/span&gt; ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token operator"&gt;!&lt;/span&gt;dr&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token operator"&gt;!&lt;/span&gt;dr&lt;span class="token punctuation"&gt;]&lt;/span&gt; &lt;span class="token operator"&gt;=&lt;/span&gt; f&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        f&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;&lt;span class="token function"&gt;up&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token function"&gt;up&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;     &lt;span class="token comment" spellcheck="true"&gt; // !!!! 此时f已经是this的孩子了 
-&lt;/span&gt;    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-    iT &lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token function"&gt;splay&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;iT &lt;span class="token operator"&gt;*&lt;/span&gt;tag &lt;span class="token operator"&gt;=&lt;/span&gt; NULL&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token comment" spellcheck="true"&gt; // 把this转到tag下，返回this 
-&lt;/span&gt;    &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-        iT &lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token operator"&gt;*&lt;/span&gt;p &lt;span class="token operator"&gt;=&lt;/span&gt; q&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;for&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;iT &lt;span class="token operator"&gt;*&lt;/span&gt;i &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token keyword"&gt;this&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt; i &lt;span class="token operator"&gt;!=&lt;/span&gt; tag&lt;span class="token punctuation"&gt;;&lt;/span&gt; i &lt;span class="token operator"&gt;=&lt;/span&gt; i&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;fa&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-            &lt;span class="token operator"&gt;*&lt;/span&gt;p&lt;span class="token operator"&gt;++&lt;/span&gt; &lt;span class="token operator"&gt;=&lt;/span&gt; i&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;while&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;p &lt;span class="token operator"&gt;!=&lt;/span&gt; q&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-            &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token operator"&gt;--&lt;/span&gt;p&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;&lt;span class="token function"&gt;down&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;for&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt; fa &lt;span class="token operator"&gt;!=&lt;/span&gt; tag&lt;span class="token punctuation"&gt;;&lt;/span&gt; &lt;span class="token function"&gt;rot&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-            &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;fa&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;fa &lt;span class="token operator"&gt;!=&lt;/span&gt; tag&lt;span class="token punctuation"&gt;)&lt;/span&gt;  &lt;span class="token comment" spellcheck="true"&gt; // 双旋的情况 
-&lt;/span&gt;                &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token function"&gt;iDir&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token keyword"&gt;this&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token operator"&gt;==&lt;/span&gt; &lt;span class="token function"&gt;iDir&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;fa&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token operator"&gt;?&lt;/span&gt; fa &lt;span class="token operator"&gt;:&lt;/span&gt; &lt;span class="token keyword"&gt;this&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;&lt;span class="token function"&gt;rot&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token keyword"&gt;this&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-    iT &lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token function"&gt;select&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; k&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token comment" spellcheck="true"&gt; // 取rank k 从0开始 
-&lt;/span&gt;    &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-        &lt;span class="token function"&gt;down&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;int&lt;/span&gt; sl &lt;span class="token operator"&gt;=&lt;/span&gt; ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; &lt;span class="token operator"&gt;?&lt;/span&gt; ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;s &lt;span class="token operator"&gt;:&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;sl &lt;span class="token operator"&gt;==&lt;/span&gt; k&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-            &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token keyword"&gt;this&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;else&lt;/span&gt; &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;k &lt;span class="token operator"&gt;&amp;lt;&lt;/span&gt; sl&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-            &lt;span class="token keyword"&gt;return&lt;/span&gt; ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;&lt;span class="token function"&gt;select&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;k&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;else&lt;/span&gt;
-            &lt;span class="token keyword"&gt;return&lt;/span&gt; ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;&lt;span class="token function"&gt;select&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;k &lt;span class="token operator"&gt;-&lt;/span&gt; sl &lt;span class="token operator"&gt;-&lt;/span&gt; &lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-    iT &lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token function"&gt;min&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-        iT &lt;span class="token operator"&gt;*&lt;/span&gt;c &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token keyword"&gt;this&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;while&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;c&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;&lt;span class="token function"&gt;down&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; c&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-            c &lt;span class="token operator"&gt;=&lt;/span&gt; c&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;return&lt;/span&gt; c&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-&lt;span class="token punctuation"&gt;}&lt;/span&gt;ss&lt;span class="token punctuation"&gt;[&lt;/span&gt;N&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token operator"&gt;*&lt;/span&gt;sp &lt;span class="token operator"&gt;=&lt;/span&gt; ss&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token keyword"&gt;int&lt;/span&gt; arr&lt;span class="token punctuation"&gt;[&lt;/span&gt;N&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token comment" spellcheck="true"&gt;
-// 建[l,r)的高度平衡splay 像线段树一样 感觉快一点 当然也可以一个个insert &amp;amp; splay 
-&lt;/span&gt;iT &lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token function"&gt;iMake&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; l&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token keyword"&gt;int&lt;/span&gt; r&lt;span class="token punctuation"&gt;,&lt;/span&gt; iT &lt;span class="token operator"&gt;*&lt;/span&gt;f &lt;span class="token operator"&gt;=&lt;/span&gt; NULL&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-&lt;span class="token punctuation"&gt;{&lt;/span&gt;
-    &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;l &amp;gt;&lt;span class="token operator"&gt;=&lt;/span&gt; r&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token keyword"&gt;return&lt;/span&gt; NULL&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token keyword"&gt;int&lt;/span&gt; m &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;l &lt;span class="token operator"&gt;+&lt;/span&gt; r&lt;span class="token punctuation"&gt;)&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    iT &lt;span class="token operator"&gt;*&lt;/span&gt;c &lt;span class="token operator"&gt;=&lt;/span&gt; sp&lt;span class="token operator"&gt;++&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token operator"&gt;*&lt;/span&gt;c &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;iT&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;{&lt;/span&gt;
-        f&lt;span class="token punctuation"&gt;,&lt;/span&gt; 
-        &lt;span class="token punctuation"&gt;{&lt;/span&gt;&lt;span class="token function"&gt;iMake&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;l&lt;span class="token punctuation"&gt;,&lt;/span&gt; m&lt;span class="token punctuation"&gt;,&lt;/span&gt; c&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token function"&gt;iMake&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;m &lt;span class="token operator"&gt;+&lt;/span&gt; &lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; r&lt;span class="token punctuation"&gt;,&lt;/span&gt; c&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;}&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; 
-        arr&lt;span class="token punctuation"&gt;[&lt;/span&gt;m&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; r &lt;span class="token operator"&gt;-&lt;/span&gt; l&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token boolean"&gt;false&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;}&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token keyword"&gt;return&lt;/span&gt; c&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token punctuation"&gt;}&lt;/span&gt;
+&lt;p&gt;此外还有一些微软的powertools还没有装，但是为了避免移动硬盘也成为shadowUser的还原目标，明天用pe开机拷贝吧。&lt;/p&gt;
 
-&lt;span class="token keyword"&gt;int&lt;/span&gt; n&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;p&gt;下一步的目标是给新浪写一个简历，看看能不能得到实习机会。然后把网站按照前几天的计划改进一下。然后把C语言最后几章的习题做了，拖了将近一年了，真囧。&lt;/p&gt;
 
-&lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token function"&gt;main&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
+&lt;p&gt;这样就可以总结一篇C语言的心得，嘿嘿。&lt;/p&gt;
+
+&lt;p&gt;加油，继续前进，goon！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//goal-achieved.html</guid></item><item><title>自己的下一个目标</title><link>http://blog.shrp.me//my-next-goal.html</link><pubdate>2011-03-06</pubdate><content:encoded>&lt;p&gt;将系统中的盗版软件基本全部清理。&lt;/p&gt;
+
+&lt;p&gt;之所以是基本，是因为我的xp是盗版（虽然有正版xp，不过却给小笔记本装了）。不过好在我还有正版vista，而且是闲置不用，就当是把授权转给xp吧。&lt;/p&gt;
+
+&lt;p&gt;还有就是office无可替代，尤其是visio、project。这个专业要用，没有办法了。&lt;/p&gt;
+
+&lt;p&gt;连同写网页的phpdesigner也是盗版，很惭愧，今后用gvim吧。&lt;/p&gt;
+
+&lt;p&gt;服务器也是盗版（汗……）只不过实在需要虚拟路径。等赚钱后再买正版的支持下，呵呵。&lt;/p&gt;
+
+&lt;p&gt;其它软件，就参照-·」&lt;a href="http://blog.sina.com.cn/s/blog_46dac66f0100003u.html"&gt;http://blog.sina.com.cn/s/blog_46dac66f0100003u.html&lt;/a&gt;这个来替换吧。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//my-next-goal.html</guid></item><item><title>Ubuntu下的mysql和C语言开发</title><link>http://blog.shrp.me//develop-with-c-and-mysql-in-ubuntu.html</link><pubdate>2011-02-25</pubdate><content:encoded>&lt;h3 id=""&gt;一. 开发环境的准备&lt;/h3&gt;
+
+&lt;h5 id="1linuxubuntu1010"&gt;1. 首先要安装好Linux，这里用的是Ubuntu 10.10&lt;/h5&gt;
+
+&lt;h5 id="2mysql"&gt;2. 安装MySQL系列软件包一、开发环境的准备&lt;/h5&gt;
+
+&lt;h5 id="3linuxubuntu1010"&gt;3. 首先要安装好Linux，这里用的是Ubuntu 10.10&lt;/h5&gt;
+
+&lt;h5 id="4mysql1010mysql51"&gt;4. 安装MySQL系列软件包，这边10.10系统仓库里面的是MySQL5.1版本：&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code class=" "&gt;sudo apt-get install mysql-server
+sudo apt-get install mysql-client
+sudo apt-get install libmysqlclient15-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="mysql"&gt;二. 检查MySQL服务的状态&lt;/h3&gt;
+
+&lt;h5 id="1mysql"&gt;1. 查看当前的mysql服务状态&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;sudo /etc/init.d/mysql status&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="2mysql"&gt;2. 也可以用以下检查mysql服务是否有启动，如果结果为空，则没有启动&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;sudo netstat -tap | grep mysql&lt;/code&gt;或&lt;code&gt;ps -ef | grep mysql&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id="mysql"&gt;三. 启动/停止/重启MySQL服务&lt;/h3&gt;
+
+&lt;h5 id="1sudoetcinitdmysqlstart"&gt;1. 启动：&lt;code&gt;sudo /etc/init.d/mysql start&lt;/code&gt;&lt;/h5&gt;
+
+&lt;h5 id="2sudoetcinitdmysqlstop"&gt;2. 停止：&lt;code&gt;sudo /etc/init.d/mysql stop&lt;/code&gt;&lt;/h5&gt;
+
+&lt;h5 id="3sudoetcinitdmysqlrestart"&gt;3. 重启：&lt;code&gt;sudo /etc/init.d/mysql restart&lt;/code&gt;&lt;/h5&gt;
+
+&lt;h3 id="mysql"&gt;四. 在命令行使用MySQL客户端访问数据库&lt;/h3&gt;
+
+&lt;h5 id="1"&gt;1. 访问本地主机：&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;mysql -uuser -ppassword db_name&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="2"&gt;2. 访问远程主机：&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;mysql -hhost -uuser -ppassword db_name&lt;/code&gt;
+备注：由于默认的配置是只能从本机访问，只要注释掉/etc/mysql/my.cnf里面的bind-address这行，就可以让远程主机访问了。&lt;/p&gt;
+
+&lt;h5 id="3"&gt;3、执行管理操作：&lt;/h5&gt;
+
+&lt;p&gt;使用mysqladmin及相关参数&lt;/p&gt;
+
+&lt;h5 id="4db_name"&gt;4、备份 db_name 数据库：&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;mysqldump -uroot -p --default-character-set=utf8 --opt     --extended-insert=false --triggers -R --hex-blob -x db_name &amp;gt; bak.sql&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="5db_name"&gt;5、恢复db_name数据库：&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;mysql -uroot -p db_name &amp;lt; bak.sql&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="6tbl_name"&gt;6、备份tbl_name 数据表：&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;select * into outfile '/usr/local/mysql/f.txt' fields terminated by '|' from tbl_name;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="7homeatxttbl_name"&gt;7、把文件/home/a.txt导入数据库中的 tbl_name表&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;mysql&amp;gt; load data local infile '/home/a.txt'  into table tbl_name fields terminated by ',' lines terminated by '\r\n';&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="8mysqlroot"&gt;8、设置mysql数据库root的初始密码&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;shell&amp;gt; mysql -u root
+mysql&amp;gt; SET PASSWORD FOR ''@'localhost' = PASSWORD('newpwd');
+mysql&amp;gt; SET PASSWORD FOR ''@'host_name' = PASSWORD('newpwd');
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id="9"&gt;9、为普通用户修改密码：&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;mysql&amp;gt; SET PASSWORD FOR 'user_name'@'host_name' = PASSWORD('newpwd');&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="10"&gt;10、建立超级用户账户，具有完全的权限可以做任何事情：&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; GRANT ALL PRIVILEGES ON *.* TO 'monty'@'localhost'
+-&amp;gt;     IDENTIFIED BY 'some_pass' WITH GRANT OPTION;
+mysql&amp;gt; GRANT ALL PRIVILEGES ON *.* TO 'monty'@'%'
+-&amp;gt;     IDENTIFIED BY 'some_pass' WITH GRANT OPTION;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;备注：第一句建立用于本机连接的帐户，第二句建立用于从其他主机连接的帐户。&lt;/p&gt;
+
+&lt;h5 id="11custombankaccount"&gt;11、建立帐户custom，可以访问bankaccount数据库，但只能从本机访问&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP
+-&amp;gt;     ON bankaccount.*
+-&amp;gt;     TO 'custom'@'localhost'
+-&amp;gt;     IDENTIFIED BY 'obscure';
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="linuxcmysql"&gt;五、Linux下C开发MySQL数据库应用程序的简要流程&lt;/h3&gt;
+
+&lt;p&gt;编译：&lt;code&gt;gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="1mysql"&gt;1、定义MYSQL变量&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;MYSQL mysql;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="2mysql"&gt;2、初始化MYSQL变量&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;mysql_init(&amp;amp;mysql);&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="3mysql"&gt;3、连接到MySQL数据库&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;mysql_real_connect(&amp;amp;mysql,”hostname”,”username”,”password”,”database”,0,NULL,0);&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="4wwwlinuxidccom"&gt;4、指定本连接的字符集（可选，www.linuxidc.com主要为了确认客户端与服务器之间使用一致的字符集进行通信）&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;mysql_query( &amp;amp;mysql , "SET NAMES 'utf8'");&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="5sql"&gt;5、执行SQL语句&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;mysql_real_query( &amp;amp;mysql, SQL, SQL_LEN ) ;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="6"&gt;6、获取查询结果&lt;/h5&gt;
+
+&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;MYSQL_RES &lt;span class="token operator"&gt;*&lt;/span&gt;result&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+result &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;mysql_store_result&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; &lt;span class="token operator"&gt;&amp;amp;&lt;/span&gt;mysql &lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;;&lt;/span&gt;
+row_count &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt; &lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token function"&gt;mysql_num_rows&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; result &lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;;&lt;/span&gt;
+field_count &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt; &lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token function"&gt;mysql_num_fields&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; result &lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id="7mysql_fetch_row"&gt;7、循环调用mysql&lt;em&gt;fetch&lt;/em&gt;row ，以便获取查询结果的每一行&lt;/h5&gt;
+
+&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;MYSQL_ROW row&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+row &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;mysql_fetch_row&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; result &lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token comment" spellcheck="true"&gt;;//下一次再调用便自动指向result的下一行
+&lt;/span&gt;&lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;“&lt;span class="token operator"&gt;%&lt;/span&gt;s\n”&lt;span class="token punctuation"&gt;,&lt;/span&gt;row&lt;span class="token punctuation"&gt;[&lt;/span&gt;index&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token comment" spellcheck="true"&gt;;//注意转换各个字段的类型
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id="8"&gt;8、释放资源&lt;/h5&gt;
+
+&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token function"&gt;mysql_free_result&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; result &lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id="9mysql"&gt;9、关闭MYSQL连接&lt;/h5&gt;
+
+&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token function"&gt;mysql_close&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token operator"&gt;&amp;amp;&lt;/span&gt;mysql&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=""&gt;六、一个简单的例子&lt;/h3&gt;
+
+&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token comment" spellcheck="true"&gt;//打印出本地主机的pim数据库里面的classmate数据表的第一、第二列。用户名kitty，密码a1。
+&lt;/span&gt;&lt;span class="token comment" spellcheck="true"&gt;//编译：gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm
+&lt;/span&gt;
+&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;string.h&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;stdlib.h&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;mysql.h&amp;gt;&lt;/span&gt;&lt;/span&gt;
+
+&lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token function"&gt;main&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; &lt;span class="token keyword"&gt;int&lt;/span&gt; argc &lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token keyword"&gt;char&lt;/span&gt;&lt;span class="token operator"&gt;*&lt;/span&gt; argv&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt;
 &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-    n &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;iRead&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token keyword"&gt;for&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; i &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt; i &lt;span class="token operator"&gt;&amp;lt;&lt;/span&gt; n&lt;span class="token punctuation"&gt;;&lt;/span&gt; &lt;span class="token operator"&gt;++&lt;/span&gt;i&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-        arr&lt;span class="token punctuation"&gt;[&lt;/span&gt;i&lt;span class="token punctuation"&gt;]&lt;/span&gt; &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;iRead&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    iT &lt;span class="token operator"&gt;*&lt;/span&gt;rt &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;iMake&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; n&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token keyword"&gt;int&lt;/span&gt; i&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token keyword"&gt;for&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;i &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt; i &lt;span class="token operator"&gt;&amp;lt;=&lt;/span&gt; STP&lt;span class="token punctuation"&gt;;&lt;/span&gt; &lt;span class="token operator"&gt;++&lt;/span&gt;i&lt;span class="token punctuation"&gt;)&lt;/span&gt;
+    MYSQL mysql&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+   &lt;span class="token comment" spellcheck="true"&gt; //连接mysql
+&lt;/span&gt;    &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token function"&gt;connect_mysql&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token operator"&gt;&amp;amp;&lt;/span&gt;mysql&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
     &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-        &lt;span class="token keyword"&gt;int&lt;/span&gt; c &lt;span class="token operator"&gt;=&lt;/span&gt; rt&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;&lt;span class="token function"&gt;min&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;val&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;c &lt;span class="token operator"&gt;==&lt;/span&gt; &lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-            &lt;span class="token keyword"&gt;break&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;c &lt;span class="token operator"&gt;==&lt;/span&gt; n&lt;span class="token punctuation"&gt;)&lt;/span&gt;         &lt;span class="token comment" spellcheck="true"&gt; // !!!! 特判翻转全部的情况 
-&lt;/span&gt;            rt&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;rev &lt;span class="token operator"&gt;^&lt;/span&gt;&lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;  &lt;span class="token comment" spellcheck="true"&gt; // 否则下面会select(n) 然后炸掉 
-&lt;/span&gt;        &lt;span class="token keyword"&gt;else&lt;/span&gt;
+    &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
+   &lt;span class="token comment" spellcheck="true"&gt; //载入数据
+&lt;/span&gt;    &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt; &lt;span class="token function"&gt;load_classmate&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token operator"&gt;&amp;amp;&lt;/span&gt;mysql&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt;
+    &lt;span class="token punctuation"&gt;{&lt;/span&gt;
+    &lt;span class="token function"&gt;mysql_close&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token operator"&gt;&amp;amp;&lt;/span&gt;mysql&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
+   &lt;span class="token comment" spellcheck="true"&gt; //Do something here.
+&lt;/span&gt;   &lt;span class="token comment" spellcheck="true"&gt; //关闭mysql
+&lt;/span&gt;    &lt;span class="token function"&gt;mysql_close&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token operator"&gt;&amp;amp;&lt;/span&gt;mysql&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
+   &lt;span class="token comment" spellcheck="true"&gt; //连接MYSQL数据库
+&lt;/span&gt;    &lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token function"&gt;connect_mysql&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;MYSQL&lt;span class="token operator"&gt;*&lt;/span&gt; mysql&lt;span class="token punctuation"&gt;)&lt;/span&gt;
+    &lt;span class="token punctuation"&gt;{&lt;/span&gt;
+        &lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; &lt;span class="token string"&gt;"Initializing mysql................."&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+        &lt;span class="token keyword"&gt;if&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt; &lt;span class="token operator"&gt;!&lt;/span&gt;&lt;span class="token function"&gt;mysql_init&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;mysql&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt;
         &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-            rt &lt;span class="token operator"&gt;=&lt;/span&gt; rt&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;&lt;span class="token function"&gt;select&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;c&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;&lt;span class="token function"&gt;splay&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;&lt;span class="token comment" spellcheck="true"&gt; // splay完，根已经换了 
-&lt;/span&gt;            rt&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;ch&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&amp;gt;rev &lt;span class="token operator"&gt;^&lt;/span&gt;&lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+            &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
         &lt;span class="token punctuation"&gt;}&lt;/span&gt;
+        &lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; &lt;span class="token string"&gt;"Done\r\n"&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+        &lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; &lt;span class="token string"&gt;"Connectiong to mysql..............."&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+        &lt;span class="token keyword"&gt;if&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token operator"&gt;!&lt;/span&gt;&lt;span class="token function"&gt;mysql_real_connect&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;mysql&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token string"&gt;"localhost"&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token string"&gt;"kitty"&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token string"&gt;"a1"&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token string"&gt;"pim"&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;NULL&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
+        &lt;span class="token punctuation"&gt;{&lt;/span&gt;
+            &lt;span class="token function"&gt;fprintf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;stderr&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token string"&gt;"Error: %s\r\n"&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token function"&gt;mysql_error&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;mysql&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+            &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+        &lt;span class="token punctuation"&gt;}&lt;/span&gt;
+       &lt;span class="token comment" spellcheck="true"&gt; //设置mysql连接的字符集
+&lt;/span&gt;        &lt;span class="token function"&gt;mysql_query&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; mysql&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token string"&gt;"SET NAMES 'utf8'"&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+        &lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; &lt;span class="token string"&gt;"Done\r\n"&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+        &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
     &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-    &lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token string"&gt;"%d\n"&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; i &lt;span class="token operator"&gt;&amp;lt;=&lt;/span&gt; STP &lt;span class="token operator"&gt;?&lt;/span&gt; i &lt;span class="token operator"&gt;:&lt;/span&gt; &lt;span class="token operator"&gt;-&lt;/span&gt;&lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token function"&gt;fclose&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;stdout&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+   &lt;span class="token comment" spellcheck="true"&gt; //加载数据表
+&lt;/span&gt;    &lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token function"&gt;load_classmate&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;MYSQL &lt;span class="token operator"&gt;*&lt;/span&gt;mysql&lt;span class="token punctuation"&gt;)&lt;/span&gt;
+    &lt;span class="token punctuation"&gt;{&lt;/span&gt;
+        &lt;span class="token keyword"&gt;int&lt;/span&gt; ret&lt;span class="token punctuation"&gt;,&lt;/span&gt;field_count&lt;span class="token punctuation"&gt;,&lt;/span&gt;row_count&lt;span class="token punctuation"&gt;,&lt;/span&gt;i&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+        &lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token operator"&gt;*&lt;/span&gt;lengths&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+        &lt;span class="token keyword"&gt;char&lt;/span&gt; &lt;span class="token operator"&gt;*&lt;/span&gt;query&lt;span class="token operator"&gt;=&lt;/span&gt;&lt;span class="token string"&gt;"select * from classmate"&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+        MYSQL_RES &lt;span class="token operator"&gt;*&lt;/span&gt;result&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+        MYSQL_ROW row&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+        ret &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;mysql_real_query&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; mysql&lt;span class="token punctuation"&gt;,&lt;/span&gt; query&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token function"&gt;strlen&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;query&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;;&lt;/span&gt;
+        &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;ret &lt;span class="token operator"&gt;!=&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
+        &lt;span class="token punctuation"&gt;{&lt;/span&gt;
+        &lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token string"&gt;"加载不了classmate的数据。\n"&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+        &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
+    result &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;mysql_store_result&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; mysql &lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    row_count &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt; &lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token function"&gt;mysql_num_rows&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; result &lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    field_count &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt; &lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token function"&gt;mysql_num_fields&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; result &lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt; result &lt;span class="token operator"&gt;==&lt;/span&gt; NULL &lt;span class="token operator"&gt;&amp;amp;&amp;amp;&lt;/span&gt; field_count &lt;span class="token operator"&gt;==&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt;
+    &lt;span class="token punctuation"&gt;{&lt;/span&gt;
+        &lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token string"&gt;"查询不到数据。"&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+        &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
+    &lt;span class="token keyword"&gt;for&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt; i &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt; &lt;span class="token punctuation"&gt;;&lt;/span&gt; i &lt;span class="token operator"&gt;&amp;lt;&lt;/span&gt; row_count &lt;span class="token punctuation"&gt;;&lt;/span&gt; i&lt;span class="token operator"&gt;++&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt;
+    &lt;span class="token punctuation"&gt;{&lt;/span&gt;
+        row &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;mysql_fetch_row&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; result &lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;;&lt;/span&gt;
+        &lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; &lt;span class="token string"&gt;"%2d | %8s \r\n"&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token function"&gt;atoi&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; row&lt;span class="token punctuation"&gt;[&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt; &lt;span class="token punctuation"&gt;]&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; row &lt;span class="token punctuation"&gt;[&lt;/span&gt; &lt;span class="token number"&gt;1&lt;/span&gt; &lt;span class="token punctuation"&gt;]&lt;/span&gt; &lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
+    &lt;span class="token function"&gt;mysql_free_result&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; result &lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;;&lt;/span&gt;
     &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
 &lt;span class="token punctuation"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://stirp.github.io/test.html</guid></item></channel>
+&lt;h3 id="mysql"&gt;七、MySQL数据库中文乱码的解决办法&lt;/h3&gt;
+
+&lt;p&gt;MySQL的字符集和校对规则有4个级别的默认设置：服务器级、数据库级、表级和连接级。我们解决中文乱码的方法就顺着这几个级别来分别设置。比较常见的是由于没有设置连接级的字符集导致的乱码。&lt;/p&gt;
+
+&lt;h5 id="1"&gt;1、服务器级字符集&lt;/h5&gt;
+
+&lt;p&gt;服务器级也就是当服务器启动时根据配置文件中的字符集来加载。当前的服务器字符集和校对规则可以用作character&lt;em&gt;set&lt;/em&gt;server和collation_server系统变量的值。在运行时能够改变这些变量的值。针对服务器级，我们有两个方法可以解决。&lt;/p&gt;
+
+&lt;h6 id="amysql"&gt;a、重新编译MySQL&lt;/h6&gt;
+
+&lt;p&gt;更改设定值的一个方法是通过重新编译。如果希望在从源程序构建时更改默认服务器字符集和校对规则，使用：--with-charset和--with-collation作为configure的参量。例如：
+&lt;code&gt;shell&amp;gt; ./configure --with-charset=utf8&lt;/code&gt;&lt;/p&gt;
+
+&lt;h6 id="b"&gt;b、不重新编译，只修改当前配置文件&lt;/h6&gt;
+
+&lt;p&gt;打开/etc/mysql/my.cnf修改编码：
+在[mysqld]下添加：&lt;code&gt;default-character-set=utf8&lt;/code&gt;
+在[client]下添加：&lt;code&gt;default-character-set=utf8&lt;/code&gt;
+在[mysql]下添加：&lt;code&gt;default-character-set=utf8&lt;/code&gt;
+然后重启mysql应该就可以了！&lt;/p&gt;
+
+&lt;h5 id="2"&gt;2、数据库级字符集&lt;/h5&gt;
+
+&lt;p&gt;默认数据库的字符集和校对规则可以用作character&lt;em&gt;set&lt;/em&gt;database和 collation&lt;em&gt;database系统变量。无论何时默认数据库更改了，服务器都设置这两个变量的值。如果没有 默认数据库，这两个变量与相应的服务器级别的变量（character&lt;/em&gt;set&lt;em&gt;server和collation&lt;/em&gt;server）具有相同的值。&lt;/p&gt;
+
+&lt;h6 id="a"&gt;a、重新建数据库，并指定默认字符集&lt;/h6&gt;
+
+&lt;p&gt;数据库级是在新建数据库时指定该数据库默认的字符集。
+&lt;code&gt;mysql&amp;gt;create database db_name character set charset_name ;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;比如：
+&lt;code&gt;mysql&amp;gt;create database db_name character set utf8 ;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h6 id="balterdatabase"&gt;b、不重新建数据库，通过alter database来修改数据库的默认字符集&lt;/h6&gt;
+
+&lt;p&gt;如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定：     &lt;code&gt;mysql&amp;gt;alter database db_name character set charset_name ;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;比如：
+&lt;code&gt;mysql&amp;gt;alter database db_name character set utf8 ;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="3"&gt;3、表级字符集&lt;/h5&gt;
+
+&lt;p&gt;如果在表定义中没有指定表字符集和校对规则，则默认使用数据库字符集和校对规则。&lt;/p&gt;
+
+&lt;h6 id="a"&gt;a、重新建表，并指定默认字符集&lt;/h6&gt;
+
+&lt;p&gt;表级字符集是在建立表的时候指定该表的默认字符集。
+&lt;code&gt;mysql&amp;gt;create table tbl_name (column_list) default character set charset_name ;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h6 id="baltertable"&gt;b、不重新建表，通过alter table来修改表的默认字符集&lt;/h6&gt;
+
+&lt;p&gt;如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定： &lt;br&gt;
+&lt;code&gt;mysql&amp;gt;alter table tbl_name default character set charset_name ;&lt;/code&gt;
+备注：列级别的字符集和表级别字符集的规则类似，也可以在建表的语句里面指定，若没有指定则默认使用表级别的字符集，若表也没有指定默认字符集，则往上推。 &lt;/p&gt;
+
+&lt;h5 id="4"&gt;4、连接级字符集&lt;/h5&gt;
+
+&lt;p&gt;从以下几个方面来理解连接级字符集：（类似一种网络协议，服务器、客户端之间预先设置的通信规则）&lt;/p&gt;
+
+&lt;h6 id="a"&gt;a、当查询离开客户端后，在查询中使用哪种字符集？&lt;/h6&gt;
+
+&lt;p&gt;服务器使用character&lt;em&gt;set&lt;/em&gt;client变量作为客户端发送的查询中使用的字符集。&lt;/p&gt;
+
+&lt;h6 id="b"&gt;b、服务器接收到查询后应该转换为哪种字符集？&lt;/h6&gt;
+
+&lt;p&gt;转换时，服务器使用character&lt;em&gt;set&lt;/em&gt;connection和collation&lt;em&gt;connection系统变量。它将客户端发送的查询从character&lt;/em&gt;set&lt;em&gt;client系统变量转换到character&lt;/em&gt;set&lt;em&gt;connection（除非字符串文字具有象&lt;/em&gt;latin1或&lt;em&gt;utf8的引介词）。collation&lt;/em&gt;connection对比较文字字符串是重要的。对于列值的字符串比较，它不重要，因为列具有更高的校对规则优先级。&lt;/p&gt;
+
+&lt;h6 id="c"&gt;c、服务器发送结果集或返回错误信息到客户端之前应该转换为哪种字符集？&lt;/h6&gt;
+
+&lt;p&gt;character&lt;em&gt;set&lt;/em&gt;results变量指示服务器返回查询结果到客户端使用的字符集。包括结果数据，例如列值和结果元数据（如列名）。
+我们能够调整这些变量的设置，有两个语句影响连接字符集：
+&lt;code&gt;SET NAMES 'charset_name'&lt;/code&gt;
+&lt;code&gt;SET CHARACTER SET charset_name&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;SET NAMES显示客户端发送的SQL语句中使用什么字符集。因此，SET NAMES 'cp1251'语句告诉服务器“将来从这个客户端传来的信息采用字符集cp1251”。它还为服务器发送回客户端的结果指定了字符集。（例如，如果你使用一个SELECT语句，它表示列值使用了什么字符集。）
+SET NAMES 'x'语句与这三个语句等价：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; SET character_set_client = x;
+mysql&amp;gt; SET character_set_results = x;
+mysql&amp;gt; SET character_set_connection = x;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;要设置连接级的字符集，可以在编写MySQL数据库应用程序时，在客户端程序发
+起连接到服务器后，执行一条语句，如下情形：&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token function"&gt;mysqlrealconnect&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token operator"&gt;&amp;amp;&lt;/span&gt;mysql&lt;span class="token punctuation"&gt;,&lt;/span&gt;”hostname”&lt;span class="token punctuation"&gt;,&lt;/span&gt;”username”&lt;span class="token punctuation"&gt;,&lt;/span&gt;”password”&lt;span class="token punctuation"&gt;,&lt;/span&gt;”database”&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;NULL&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;span class="token function"&gt;mysql_query&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt; &lt;span class="token operator"&gt;&amp;amp;&lt;/span&gt;mysql &lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token string"&gt;"SET NAMES 'utf8'"&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;这样便可指定本次连接使用的默认字符集为utf8了。&lt;p&gt;&lt;/p&gt;
+
+&lt;h3 id="mysql"&gt;八、一些MYSQL常用的命令&lt;/h3&gt;
+
+&lt;h5 id="1mysql"&gt;1.列出MYSQL支持的所有字符集：&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;SHOW CHARACTER SET;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="2mysql"&gt;2.当前MYSQL服务器字符集设置&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;SHOW VARIABLES LIKE 'character_set_%';&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="3mysql"&gt;3.当前MYSQL服务器字符集校验设置&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;SHOW VARIABLES LIKE 'collation_%';&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="4"&gt;4.显示某数据库字符集设置&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;show create database 数据库名;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="5"&gt;5.显示某数据表字符集设置&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;show create table 表名;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="6"&gt;6.修改数据库字符集&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;alter database 数据库名 default character set 'utf8';&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="7"&gt;7.修改数据表字符集&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;alter table 表名 default character set 'utf8';&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="8"&gt;8.建库时指定字符集&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;create database 数据库名 character set gbk collate gbk_chinese_ci;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id="9"&gt;9.建表时指定字符集&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;CREATE TABLE `mysqlcode` ( `id` TINYINT( 255 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY , `content` VARCHAR( 255 ) NOT NULL ) TYPE = MYISAM CHARACTER SET gbk COLLATE gbk_chinese_ci;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=""&gt;九、参考&lt;/h3&gt;
+
+&lt;p&gt;MySQL 5.1 官方简体中文版参考手册&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//develop-with-c-and-mysql-in-ubuntu.html</guid></item><item><title>充满死亡的生命</title><link>http://blog.shrp.me//life-full-of-death.html</link><pubdate>2011-02-13</pubdate><content:encoded>&lt;p&gt;　　今天中秋，我给家里打了个电话，闲聊了半小时。临了妈妈问我有没有什么需要的，她可以让新区1号楼1单元的朋友给我带过来。&lt;/p&gt;
+
+&lt;p&gt;　　“一单元？就是一楼有个傻姑娘的那个？”我不知道为什么突然想起她了。&lt;/p&gt;
+
+&lt;p&gt;　　“你还记得有个傻姑娘？她叫黄蓉，几年前在上海做开颅手术死了。”&lt;/p&gt;
+
+&lt;p&gt;　　“死了？”……&lt;/p&gt;
+
+&lt;p&gt;　　一条生命就这么轻描淡写的逝去了。&lt;/p&gt;
+
+&lt;p&gt;　　突然想起了周国平写的《妞妞》，是他自己的女儿，大概是怀孕的时候被辐射到了，生下来就有脑癌，大脑前的瘤子生生的，慢慢的把她的眼睛从眼眶里挤出来，留下灰蒙蒙的肉瘤。小姑娘在总是安慰她的爸爸妈妈，甚至在护士从她脊椎里抽样本都没有喊疼，也没有哭，一动不动地。而这种疼痛堪比刘伯承做的那个不打麻药的手术。然而周国平始终下不了决心做手术，最终小姑娘在一岁半的时候去了，留给周国平一生的悔恨。&lt;/p&gt;
+
+&lt;p&gt;　　相比之下，傻姑娘还是很幸运。她活了十几二十岁了，她还可以自己玩娃娃，我小时候曾经见过，是新区里第一个可以躺下自动闭上眼睛的娃娃；她还可以一个人呆在家里，弹一个小小的玩具电子琴……当我回忆她的时候，突然那些以为已经忘怀的事情逐渐的浮现，包括她一个手上长了第六根手指，下雨天在路边玩脏水，一次我们在北营荡秋千……然而一个开颅手术还是带走了她年轻的生命，连同她五彩斑斓的世界。&lt;/p&gt;
+
+&lt;p&gt;　　甚至这个事实还可以作为茶余饭后的谈资被人们谈论。&lt;/p&gt;
+
+&lt;p&gt;　　突然觉得我们所有的人是这么的幸运。&lt;/p&gt;
+
+&lt;p&gt;　　大自然是如此的慷慨，赋予我们无与伦比的智慧；大自然又是如此的吝啬，当我们生下之前，一次小小的辐射、一个小小的撞击都可以让我们失去生存的权利，当我们生下来的时候，一阵小小的难产也会剥夺我们的智慧……今天下午徐斌说选老婆是件很费劲的事情，还得查查祖宗八辈，看看有没有可能会遗传的病。其实我不觉得有这个必要，每一个孩子，都是上天赐予我们的天使，我们的义务是照顾成长，不论他们来到这个世界时是多么的可怜和无助。&lt;/p&gt;
+
+&lt;p&gt;　　因此我们所有的人是如此的幸运。一个人能从小长到老实在不容易。而我姥爷今年年初查出食道癌，晚期，手术的事情比较麻烦，目前做不了。他也硬硬朗朗的活了一辈子了，80岁的时候还可以用牙齿咬开核桃……虽然上天已经准备让他回去了，他却也活了80多岁，早过了古稀之年，还有一个波澜壮阔的一生。今天我们能看见同一轮圆月，希望月亮可以告诉他，我遥祝姥爷安好。&lt;/p&gt;
+
+&lt;p&gt;　　希望我们所有的人，所有看见这篇日志的人都能知道，我们都是这么幸福而又幸运。今天下午我们十个同学相聚在北京，我们都是有缘为了一个共同的目标走到了北京，将来我们还会走向全世界的每一个角落。世界终将因为我们而有所改变。我希望将来所有的人都可以因为我们而更加的快乐、幸福和充实。&lt;/p&gt;
+
+&lt;p&gt;　　请记住我们是多么幸运。你就会明白我们经历的每一秒是多么的有意义。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//life-full-of-death.html</guid></item></channel>
 </rss>

@@ -38,64 +38,21 @@
     </div>
     <div id="md" style="display: none;">
 <!-- markdown -->
-明天的天空，不知是否像今天一样湛蓝
+打开Vmware，点击Edit，virtual Network Editer.
 
-湛蓝的希望还能像今天一样飞翔
+默认选择的NAT网络，实际上这种网络最好，和主机互不影响。但是目前想要共享的端口比如说80网页浏览，23telnet，22SSH。本文写之前就是我为了在机房可以远程SSH到Ubuntu虚拟机才研究的。
 
-连同我的梦想
+选注默认的VMNET8，专用来NAT的虚拟网卡，点击NAT Settings，中间有个大大的add按钮，然后根据虚拟机的实际IP和所需端口开放，这样你的虚拟机就对外网开放啦！
 
-一起去看初升的太阳
-
-翠绿的草地，无边的海洋
-
-我有一匹棕色的小马去流浪
-
-棕色的小马却消失不见
-
-留下我，和我对明天的希望
-
-但是亲爱的，什么也不会到来
-
-不论是小马，还是白羊
-
-天空可以晴朗
-
-但是晴朗的下边只有失望
-
-你好，明天
-
-请离我远一点
 <!-- markdown end -->
     </div>
     <div class="entry" id="main">
 <!-- content -->
-<p>明天的天空，不知是否像今天一样湛蓝</p>
+<p>打开Vmware，点击Edit，virtual Network Editer.</p>
 
-<p>湛蓝的希望还能像今天一样飞翔</p>
+<p>默认选择的NAT网络，实际上这种网络最好，和主机互不影响。但是目前想要共享的端口比如说80网页浏览，23telnet，22SSH。本文写之前就是我为了在机房可以远程SSH到Ubuntu虚拟机才研究的。</p>
 
-<p>连同我的梦想</p>
-
-<p>一起去看初升的太阳</p>
-
-<p>翠绿的草地，无边的海洋</p>
-
-<p>我有一匹棕色的小马去流浪</p>
-
-<p>棕色的小马却消失不见</p>
-
-<p>留下我，和我对明天的希望</p>
-
-<p>但是亲爱的，什么也不会到来</p>
-
-<p>不论是小马，还是白羊</p>
-
-<p>天空可以晴朗</p>
-
-<p>但是晴朗的下边只有失望</p>
-
-<p>你好，明天</p>
-
-<p>请离我远一点</p>
+<p>选注默认的VMNET8，专用来NAT的虚拟网卡，点击NAT Settings，中间有个大大的add按钮，然后根据虚拟机的实际IP和所需端口开放，这样你的虚拟机就对外网开放啦！</p>
 <!-- content end -->
     </div>
     <br>
@@ -137,7 +94,7 @@
                 var pagesHtml = pagesTemplate.render({"pages": data.pages});
                 $("#pages").append(pagesHtml);
                 //path
-                var path = "hello-tommorow.html";
+                var path = "virtual-machine-port-pass-through.html";
                 //path end
                 var now = 0;
                 for (var i = 0; i < data.posts.length; ++i)

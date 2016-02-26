@@ -1,1849 +1,678 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="Keywords" content="blog"/>
-    <meta name="Description" content="blog"/>
-    <title>Simple</title>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
     <link rel="shortcut icon" href="/static/favicon.png"/>
-    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link rel="stylesheet" type="text/css" href="main.css" />
 </head>
 <body>
 <div class="main">
     <div class="header">
-    	<ul id="pages">
-            <li><a href="/">首页</a></li>
-            <li><a href="/#/tags">标签</a></li>
-            <li><a href="/#/archive">归档</a></li>
-    	</ul>
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
     </div>
-	<div class="wrap-header">
-	<h1>
-    <a href="/" id="title"></a>
-	</h1>
-	</div>
-<div id="md" style="display: none;">
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
 <!-- markdown -->
-一、开发环境的准备
+### 一. 开发环境的准备
+#####1. 首先要安装好Linux，这里用的是Ubuntu 10.10
+#####2. 安装MySQL系列软件包一、开发环境的准备
+#####3. 首先要安装好Linux，这里用的是Ubuntu 10.10
+#####4. 安装MySQL系列软件包，这边10.10系统仓库里面的是MySQL5.1版本：  
 
-1、首先要安装好Linux，这里用的是Ubuntu 10.10
-
-2、安装MySQL系列软件包一、开发环境的准备
-
-1、首先要安装好Linux，这里用的是Ubuntu 10.10
-
-2、安装MySQL系列软件包，这边10.10系统仓库里面的是MySQL5.1版本：
-
+``` 
 sudo apt-get install mysql-server
-
 sudo apt-get install mysql-client
-
 sudo apt-get install libmysqlclient15-dev
-
-二、检查MySQL服务的状态
-
-1、查看当前的mysql服务状态
-
-sudo /etc/init.d/mysql status
-
-2、也可以用以下检查mysql服务是否有启动，如果结果为空，则没有启动：
-
-sudo netstat -tap | grep mysql 或
-
-ps -ef | grep mysql
-
-三、启动/停止/重启MySQL服务
-
-1、启动：sudo /etc/init.d/mysql start
-
-2、停止：sudo /etc/init.d/mysql stop
-
-3、重启：sudo /etc/init.d/mysql restart
-
-四、在命令行使用MySQL客户端访问数据库
-
-1、访问本地主机：
-
-mysql -uuser -ppassword db_name
-
-2、访问远程主机：
-
-mysql -hhost -uuser -ppassword db_name
-
+```
+### 二. 检查MySQL服务的状态
+##### 1. 查看当前的mysql服务状态
+``sudo /etc/init.d/mysql status``
+##### 2. 也可以用以下检查mysql服务是否有启动，如果结果为空，则没有启动
+`sudo netstat -tap | grep mysql `或`ps -ef | grep mysql`
+###三. 启动/停止/重启MySQL服务
+#####1. 启动：`sudo /etc/init.d/mysql start`
+#####2. 停止：`sudo /etc/init.d/mysql stop`
+#####3. 重启：`sudo /etc/init.d/mysql restart`
+###四. 在命令行使用MySQL客户端访问数据库
+#####1. 访问本地主机：
+``mysql -uuser -ppassword db_name``
+#####2. 访问远程主机：
+``mysql -hhost -uuser -ppassword db_name``
 备注：由于默认的配置是只能从本机访问，只要注释掉/etc/mysql/my.cnf里面的bind-address这行，就可以让远程主机访问了。
-
-3、执行管理操作：
-
+#####3、执行管理操作：
 使用mysqladmin及相关参数
+#####4、备份 db_name 数据库：
+``mysqldump -uroot -p --default-character-set=utf8 --opt     --extended-insert=false --triggers -R --hex-blob -x db_name > bak.sql``
+#####5、恢复db_name数据库：
+`mysql -uroot -p db_name < bak.sql`
+#####6、备份tbl_name 数据表：
+``select * into outfile '/usr/local/mysql/f.txt' fields terminated by '|' from tbl_name;``
+#####7、把文件/home/a.txt导入数据库中的 tbl_name表
+``mysql> load data local infile '/home/a.txt'  into table tbl_name fields terminated by ',' lines terminated by '\r\n';``
+#####8、设置mysql数据库root的初始密码
 
-4、备份 db_name 数据库：
-
-mysqldump -uroot -p --default-character-set=utf8 --opt     --extended-insert=false --triggers -R --hex-blob -x db_name > bak.sql
-
-5、恢复db_name数据库：
-
-mysql -uroot -p db_name < bak.sql
-
-6、备份tbl_name 数据表：
-
-select * into outfile '/usr/local/mysql/f.txt' fields terminated by '|' from tbl_name;
-
-7、把文件/home/a.txt导入数据库中的 tbl_name表
-
-mysql> load data local infile '/home/a.txt'  into table tbl_name fields terminated by ',' lines terminated by '\r\n';
-
-8、设置mysql数据库root的初始密码
-
+```
 shell> mysql -u root
-
 mysql> SET PASSWORD FOR ''@'localhost' = PASSWORD('newpwd');
-
 mysql> SET PASSWORD FOR ''@'host_name' = PASSWORD('newpwd');
+```
+#####9、为普通用户修改密码：
+``mysql> SET PASSWORD FOR 'user_name'@'host_name' = PASSWORD('newpwd');``
+#####10、建立超级用户账户，具有完全的权限可以做任何事情：
 
-9、为普通用户修改密码：
-
-mysql> SET PASSWORD FOR 'user_name'@'host_name' = PASSWORD('newpwd');
-
-10、建立超级用户账户，具有完全的权限可以做任何事情：
-
+```
 mysql> GRANT ALL PRIVILEGES ON *.* TO 'monty'@'localhost'
-
 ->     IDENTIFIED BY 'some_pass' WITH GRANT OPTION;
-
 mysql> GRANT ALL PRIVILEGES ON *.* TO 'monty'@'%'
-
 ->     IDENTIFIED BY 'some_pass' WITH GRANT OPTION;
-
+```
 备注：第一句建立用于本机连接的帐户，第二句建立用于从其他主机连接的帐户。
-
-11、建立帐户custom，可以访问bankaccount数据库，但只能从本机访问
-
+#####11、建立帐户custom，可以访问bankaccount数据库，但只能从本机访问
+```
 mysql> GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP
-
 ->     ON bankaccount.*
-
 ->     TO 'custom'@'localhost'
-
 ->     IDENTIFIED BY 'obscure';
-
-五、Linux下C开发MySQL数据库应用程序的简要流程
-
-编译：gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm
-
-1、定义MYSQL变量
-
-MYSQL mysql;
-
-2、初始化MYSQL变量
-
-mysql_init(&mysql);
-
-3、连接到MySQL数据库
-
-mysql_real_connect(&mysql,”hostname”,”username”,”password”,”database”,0,NULL,0);
-
-4、指定本连接的字符集（可选，www.linuxidc.com主要为了确认客户端与服务器之间使用一致的字符集进行通信）
-
-mysql_query( &mysql , "SET NAMES 'utf8'");
-
-5、执行SQL语句
-
-mysql_real_query( &mysql, SQL, SQL_LEN ) ;
-
-6、获取查询结果
-
-MYSQL_RES *result;
-
-result = mysql_store_result( &mysql ) ;
-
-row_count = ( int )mysql_num_rows( result ) ;
-
-field_count = ( int )mysql_num_fields( result ) ;
-
-7、循环调用mysql_fetch_row ，以便获取查询结果的每一行
-
-MYSQL_ROW row;
-
-row = mysql_fetch_row( result ) ;//下一次再调用便自动指向result的下一行
-
-printf(“%s\n”,row[index]);//注意转换各个字段的类型
-
-8、释放资源
-
-mysql_free_result( result ) ;
-
-9、关闭MYSQL连接
-
-mysql_close(&mysql);
-
-六、一个简单的例子
-
-//打印出本地主机的pim数据库里面的classmate数据表的第一、第二列。用户名kitty，密码a1。
-
-//编译：gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm
+```
+###五、Linux下C开发MySQL数据库应用程序的简要流程
+编译：`gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm`
+#####1、定义MYSQL变量
+``MYSQL mysql;``
+#####2、初始化MYSQL变量
+``mysql_init(&mysql);``
+#####3、连接到MySQL数据库
+``mysql_real_connect(&mysql,”hostname”,”username”,”password”,”database”,0,NULL,0);``
+#####4、指定本连接的字符集（可选，www.linuxidc.com主要为了确认客户端与服务器之间使用一致的字符集进行通信）
+``mysql_query( &mysql , "SET NAMES 'utf8'");``
+#####5、执行SQL语句
+``mysql_real_query( &mysql, SQL, SQL_LEN ) ;``
+#####6、获取查询结果
 
 ~~~~{c}
+MYSQL_RES *result;
+result = mysql_store_result( &mysql ) ;
+row_count = ( int )mysql_num_rows( result ) ;
+field_count = ( int )mysql_num_fields( result ) ;
+~~~~
+
+#####7、循环调用mysql_fetch_row ，以便获取查询结果的每一行
+
+~~~~{c}
+MYSQL_ROW row;
+row = mysql_fetch_row( result ) ;//下一次再调用便自动指向result的下一行
+printf(“%s\n”,row[index]);//注意转换各个字段的类型
+~~~~
+
+#####8、释放资源
+
+~~~~{c}
+mysql_free_result( result ) ;
+~~~~
+
+#####9、关闭MYSQL连接
+
+~~~~{c}
+mysql_close(&mysql);
+~~~~
+
+###六、一个简单的例子
+
+~~~~{c}
+//打印出本地主机的pim数据库里面的classmate数据表的第一、第二列。用户名kitty，密码a1。
+//编译：gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm
 
 #include <stdio.h>
-
 #include <string.h>
-
 #include <stdlib.h>
-
 #include <mysql.h>
 
 int main( int argc , char* argv[] )
-
 {
-
-MYSQL mysql;
-
-//连接mysql
-
-if(connect_mysql(&mysql))
-
-{
-
-return 1;
-
-}
-
-//载入数据
-
-if( load_classmate(&mysql) )
-
-{
-
-mysql_close(&mysql);
-
-return 1;
-
-}
-
-//Do something here.
-
-//关闭mysql
-
-mysql_close(&mysql);
-
-return 0;
-
-}
-
-//连接MYSQL数据库
-
-int connect_mysql(MYSQL* mysql)
-
-{
-
-printf( "Initializing mysql................." );
-
-if ( !mysql_init(mysql) )
-
-{
-
-return 1;
-
-}
-
-printf( "Done\r\n" );
-
-printf( "Connectiong to mysql..............." );
-
-if (!mysql_real_connect(mysql,"localhost","kitty","a1","pim",0,NULL,0))
-
-{
-
-fprintf(stderr, "Error: %s\r\n", mysql_error(mysql));
-
-return 1;
-
-}
-
-//设置mysql连接的字符集
-
-mysql_query( mysql, "SET NAMES 'utf8'" );
-
-printf( "Done\r\n" );
-
-return 0;
-
-}
-
-//加载数据表
-
-int load_classmate(MYSQL *mysql)
-
-{
-
-int ret,field_count,row_count,i;
-
-int *lengths;
-
-char *query="select * from classmate";
-
-MYSQL_RES *result;
-
-MYSQL_ROW row;
-
-ret = mysql_real_query( mysql, query, strlen(query) ) ;
-
-if(ret != 0)
-
-{
-
-printf("加载不了classmate的数据。\n");
-
-return 1;
-
-}
-
-result = mysql_store_result( mysql ) ;
-
-row_count = ( int )mysql_num_rows( result ) ;
-
-field_count = ( int )mysql_num_fields( result ) ;
-
-if( result == NULL && field_count == 0 )
-
-{
-
-printf("查询不到数据。");
-
-return 1;
-
-}
-
-for( i = 0 ; i < row_count ; i++ )
-
-{
-
-row = mysql_fetch_row( result ) ;
-
-printf( "%2d | %8s \r\n", atoi( row[ 0 ] ), row [ 1 ] ) ;
-
-}
-
-mysql_free_result( result ) ;
-
-return 0;
-
+	MYSQL mysql;
+	//连接mysql
+	if(connect_mysql(&mysql))
+	{
+	return 1;
+	}
+	//载入数据
+	if( load_classmate(&mysql) )
+	{
+	mysql_close(&mysql);
+	return 1;
+	}
+	//Do something here.
+	//关闭mysql
+	mysql_close(&mysql);
+	return 0;
+	}
+	//连接MYSQL数据库
+	int connect_mysql(MYSQL* mysql)
+	{
+		printf( "Initializing mysql................." );
+		if ( !mysql_init(mysql) )
+		{
+			return 1;
+		}
+		printf( "Done\r\n" );
+		printf( "Connectiong to mysql..............." );
+		if (!mysql_real_connect(mysql,"localhost","kitty","a1","pim",0,NULL,0))
+		{
+			fprintf(stderr, "Error: %s\r\n", mysql_error(mysql));
+			return 1;
+		}
+		//设置mysql连接的字符集
+		mysql_query( mysql, "SET NAMES 'utf8'" );
+		printf( "Done\r\n" );
+		return 0;
+	}
+	//加载数据表
+	int load_classmate(MYSQL *mysql)
+	{
+		int ret,field_count,row_count,i;
+		int *lengths;
+		char *query="select * from classmate";
+		MYSQL_RES *result;
+		MYSQL_ROW row;
+		ret = mysql_real_query( mysql, query, strlen(query) ) ;
+		if(ret != 0)
+		{
+		printf("加载不了classmate的数据。\n");
+		return 1;
+	}
+	result = mysql_store_result( mysql ) ;
+	row_count = ( int )mysql_num_rows( result ) ;
+	field_count = ( int )mysql_num_fields( result ) ;
+	if( result == NULL && field_count == 0 )
+	{
+		printf("查询不到数据。");
+		return 1;
+	}
+	for( i = 0 ; i < row_count ; i++ )
+	{
+		row = mysql_fetch_row( result ) ;
+		printf( "%2d | %8s \r\n", atoi( row[ 0 ] ), row [ 1 ] ) ;
+	}
+	mysql_free_result( result ) ;
+	return 0;
 }
 ~~~~
 
-七、MySQL数据库中文乱码的解决办法
-
+###七、MySQL数据库中文乱码的解决办法
 MySQL的字符集和校对规则有4个级别的默认设置：服务器级、数据库级、表级和连接级。我们解决中文乱码的方法就顺着这几个级别来分别设置。比较常见的是由于没有设置连接级的字符集导致的乱码。
-
-1、服务器级字符集
-
+#####1、服务器级字符集
 服务器级也就是当服务器启动时根据配置文件中的字符集来加载。当前的服务器字符集和校对规则可以用作character_set_server和collation_server系统变量的值。在运行时能够改变这些变量的值。针对服务器级，我们有两个方法可以解决。
-
-a、重新编译MySQL
-
+######a、重新编译MySQL
 更改设定值的一个方法是通过重新编译。如果希望在从源程序构建时更改默认服务器字符集和校对规则，使用：--with-charset和--with-collation作为configure的参量。例如：
-
-shell> ./configure --with-charset=utf8
-
-b、不重新编译，只修改当前配置文件
-
+``shell> ./configure --with-charset=utf8``
+######b、不重新编译，只修改当前配置文件
 打开/etc/mysql/my.cnf修改编码：
-
-在[mysqld]下添加：default-character-set=utf8
-
-在[client]下添加：default-character-set=utf8
-
-在[mysql]下添加：default-character-set=utf8
-
+在[mysqld]下添加：`default-character-set=utf8`
+在[client]下添加：`default-character-set=utf8`
+在[mysql]下添加：`default-character-set=utf8`
 然后重启mysql应该就可以了！
-
-2、数据库级字符集
-
+#####2、数据库级字符集
 默认数据库的字符集和校对规则可以用作character_set_database和 collation_database系统变量。无论何时默认数据库更改了，服务器都设置这两个变量的值。如果没有 默认数据库，这两个变量与相应的服务器级别的变量（character_set_server和collation_server）具有相同的值。
-
-a、重新建数据库，并指定默认字符集
-
+######a、重新建数据库，并指定默认字符集
 数据库级是在新建数据库时指定该数据库默认的字符集。
-
-mysql>create database db_name character set charset_name ;
-
-比如：
-
-mysql>create database db_name character set utf8 ;
-
-b、不重新建数据库，通过alter database来修改数据库的默认字符集
-
-如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定：     mysql>alter database db_name character set charset_name ;
+``mysql>create database db_name character set charset_name ;``
 
 比如：
+``mysql>create database db_name character set utf8 ;``
+######b、不重新建数据库，通过alter database来修改数据库的默认字符集
+如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定：     `mysql>alter database db_name character set charset_name ;`
 
-mysql>alter database db_name character set utf8 ;
-
-3、表级字符集
-
+比如：
+``mysql>alter database db_name character set utf8 ;``
+#####3、表级字符集
 如果在表定义中没有指定表字符集和校对规则，则默认使用数据库字符集和校对规则。
-
-a、重新建表，并指定默认字符集
-
+######a、重新建表，并指定默认字符集
 表级字符集是在建立表的时候指定该表的默认字符集。
-
-mysql>create table tbl_name (column_list) default character set charset_name ;
-
-b、不重新建表，通过alter table来修改表的默认字符集
-
-如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定：     mysql>alter table tbl_name default character set charset_name ;
-
+``mysql>create table tbl_name (column_list) default character set charset_name ;``
+######b、不重新建表，通过alter table来修改表的默认字符集
+如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定：     
+``mysql>alter table tbl_name default character set charset_name ;``
 备注：列级别的字符集和表级别字符集的规则类似，也可以在建表的语句里面指定，若没有指定则默认使用表级别的字符集，若表也没有指定默认字符集，则往上推。 
-
-4、连接级字符集
-
+#####4、连接级字符集
 从以下几个方面来理解连接级字符集：（类似一种网络协议，服务器、客户端之间预先设置的通信规则）
-
-a、当查询离开客户端后，在查询中使用哪种字符集？
-
+######a、当查询离开客户端后，在查询中使用哪种字符集？
 服务器使用character_set_client变量作为客户端发送的查询中使用的字符集。
-
-b、服务器接收到查询后应该转换为哪种字符集？
-
-转换时，服务器使用character_set_connection和collation_connection系统变量。它    将客户端发送的查询从character_set_client系统变量转换到character_set_connection（除非    字符串文字具有象_latin1或_utf8的引介词）。collation_connection对比较文字字符串是重要的。    对于列值的字符串比较，它不重要，因为列具有更高的 校对规则优先级。
-
-c、服务器发送结果集或返回错误信息到客户端之前应该转换为哪种字符集？
-
-character_set_results变量指示服务器返回查询结果到客户端使用的字符集。包括结果数据，    例如列值和结果元数据（如列名）。
-
+######b、服务器接收到查询后应该转换为哪种字符集？
+转换时，服务器使用character_set_connection和collation_connection系统变量。它将客户端发送的查询从character_set_client系统变量转换到character_set_connection（除非字符串文字具有象_latin1或_utf8的引介词）。collation_connection对比较文字字符串是重要的。对于列值的字符串比较，它不重要，因为列具有更高的校对规则优先级。
+######c、服务器发送结果集或返回错误信息到客户端之前应该转换为哪种字符集？
+character_set_results变量指示服务器返回查询结果到客户端使用的字符集。包括结果数据，例如列值和结果元数据（如列名）。
 我们能够调整这些变量的设置，有两个语句影响连接字符集：
-
-SET NAMES 'charset_name'
-
-SET CHARACTER SET charset_name
+``SET NAMES 'charset_name'``
+``SET CHARACTER SET charset_name``
 
 SET NAMES显示客户端发送的SQL语句中使用什么字符集。因此，SET NAMES 'cp1251'语句告诉服务器“将来从这个客户端传来的信息采用字符集cp1251”。它还为服务器发送回客户端的结果指定了字符集。（例如，如果你使用一个SELECT语句，它表示列值使用了什么字符集。）
-
 SET NAMES 'x'语句与这三个语句等价：
 
+```
 mysql> SET character_set_client = x;
-
 mysql> SET character_set_results = x;
-
 mysql> SET character_set_connection = x;
+```
+要设置连接级的字符集，可以在编写MySQL数据库应用程序时，在客户端程序发
+起连接到服务器后，执行一条语句，如下情形：
 
-要设置连接级的字符集，可以在编写MySQL数据库应用程序时，在客户端程序发起连接到服务器后，执行一条语句，如下情形：
-
+~~~~{c}
 mysql_real_connect(&mysql,”hostname”,”username”,”password”,”database”,0,NULL,0);
-
 mysql_query( &mysql , "SET NAMES 'utf8'");
-
+~~~~
 这样便可指定本次连接使用的默认字符集为utf8了。
-
-八、一些MYSQL常用的命令
-
-1.列出MYSQL支持的所有字符集： 
-
-SHOW CHARACTER SET;
-
-2.当前MYSQL服务器字符集设置 
-
-SHOW VARIABLES LIKE 'character_set_%';
-
-3.当前MYSQL服务器字符集校验设置 
-
-SHOW VARIABLES LIKE 'collation_%';
-
-4.显示某数据库字符集设置 
-
-show create database 数据库名;
-
-5.显示某数据表字符集设置 
-
-show create table 表名;
-
-6.修改数据库字符集 
-
-alter database 数据库名 default character set 'utf8';
-
-7.修改数据表字符集 
-
-alter table 表名 default character set 'utf8';
-
-8.建库时指定字符集 
-
-create database 数据库名 character set gbk collate gbk_chinese_ci;
-
-9.建表时指定字符集 
-
-CREATE TABLE `mysqlcode` ( 
-
-`id` TINYINT( 255 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY , 
-
-`content` VARCHAR( 255 ) NOT NULL 
-
-) TYPE = MYISAM CHARACTER SET gbk COLLATE gbk_chinese_ci;
-
-九、参考
-
-MySQL 5.1 官方简体中文版参考手册，这边10.10系统仓库里面的是MySQL5.1版本：
-
-sudo apt-get install mysql-server
-
-sudo apt-get install mysql-client
-
-sudo apt-get install libmysqlclient15-dev
-
-二、检查MySQL服务的状态
-
-1、查看当前的mysql服务状态
-
-sudo /etc/init.d/mysql status
-
-2、也可以用以下检查mysql服务是否有启动，如果结果为空，则没有启动：
-
-sudo netstat -tap | grep mysql 或
-
-ps -ef | grep mysql
-
-三、启动/停止/重启MySQL服务
-
-1、启动：sudo /etc/init.d/mysql start
-
-2、停止：sudo /etc/init.d/mysql stop
-
-3、重启：sudo /etc/init.d/mysql restart
-
-四、在命令行使用MySQL客户端访问数据库
-
-1、访问本地主机：
-
-mysql -uuser -ppassword db_name
-
-2、访问远程主机：
-
-mysql -hhost -uuser -ppassword db_name
-
-备注：由于默认的配置是只能从本机访问，只要注释掉/etc/mysql/my.cnf里面的bind-address这行，就可以让远程主机访问了。
-
-3、执行管理操作：
-
-使用mysqladmin及相关参数
-
-4、备份 db_name 数据库：
-
-mysqldump -uroot -p --default-character-set=utf8 --opt     --extended-insert=false --triggers -R --hex-blob -x db_name > bak.sql
-
-5、恢复db_name数据库：
-
-mysql -uroot -p db_name < bak.sql
-
-6、备份tbl_name 数据表：
-
-select * into outfile '/usr/local/mysql/f.txt' fields terminated by '|' from tbl_name;
-
-7、把文件/home/a.txt导入数据库中的 tbl_name表
-
-mysql> load data local infile '/home/a.txt'  into table tbl_name fields terminated by ',' lines terminated by '\r\n';
-
-8、设置mysql数据库root的初始密码
-
-shell> mysql -u root
-
-mysql> SET PASSWORD FOR ''@'localhost' = PASSWORD('newpwd');
-
-mysql> SET PASSWORD FOR ''@'host_name' = PASSWORD('newpwd');
-
-9、为普通用户修改密码：
-
-mysql> SET PASSWORD FOR 'user_name'@'host_name' = PASSWORD('newpwd');
-
-10、建立超级用户账户，具有完全的权限可以做任何事情：
-
-mysql> GRANT ALL PRIVILEGES ON *.* TO 'monty'@'localhost'
-
-->     IDENTIFIED BY 'some_pass' WITH GRANT OPTION;
-
-mysql> GRANT ALL PRIVILEGES ON *.* TO 'monty'@'%'
-
-->     IDENTIFIED BY 'some_pass' WITH GRANT OPTION;
-
-备注：第一句建立用于本机连接的帐户，第二句建立用于从其他主机连接的帐户。
-
-11、建立帐户custom，可以访问bankaccount数据库，但只能从本机访问
-
-mysql> GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP
-
-->     ON bankaccount.*
-
-->     TO 'custom'@'localhost'
-
-->     IDENTIFIED BY 'obscure';
-
-五、Linux下C开发MySQL数据库应用程序的简要流程
-
-编译：gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm
-
-1、定义MYSQL变量
-
-MYSQL mysql;
-
-2、初始化MYSQL变量
-
-mysql_init(&mysql);
-
-3、连接到MySQL数据库
-
-mysql_real_connect(&mysql,”hostname”,”username”,”password”,”database”,0,NULL,0);
-
-4、指定本连接的字符集（可选，www.linuxidc.com主要为了确认客户端与服务器之间使用一致的字符集进行通信）
-
-mysql_query( &mysql , "SET NAMES 'utf8'");
-
-5、执行SQL语句
-
-mysql_real_query( &mysql, SQL, SQL_LEN ) ;
-
-6、获取查询结果
-
-MYSQL_RES *result;
-
-result = mysql_store_result( &mysql ) ;
-
-row_count = ( int )mysql_num_rows( result ) ;
-
-field_count = ( int )mysql_num_fields( result ) ;
-
-7、循环调用mysql_fetch_row ，以便获取查询结果的每一行
-
-MYSQL_ROW row;
-
-row = mysql_fetch_row( result ) ;//下一次再调用便自动指向result的下一行
-
-printf(“%s\n”,row[index]);//注意转换各个字段的类型
-
-8、释放资源
-
-mysql_free_result( result ) ;
-
-9、关闭MYSQL连接
-
-mysql_close(&mysql);
-
-六、一个简单的例子
-
-//打印出本地主机的pim数据库里面的classmate数据表的第一、第二列。用户名kitty，密码a1。
-
-//编译：gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm
-
-#include <stdio.h>
-
-#include <string.h>
-
-#include <stdlib.h>
-
-#include <mysql.h>
-
-int main( int argc , char* argv[] )
-
-{
-
-MYSQL mysql;
-
-//连接mysql
-
-if(connect_mysql(&mysql))
-
-{
-
-return 1;
-
-}
-
-//载入数据
-
-if( load_classmate(&mysql) )
-
-{
-
-mysql_close(&mysql);
-
-return 1;
-
-}
-
-//Do something here.
-
-//关闭mysql
-
-mysql_close(&mysql);
-
-return 0;
-
-}
-
-//连接MYSQL数据库
-
-int connect_mysql(MYSQL* mysql)
-
-{
-
-printf( "Initializing mysql................." );
-
-if ( !mysql_init(mysql) )
-
-{
-
-return 1;
-
-}
-
-printf( "Done\r\n" );
-
-printf( "Connectiong to mysql..............." );
-
-if (!mysql_real_connect(mysql,"localhost","kitty","a1","pim",0,NULL,0))
-
-{
-
-fprintf(stderr, "Error: %s\r\n", mysql_error(mysql));
-
-return 1;
-
-}
-
-//设置mysql连接的字符集
-
-mysql_query( mysql, "SET NAMES 'utf8'" );
-
-printf( "Done\r\n" );
-
-return 0;
-
-}
-
-//加载数据表
-
-int load_classmate(MYSQL *mysql)
-
-{
-
-int ret,field_count,row_count,i;
-
-int *lengths;
-
-char *query="select * from classmate";
-
-MYSQL_RES *result;
-
-MYSQL_ROW row;
-
-ret = mysql_real_query( mysql, query, strlen(query) ) ;
-
-if(ret != 0)
-
-{
-
-printf("加载不了classmate的数据。\n");
-
-return 1;
-
-}
-
-result = mysql_store_result( mysql ) ;
-
-row_count = ( int )mysql_num_rows( result ) ;
-
-field_count = ( int )mysql_num_fields( result ) ;
-
-if( result == NULL && field_count == 0 )
-
-{
-
-printf("查询不到数据。");
-
-return 1;
-
-}
-
-for( i = 0 ; i < row_count ; i++ )
-
-{
-
-row = mysql_fetch_row( result ) ;
-
-printf( "%2d | %8s \r\n", atoi( row[ 0 ] ), row [ 1 ] ) ;
-
-}
-
-mysql_free_result( result ) ;
-
-return 0;
-
-}
-
-七、MySQL数据库中文乱码的解决办法
-
-MySQL的字符集和校对规则有4个级别的默认设置：服务器级、数据库级、表级和连接级。我们解决中文乱码的方法就顺着这几个级别来分别设置。比较常见的是由于没有设置连接级的字符集导致的乱码。
-
-1、服务器级字符集
-
-服务器级也就是当服务器启动时根据配置文件中的字符集来加载。当前的服务器字符集和校对规则可以用作character_set_server和collation_server系统变量的值。在运行时能够改变这些变量的值。针对服务器级，我们有两个方法可以解决。
-
-a、重新编译MySQL
-
-更改设定值的一个方法是通过重新编译。如果希望在从源程序构建时更改默认服务器字符集和校对规则，使用：--with-charset和--with-collation作为configure的参量。例如：
-
-shell> ./configure --with-charset=utf8
-
-b、不重新编译，只修改当前配置文件
-
-打开/etc/mysql/my.cnf修改编码：
-
-在[mysqld]下添加：default-character-set=utf8
-
-在[client]下添加：default-character-set=utf8
-
-在[mysql]下添加：default-character-set=utf8
-
-然后重启mysql应该就可以了！
-
-2、数据库级字符集
-
-默认数据库的字符集和校对规则可以用作character_set_database和 collation_database系统变量。无论何时默认数据库更改了，服务器都设置这两个变量的值。如果没有 默认数据库，这两个变量与相应的服务器级别的变量（character_set_server和collation_server）具有相同的值。
-
-a、重新建数据库，并指定默认字符集
-
-数据库级是在新建数据库时指定该数据库默认的字符集。
-
-mysql>create database db_name character set charset_name ;
-
-比如：
-
-mysql>create database db_name character set utf8 ;
-
-b、不重新建数据库，通过alter database来修改数据库的默认字符集
-
-如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定：     mysql>alter database db_name character set charset_name ;
-
-比如：
-
-mysql>alter database db_name character set utf8 ;
-
-3、表级字符集
-
-如果在表定义中没有指定表字符集和校对规则，则默认使用数据库字符集和校对规则。
-
-a、重新建表，并指定默认字符集
-
-表级字符集是在建立表的时候指定该表的默认字符集。
-
-mysql>create table tbl_name (column_list) default character set charset_name ;
-
-b、不重新建表，通过alter table来修改表的默认字符集
-
-如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定：     mysql>alter table tbl_name default character set charset_name ;
-
-备注：列级别的字符集和表级别字符集的规则类似，也可以在建表的语句里面指定，若没有指定则默认使用表级别的字符集，若表也没有指定默认字符集，则往上推。 
-
-4、连接级字符集
-
-从以下几个方面来理解连接级字符集：（类似一种网络协议，服务器、客户端之间预先设置的通信规则）
-
-a、当查询离开客户端后，在查询中使用哪种字符集？
-
-服务器使用character_set_client变量作为客户端发送的查询中使用的字符集。
-
-b、服务器接收到查询后应该转换为哪种字符集？
-
-转换时，服务器使用character_set_connection和collation_connection系统变量。它    将客户端发送的查询从character_set_client系统变量转换到character_set_connection（除非    字符串文字具有象_latin1或_utf8的引介词）。collation_connection对比较文字字符串是重要的。    对于列值的字符串比较，它不重要，因为列具有更高的 校对规则优先级。
-
-c、服务器发送结果集或返回错误信息到客户端之前应该转换为哪种字符集？
-
-character_set_results变量指示服务器返回查询结果到客户端使用的字符集。包括结果数据，    例如列值和结果元数据（如列名）。
-
-我们能够调整这些变量的设置，有两个语句影响连接字符集：
-
-SET NAMES 'charset_name'
-
-SET CHARACTER SET charset_name
-
-SET NAMES显示客户端发送的SQL语句中使用什么字符集。因此，SET NAMES 'cp1251'语句告诉服务器“将来从这个客户端传来的信息采用字符集cp1251”。它还为服务器发送回客户端的结果指定了字符集。（例如，如果你使用一个SELECT语句，它表示列值使用了什么字符集。）
-
-SET NAMES 'x'语句与这三个语句等价：
-
-mysql> SET character_set_client = x;
-
-mysql> SET character_set_results = x;
-
-mysql> SET character_set_connection = x;
-
-要设置连接级的字符集，可以在编写MySQL数据库应用程序时，在客户端程序发起连接到服务器后，执行一条语句，如下情形：
-
-mysql_real_connect(&mysql,”hostname”,”username”,”password”,”database”,0,NULL,0);
-
-mysql_query( &mysql , "SET NAMES 'utf8'");
-
-这样便可指定本次连接使用的默认字符集为utf8了。
-
-八、一些MYSQL常用的命令
-
-1.列出MYSQL支持的所有字符集： 
-
-SHOW CHARACTER SET;
-
-2.当前MYSQL服务器字符集设置 
-
-SHOW VARIABLES LIKE 'character_set_%';
-
-3.当前MYSQL服务器字符集校验设置 
-
-SHOW VARIABLES LIKE 'collation_%';
-
-4.显示某数据库字符集设置 
-
-show create database 数据库名;
-
-5.显示某数据表字符集设置 
-
-show create table 表名;
-
-6.修改数据库字符集 
-
-alter database 数据库名 default character set 'utf8';
-
-7.修改数据表字符集 
-
-alter table 表名 default character set 'utf8';
-
-8.建库时指定字符集 
-
-create database 数据库名 character set gbk collate gbk_chinese_ci;
-
-9.建表时指定字符集 
-
-CREATE TABLE `mysqlcode` ( 
-
-`id` TINYINT( 255 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY , 
-
-`content` VARCHAR( 255 ) NOT NULL 
-
-) TYPE = MYISAM CHARACTER SET gbk COLLATE gbk_chinese_ci;
-
-九、参考
-
+###八、一些MYSQL常用的命令
+#####1.列出MYSQL支持的所有字符集： 
+``SHOW CHARACTER SET;``
+#####2.当前MYSQL服务器字符集设置 
+``SHOW VARIABLES LIKE 'character_set_%';``
+#####3.当前MYSQL服务器字符集校验设置 
+``SHOW VARIABLES LIKE 'collation_%';``
+#####4.显示某数据库字符集设置 
+``show create database 数据库名;``
+#####5.显示某数据表字符集设置 
+``show create table 表名;``
+#####6.修改数据库字符集 
+``alter database 数据库名 default character set 'utf8';``
+#####7.修改数据表字符集 
+``alter table 表名 default character set 'utf8';``
+#####8.建库时指定字符集 
+``create database 数据库名 character set gbk collate gbk_chinese_ci;``
+#####9.建表时指定字符集 
+``CREATE TABLE `mysqlcode` ( `id` TINYINT( 255 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY , `content` VARCHAR( 255 ) NOT NULL ) TYPE = MYISAM CHARACTER SET gbk COLLATE gbk_chinese_ci;``
+###九、参考
 MySQL 5.1 官方简体中文版参考手册
+
 <!-- markdown end -->
-</div>
-<div class="entry" id="main">
+    </div>
+    <div class="entry" id="main">
 <!-- content -->
-<p>一、开发环境的准备</p>
+<h3 id="">一. 开发环境的准备</h3>
 
-<p>1、首先要安装好Linux，这里用的是Ubuntu 10.10</p>
+<h5 id="1linuxubuntu1010">1. 首先要安装好Linux，这里用的是Ubuntu 10.10</h5>
 
-<p>2、安装MySQL系列软件包一、开发环境的准备</p>
+<h5 id="2mysql">2. 安装MySQL系列软件包一、开发环境的准备</h5>
 
-<p>1、首先要安装好Linux，这里用的是Ubuntu 10.10</p>
+<h5 id="3linuxubuntu1010">3. 首先要安装好Linux，这里用的是Ubuntu 10.10</h5>
 
-<p>2、安装MySQL系列软件包，这边10.10系统仓库里面的是MySQL5.1版本：</p>
+<h5 id="4mysql1010mysql51">4. 安装MySQL系列软件包，这边10.10系统仓库里面的是MySQL5.1版本：</h5>
 
-<p>sudo apt-get install mysql-server</p>
+<pre><code class=" ">sudo apt-get install mysql-server
+sudo apt-get install mysql-client
+sudo apt-get install libmysqlclient15-dev
+</code></pre>
 
-<p>sudo apt-get install mysql-client</p>
+<h3 id="mysql">二. 检查MySQL服务的状态</h3>
 
-<p>sudo apt-get install libmysqlclient15-dev</p>
+<h5 id="1mysql">1. 查看当前的mysql服务状态</h5>
 
-<p>二、检查MySQL服务的状态</p>
+<p><code>sudo /etc/init.d/mysql status</code></p>
 
-<p>1、查看当前的mysql服务状态</p>
+<h5 id="2mysql">2. 也可以用以下检查mysql服务是否有启动，如果结果为空，则没有启动</h5>
 
-<p>sudo /etc/init.d/mysql status</p>
+<p><code>sudo netstat -tap | grep mysql</code>或<code>ps -ef | grep mysql</code></p>
 
-<p>2、也可以用以下检查mysql服务是否有启动，如果结果为空，则没有启动：</p>
+<h3 id="mysql">三. 启动/停止/重启MySQL服务</h3>
 
-<p>sudo netstat -tap | grep mysql 或</p>
+<h5 id="1sudoetcinitdmysqlstart">1. 启动：<code>sudo /etc/init.d/mysql start</code></h5>
 
-<p>ps -ef | grep mysql</p>
+<h5 id="2sudoetcinitdmysqlstop">2. 停止：<code>sudo /etc/init.d/mysql stop</code></h5>
 
-<p>三、启动/停止/重启MySQL服务</p>
+<h5 id="3sudoetcinitdmysqlrestart">3. 重启：<code>sudo /etc/init.d/mysql restart</code></h5>
 
-<p>1、启动：sudo /etc/init.d/mysql start</p>
+<h3 id="mysql">四. 在命令行使用MySQL客户端访问数据库</h3>
 
-<p>2、停止：sudo /etc/init.d/mysql stop</p>
+<h5 id="1">1. 访问本地主机：</h5>
 
-<p>3、重启：sudo /etc/init.d/mysql restart</p>
+<p><code>mysql -uuser -ppassword db_name</code></p>
 
-<p>四、在命令行使用MySQL客户端访问数据库</p>
+<h5 id="2">2. 访问远程主机：</h5>
 
-<p>1、访问本地主机：</p>
+<p><code>mysql -hhost -uuser -ppassword db_name</code>
+备注：由于默认的配置是只能从本机访问，只要注释掉/etc/mysql/my.cnf里面的bind-address这行，就可以让远程主机访问了。</p>
 
-<p>mysql -uuser -ppassword db_name</p>
-
-<p>2、访问远程主机：</p>
-
-<p>mysql -hhost -uuser -ppassword db_name</p>
-
-<p>备注：由于默认的配置是只能从本机访问，只要注释掉/etc/mysql/my.cnf里面的bind-address这行，就可以让远程主机访问了。</p>
-
-<p>3、执行管理操作：</p>
+<h5 id="3">3、执行管理操作：</h5>
 
 <p>使用mysqladmin及相关参数</p>
 
-<p>4、备份 db_name 数据库：</p>
+<h5 id="4db_name">4、备份 db_name 数据库：</h5>
 
-<p>mysqldump -uroot -p --default-character-set=utf8 --opt     --extended-insert=false --triggers -R --hex-blob -x db_name &gt; bak.sql</p>
+<p><code>mysqldump -uroot -p --default-character-set=utf8 --opt     --extended-insert=false --triggers -R --hex-blob -x db_name &gt; bak.sql</code></p>
 
-<p>5、恢复db_name数据库：</p>
+<h5 id="5db_name">5、恢复db_name数据库：</h5>
 
-<p>mysql -uroot -p db_name &lt; bak.sql</p>
+<p><code>mysql -uroot -p db_name &lt; bak.sql</code></p>
 
-<p>6、备份tbl_name 数据表：</p>
+<h5 id="6tbl_name">6、备份tbl_name 数据表：</h5>
 
-<p>select * into outfile '/usr/local/mysql/f.txt' fields terminated by '|' from tbl_name;</p>
+<p><code>select * into outfile '/usr/local/mysql/f.txt' fields terminated by '|' from tbl_name;</code></p>
 
-<p>7、把文件/home/a.txt导入数据库中的 tbl_name表</p>
+<h5 id="7homeatxttbl_name">7、把文件/home/a.txt导入数据库中的 tbl_name表</h5>
 
-<p>mysql&gt; load data local infile '/home/a.txt'  into table tbl_name fields terminated by ',' lines terminated by '\r\n';</p>
+<p><code>mysql&gt; load data local infile '/home/a.txt'  into table tbl_name fields terminated by ',' lines terminated by '\r\n';</code></p>
 
-<p>8、设置mysql数据库root的初始密码</p>
+<h5 id="8mysqlroot">8、设置mysql数据库root的初始密码</h5>
 
-<p>shell&gt; mysql -u root</p>
+<pre><code>shell&gt; mysql -u root
+mysql&gt; SET PASSWORD FOR ''@'localhost' = PASSWORD('newpwd');
+mysql&gt; SET PASSWORD FOR ''@'host_name' = PASSWORD('newpwd');
+</code></pre>
 
-<p>mysql&gt; SET PASSWORD FOR ''@'localhost' = PASSWORD('newpwd');</p>
+<h5 id="9">9、为普通用户修改密码：</h5>
 
-<p>mysql&gt; SET PASSWORD FOR ''@'host_name' = PASSWORD('newpwd');</p>
+<p><code>mysql&gt; SET PASSWORD FOR 'user_name'@'host_name' = PASSWORD('newpwd');</code></p>
 
-<p>9、为普通用户修改密码：</p>
+<h5 id="10">10、建立超级用户账户，具有完全的权限可以做任何事情：</h5>
 
-<p>mysql&gt; SET PASSWORD FOR 'user<em>name'@'host</em>name' = PASSWORD('newpwd');</p>
-
-<p>10、建立超级用户账户，具有完全的权限可以做任何事情：</p>
-
-<p>mysql&gt; GRANT ALL PRIVILEGES ON <em>.</em> TO 'monty'@'localhost'</p>
-
-<p>-&gt;     IDENTIFIED BY 'some_pass' WITH GRANT OPTION;</p>
-
-<p>mysql&gt; GRANT ALL PRIVILEGES ON <em>.</em> TO 'monty'@'%'</p>
-
-<p>-&gt;     IDENTIFIED BY 'some_pass' WITH GRANT OPTION;</p>
+<pre><code>mysql&gt; GRANT ALL PRIVILEGES ON *.* TO 'monty'@'localhost'
+-&gt;     IDENTIFIED BY 'some_pass' WITH GRANT OPTION;
+mysql&gt; GRANT ALL PRIVILEGES ON *.* TO 'monty'@'%'
+-&gt;     IDENTIFIED BY 'some_pass' WITH GRANT OPTION;
+</code></pre>
 
 <p>备注：第一句建立用于本机连接的帐户，第二句建立用于从其他主机连接的帐户。</p>
 
-<p>11、建立帐户custom，可以访问bankaccount数据库，但只能从本机访问</p>
+<h5 id="11custombankaccount">11、建立帐户custom，可以访问bankaccount数据库，但只能从本机访问</h5>
 
-<p>mysql&gt; GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP</p>
+<pre><code>mysql&gt; GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP
+-&gt;     ON bankaccount.*
+-&gt;     TO 'custom'@'localhost'
+-&gt;     IDENTIFIED BY 'obscure';
+</code></pre>
 
-<p>-&gt;     ON bankaccount.*</p>
+<h3 id="linuxcmysql">五、Linux下C开发MySQL数据库应用程序的简要流程</h3>
 
-<p>-&gt;     TO 'custom'@'localhost'</p>
+<p>编译：<code>gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm</code></p>
 
-<p>-&gt;     IDENTIFIED BY 'obscure';</p>
+<h5 id="1mysql">1、定义MYSQL变量</h5>
 
-<p>五、Linux下C开发MySQL数据库应用程序的简要流程</p>
+<p><code>MYSQL mysql;</code></p>
 
-<p>编译：gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm</p>
+<h5 id="2mysql">2、初始化MYSQL变量</h5>
 
-<p>1、定义MYSQL变量</p>
+<p><code>mysql_init(&amp;mysql);</code></p>
 
-<p>MYSQL mysql;</p>
+<h5 id="3mysql">3、连接到MySQL数据库</h5>
 
-<p>2、初始化MYSQL变量</p>
+<p><code>mysql_real_connect(&amp;mysql,”hostname”,”username”,”password”,”database”,0,NULL,0);</code></p>
 
-<p>mysql_init(&amp;mysql);</p>
+<h5 id="4wwwlinuxidccom">4、指定本连接的字符集（可选，www.linuxidc.com主要为了确认客户端与服务器之间使用一致的字符集进行通信）</h5>
 
-<p>3、连接到MySQL数据库</p>
+<p><code>mysql_query( &amp;mysql , "SET NAMES 'utf8'");</code></p>
 
-<p>mysql<em>real</em>connect(&amp;mysql,”hostname”,”username”,”password”,”database”,0,NULL,0);</p>
+<h5 id="5sql">5、执行SQL语句</h5>
 
-<p>4、指定本连接的字符集（可选，www.linuxidc.com主要为了确认客户端与服务器之间使用一致的字符集进行通信）</p>
+<p><code>mysql_real_query( &amp;mysql, SQL, SQL_LEN ) ;</code></p>
 
-<p>mysql_query( &amp;mysql , "SET NAMES 'utf8'");</p>
+<h5 id="6">6、获取查询结果</h5>
 
-<p>5、执行SQL语句</p>
+<pre class=" language-c"><code class=" language-c">MYSQL_RES <span class="token operator">*</span>result<span class="token punctuation">;</span>
+result <span class="token operator">=</span> <span class="token function">mysql_store_result<span class="token punctuation">(</span></span> <span class="token operator">&amp;</span>mysql <span class="token punctuation">)</span> <span class="token punctuation">;</span>
+row_count <span class="token operator">=</span> <span class="token punctuation">(</span> <span class="token keyword">int</span> <span class="token punctuation">)</span><span class="token function">mysql_num_rows<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token punctuation">;</span>
+field_count <span class="token operator">=</span> <span class="token punctuation">(</span> <span class="token keyword">int</span> <span class="token punctuation">)</span><span class="token function">mysql_num_fields<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token punctuation">;</span>
+</code></pre>
 
-<p>mysql<em>real</em>query( &amp;mysql, SQL, SQL_LEN ) ;</p>
+<h5 id="7mysql_fetch_row">7、循环调用mysql<em>fetch</em>row ，以便获取查询结果的每一行</h5>
 
-<p>6、获取查询结果</p>
+<pre class=" language-c"><code class=" language-c">MYSQL_ROW row<span class="token punctuation">;</span>
+row <span class="token operator">=</span> <span class="token function">mysql_fetch_row<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token comment" spellcheck="true">;//下一次再调用便自动指向result的下一行
+</span><span class="token function">printf<span class="token punctuation">(</span></span>“<span class="token operator">%</span>s\n”<span class="token punctuation">,</span>row<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//注意转换各个字段的类型
+</span></code></pre>
 
-<p>MYSQL_RES *result;</p>
+<h5 id="8">8、释放资源</h5>
 
-<p>result = mysql<em>store</em>result( &amp;mysql ) ;</p>
+<pre class=" language-c"><code class=" language-c"><span class="token function">mysql_free_result<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token punctuation">;</span>
+</code></pre>
 
-<p>row<em>count = ( int )mysql</em>num_rows( result ) ;</p>
+<h5 id="9mysql">9、关闭MYSQL连接</h5>
 
-<p>field<em>count = ( int )mysql</em>num_fields( result ) ;</p>
+<pre class=" language-c"><code class=" language-c"><span class="token function">mysql_close<span class="token punctuation">(</span></span><span class="token operator">&amp;</span>mysql<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
 
-<p>7、循环调用mysql<em>fetch</em>row ，以便获取查询结果的每一行</p>
+<h3 id="">六、一个简单的例子</h3>
 
-<p>MYSQL_ROW row;</p>
-
-<p>row = mysql<em>fetch</em>row( result ) ;//下一次再调用便自动指向result的下一行</p>
-
-<p>printf(“%s\n”,row[index]);//注意转换各个字段的类型</p>
-
-<p>8、释放资源</p>
-
-<p>mysql<em>free</em>result( result ) ;</p>
-
-<p>9、关闭MYSQL连接</p>
-
-<p>mysql_close(&amp;mysql);</p>
-
-<p>六、一个简单的例子</p>
-
-<p>//打印出本地主机的pim数据库里面的classmate数据表的第一、第二列。用户名kitty，密码a1。</p>
-
-<p>//编译：gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm</p>
-
-<pre class=" language-c"><code class=" language-c">
+<pre class=" language-c"><code class=" language-c"><span class="token comment" spellcheck="true">//打印出本地主机的pim数据库里面的classmate数据表的第一、第二列。用户名kitty，密码a1。
+</span><span class="token comment" spellcheck="true">//编译：gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm
+</span>
 <span class="token property">#include <span class="token property">&lt;stdio.h&gt;</span></span>
-
 <span class="token property">#include <span class="token property">&lt;string.h&gt;</span></span>
-
 <span class="token property">#include <span class="token property">&lt;stdlib.h&gt;</span></span>
-
 <span class="token property">#include <span class="token property">&lt;mysql.h&gt;</span></span>
 
 <span class="token keyword">int</span> <span class="token function">main<span class="token punctuation">(</span></span> <span class="token keyword">int</span> argc <span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token operator">*</span> argv<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">)</span>
-
 <span class="token punctuation">{</span>
-
-MYSQL mysql<span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">
-//连接mysql
-</span>
-<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">connect_mysql<span class="token punctuation">(</span></span><span class="token operator">&amp;</span>mysql<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-<span class="token punctuation">{</span>
-
-<span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
-
-<span class="token punctuation">}</span>
-<span class="token comment" spellcheck="true">
-//载入数据
-</span>
-<span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token function">load_classmate<span class="token punctuation">(</span></span><span class="token operator">&amp;</span>mysql<span class="token punctuation">)</span> <span class="token punctuation">)</span>
-
-<span class="token punctuation">{</span>
-
-<span class="token function">mysql_close<span class="token punctuation">(</span></span><span class="token operator">&amp;</span>mysql<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
-
-<span class="token punctuation">}</span>
-<span class="token comment" spellcheck="true">
-//Do something here.
-</span><span class="token comment" spellcheck="true">
-//关闭mysql
-</span>
-<span class="token function">mysql_close<span class="token punctuation">(</span></span><span class="token operator">&amp;</span>mysql<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-
-<span class="token punctuation">}</span>
-<span class="token comment" spellcheck="true">
-//连接MYSQL数据库
-</span>
-<span class="token keyword">int</span> <span class="token function">connect_mysql<span class="token punctuation">(</span></span>MYSQL<span class="token operator">*</span> mysql<span class="token punctuation">)</span>
-
-<span class="token punctuation">{</span>
-
-<span class="token function">printf<span class="token punctuation">(</span></span> <span class="token string">"Initializing mysql................."</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">if</span> <span class="token punctuation">(</span> <span class="token operator">!</span><span class="token function">mysql_init<span class="token punctuation">(</span></span>mysql<span class="token punctuation">)</span> <span class="token punctuation">)</span>
-
-<span class="token punctuation">{</span>
-
-<span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
-
-<span class="token punctuation">}</span>
-
-<span class="token function">printf<span class="token punctuation">(</span></span> <span class="token string">"Done\r\n"</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token function">printf<span class="token punctuation">(</span></span> <span class="token string">"Connectiong to mysql..............."</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">mysql_real_connect<span class="token punctuation">(</span></span>mysql<span class="token punctuation">,</span><span class="token string">"localhost"</span><span class="token punctuation">,</span><span class="token string">"kitty"</span><span class="token punctuation">,</span><span class="token string">"a1"</span><span class="token punctuation">,</span><span class="token string">"pim"</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>NULL<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-<span class="token punctuation">{</span>
-
-<span class="token function">fprintf<span class="token punctuation">(</span></span>stderr<span class="token punctuation">,</span> <span class="token string">"Error: %s\r\n"</span><span class="token punctuation">,</span> <span class="token function">mysql_error<span class="token punctuation">(</span></span>mysql<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
-
-<span class="token punctuation">}</span>
-<span class="token comment" spellcheck="true">
-//设置mysql连接的字符集
-</span>
-<span class="token function">mysql_query<span class="token punctuation">(</span></span> mysql<span class="token punctuation">,</span> <span class="token string">"SET NAMES 'utf8'"</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token function">printf<span class="token punctuation">(</span></span> <span class="token string">"Done\r\n"</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-
-<span class="token punctuation">}</span>
-<span class="token comment" spellcheck="true">
-//加载数据表
-</span>
-<span class="token keyword">int</span> <span class="token function">load_classmate<span class="token punctuation">(</span></span>MYSQL <span class="token operator">*</span>mysql<span class="token punctuation">)</span>
-
-<span class="token punctuation">{</span>
-
-<span class="token keyword">int</span> ret<span class="token punctuation">,</span>field_count<span class="token punctuation">,</span>row_count<span class="token punctuation">,</span>i<span class="token punctuation">;</span>
-
-<span class="token keyword">int</span> <span class="token operator">*</span>lengths<span class="token punctuation">;</span>
-
-<span class="token keyword">char</span> <span class="token operator">*</span>query<span class="token operator">=</span><span class="token string">"select * from classmate"</span><span class="token punctuation">;</span>
-
-MYSQL_RES <span class="token operator">*</span>result<span class="token punctuation">;</span>
-
-MYSQL_ROW row<span class="token punctuation">;</span>
-
-ret <span class="token operator">=</span> <span class="token function">mysql_real_query<span class="token punctuation">(</span></span> mysql<span class="token punctuation">,</span> query<span class="token punctuation">,</span> <span class="token function">strlen<span class="token punctuation">(</span></span>query<span class="token punctuation">)</span> <span class="token punctuation">)</span> <span class="token punctuation">;</span>
-
-<span class="token keyword">if</span><span class="token punctuation">(</span>ret <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
-
-<span class="token punctuation">{</span>
-
-<span class="token function">printf<span class="token punctuation">(</span></span><span class="token string">"加载不了classmate的数据。\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
-
-<span class="token punctuation">}</span>
-
-result <span class="token operator">=</span> <span class="token function">mysql_store_result<span class="token punctuation">(</span></span> mysql <span class="token punctuation">)</span> <span class="token punctuation">;</span>
-
-row_count <span class="token operator">=</span> <span class="token punctuation">(</span> <span class="token keyword">int</span> <span class="token punctuation">)</span><span class="token function">mysql_num_rows<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token punctuation">;</span>
-
-field_count <span class="token operator">=</span> <span class="token punctuation">(</span> <span class="token keyword">int</span> <span class="token punctuation">)</span><span class="token function">mysql_num_fields<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token punctuation">;</span>
-
-<span class="token keyword">if</span><span class="token punctuation">(</span> result <span class="token operator">==</span> NULL <span class="token operator">&amp;&amp;</span> field_count <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">)</span>
-
-<span class="token punctuation">{</span>
-
-<span class="token function">printf<span class="token punctuation">(</span></span><span class="token string">"查询不到数据。"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
-
-<span class="token punctuation">}</span>
-
-<span class="token keyword">for</span><span class="token punctuation">(</span> i <span class="token operator">=</span> <span class="token number">0</span> <span class="token punctuation">;</span> i <span class="token operator">&lt;</span> row_count <span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">)</span>
-
-<span class="token punctuation">{</span>
-
-row <span class="token operator">=</span> <span class="token function">mysql_fetch_row<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token punctuation">;</span>
-
-<span class="token function">printf<span class="token punctuation">(</span></span> <span class="token string">"%2d | %8s \r\n"</span><span class="token punctuation">,</span> <span class="token function">atoi<span class="token punctuation">(</span></span> row<span class="token punctuation">[</span> <span class="token number">0</span> <span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">,</span> row <span class="token punctuation">[</span> <span class="token number">1</span> <span class="token punctuation">]</span> <span class="token punctuation">)</span> <span class="token punctuation">;</span>
-
-<span class="token punctuation">}</span>
-
-<span class="token function">mysql_free_result<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token punctuation">;</span>
-
-<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-
+    MYSQL mysql<span class="token punctuation">;</span>
+   <span class="token comment" spellcheck="true"> //连接mysql
+</span>    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">connect_mysql<span class="token punctuation">(</span></span><span class="token operator">&amp;</span>mysql<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+   <span class="token comment" spellcheck="true"> //载入数据
+</span>    <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token function">load_classmate<span class="token punctuation">(</span></span><span class="token operator">&amp;</span>mysql<span class="token punctuation">)</span> <span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token function">mysql_close<span class="token punctuation">(</span></span><span class="token operator">&amp;</span>mysql<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+   <span class="token comment" spellcheck="true"> //Do something here.
+</span>   <span class="token comment" spellcheck="true"> //关闭mysql
+</span>    <span class="token function">mysql_close<span class="token punctuation">(</span></span><span class="token operator">&amp;</span>mysql<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+   <span class="token comment" spellcheck="true"> //连接MYSQL数据库
+</span>    <span class="token keyword">int</span> <span class="token function">connect_mysql<span class="token punctuation">(</span></span>MYSQL<span class="token operator">*</span> mysql<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">printf<span class="token punctuation">(</span></span> <span class="token string">"Initializing mysql................."</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span> <span class="token operator">!</span><span class="token function">mysql_init<span class="token punctuation">(</span></span>mysql<span class="token punctuation">)</span> <span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token function">printf<span class="token punctuation">(</span></span> <span class="token string">"Done\r\n"</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">printf<span class="token punctuation">(</span></span> <span class="token string">"Connectiong to mysql..............."</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">mysql_real_connect<span class="token punctuation">(</span></span>mysql<span class="token punctuation">,</span><span class="token string">"localhost"</span><span class="token punctuation">,</span><span class="token string">"kitty"</span><span class="token punctuation">,</span><span class="token string">"a1"</span><span class="token punctuation">,</span><span class="token string">"pim"</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>NULL<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">fprintf<span class="token punctuation">(</span></span>stderr<span class="token punctuation">,</span> <span class="token string">"Error: %s\r\n"</span><span class="token punctuation">,</span> <span class="token function">mysql_error<span class="token punctuation">(</span></span>mysql<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+       <span class="token comment" spellcheck="true"> //设置mysql连接的字符集
+</span>        <span class="token function">mysql_query<span class="token punctuation">(</span></span> mysql<span class="token punctuation">,</span> <span class="token string">"SET NAMES 'utf8'"</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">printf<span class="token punctuation">(</span></span> <span class="token string">"Done\r\n"</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+   <span class="token comment" spellcheck="true"> //加载数据表
+</span>    <span class="token keyword">int</span> <span class="token function">load_classmate<span class="token punctuation">(</span></span>MYSQL <span class="token operator">*</span>mysql<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> ret<span class="token punctuation">,</span>field_count<span class="token punctuation">,</span>row_count<span class="token punctuation">,</span>i<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> <span class="token operator">*</span>lengths<span class="token punctuation">;</span>
+        <span class="token keyword">char</span> <span class="token operator">*</span>query<span class="token operator">=</span><span class="token string">"select * from classmate"</span><span class="token punctuation">;</span>
+        MYSQL_RES <span class="token operator">*</span>result<span class="token punctuation">;</span>
+        MYSQL_ROW row<span class="token punctuation">;</span>
+        ret <span class="token operator">=</span> <span class="token function">mysql_real_query<span class="token punctuation">(</span></span> mysql<span class="token punctuation">,</span> query<span class="token punctuation">,</span> <span class="token function">strlen<span class="token punctuation">(</span></span>query<span class="token punctuation">)</span> <span class="token punctuation">)</span> <span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>ret <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+        <span class="token function">printf<span class="token punctuation">(</span></span><span class="token string">"加载不了classmate的数据。\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    result <span class="token operator">=</span> <span class="token function">mysql_store_result<span class="token punctuation">(</span></span> mysql <span class="token punctuation">)</span> <span class="token punctuation">;</span>
+    row_count <span class="token operator">=</span> <span class="token punctuation">(</span> <span class="token keyword">int</span> <span class="token punctuation">)</span><span class="token function">mysql_num_rows<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token punctuation">;</span>
+    field_count <span class="token operator">=</span> <span class="token punctuation">(</span> <span class="token keyword">int</span> <span class="token punctuation">)</span><span class="token function">mysql_num_fields<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span> result <span class="token operator">==</span> NULL <span class="token operator">&amp;&amp;</span> field_count <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">printf<span class="token punctuation">(</span></span><span class="token string">"查询不到数据。"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span> i <span class="token operator">=</span> <span class="token number">0</span> <span class="token punctuation">;</span> i <span class="token operator">&lt;</span> row_count <span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        row <span class="token operator">=</span> <span class="token function">mysql_fetch_row<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token punctuation">;</span>
+        <span class="token function">printf<span class="token punctuation">(</span></span> <span class="token string">"%2d | %8s \r\n"</span><span class="token punctuation">,</span> <span class="token function">atoi<span class="token punctuation">(</span></span> row<span class="token punctuation">[</span> <span class="token number">0</span> <span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">,</span> row <span class="token punctuation">[</span> <span class="token number">1</span> <span class="token punctuation">]</span> <span class="token punctuation">)</span> <span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">mysql_free_result<span class="token punctuation">(</span></span> result <span class="token punctuation">)</span> <span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </code></pre>
 
-<p>七、MySQL数据库中文乱码的解决办法</p>
+<h3 id="mysql">七、MySQL数据库中文乱码的解决办法</h3>
 
 <p>MySQL的字符集和校对规则有4个级别的默认设置：服务器级、数据库级、表级和连接级。我们解决中文乱码的方法就顺着这几个级别来分别设置。比较常见的是由于没有设置连接级的字符集导致的乱码。</p>
 
-<p>1、服务器级字符集</p>
+<h5 id="1">1、服务器级字符集</h5>
 
 <p>服务器级也就是当服务器启动时根据配置文件中的字符集来加载。当前的服务器字符集和校对规则可以用作character<em>set</em>server和collation_server系统变量的值。在运行时能够改变这些变量的值。针对服务器级，我们有两个方法可以解决。</p>
 
-<p>a、重新编译MySQL</p>
+<h6 id="amysql">a、重新编译MySQL</h6>
 
-<p>更改设定值的一个方法是通过重新编译。如果希望在从源程序构建时更改默认服务器字符集和校对规则，使用：--with-charset和--with-collation作为configure的参量。例如：</p>
+<p>更改设定值的一个方法是通过重新编译。如果希望在从源程序构建时更改默认服务器字符集和校对规则，使用：--with-charset和--with-collation作为configure的参量。例如：
+<code>shell&gt; ./configure --with-charset=utf8</code></p>
 
-<p>shell&gt; ./configure --with-charset=utf8</p>
+<h6 id="b">b、不重新编译，只修改当前配置文件</h6>
 
-<p>b、不重新编译，只修改当前配置文件</p>
+<p>打开/etc/mysql/my.cnf修改编码：
+在[mysqld]下添加：<code>default-character-set=utf8</code>
+在[client]下添加：<code>default-character-set=utf8</code>
+在[mysql]下添加：<code>default-character-set=utf8</code>
+然后重启mysql应该就可以了！</p>
 
-<p>打开/etc/mysql/my.cnf修改编码：</p>
-
-<p>在[mysqld]下添加：default-character-set=utf8</p>
-
-<p>在[client]下添加：default-character-set=utf8</p>
-
-<p>在[mysql]下添加：default-character-set=utf8</p>
-
-<p>然后重启mysql应该就可以了！</p>
-
-<p>2、数据库级字符集</p>
+<h5 id="2">2、数据库级字符集</h5>
 
 <p>默认数据库的字符集和校对规则可以用作character<em>set</em>database和 collation<em>database系统变量。无论何时默认数据库更改了，服务器都设置这两个变量的值。如果没有 默认数据库，这两个变量与相应的服务器级别的变量（character</em>set<em>server和collation</em>server）具有相同的值。</p>
 
-<p>a、重新建数据库，并指定默认字符集</p>
+<h6 id="a">a、重新建数据库，并指定默认字符集</h6>
 
-<p>数据库级是在新建数据库时指定该数据库默认的字符集。</p>
+<p>数据库级是在新建数据库时指定该数据库默认的字符集。
+<code>mysql&gt;create database db_name character set charset_name ;</code></p>
 
-<p>mysql&gt;create database db<em>name character set charset</em>name ;</p>
+<p>比如：
+<code>mysql&gt;create database db_name character set utf8 ;</code></p>
 
-<p>比如：</p>
+<h6 id="balterdatabase">b、不重新建数据库，通过alter database来修改数据库的默认字符集</h6>
 
-<p>mysql&gt;create database db_name character set utf8 ;</p>
+<p>如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定：     <code>mysql&gt;alter database db_name character set charset_name ;</code></p>
 
-<p>b、不重新建数据库，通过alter database来修改数据库的默认字符集</p>
+<p>比如：
+<code>mysql&gt;alter database db_name character set utf8 ;</code></p>
 
-<p>如果之前在建表的时候没有指定character set charset<em>name，也可以通过以下重新指定：     mysql&gt;alter database db</em>name character set charset_name ;</p>
-
-<p>比如：</p>
-
-<p>mysql&gt;alter database db_name character set utf8 ;</p>
-
-<p>3、表级字符集</p>
+<h5 id="3">3、表级字符集</h5>
 
 <p>如果在表定义中没有指定表字符集和校对规则，则默认使用数据库字符集和校对规则。</p>
 
-<p>a、重新建表，并指定默认字符集</p>
+<h6 id="a">a、重新建表，并指定默认字符集</h6>
 
-<p>表级字符集是在建立表的时候指定该表的默认字符集。</p>
+<p>表级字符集是在建立表的时候指定该表的默认字符集。
+<code>mysql&gt;create table tbl_name (column_list) default character set charset_name ;</code></p>
 
-<p>mysql&gt;create table tbl<em>name (column</em>list) default character set charset_name ;</p>
+<h6 id="baltertable">b、不重新建表，通过alter table来修改表的默认字符集</h6>
 
-<p>b、不重新建表，通过alter table来修改表的默认字符集</p>
+<p>如果之前在建表的时候没有指定character set charset_name，也可以通过以下重新指定： <br>
+<code>mysql&gt;alter table tbl_name default character set charset_name ;</code>
+备注：列级别的字符集和表级别字符集的规则类似，也可以在建表的语句里面指定，若没有指定则默认使用表级别的字符集，若表也没有指定默认字符集，则往上推。 </p>
 
-<p>如果之前在建表的时候没有指定character set charset<em>name，也可以通过以下重新指定：     mysql&gt;alter table tbl</em>name default character set charset_name ;</p>
-
-<p>备注：列级别的字符集和表级别字符集的规则类似，也可以在建表的语句里面指定，若没有指定则默认使用表级别的字符集，若表也没有指定默认字符集，则往上推。 </p>
-
-<p>4、连接级字符集</p>
+<h5 id="4">4、连接级字符集</h5>
 
 <p>从以下几个方面来理解连接级字符集：（类似一种网络协议，服务器、客户端之间预先设置的通信规则）</p>
 
-<p>a、当查询离开客户端后，在查询中使用哪种字符集？</p>
+<h6 id="a">a、当查询离开客户端后，在查询中使用哪种字符集？</h6>
 
 <p>服务器使用character<em>set</em>client变量作为客户端发送的查询中使用的字符集。</p>
 
-<p>b、服务器接收到查询后应该转换为哪种字符集？</p>
+<h6 id="b">b、服务器接收到查询后应该转换为哪种字符集？</h6>
 
-<p>转换时，服务器使用character<em>set</em>connection和collation<em>connection系统变量。它    将客户端发送的查询从character</em>set<em>client系统变量转换到character</em>set<em>connection（除非    字符串文字具有象</em>latin1或<em>utf8的引介词）。collation</em>connection对比较文字字符串是重要的。    对于列值的字符串比较，它不重要，因为列具有更高的 校对规则优先级。</p>
+<p>转换时，服务器使用character<em>set</em>connection和collation<em>connection系统变量。它将客户端发送的查询从character</em>set<em>client系统变量转换到character</em>set<em>connection（除非字符串文字具有象</em>latin1或<em>utf8的引介词）。collation</em>connection对比较文字字符串是重要的。对于列值的字符串比较，它不重要，因为列具有更高的校对规则优先级。</p>
 
-<p>c、服务器发送结果集或返回错误信息到客户端之前应该转换为哪种字符集？</p>
+<h6 id="c">c、服务器发送结果集或返回错误信息到客户端之前应该转换为哪种字符集？</h6>
 
-<p>character<em>set</em>results变量指示服务器返回查询结果到客户端使用的字符集。包括结果数据，    例如列值和结果元数据（如列名）。</p>
+<p>character<em>set</em>results变量指示服务器返回查询结果到客户端使用的字符集。包括结果数据，例如列值和结果元数据（如列名）。
+我们能够调整这些变量的设置，有两个语句影响连接字符集：
+<code>SET NAMES 'charset_name'</code>
+<code>SET CHARACTER SET charset_name</code></p>
 
-<p>我们能够调整这些变量的设置，有两个语句影响连接字符集：</p>
+<p>SET NAMES显示客户端发送的SQL语句中使用什么字符集。因此，SET NAMES 'cp1251'语句告诉服务器“将来从这个客户端传来的信息采用字符集cp1251”。它还为服务器发送回客户端的结果指定了字符集。（例如，如果你使用一个SELECT语句，它表示列值使用了什么字符集。）
+SET NAMES 'x'语句与这三个语句等价：</p>
 
-<p>SET NAMES 'charset_name'</p>
+<pre><code>mysql&gt; SET character_set_client = x;
+mysql&gt; SET character_set_results = x;
+mysql&gt; SET character_set_connection = x;
+</code></pre>
 
-<p>SET CHARACTER SET charset_name</p>
+<p>要设置连接级的字符集，可以在编写MySQL数据库应用程序时，在客户端程序发
+起连接到服务器后，执行一条语句，如下情形：</p>
 
-<p>SET NAMES显示客户端发送的SQL语句中使用什么字符集。因此，SET NAMES 'cp1251'语句告诉服务器“将来从这个客户端传来的信息采用字符集cp1251”。它还为服务器发送回客户端的结果指定了字符集。（例如，如果你使用一个SELECT语句，它表示列值使用了什么字符集。）</p>
+<p></p><pre class=" language-c"><code class=" language-c"><span class="token function">mysqlrealconnect<span class="token punctuation">(</span></span><span class="token operator">&amp;</span>mysql<span class="token punctuation">,</span>”hostname”<span class="token punctuation">,</span>”username”<span class="token punctuation">,</span>”password”<span class="token punctuation">,</span>”database”<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>NULL<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">mysql_query<span class="token punctuation">(</span></span> <span class="token operator">&amp;</span>mysql <span class="token punctuation">,</span> <span class="token string">"SET NAMES 'utf8'"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>这样便可指定本次连接使用的默认字符集为utf8了。<p></p>
 
-<p>SET NAMES 'x'语句与这三个语句等价：</p>
+<h3 id="mysql">八、一些MYSQL常用的命令</h3>
 
-<p>mysql&gt; SET character<em>set</em>client = x;</p>
+<h5 id="1mysql">1.列出MYSQL支持的所有字符集：</h5>
 
-<p>mysql&gt; SET character<em>set</em>results = x;</p>
+<p><code>SHOW CHARACTER SET;</code></p>
 
-<p>mysql&gt; SET character<em>set</em>connection = x;</p>
+<h5 id="2mysql">2.当前MYSQL服务器字符集设置</h5>
 
-<p>要设置连接级的字符集，可以在编写MySQL数据库应用程序时，在客户端程序发起连接到服务器后，执行一条语句，如下情形：</p>
+<p><code>SHOW VARIABLES LIKE 'character_set_%';</code></p>
 
-<p>mysql<em>real</em>connect(&amp;mysql,”hostname”,”username”,”password”,”database”,0,NULL,0);</p>
+<h5 id="3mysql">3.当前MYSQL服务器字符集校验设置</h5>
 
-<p>mysql_query( &amp;mysql , "SET NAMES 'utf8'");</p>
+<p><code>SHOW VARIABLES LIKE 'collation_%';</code></p>
 
-<p>这样便可指定本次连接使用的默认字符集为utf8了。</p>
+<h5 id="4">4.显示某数据库字符集设置</h5>
 
-<p>八、一些MYSQL常用的命令</p>
+<p><code>show create database 数据库名;</code></p>
 
-<p>1.列出MYSQL支持的所有字符集： </p>
+<h5 id="5">5.显示某数据表字符集设置</h5>
 
-<p>SHOW CHARACTER SET;</p>
+<p><code>show create table 表名;</code></p>
 
-<p>2.当前MYSQL服务器字符集设置 </p>
+<h5 id="6">6.修改数据库字符集</h5>
 
-<p>SHOW VARIABLES LIKE 'character<em>set</em>%';</p>
+<p><code>alter database 数据库名 default character set 'utf8';</code></p>
 
-<p>3.当前MYSQL服务器字符集校验设置 </p>
+<h5 id="7">7.修改数据表字符集</h5>
 
-<p>SHOW VARIABLES LIKE 'collation_%';</p>
+<p><code>alter table 表名 default character set 'utf8';</code></p>
 
-<p>4.显示某数据库字符集设置 </p>
+<h5 id="8">8.建库时指定字符集</h5>
 
-<p>show create database 数据库名;</p>
+<p><code>create database 数据库名 character set gbk collate gbk_chinese_ci;</code></p>
 
-<p>5.显示某数据表字符集设置 </p>
+<h5 id="9">9.建表时指定字符集</h5>
 
-<p>show create table 表名;</p>
+<p><code>CREATE TABLE `mysqlcode` ( `id` TINYINT( 255 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY , `content` VARCHAR( 255 ) NOT NULL ) TYPE = MYISAM CHARACTER SET gbk COLLATE gbk_chinese_ci;</code></p>
 
-<p>6.修改数据库字符集 </p>
-
-<p>alter database 数据库名 default character set 'utf8';</p>
-
-<p>7.修改数据表字符集 </p>
-
-<p>alter table 表名 default character set 'utf8';</p>
-
-<p>8.建库时指定字符集 </p>
-
-<p>create database 数据库名 character set gbk collate gbk<em>chinese</em>ci;</p>
-
-<p>9.建表时指定字符集 </p>
-
-<p>CREATE TABLE <code>mysqlcode</code> ( </p>
-
-<p><code>id</code> TINYINT( 255 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY , </p>
-
-<p><code>content</code> VARCHAR( 255 ) NOT NULL </p>
-
-<p>) TYPE = MYISAM CHARACTER SET gbk COLLATE gbk<em>chinese</em>ci;</p>
-
-<p>九、参考</p>
-
-<p>MySQL 5.1 官方简体中文版参考手册，这边10.10系统仓库里面的是MySQL5.1版本：</p>
-
-<p>sudo apt-get install mysql-server</p>
-
-<p>sudo apt-get install mysql-client</p>
-
-<p>sudo apt-get install libmysqlclient15-dev</p>
-
-<p>二、检查MySQL服务的状态</p>
-
-<p>1、查看当前的mysql服务状态</p>
-
-<p>sudo /etc/init.d/mysql status</p>
-
-<p>2、也可以用以下检查mysql服务是否有启动，如果结果为空，则没有启动：</p>
-
-<p>sudo netstat -tap | grep mysql 或</p>
-
-<p>ps -ef | grep mysql</p>
-
-<p>三、启动/停止/重启MySQL服务</p>
-
-<p>1、启动：sudo /etc/init.d/mysql start</p>
-
-<p>2、停止：sudo /etc/init.d/mysql stop</p>
-
-<p>3、重启：sudo /etc/init.d/mysql restart</p>
-
-<p>四、在命令行使用MySQL客户端访问数据库</p>
-
-<p>1、访问本地主机：</p>
-
-<p>mysql -uuser -ppassword db_name</p>
-
-<p>2、访问远程主机：</p>
-
-<p>mysql -hhost -uuser -ppassword db_name</p>
-
-<p>备注：由于默认的配置是只能从本机访问，只要注释掉/etc/mysql/my.cnf里面的bind-address这行，就可以让远程主机访问了。</p>
-
-<p>3、执行管理操作：</p>
-
-<p>使用mysqladmin及相关参数</p>
-
-<p>4、备份 db_name 数据库：</p>
-
-<p>mysqldump -uroot -p --default-character-set=utf8 --opt     --extended-insert=false --triggers -R --hex-blob -x db_name &gt; bak.sql</p>
-
-<p>5、恢复db_name数据库：</p>
-
-<p>mysql -uroot -p db_name &lt; bak.sql</p>
-
-<p>6、备份tbl_name 数据表：</p>
-
-<p>select * into outfile '/usr/local/mysql/f.txt' fields terminated by '|' from tbl_name;</p>
-
-<p>7、把文件/home/a.txt导入数据库中的 tbl_name表</p>
-
-<p>mysql&gt; load data local infile '/home/a.txt'  into table tbl_name fields terminated by ',' lines terminated by '\r\n';</p>
-
-<p>8、设置mysql数据库root的初始密码</p>
-
-<p>shell&gt; mysql -u root</p>
-
-<p>mysql&gt; SET PASSWORD FOR ''@'localhost' = PASSWORD('newpwd');</p>
-
-<p>mysql&gt; SET PASSWORD FOR ''@'host_name' = PASSWORD('newpwd');</p>
-
-<p>9、为普通用户修改密码：</p>
-
-<p>mysql&gt; SET PASSWORD FOR 'user<em>name'@'host</em>name' = PASSWORD('newpwd');</p>
-
-<p>10、建立超级用户账户，具有完全的权限可以做任何事情：</p>
-
-<p>mysql&gt; GRANT ALL PRIVILEGES ON <em>.</em> TO 'monty'@'localhost'</p>
-
-<p>-&gt;     IDENTIFIED BY 'some_pass' WITH GRANT OPTION;</p>
-
-<p>mysql&gt; GRANT ALL PRIVILEGES ON <em>.</em> TO 'monty'@'%'</p>
-
-<p>-&gt;     IDENTIFIED BY 'some_pass' WITH GRANT OPTION;</p>
-
-<p>备注：第一句建立用于本机连接的帐户，第二句建立用于从其他主机连接的帐户。</p>
-
-<p>11、建立帐户custom，可以访问bankaccount数据库，但只能从本机访问</p>
-
-<p>mysql&gt; GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP</p>
-
-<p>-&gt;     ON bankaccount.*</p>
-
-<p>-&gt;     TO 'custom'@'localhost'</p>
-
-<p>-&gt;     IDENTIFIED BY 'obscure';</p>
-
-<p>五、Linux下C开发MySQL数据库应用程序的简要流程</p>
-
-<p>编译：gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm</p>
-
-<p>1、定义MYSQL变量</p>
-
-<p>MYSQL mysql;</p>
-
-<p>2、初始化MYSQL变量</p>
-
-<p>mysql_init(&amp;mysql);</p>
-
-<p>3、连接到MySQL数据库</p>
-
-<p>mysql<em>real</em>connect(&amp;mysql,”hostname”,”username”,”password”,”database”,0,NULL,0);</p>
-
-<p>4、指定本连接的字符集（可选，www.linuxidc.com主要为了确认客户端与服务器之间使用一致的字符集进行通信）</p>
-
-<p>mysql_query( &amp;mysql , "SET NAMES 'utf8'");</p>
-
-<p>5、执行SQL语句</p>
-
-<p>mysql<em>real</em>query( &amp;mysql, SQL, SQL_LEN ) ;</p>
-
-<p>6、获取查询结果</p>
-
-<p>MYSQL_RES *result;</p>
-
-<p>result = mysql<em>store</em>result( &amp;mysql ) ;</p>
-
-<p>row<em>count = ( int )mysql</em>num_rows( result ) ;</p>
-
-<p>field<em>count = ( int )mysql</em>num_fields( result ) ;</p>
-
-<p>7、循环调用mysql<em>fetch</em>row ，以便获取查询结果的每一行</p>
-
-<p>MYSQL_ROW row;</p>
-
-<p>row = mysql<em>fetch</em>row( result ) ;//下一次再调用便自动指向result的下一行</p>
-
-<p>printf(“%s\n”,row[index]);//注意转换各个字段的类型</p>
-
-<p>8、释放资源</p>
-
-<p>mysql<em>free</em>result( result ) ;</p>
-
-<p>9、关闭MYSQL连接</p>
-
-<p>mysql_close(&amp;mysql);</p>
-
-<p>六、一个简单的例子</p>
-
-<p>//打印出本地主机的pim数据库里面的classmate数据表的第一、第二列。用户名kitty，密码a1。</p>
-
-<p>//编译：gcc -o bin_name hello.c -I /usr/include/mysql -L /usr/lib/mysql -lmysqlclient -lz -lm</p>
-
-<h1 id="includestdioh">include <stdio.h></stdio.h></h1>
-
-<h1 id="includestringh">include <string.h></string.h></h1>
-
-<h1 id="includestdlibh">include <stdlib.h></stdlib.h></h1>
-
-<h1 id="includemysqlh">include <mysql.h></mysql.h></h1>
-
-<p>int main( int argc , char* argv[] )</p>
-
-<p>{</p>
-
-<p>MYSQL mysql;</p>
-
-<p>//连接mysql</p>
-
-<p>if(connect_mysql(&amp;mysql))</p>
-
-<p>{</p>
-
-<p>return 1;</p>
-
-<p>}</p>
-
-<p>//载入数据</p>
-
-<p>if( load_classmate(&amp;mysql) )</p>
-
-<p>{</p>
-
-<p>mysql_close(&amp;mysql);</p>
-
-<p>return 1;</p>
-
-<p>}</p>
-
-<p>//Do something here.</p>
-
-<p>//关闭mysql</p>
-
-<p>mysql_close(&amp;mysql);</p>
-
-<p>return 0;</p>
-
-<p>}</p>
-
-<p>//连接MYSQL数据库</p>
-
-<p>int connect_mysql(MYSQL* mysql)</p>
-
-<p>{</p>
-
-<p>printf( "Initializing mysql................." );</p>
-
-<p>if ( !mysql_init(mysql) )</p>
-
-<p>{</p>
-
-<p>return 1;</p>
-
-<p>}</p>
-
-<p>printf( "Done\r\n" );</p>
-
-<p>printf( "Connectiong to mysql..............." );</p>
-
-<p>if (!mysql<em>real</em>connect(mysql,"localhost","kitty","a1","pim",0,NULL,0))</p>
-
-<p>{</p>
-
-<p>fprintf(stderr, "Error: %s\r\n", mysql_error(mysql));</p>
-
-<p>return 1;</p>
-
-<p>}</p>
-
-<p>//设置mysql连接的字符集</p>
-
-<p>mysql_query( mysql, "SET NAMES 'utf8'" );</p>
-
-<p>printf( "Done\r\n" );</p>
-
-<p>return 0;</p>
-
-<p>}</p>
-
-<p>//加载数据表</p>
-
-<p>int load_classmate(MYSQL *mysql)</p>
-
-<p>{</p>
-
-<p>int ret,field<em>count,row</em>count,i;</p>
-
-<p>int *lengths;</p>
-
-<p>char *query="select * from classmate";</p>
-
-<p>MYSQL_RES *result;</p>
-
-<p>MYSQL_ROW row;</p>
-
-<p>ret = mysql<em>real</em>query( mysql, query, strlen(query) ) ;</p>
-
-<p>if(ret != 0)</p>
-
-<p>{</p>
-
-<p>printf("加载不了classmate的数据。\n");</p>
-
-<p>return 1;</p>
-
-<p>}</p>
-
-<p>result = mysql<em>store</em>result( mysql ) ;</p>
-
-<p>row<em>count = ( int )mysql</em>num_rows( result ) ;</p>
-
-<p>field<em>count = ( int )mysql</em>num_fields( result ) ;</p>
-
-<p>if( result == NULL &amp;&amp; field_count == 0 )</p>
-
-<p>{</p>
-
-<p>printf("查询不到数据。");</p>
-
-<p>return 1;</p>
-
-<p>}</p>
-
-<p>for( i = 0 ; i &lt; row_count ; i++ )</p>
-
-<p>{</p>
-
-<p>row = mysql<em>fetch</em>row( result ) ;</p>
-
-<p>printf( "%2d | %8s \r\n", atoi( row[ 0 ] ), row [ 1 ] ) ;</p>
-
-<p>}</p>
-
-<p>mysql<em>free</em>result( result ) ;</p>
-
-<p>return 0;</p>
-
-<p>}</p>
-
-<p>七、MySQL数据库中文乱码的解决办法</p>
-
-<p>MySQL的字符集和校对规则有4个级别的默认设置：服务器级、数据库级、表级和连接级。我们解决中文乱码的方法就顺着这几个级别来分别设置。比较常见的是由于没有设置连接级的字符集导致的乱码。</p>
-
-<p>1、服务器级字符集</p>
-
-<p>服务器级也就是当服务器启动时根据配置文件中的字符集来加载。当前的服务器字符集和校对规则可以用作character<em>set</em>server和collation_server系统变量的值。在运行时能够改变这些变量的值。针对服务器级，我们有两个方法可以解决。</p>
-
-<p>a、重新编译MySQL</p>
-
-<p>更改设定值的一个方法是通过重新编译。如果希望在从源程序构建时更改默认服务器字符集和校对规则，使用：--with-charset和--with-collation作为configure的参量。例如：</p>
-
-<p>shell&gt; ./configure --with-charset=utf8</p>
-
-<p>b、不重新编译，只修改当前配置文件</p>
-
-<p>打开/etc/mysql/my.cnf修改编码：</p>
-
-<p>在[mysqld]下添加：default-character-set=utf8</p>
-
-<p>在[client]下添加：default-character-set=utf8</p>
-
-<p>在[mysql]下添加：default-character-set=utf8</p>
-
-<p>然后重启mysql应该就可以了！</p>
-
-<p>2、数据库级字符集</p>
-
-<p>默认数据库的字符集和校对规则可以用作character<em>set</em>database和 collation<em>database系统变量。无论何时默认数据库更改了，服务器都设置这两个变量的值。如果没有 默认数据库，这两个变量与相应的服务器级别的变量（character</em>set<em>server和collation</em>server）具有相同的值。</p>
-
-<p>a、重新建数据库，并指定默认字符集</p>
-
-<p>数据库级是在新建数据库时指定该数据库默认的字符集。</p>
-
-<p>mysql&gt;create database db<em>name character set charset</em>name ;</p>
-
-<p>比如：</p>
-
-<p>mysql&gt;create database db_name character set utf8 ;</p>
-
-<p>b、不重新建数据库，通过alter database来修改数据库的默认字符集</p>
-
-<p>如果之前在建表的时候没有指定character set charset<em>name，也可以通过以下重新指定：     mysql&gt;alter database db</em>name character set charset_name ;</p>
-
-<p>比如：</p>
-
-<p>mysql&gt;alter database db_name character set utf8 ;</p>
-
-<p>3、表级字符集</p>
-
-<p>如果在表定义中没有指定表字符集和校对规则，则默认使用数据库字符集和校对规则。</p>
-
-<p>a、重新建表，并指定默认字符集</p>
-
-<p>表级字符集是在建立表的时候指定该表的默认字符集。</p>
-
-<p>mysql&gt;create table tbl<em>name (column</em>list) default character set charset_name ;</p>
-
-<p>b、不重新建表，通过alter table来修改表的默认字符集</p>
-
-<p>如果之前在建表的时候没有指定character set charset<em>name，也可以通过以下重新指定：     mysql&gt;alter table tbl</em>name default character set charset_name ;</p>
-
-<p>备注：列级别的字符集和表级别字符集的规则类似，也可以在建表的语句里面指定，若没有指定则默认使用表级别的字符集，若表也没有指定默认字符集，则往上推。 </p>
-
-<p>4、连接级字符集</p>
-
-<p>从以下几个方面来理解连接级字符集：（类似一种网络协议，服务器、客户端之间预先设置的通信规则）</p>
-
-<p>a、当查询离开客户端后，在查询中使用哪种字符集？</p>
-
-<p>服务器使用character<em>set</em>client变量作为客户端发送的查询中使用的字符集。</p>
-
-<p>b、服务器接收到查询后应该转换为哪种字符集？</p>
-
-<p>转换时，服务器使用character<em>set</em>connection和collation<em>connection系统变量。它    将客户端发送的查询从character</em>set<em>client系统变量转换到character</em>set<em>connection（除非    字符串文字具有象</em>latin1或<em>utf8的引介词）。collation</em>connection对比较文字字符串是重要的。    对于列值的字符串比较，它不重要，因为列具有更高的 校对规则优先级。</p>
-
-<p>c、服务器发送结果集或返回错误信息到客户端之前应该转换为哪种字符集？</p>
-
-<p>character<em>set</em>results变量指示服务器返回查询结果到客户端使用的字符集。包括结果数据，    例如列值和结果元数据（如列名）。</p>
-
-<p>我们能够调整这些变量的设置，有两个语句影响连接字符集：</p>
-
-<p>SET NAMES 'charset_name'</p>
-
-<p>SET CHARACTER SET charset_name</p>
-
-<p>SET NAMES显示客户端发送的SQL语句中使用什么字符集。因此，SET NAMES 'cp1251'语句告诉服务器“将来从这个客户端传来的信息采用字符集cp1251”。它还为服务器发送回客户端的结果指定了字符集。（例如，如果你使用一个SELECT语句，它表示列值使用了什么字符集。）</p>
-
-<p>SET NAMES 'x'语句与这三个语句等价：</p>
-
-<p>mysql&gt; SET character<em>set</em>client = x;</p>
-
-<p>mysql&gt; SET character<em>set</em>results = x;</p>
-
-<p>mysql&gt; SET character<em>set</em>connection = x;</p>
-
-<p>要设置连接级的字符集，可以在编写MySQL数据库应用程序时，在客户端程序发起连接到服务器后，执行一条语句，如下情形：</p>
-
-<p>mysql<em>real</em>connect(&amp;mysql,”hostname”,”username”,”password”,”database”,0,NULL,0);</p>
-
-<p>mysql_query( &amp;mysql , "SET NAMES 'utf8'");</p>
-
-<p>这样便可指定本次连接使用的默认字符集为utf8了。</p>
-
-<p>八、一些MYSQL常用的命令</p>
-
-<p>1.列出MYSQL支持的所有字符集： </p>
-
-<p>SHOW CHARACTER SET;</p>
-
-<p>2.当前MYSQL服务器字符集设置 </p>
-
-<p>SHOW VARIABLES LIKE 'character<em>set</em>%';</p>
-
-<p>3.当前MYSQL服务器字符集校验设置 </p>
-
-<p>SHOW VARIABLES LIKE 'collation_%';</p>
-
-<p>4.显示某数据库字符集设置 </p>
-
-<p>show create database 数据库名;</p>
-
-<p>5.显示某数据表字符集设置 </p>
-
-<p>show create table 表名;</p>
-
-<p>6.修改数据库字符集 </p>
-
-<p>alter database 数据库名 default character set 'utf8';</p>
-
-<p>7.修改数据表字符集 </p>
-
-<p>alter table 表名 default character set 'utf8';</p>
-
-<p>8.建库时指定字符集 </p>
-
-<p>create database 数据库名 character set gbk collate gbk<em>chinese</em>ci;</p>
-
-<p>9.建表时指定字符集 </p>
-
-<p>CREATE TABLE <code>mysqlcode</code> ( </p>
-
-<p><code>id</code> TINYINT( 255 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY , </p>
-
-<p><code>content</code> VARCHAR( 255 ) NOT NULL </p>
-
-<p>) TYPE = MYISAM CHARACTER SET gbk COLLATE gbk<em>chinese</em>ci;</p>
-
-<p>九、参考</p>
+<h3 id="">九、参考</h3>
 
 <p>MySQL 5.1 官方简体中文版参考手册</p>
 <!-- content end -->
-</div>
-<br>
-<br>
+    </div>
+    <br>
+    <br>
+
     <div id="disqus_thread"></div>
-	<div class="footer">
-		<p>© Copyright 2016 by 尚弟, Designed by isnowfy & 尚弟</p>
-	</div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
 </div>
 <script src="main.js"></script>
 <script id="content" type="text/mustache">
@@ -1854,6 +683,7 @@ row <span class="token operator">=</span> <span class="token function">mysql_fet
     <a href="/#/tag/{{name}}">#{{name}}</a>
     {{/tags}}
     </div>
+
 </script>
 <script id="pagesTemplate" type="text/mustache">
     {{#pages}}
@@ -1861,49 +691,53 @@ row <span class="token operator">=</span> <span class="token function">mysql_fet
         <a href="{{path}}">{{title}}</a>
     </li>
     {{/pages}}
+
 </script>
 <script>
-$(document).ready(function() {
-    $.ajax({
-        url: "main.json",
-        type: "GET",
-        dataType: "json",
-        success: function(data) {
-            $("#title").html(data.name);
-            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
-            var pagesHtml = pagesTemplate.render({"pages": data.pages});
-            $("#pages").append(pagesHtml);
-            //path
-            var path = "develop-with-c-and-mysql-in-ubuntu.html";
-            //path end
-            var now = 0;
-            for (var i = 0; i < data.posts.length; ++i)
-                if (path == data.posts[i].path)
-                    now = i;
-            var post = data.posts[now];
-            var tmp = post.tags.split(" ");
-            var tags = [];
-            for (var i = 0; i < tmp.length; ++i)
-                if (tmp[i].length > 0)
-                    tags.push({"name": tmp[i]});
-            var contentTemplate = Hogan.compile($("#content").html());
-            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
-            $("#main").prepend(contentHtml);
-            if (data.disqus_shortname.length > 0) {
-                var disqus_shortname = data.disqus_shortname;
-                (function() {
-                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                })();
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "develop-with-c-and-mysql-in-ubuntu.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
             }
-        }
+        });
     });
-});
 </script>
 <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
 </script>
 </body>
 </html>

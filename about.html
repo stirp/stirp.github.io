@@ -38,64 +38,12 @@
     </div>
     <div id="md" style="display: none;">
 <!-- markdown -->
-明天的天空，不知是否像今天一样湛蓝
-
-湛蓝的希望还能像今天一样飞翔
-
-连同我的梦想
-
-一起去看初升的太阳
-
-翠绿的草地，无边的海洋
-
-我有一匹棕色的小马去流浪
-
-棕色的小马却消失不见
-
-留下我，和我对明天的希望
-
-但是亲爱的，什么也不会到来
-
-不论是小马，还是白羊
-
-天空可以晴朗
-
-但是晴朗的下边只有失望
-
-你好，明天
-
-请离我远一点
+我的GitHub: [https://github.com/stirp](https://github.com/stirp)
 <!-- markdown end -->
     </div>
     <div class="entry" id="main">
 <!-- content -->
-<p>明天的天空，不知是否像今天一样湛蓝</p>
-
-<p>湛蓝的希望还能像今天一样飞翔</p>
-
-<p>连同我的梦想</p>
-
-<p>一起去看初升的太阳</p>
-
-<p>翠绿的草地，无边的海洋</p>
-
-<p>我有一匹棕色的小马去流浪</p>
-
-<p>棕色的小马却消失不见</p>
-
-<p>留下我，和我对明天的希望</p>
-
-<p>但是亲爱的，什么也不会到来</p>
-
-<p>不论是小马，还是白羊</p>
-
-<p>天空可以晴朗</p>
-
-<p>但是晴朗的下边只有失望</p>
-
-<p>你好，明天</p>
-
-<p>请离我远一点</p>
+<p>我的GitHub: <a href="https://github.com/stirp">https://github.com/stirp</a></p>
 <!-- content end -->
     </div>
     <br>
@@ -133,17 +81,23 @@
             dataType: "json",
             success: function (data) {
                 $("#title").html(data.name);
-                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
-                var pagesHtml = pagesTemplate.render({"pages": data.pages});
-                $("#pages").append(pagesHtml);
+                var pages = [];
                 //path
-                var path = "hello-tommorow.html";
+                var path = "about.html";
                 //path end
                 var now = 0;
-                for (var i = 0; i < data.posts.length; ++i)
-                    if (path == data.posts[i].path)
+                for (var i = 0; i < data.pages.length; ++i)
+                    if (path == data.pages[i].path) {
                         now = i;
-                var post = data.posts[now];
+                        pages.push({"select": true, "path": data.pages[i].path, "title": data.pages[i].title});
+                    }
+                    else {
+                        pages.push({"select": false, "path": data.pages[i].path, "title": data.pages[i].title});
+                    }
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": pages});
+                $("#pages").append(pagesHtml);
+                var post = data.pages[now];
                 var tmp = post.tags.split(" ");
                 var tags = [];
                 for (var i = 0; i < tmp.length; ++i)

@@ -133,7 +133,38 @@
 &lt;span class="token punctuation"&gt;}&lt;/span&gt;
 
 
-&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//temp.html</guid></item><item><title>目标达成</title><link>http://blog.shrp.me//goal-achieved.html</link><pubdate>2011-03-07</pubdate><content:encoded>&lt;p&gt;电脑上的盗版软件一扫而空，心情不由得开始舒畅起来，哈哈。如果说有遗憾，那就是virtual box性能确实不如vmware好，好像也没有端口映射，以后ubuntu怎么远程连接又是个麻烦事了。&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//temp.html</guid></item><item><title>Virtualbox NAT模式下配置端口映射</title><link>http://blog.shrp.me//Virtualbox-NAT-port-forwarding.html</link><pubdate>2011-03-07</pubdate><content:encoded>&lt;p&gt;在VirtualBox NAT网络模式下面，Guest系统对Host系统和局域网内其他的机器都是不可见的，所以Guest上面的任何服务都不能被外界访问到。这样很多情况下，是不能接受的，比如想在Guest系统为Ubuntu的虚拟机上面开启SSH服务，怎么办呢？两个方法，1、把网络连接方式改成Bridge模式，这样虚拟机的Guest系统就有了自己的IP地址，相当于局域网内的一台主机，这样Host系统和局域网内的其他机器都可以访问他了。2、在NAT网络模式下，开启端口映射。需要什么服务就映射什么端口数据。今天我以VirtualBox的guest系统Ubuntu系统开启SSH服务为例来介绍怎么配置端口映射。&lt;/p&gt;
+
+&lt;p&gt;首先介绍一下NAT网络模式下端口映射的优点，首先节省一个IP地址（有些情况下，IP地址资源比较宝贵）；其次，这样可以避免Server暴露过多的接口，提供什么服务暴露什么接口，这样保证Server安全性。当然这种方式也有一定的局限性，服务的端口必须是固定的，假如服务的端口是动态的，那么这种方式就没有办法了，比如NFS服务就不能用端口映射来实现。&lt;/p&gt;
+
+&lt;p&gt;下面介绍怎样在VirtualBox的Guest系统Ubuntu中启用SSH服务，Host系统为Windows。SSH服务的端口是22端口，理论上可以把Host系统Windows的22端口映射到Ubuntu的22端口。这样做不好，假如有一天Host系统Windows也要在22端口上提供服务就没有办法了，所以我们准备用Host系统的2222端口，映射到Ubuntu的22端口。&lt;/p&gt;
+
+&lt;h5 id="1virtualbox"&gt;1. 首先从命令行进入到VirtualBox安装目录。&lt;/h5&gt;
+
+&lt;h5 id="2vboxmanageexevirtualbox32"&gt;2. 在安装目录下面，目录下面有VBoxManage.exe程序。如果你的VirtualBox版本是3.2之前的版本，请执行如下的命令：&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;VBoxManage setextradata "Linux Guest" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/guestssh/Protocol" TCP
+
+VBoxManage setextradata "Linux Guest" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/guestssh/GuestPort" 22
+
+VBoxManage setextradata "Linux Guest" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/guestssh/HostPort" 2222
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中“Linux Guest”是你虚拟机Ubuntu系统的名称，pcnet表示Ubuntu选的是PCNet的网卡，0表示第一块网卡，guestssh是自定义的名字。TCP表示只映射TCP协议的数据，当然也可以设置成UDP协议数据映射的。&lt;/p&gt;
+
+&lt;p&gt;通过以上命令就可以完成Host Windows系统2222端口到Guest Ubuntu系统的端口映射了。当然需要三个命令来完成端口映射挺麻烦的，Oracle公司也这样认为。在最新的3.2版本中，VirtualBox简化了端口映射的步骤，只要一条命令就可以了。
+&lt;code&gt;VBoxManage modifyvm "VM name" --natpf1 "guestssh,tcp,,2222,,22"&lt;/code&gt;
+“VM name”就是Guest系统的名字，guestssh还是用户自定义的名字。你可能发现第三个参数和第五个参数空白了，是什么意思呢？当Host系统有多块网卡的时候，通过第三个参数指定那款网卡的2222端口映射；如果Host系统有多块网卡时，通过第五个参数指定那个网卡的22端口接收数据。
+&lt;code&gt;VBoxManage modifyvm "VM name" --natpf1 "guestssh,tcp,,2222,10.0.2.19,22"&lt;/code&gt;
+以上的命令式将Host系统2222端口的数据映射到Guest系统的10.0.2.10网卡的22端口。&lt;/p&gt;
+
+&lt;h5 id="3ubuntusshserver"&gt;3. 已经设置好了端口映射，现在登录到Ubuntu中，安装SSH server。&lt;/h5&gt;
+
+&lt;p&gt;sudo apt-get install openssh-server4、在Windows平台下面用ssh工具，通过2222端口登录到Ubuntu就可以了。也可以从局域网内的机器上，用SSH工具，通过Host机器的2222端口登录到Ubuntu的ssh服务。&lt;/p&gt;
+
+&lt;p&gt;至此，Ubuntu的SSH服务已经暴露在局域网了。通过上面的描述可以看到在VirtualBox3.2版本中端口映射已经做得比较简单，并且非常完善了。&lt;/p&gt;
+
+&lt;p&gt;如有错误欢迎指正。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Virtualbox-NAT-port-forwarding.html</guid></item><item><title>目标达成</title><link>http://blog.shrp.me//goal-achieved.html</link><pubdate>2011-03-07</pubdate><content:encoded>&lt;p&gt;电脑上的盗版软件一扫而空，心情不由得开始舒畅起来，哈哈。如果说有遗憾，那就是virtual box性能确实不如vmware好，好像也没有端口映射，以后ubuntu怎么远程连接又是个麻烦事了。&lt;/p&gt;
 
 &lt;p&gt;project据说有个gantt什么东西可以画，visio也有类似的在线软件。还要继续寻找。&lt;/p&gt;
 
@@ -153,7 +184,15 @@
 
 &lt;p&gt;服务器也是盗版（汗……）只不过实在需要虚拟路径。等赚钱后再买正版的支持下，呵呵。&lt;/p&gt;
 
-&lt;p&gt;其它软件，就参照-·」&lt;a href="http://blog.sina.com.cn/s/blog_46dac66f0100003u.html"&gt;http://blog.sina.com.cn/s/blog_46dac66f0100003u.html&lt;/a&gt;这个来替换吧。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//my-next-goal.html</guid></item><item><title>Ubuntu下的mysql和C语言开发</title><link>http://blog.shrp.me//develop-with-c-and-mysql-in-ubuntu.html</link><pubdate>2011-02-25</pubdate><content:encoded>&lt;h3 id=""&gt;一. 开发环境的准备&lt;/h3&gt;
+&lt;p&gt;其它软件，就参照-·」&lt;a href="http://blog.sina.com.cn/s/blog_46dac66f0100003u.html"&gt;http://blog.sina.com.cn/s/blog_46dac66f0100003u.html&lt;/a&gt;这个来替换吧。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//my-next-goal.html</guid></item><item><title>网站下一步开发方向</title><link>http://blog.shrp.me//next-develop-of-my-site.html</link><pubdate>2011-03-06</pubdate><content:encoded>&lt;p&gt;添加多图办法：先制作8个网页，分别是添加0-7个图片。这下就可以图文并茂了。&lt;/p&gt;
+
+&lt;p&gt;添加删除文章办法，这个有点麻烦，可以是修改到文章就像从来没有一样，也可以做到添加删除线。这个慢慢考虑吧。&lt;/p&gt;
+
+&lt;p&gt;文章后加留言，不用翻页。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//next-develop-of-my-site.html</guid></item><item><title>通过母机将虚拟机的端口穿透出去</title><link>http://blog.shrp.me//virtual-machine-port-pass-through.html</link><pubdate>2011-02-25</pubdate><content:encoded>&lt;p&gt;打开Vmware，点击Edit，virtual Network Editer.&lt;/p&gt;
+
+&lt;p&gt;默认选择的NAT网络，实际上这种网络最好，和主机互不影响。但是目前想要共享的端口比如说80网页浏览，23telnet，22SSH。本文写之前就是我为了在机房可以远程SSH到Ubuntu虚拟机才研究的。&lt;/p&gt;
+
+&lt;p&gt;选注默认的VMNET8，专用来NAT的虚拟网卡，点击NAT Settings，中间有个大大的add按钮，然后根据虚拟机的实际IP和所需端口开放，这样你的虚拟机就对外网开放啦！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//virtual-machine-port-pass-through.html</guid></item><item><title>Ubuntu下的mysql和C语言开发</title><link>http://blog.shrp.me//develop-with-c-and-mysql-in-ubuntu.html</link><pubdate>2011-02-25</pubdate><content:encoded>&lt;h3 id=""&gt;一. 开发环境的准备&lt;/h3&gt;
 
 &lt;h5 id="1linuxubuntu1010"&gt;1. 首先要安装好Linux，这里用的是Ubuntu 10.10&lt;/h5&gt;
 
@@ -505,7 +544,47 @@ mysql&amp;gt; SET character_set_connection = x;
 
 &lt;h3 id=""&gt;九、参考&lt;/h3&gt;
 
-&lt;p&gt;MySQL 5.1 官方简体中文版参考手册&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//develop-with-c-and-mysql-in-ubuntu.html</guid></item><item><title>充满死亡的生命</title><link>http://blog.shrp.me//life-full-of-death.html</link><pubdate>2011-02-13</pubdate><content:encoded>&lt;p&gt;　　今天中秋，我给家里打了个电话，闲聊了半小时。临了妈妈问我有没有什么需要的，她可以让新区1号楼1单元的朋友给我带过来。&lt;/p&gt;
+&lt;p&gt;MySQL 5.1 官方简体中文版参考手册&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//develop-with-c-and-mysql-in-ubuntu.html</guid></item><item><title>明天，你好</title><link>http://blog.shrp.me//hello-tommorow.html</link><pubdate>2011-02-14</pubdate><content:encoded>&lt;p&gt;明天的天空，不知是否像今天一样湛蓝&lt;/p&gt;
+
+&lt;p&gt;湛蓝的希望还能像今天一样飞翔&lt;/p&gt;
+
+&lt;p&gt;连同我的梦想&lt;/p&gt;
+
+&lt;p&gt;一起去看初升的太阳&lt;/p&gt;
+
+&lt;p&gt;翠绿的草地，无边的海洋&lt;/p&gt;
+
+&lt;p&gt;我有一匹棕色的小马去流浪&lt;/p&gt;
+
+&lt;p&gt;棕色的小马却消失不见&lt;/p&gt;
+
+&lt;p&gt;留下我，和我对明天的希望&lt;/p&gt;
+
+&lt;p&gt;但是亲爱的，什么也不会到来&lt;/p&gt;
+
+&lt;p&gt;不论是小马，还是白羊&lt;/p&gt;
+
+&lt;p&gt;天空可以晴朗&lt;/p&gt;
+
+&lt;p&gt;但是晴朗的下边只有失望&lt;/p&gt;
+
+&lt;p&gt;你好，明天&lt;/p&gt;
+
+&lt;p&gt;请离我远一点&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//hello-tommorow.html</guid></item><item><title>我看PC和IT产业</title><link>http://blog.shrp.me//I-See-PC-and-IT.html</link><pubdate>2011-02-13</pubdate><content:encoded>&lt;p&gt;　　中国PC和IT产业的辉煌已经持续了不知多少年。目前作为世界增长速度最快的市场，各个PC、IT相关的企业对这个蛋糕正在虎视眈眈。不过在我看来，这个蛋糕上边，也像是19世纪的物理一样，飘着几朵乌云。&lt;/p&gt;
+
+&lt;p&gt;　　首先是电脑城。作为一个切身工作过和对我来说几乎是唯一的PC购物场所，2011年对于电脑城几乎肯定是雪上加上霜。苏宁、国美正在快速抢占电脑城的份额，越来越高的租金和越来越薄的利润让商户难以为继。今年我在中关村帮同学买台电脑，有个接单员甚至从一楼跟到四楼。各个厂家在网络建立直销店，更是让原本传闻克扣活动奖品、以次充好、奸商当道的电脑城四面楚歌。而且从前几年神舟拉低笔记本价格开始，组装机就开始沦为市场上的少数派，而电脑城里装机店的数量一般不比专卖店少。今后的电脑城在小城市很容易沦为鸡肋，在大城市则成为一种比较专业的场所，主要成分是直销店、高端DIY和配件经营。总之，想赚钱的，别把资本扔在电脑城了，除非你像乔布斯，能在逆市中盈利。&lt;/p&gt;
+
+&lt;p&gt;　　其次是国内企业的竞争将转向创新。我不是说不会有那些重复造轮子的事情，比如腾讯推出个类似360之类的事情。重复造轮子这是我们山寨精神最好的体现。就在Intel收购Macafee传为佳话的同一年，腾讯山寨360一事引起了360的口水战，双方都损失不小。这件事对于想在IT创业的人敲响了一个警钟：国内相关法律不健全，要想成功，必须做别人没有办法复制的东西。其实这也是SaaS一直想表达的，软件是一定可以山寨的，但是服务……服务也能山寨，但是如果你的服务已经深入人心，山寨就难了。因此今后成功企业的重心一定是创新，此外就是山寨对手的产品，以期击垮对手……各位想创业的朋友，创业前多想想，腾讯要是山寨我的产品要怎么办这样的问题。别等到不能回头的时候让腾讯之类的企业插你一刀，痛苦的跳楼。&lt;/p&gt;
+
+&lt;p&gt;　　还有就是苹果产品（除mac）、上网本、平板电脑、电子书。这四个产品说实话，我真是看不清，猜不透。我自己有ipod，有上网本的祖宗eeePC701，没有平板电脑和电子书。说实话，对于一般人来说，苹果吸引力不小，但是能够付诸实践的人不多；上网本则是主要针对会出门办公的白领，当做唯一的工作用电脑有点困难；平板是个什么呢？我估计是针对消费领域的产品，因为这个东西用来工作确实不方便。不过据说用来作画还是挺方便的，免去了炭笔和面包的消耗。同寝室的人买过itouch，我感觉，在中国，苹果的产品也如同阉割一般，app不容易购买，热点缺乏，一个不错的网络接入终端沦为类似游戏机、电子书之类的产品。至于电子书，我是很想买啊，长长的续航时间，对于我来说真是不错，但是对于一般人来说，跟其它三类产品有什么竞争力呢？现在已经证明，ipad对于kindle冲击很大，kindle降价到$198来岔开价位。Ipad对于上网本的冲击也不小。这几类产品在一起乱战，除了电子书又一次要沦为少数特殊需要人群的产品和苹果产品受有钱一族的欢迎外，其它两类产品并没有特别清晰的未来。&lt;/p&gt;
+
+&lt;p&gt;　　既然有乌云，那么免不了下场大雨。不过雨后才能看见彩虹，在这乌云后边也有不错的商机。&lt;/p&gt;
+
+&lt;p&gt;　　首先是各类电子产品的整合平台匮乏。现在的殷实家庭一般都有两台电脑，1部智能手机，或许还有类似itouch这样的手持终端。倘若制作一种软件，使得你可以在任何时间、任何地点（必须有网络接入），自由的使用自己的文件和资源。比如：通过手机上网，打开了一个控制端，远程控制自己的电脑下载某些资源；在教室用笔记本制作一个需要cpu大量计算的任务，软件调用家中的台式机参与cpu的运算……各类终端有各类终端的优势和劣势，如何通过软件互相弥补，是这类软件的重点。当然，当某天企业规模快达到360那样的时候，你需要转型了，否则被腾讯、360、迅雷模仿，你都会很痛苦。&lt;/p&gt;
+
+&lt;p&gt;　　还有，软硬结合，是赚钱的最好途径。最好的例子就是魅族，它的M8上市的时候很多批评的声音，但是通过运营后反而成为了热销产品。如今M9上市还出现了排队购买的现象。实际上这跟魅族的平台化策略有关，也跟造势手法有关，但是不得不说，软硬结合，使得你提供的服务唯一化，平台化，难以山寨。确实是适合中国国情的做法。&lt;/p&gt;
+
+&lt;p&gt;　　最后，各位看官还是要自己思考行业前景。我说的纯属饭后YY，一家之言，压根就没什么内容。运营有风险，创业需谨慎。这是最好的时代，也是最坏的时代。如果你能做到飞信那个地步的时候，或许头疼的问题就是怎么把每年6个北京户口分配给2000多个员工了吧。 &lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//I-See-PC-and-IT.html</guid></item><item><title>充满死亡的生命</title><link>http://blog.shrp.me//life-full-of-death.html</link><pubdate>2011-02-13</pubdate><content:encoded>&lt;p&gt;　　今天中秋，我给家里打了个电话，闲聊了半小时。临了妈妈问我有没有什么需要的，她可以让新区1号楼1单元的朋友给我带过来。&lt;/p&gt;
 
 &lt;p&gt;　　“一单元？就是一楼有个傻姑娘的那个？”我不知道为什么突然想起她了。&lt;/p&gt;
 

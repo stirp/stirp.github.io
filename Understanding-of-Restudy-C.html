@@ -1,0 +1,1656 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+####1. 为了跳过之前的回车，可以使用```scanf(“空格%c”,&chr);```，其中的空格可以跳过零个或者若干个空白字符，包括换行、换页、行制表符、列制表符、空格
+
+####2. 为了打印出小数点后两位数字，"%.2f"来输出。为了打印出自然书写格式的的浮点数字，可以用%g。
+
+####3. 整型常量：八进制和十六进制没有负数常量。书写为：八进制：0开头，如0177；十六进制：0x开头，如0x7fff。默认属于int型，可以在后边添加L、U表示长整型、无符号型。为了输出负数八进制或十六进制，可以用下列方法：
+
+~~~~{c}
+if( i < 0)
+	printf("-%x",-i);
+else
+	printf("%x",i);
+~~~~
+
+####4. 浮点型常量：默认以双精度浮点形式存储。后缀F、L表示单精度浮点型或者long double型。在读取double型时用%lf，输出时%f；读取或者输出long double型时用%Lf。
+
+####5. 转义序列：连续的??要用\?来输出问号，否则会认为是三字符序列。八进制转义序列用\33或者\033表示ESC；十六进制转义序列用\x1B。x必须小写。
+
+####6. 如果用char来存储较小的整型时，必须用signed或者unsigned来声明是否带有符号位。（否则会在自动扩展时出现问题，比如大于128的数字变成负数）
+
+####7. 
+
+~~~~{c}
+while (getchar() != '\n');/\*来跳过一行的输入\*/
+
+while (getchar() == ' ');/\*来跳过空格的输入\*/``
+~~~~
+scanf()后边如果再使用getchar时要注意，scanf后边输入的\n是会被getchar所读取的，一般是所不希望的。
+
+####8. sizeof()运算符一定要将所求目标用括号选中，否则容易出错。（sizeof运算符的优先等级高于二元运算符）。另一方面，返回值为无符号整型，容易在赋值到整型时溢出。
+
+####9. 同样，-10<(unsigned int) 10的结果是假。
+
+####10. 运算时溢出，即便结果是由更大范围的类型来保存依然会溢出。如：
+
+~~~~{c}
+long int i;
+int j = 1000;
+i = j * j;//先溢出，再转换类型
+~~~~
+
+####11. 使用数组的时候一定要避免从1开始。能从0开始就一定要从0开始，否则容易产生难以察觉的错误。
+
+####12. 数组下标使用++等带有作用的运算时要小心。如a[i] = b[i++]在不同电脑的实现是不同的，可能会成为b[1] = a[2]。
+
+####13. 数组间的赋值：``memcpy(a, b, sizeof(a));``它比循环速度快。来自<string.h>。
+
+####14. 函数不能返回数组。
+
+####15. 如果函数返回的类型非常长（如unsigned long int），那么有必要把返回类型单独放在一行
+
+~~~~{c}
+unsigned long int
+average(float a, float b)
+{
+return ( a + b) / 2;
+}
+~~~~
+
+####16. 在有返回值的函数需要丢弃返回值时，可以强制转换来明确表示丢弃，比如``(void) printf(”Hi,MMMM……\n“);``来表示丢弃返回值。
+
+####17. 在void 引导的函数中可以用``return;``来随时退出函数。
+
+####18. 每个函数定义前都要有盒型注释，要求给出函数名、函数的目的、讨论每个形式参数的含义、描述返回值和罗列任何的副作用。（如会改变某个参数等）
+
+####19. 函数中用const来保护不需要修改的参数。在指针、数组类型中使用const要注意，如``void f(const int *p)``表示p所指向的数字不能改变。如果是``void f(int * const p)``则表示p指向的数字可以改变，但是p不可以改变。可以出现void f(const int * const p)来表示指针和指针指向的数字都不可变。如果不用const，即便是void f(int a[])中a也相当于指针，也可以改变的。
+
+####20. 指针可以当作数组名使用。如``*p = a[10]``,则p[5] 等价于 a[5]；
+
+####21. 多维数组名作为指针时要小心。如a[10][10]中a相当于 **a。
+
+####22. Int a[10],i = 5；使用时a[i]和i[a]是一样的，但是千万别混着使用。函数参数中a[]和\*a是一样的，但是\*a更为通用。
+
+####23. 可以用printf("%p",p);来显示p指针地址。
+
+####24. 字符串里面的转义序列要小心使用。比如八进制的转义序列在三个数字或者第一个非八进制数字处结束，\1234 实际是\123和4。十六进制数的转义序列不限制为3个数字，而是到第一个非16进制数字截至。
+
+####25.  如果字符串太长，不能在一行内放置，可以使用\来延长。\要求之后没有除回车外的字符，下一行要顶头开始。如：
+
+~~~~{c}
+    printf(“Put a \
+disk into drive a\n”);
+~~~~
+
+不过会打乱缩进。还好C语言标准规定，只要两个字符串中间都是空白字符，则将两个字符串合并，如：
+
+~~~~{c}
+    printf("Put a "
+
+    "disk into drive a\n");
+~~~~
+
+####26. C语言允许对字符串加下标，如"abc"[1]。这个特性使得字符串常量也可能改变，如 
+
+~~~~{c}
+char *p = "abc"[1];
+*p = 'x';
+~~~~
+但是这种特性会对程序造成不可预知的后果（如果编译器对同样的字符串是压缩存储，这将导致其它字符串可能变化）。但是下标还有一个很好的使用方法，如：``return "0123456789ABCDEF"[digit];``这句话可以简单地将十进制的数字转化为十六进制的字符。
+
+####27. 如果初始化字符串的长度和其本身长度一致时，编译器不会在后边加上'0'，也就不会破坏之后的数据。如：``Char str[7] = "srpsrp!",ch;``中，
+Ch的值是不确定的，而不是'\0'。这条仅知道即可。
+
+####28. 如果只显示字符串的一部分，则使用%.xs。如：
+
+~~~~{c}
+char str[10] = "123456789";
+printf("%.3s",str);
+~~~~
+
+将显示123。
+
+####29. ``puts(str);``将在输出字符串后强制输出一个换行。
+
+####30. 用scanf输入的字符永远不包括空白字符(空格、回车、换行、换页、换表格等)。gets则到回车才停止，并忽略回车。
+
+####31. scanf天生不是安全的，它可能会溢出数组。使用％ns会更安全，n指读入的最大字符数。
+
+####32. strcpy 的返回值在较大的表达式中比较有用。如strcpy(str2,strcpy(str1,”1234”));
+
+####33. 在空间敏感的程序中使用字符数组，可以使用``char *planets[] = {"Mercury","Venus","Earth","Mars","Jupiter","Saturn","Uranus","Neptune","Pluto"},``这样里面每一个字符串都只有本身的长度，而不是定长的。如果是定长数组（planets[9][81]），那会浪费不少空间，如Mars后边会空很多。
+
+####34. C程序的命令行中始终有一个空指针，即argv[argc]。
+
+####35. printf和scanf的第一个参数是字符串，并不只是字符串常量。因此可以实现下面的代码：
+
+~~~~{c}
+char fmt = "%d\n";
+int i = 10;
+printf(fmt,i);
+~~~~
+
+因此可以读入fmt，然后再用fmt作为格式化串输入。
+
+####36. #运算符在预处理时可以将宏的参数转换为字符串字面量。比如:
+``#define PRINT_INT(x)  printf(#x " = %d\n",x)``,将使PRINT_INT(var)输出为``var = 13\n``。
+
+####37. ##运算符在预处理时可以将两个记号合成一个记号。如``#define MK_ID(n) i##n``在``int MK_ID(1), MK_ID(2)``中等同于``int i1, i2``。
+
+####38. 在宏定义中缺少圆括号会导致C语言中最让人讨厌的错误。程序通常仍然可以编译通过，而且宏似乎也可以正常工作，但在某些情况下会出错。
+
+####39. 一些预定义的宏：
+```
+__LINE__	被编译的文件的行数
+
+__FILE__	被编译的文件的名字
+
+__DATE__	编译的日期
+
+__TIME__	编译的时间
+
+__STDC__    如果编译器接受标准C，那么为1
+```
+
+####40. defined运算符引用于标识符时，如果标识符是一个定义过的宏返回1，否则返回0。通常与if结合使用，如 ``#if defined(DEBUG)…#endif``。条件编译常用于保护头文件以避免重复包含。
+
+####41. #line指令用来给程序代码编号。如``#line n``(n介于1和32767)，``#line n "文件名"``。它可以改变`__LINE__`宏。
+
+####42. 宏的使用必须谨慎小心，建议仅在常量不止一次使用，或者常量可能的使用方式变化的时候使用。
+
+####43. ##运算符不能嵌套使用。比如``#define CONCAT(x,y) x##y``在``CONCAT(a,b)``时可以用，但是在``CONCAT(a,CONCAT(b,c));``时将成为``aCONCAT(b,c)``,而不是abc，因为没有名为``aCONCAT``的宏。
+
+####44. ``extern int i;``提示编译器i是程序中其他位置定义的，因此不为i分配空间。
+
+####45. 为了防止头文件多次包含，用`#ifndef`和`#endif`把文件的内容括起来，来保护。如：
+
+~~~~{c}
+boolean.h
+#ifndef	BOOLEAN_H
+#define	BOOLEAN_H
+#define	TRUE	1
+#define	FALSE	0
+typedef	int	Bool;
+#endif
+~~~~
+
+####46. 划分源文件的规则：
+
+把每组函数的集合放入单独的源文件，在与源文件同名的头文件中放置函数原型（以及使用这些函数所需要的定义和头文件），每个调用源文件的文件都要包括相应的头文件，这样编译器就可以检验原型和定义是否一致。
+
+####47. Struct可以使用赋值运算：``part2 = part1``。通常利用这个特性来实现数组的赋值：
+
+~~~~{c}
+struct {int a[10];}a1,a2;
+...
+a1 = a2;
+~~~~
+
+但是不能使用a1 == a2来判断两者是否相等。
+
+####48. 为了能对两个结构使用=赋值，两者不仅仅需要定义一致，还需要结构标记一致或者使用共同的类型。比如
+
+~~~~{c}
+struct example{int a[10];} a1; 
+struct example a2;
+~~~~
+
+或者 
+
+~~~~{c}
+typedef struct {int a[10];} example; 
+example a1; 
+example a2;
+~~~~
+
+（a1 和 a2可以是出现在不同位置的结构，如两个函数中。为了使用=，但是定义位置不同，所以要用上述两种方法解决问题）。
+
+####49.
+
+~~~~{c}
+ Struct part {int a[10];} a1;
+int part;
+~~~~
+是合法的，但是为了避免结构体part和整型变量part混淆，尽量不要使用。
+
+####50. 在结构中使用联合可以节省大量空间。比如同一个数组保存三类不同物品的信息时，可以将三类物品的定义整合为联合。为了区别表示其中保存的物品，可以在结构定义一个枚举变量来表明联合中存储的类型。如
+
+~~~~{c}
+struct{
+enum (INT_KIND,FLOAT_KIND) kind;
+    union{int i; float t;} u;
+} number;
+~~~~
+
+可以通过number.kind确定存储的是整形还是实型变量，再提取number.u.i或者number.u.t。
+
+####51. 使用malloc来动态分配结构时，不要使用``malloc(sizeof(结构指针))``，而是``malloc(sizeof(struct 名字))``；
+
+####52. 对于结构体不能使用==的一点补充，就是不可以对结构体按字节来对比。因为结构内部可能有空洞，对于它们而言，内部可以储存不同的数字。因此相同的结构按字节对比的结果可能不同，必须使用按成员的方式对比。
+
+####53. 使用结构联合和枚举类型的指针时，访问子元素时一定要用(\*p).element。包括当被指向的单元自增时使用(\*p)++，指针自加使用p++。
+
+####54. calloc函数会清除分配的内存，而malloc不会。有时需要用calloc为非空数组分配空间。通过调用1为第一个实际参数的calloc函数，可以为任何类型数据项分配空间：
+
+``p = calloc(1，sizeof(struct point));``
+
+####55. realloc的指针参数必须是来自malloc，calloc或者realloc生成的指针。如果不是这样，程序可能会行为异常。
+
+####56. realloc的准则：
+1. realloc不会初始化扩展的内存空间。
+2. 如果realloc不能扩展，原指针会变空指针。
+3. 如果realloc函数调用时以空指针作为第一个实际参数，那么行为就像malloc。
+4. realloc函数的第二个参数如果是0，那么行为如同free。
+####57. 一旦realloc函数返回，需要将指向本内存块的所有指针进行更新，因为realloc函数可能把原内存空间移动到了其他地方的内存。
+
+####58. 释放内存块时一定要谨慎小心，避免几个指针都指向同一个内存块，此时很容易有悬空指针。
+
+####59. 如果有``struct node *new_node;``要分配空间时要使用``new_node = malloc(sizeof (struct node));``而不是``new_node = malloc(sizeof (new_node));``,后者只分配了一个指针的空间，而不是一个结构的空间。
+
+####60.`` int *p(...)``和``int (*p)(....)``不同，前者是返回指针的函数，后者是指向函数的指针。需要后者指向某个函数时，简单的使用``p= 函数名``（当函数名后边没有括号时，编译器将产生指向函数的指针来代替函数。）;调用时，可以用``(*p)(参数)``，或者``p(参数)``。
+
+####61. 利用指向函数的指针可以用来产生菜单项。``void(*file_cmd[])(void) = {new_cmd,open_cmd,close_cmd,exit_cmd};``就是一个菜单函数的封装实例。通过对file_cmd进行下标操作就可以调用相应的函数。
+
+####62. qsort不可以直接调用strcmp进行排序，因此需要下列函数进行辅助：
+
+~~~~{c}
+Int compare_strings(const void *p,const void *q)
+{
+    Return strcmp(*(char **) p,*(char **)q);
+}
+~~~~
+
+####63. static有三个用法：
+1. 声明变量和函数当前文件内有效；
+2. 函数内的变量得以保留并在下次调用时使用；
+3. 使变量初始化为0。
+
+####64. 可以用``extern int toupper(int);``来强制使用函数版本的toupper。
+
+####65. malloc、calloc要和free封装在一个函数内，否则容易在free的时候跳出
+
+####66. assert用在函数检查参数的时候非常方便。如果该函数需要保证参数输入的条件，用assert，这样保证输入参数有问题的时候可以在debug的时候发现，而release版又不会产生性能上的影响。
+
+####67. 函数不能返回auto型的变量，但是可以返回static声明的静态变量。
+
+####68. rigister类型只对块内的变量有效，由于没有地址，因此取地址运算符&是无效的。
+
+####69. 函数的类型只有extern 和static两种，前者加与不加是一样的，后者使得函数只能在本文件内调用。
+
+####70. 对于某个文件内的全局变量，在另一个文件的函数内可以使用extern int i来获得之前的定义的变量。但是此时i在该文件中只有该函数的作用域。
+
+####71. 处理复杂的声明时：始终从内向外读声明；做选择时，始终先[]和（）后是*，越先选取的，就越是它的本质。如：``int *(*x[10])(void);``是
+1. x[10],数组；
+2. *，指向函数的指针数组；
+3. void，指向无参数函数的指针数组；
+4. int *，指向返回整型指针的无参数函数的指针数组。
+
+可以利用typedef来定义中间类型，简化理解过程：
+
+1. typedef int \*Fcn(void);
+2. typedef Fcn \*Fcn_ptr;
+3. typedef Fcn\_ptr Fcn\_ptr\_array[10];
+4. Fcn\_ptr\_array x;
+
+注意不能出现以下情况：
+
+1. int f(int)[];(函数不能返回数组)
+2. int g(int)(int);（函数不能返回函数）
+3. int a\[10\](int);（函数型数组不存在）
+
+####72. 可以用下列技巧来在一个工程中合理的分配公有私有的函数：
+
+~~~~{c}
+#define PUBLIC /*empty*/
+#define PRIVATE static
+~~~~
+
+这样就可以在声明函数的时候用上述修饰符来声明函数的定义范围了。
+
+####73. i>>j的值是i右移j位的结果。如果i是无符号数或非负值，左端补0；i是负值，则由实现定义的。因此最好仅对无符号数移位。
+
+####74. ~0可以得到一个全部数位为1的数字。
+
+####75. &^|优先级低于判等和关系运算符，因此一般使用位运算符都用括号。
+
+####76. 位运算惯用法：
+1. 设置位 ``i |= 0x0010``；
+2. 位清0 ``i &= ~0x0010``;
+3. 测试位 ``if (i & 0x0010)``
+
+####77. 结构体中可以在变量声明的时候在后边加冒号和数字来声明一个位域，如``struct date { unsigned int day:5 ,month: 4, year:7}``.但是使用的时候位域不可以使用&来取地址，因此scanf要先读入到普通变量后再赋值。也可以在位域声明的时候不起名字，起到占位的作用。长度为0的位域则强制下一个位域放在一个存储单元的起始位置(用于对齐)。
+
+####78. 联合常常用来用多种形式显示数字。比如``union int_date {unsigned int i; struct date fd;};``其中date结构体是代码中已经声明过的，size等同int。这样按照date类型存储后可以通过i得到一个int型的数字。
+
+####79. 指定一个指针的地址：如果计算机的指针和长整型一致，则可以直接赋值：``BYTE *p; p = (BYTE*) 0x1000;``如果是实模式的dos程序，则使用``BYTE far *p; p = MK_FP(segment, offset);``
+
+####80. 对于直接从用户输入缓冲得到的字符，需要用volatile 限定符声明中间变量。否则循环中中间变量没有变化过，可能被编译器优化后，使得每次读取中间变量时都是读取第一次的值。用volatile声明后编译器就会强制每次读取p的值时都从内存中重新获取。如：
+```
+while (缓冲区未满) 
+{
+ 等待输入;
+ buffer[i] = *p;
+ if (buffer[i++] == '\n') break;
+}
+```
+此处的p就需要用volatile 声明。
+
+####81. 系统库里的很多函数都用宏重新封装过，如isprint()函数被重新定义为``#define isprint(c)``宏。要使用函数版本而不是宏的时候（比如函数指针），可以用#undef 宏名来取消它的宏定义；也可以用(isprint)(c)来强制个别调用时是函数。
+
+####82. 宏offsetof参数是类型、指定成员，会计算起点到指定成员的字节数。如``struct s {char a;int b[2]; float c;} offset(struct s,a)``的结果为0。
+
+####83. 可以用fflush(fp)来强制让fp指针的状态commit到硬盘。fflush(NULL)可以把所有的文件指针commit。没有错误返回0，有错返回EOF。fp必须处于（1）输出打开（2）为更新打开并且流的最后操作不是读，也就是说，是用来“清理”输出流的。
+
+####84. 使用setvbuf函数必须在stream的任何操作之前使用。
+
+####85. r+、a+、w+在转换读或者写的时候，必须用文件定位函数将读转为写，或者用fflush或文件定位函数将写转为读。
+
+####86. ``filename = tmpnam(NULL);``或者 ``tmpnam(filename)``都可以生成临时的文件名。
+
+####87. Printf类函数完整说明：
+<table>
+<tr>
+<td> </td><td>标志</td><td>最小字段宽度</td><td>精度</td><td>长度修饰符</td><td>转换说明符</td>
+</tr>
+<tr>
+<td>%</td><td>#0</td><td>12</td><td>.5</td><td>L</td><td>g</td>
+</tr>   
+</table>
+*标志*：可选项，允许多余一个。所有标志如下：
+<table>
+<tr>
+<td>标志</td><td>含义</td>
+</tr>
+<tr>
+<td>-</td><td>在字段内左对齐</td>
+</tr>
+<tr>
+<td>+</td><td>以+开头的正符号数</td>
+</tr>
+<tr>
+<td>空格</td><td>空格取代正符号数的+号</td>
+</tr>
+<tr>
+<td>#</td><td>以0开头的八进制数，以0x开头的16进制数。浮点数始终是十进制。不能删除g或者G输出数的尾部0</td>
+</tr>
+<tr>
+<td>0(零)</td><td>用前导0填充宽度。如果是制定了精度的d、i、o、u、x，则忽略前导0</td>
+</tr>
+</table>
+*最小字段宽度*：可选项。如果字符数太少达不到字段宽度最小值，则对字符数量扩充（默认在左侧添加空格）。如果超过字段宽度，则完整的显示。如果宽度是*，则宽度由下一个参数决定。
+
+*精度*：可选项。精度含义依赖于转换说明符：如果转换说明符是d、i、o、u、x、X，则精度表示最少数字位数，少于时左侧加0；如果是e、E、f，那么精度是小数点后的数位；如果是g、G，则表示最大有效位数；如果是s，则表示最大字符数；如果只有小数点，则精度为0；如果是*，则由下一个参数决定。
+
+*长度修饰符*：可选项，h说明是short型的，l是long型的，L说明是long double型的。
+
+*转换说明符*：
+<table>
+<tr>
+<td>转换说明符</td><td>含义</td>
+</tr>
+<tr>
+<td>d、i</td><td>有符号整数的十进制形式</td>
+</tr>
+<tr>
+<td>O、u、x、X</td><td>8进制、10进制、或16进制</td>
+</tr>
+<tr>
+<td>f</td><td>十进制double型</td>
+</tr>
+<tr>
+<td>E、e</td><td>科学计数法的double型</td>
+</tr>
+<tr>
+<td>G、g</td><td>自动选择f还是e</td>
+</tr>
+<tr>
+<td>c</td><td>自动选择f还是e</td>
+</tr>
+<tr>
+<td>s</td><td>字符串输出，达到精度时或者遇到结尾时停止。</td>
+</tr>
+<tr>
+<td>p</td><td>void *型的指针</td>
+</tr>
+<tr>
+<td>n</td><td>匹配的实参必须是指向int的指针。可以和h和l搭配。会将输出的字符数量存储到指针指向的地址而不输出。</td>
+</tr>
+<tr>
+<td>%</td><td>字符%</td>
+</tr>
+</table>
+*示例*：（。表示空格）
+<table>
+<tr>
+<td>转换说明</td><td>对123的结果</td><td>对-123的结果</td>
+</tr>
+<tr>
+<td>%8d</td><td>。。。。。123</td><td>。。。。-123</td>
+</tr>
+<tr>
+<td>%-8d</td><td>123。。。。。</td><td>-123。。。。</td>
+</tr>
+<tr>
+<td>%+8d</td><td>。。。。+123</td><td>。。。。-123</td>
+</tr>
+<tr>
+<td>% 8d</td><td>。。。。。123</td><td>。。。。-123</td>
+</tr>
+<tr>
+<td>%08d</td><td>00000123</td><td>-。。。。123</td>
+</tr>
+<tr>
+<td>%-+8d</td><td>+123。。。。。</td><td>-123。。。。</td>
+</tr>
+<tr>
+<td>%- 8d</td><td>。123。。。。</td><td>-123。。。。</td>
+</tr>
+<tr>
+<td>%+08d</td><td>+0000123</td><td>-0000123</td>
+</tr>
+<tr>
+<td>% 08d</td><td>。0000123</td><td>-0000123</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>转换说明</td><td>对123的结果</td><td>对123.0的结果</td>
+</tr>
+<tr>
+<td>%8o</td><td>。。。。。173</td><td>-</td>
+</tr>
+<tr>
+<td>%#8o</td><td>。。。。0173</td><td>-</td>
+</tr>
+<tr>
+<td>%8x</td><td>。。。。。。7b</td><td>-</td>
+</tr>
+<tr>
+<td>%#8x</td><td>。。。。0x7b</td><td>-</td>
+</tr>
+<tr>
+<td>%8X</td><td>。。。。。。7B</td><td>-</td>
+</tr>
+<tr>
+<td>%#8X</td><td>。。。。0X7B</td><td>-</td>
+</tr>
+<tr>
+<td>%8g</td><td>-</td><td>。。。。。123</td>
+</tr>
+<tr>
+<td>%#8g</td><td>-</td><td>。123。000</td>
+</tr>
+<tr>
+<td>%8G</td><td>-</td><td>。。。。。123</td>
+</tr>
+<tr>
+<td>%#8G</td><td>-</td><td>。123。000</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>转换说明</td><td>对"bogus"的结果</td><td>对"buzzword"的结果</td>
+</tr>
+<tr>
+<td>%6s</td><td>。bogus</td><td>buzzword</td>
+</tr>
+<tr>
+<td>%-6s</td><td>bogus。</td><td>buzzword</td>
+</tr>
+<tr>
+<td>%.4s</td><td>bogu</td><td>buzz</td>
+</tr>
+<tr>
+<td>%6.4s</td><td>。。bogu</td><td>。。buzz</td>
+</tr>
+<tr>
+<td>%-6.4s</td><td>bogu。。</td><td>buzz。。</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>数</td><td>对%.4g产生的结果</td>
+</tr>
+<tr>
+<td>123456</td><td>1.235e+05</td>
+</tr>
+<tr>
+<td>12345.6</td><td>1.235e+04</td>
+</tr>
+<tr>
+<td>1234.56</td><td>1235</td>
+</tr>
+<tr>
+<td>123.456</td><td>123.5</td>
+</tr>
+<tr>
+<td>12.3456</td><td>12.35</td>
+</tr>
+<tr>
+<td>1.23456</td><td>1.235</td>
+</tr>
+<tr>
+<td>0.123456</td><td>0.1235</td>
+</tr>
+<tr>
+<td>0.0123456</td><td>0.01235</td>
+</tr>
+<tr>
+<td>0.00123456</td><td>0.001235</td>
+</tr>
+<tr>
+<td>0.000123456</td><td>0.0001235</td>
+</tr>
+<tr>
+<td>0.0000123456</td><td>0.00001235</td>
+</tr>
+<tr>
+<td>0.00000123456</td><td>0.000001235</td>
+</tr>
+</table>
+<table>
+<tr><td>其它</td></tr>
+<tr><td>printf("%6.4d",i)等价于printf("%*.4d",6,i);printf("%6.*d",4,i);printf("%*.*d",6,4,i);</d></tr>
+<tr>
+<td>printf("%d%n",123,&len);</td><td>输出123</td><td>输出后len==3</td>
+</tr>
+</table>
+
+####88. scanf类完整说明：
+
+scanf类函数在输入失败或者匹配失败的时候会提前返回。返回值是读入并赋值给实参的数据数量。因此可以用``while (scanf("%d",&i) == 1){...}``来循环读取，直到读取失败为止。
+
+格式化串的组成：
+
+*字符\**：可选项。\*出现意味着赋值屏蔽：读入此项，但是不赋值。*匹配的数据项不计入scanf类函数的返回值。
+
+*最大字段宽度*：可选项。限制了输入项字符的数量。如果开始时跳过了空白字符，对空白字符不进行统计。
+
+*h、l和L*：同printf类函数的含义。
+
+转换说明符：
+
+<table>
+<tr>
+<td>转换说明符</td><td>含义</td>
+</tr>
+<tr>
+<td>d</td><td>匹配十进制整数</td>
+</tr>
+<tr>
+<td>i</td><td>匹配整数，假定数是十进制的，除非0开头（8进制），或0x开头</td>
+</tr>
+<tr>
+<td>o</td><td>匹配八进制数，实参为unsigned int 指针</td>
+</tr>
+<tr>
+<td>u</td><td>匹配十进制数，实参为unsigned int 指针</td>
+</tr>
+<tr>
+<td>X、x</td><td>匹配十六进制数，实参为unsigned int 指针</td>
+</tr>
+<tr>
+<td>E、e、f、g、G</td><td>匹配float型</td>
+</tr>
+<tr>
+<td>s</td><td>匹配一序列非空字符串，并在末尾加'\0'</td>
+</tr>
+<tr>
+<td>[</td><td>匹配来自扫描集合的非空字符序列，然后在末尾添'\0'。可以是%[集合]或者%[^集合]，前者匹配集合内的字符，后者匹配集合外的字符。</td>
+</tr>
+<tr>
+<td>c</td><td>匹配其字段宽度的字符数，如果没有字段宽度，则匹配1个</td>
+</tr>
+<tr>
+<td>p</td><td>匹配printf输出相同的指针值</td>
+</tr>
+<tr>
+<td>n</td><td>将目前为止的读入字符数存入此int指针指向的变量，没有输入会匹配，scanf的返回值也不受影响。</td>
+</tr>
+<tr>
+<td>%</td><td>匹配%</td>
+</tr>
+</table>
+
+示例：（。表示空格）
+<table>
+<tr>
+<td>scanf的调用</td><td>输入</td><td>变量</td>
+</tr>
+<tr>
+<td>n = scanf ("%d%d",&i,&j);</td><td><del>12。</del>，。34'\n'</td><td>n:1;i:12;j:?</td>
+</tr>
+<tr>
+<td>n = scanf ("%d,%d",&i,&j);</td><td><del>12</del>。，。34'\n'</td><td>n:1;i:12;j:?</td>
+</tr>
+<tr>
+<td>n = scanf ("%d。,%d",&i,&j);</td><td><del>12。，。34</del>'\n'</td><td>n:1;i:12;j:34</td>
+</tr>
+<tr>
+<td>n = scanf ("%d,。%d",&i,&j);</td><td><del>12</del>。，。34'\n'</td><td>n:1;i:12;j:?</td>
+</tr>
+<tr>
+<td>n = scanf ("%*d%d",&i);</td><td><del>12。34</del>'\n'</td><td>n:1;i:34</td>
+</tr>
+<tr>
+<td>n = scanf ("%*s%s", str);</td><td><del>My。Fair</del>。Lady'\n'</td><td>n:1;str:"Fair"</td>
+</tr>
+<tr>
+<td>n = scanf ("%1d%2d%3d",&i,&j,&k);</td><td><del>12345</del>'\n'</td><td>n:3;i:1;j:23;k:45;</td>
+</tr>
+<tr>
+<td>n = scanf ("%2d%2s%2d",&i,str,&k);</td><td><del>123456</del>'\n'</td><td>n:3;i:12;str:"34";k:56;</td>
+</tr>
+<tr>
+<td>n = scanf ("%i%i%i",&i,&j,&k);</td><td><del>12。012。0x12</del>'\n'</td><td>n:3;i:12;j:10;k:18;</td>
+</tr>
+<tr>
+<td>n = scanf ("%[0123456789]",str);</td><td><del>123</del>abc'\n'</td><td>n:1;str:"123";</td>
+</tr>
+<tr>
+<td>n = scanf ("%[0123456789]",str);</td><td>abc123'\n'</td><td>n:0;str:?</td>
+</tr>
+<tr>
+<td>n = scanf ("%[^0123456789]",str);</td><td><del>abc</del>123'\n'</td><td>n:1;str:"abc";</td>
+</tr>
+<tr>
+<td>n = scanf ("%*d%d%n",&i,&j);</td><td><del>10。20</del>。30'\n'</td><td>n:1;i:20;j:5</td>
+</tr>
+</table>
+
+####89. 如上所述，``scanf ("%[^\n]",str);``可以轻松得到一行文字。
+
+####90. ``ungetc(ch,fp);``可以轻松回退一次上次的getc操作，只保证第一次ungetc的调用是成功的。注意，getc所保存的应当是int型数据，否则``(ch = getc(fp)) ！= EOF`` 可能会导致错误的结果。
+
+####91. ftell(fp)函数中fp如果是文本流，则返回的值不一定是字节计数，因此最好不要进行算术运算。
+
+####92. 可以用sprintf和sscanf对字符串进行读写操作。比如``sprintf(str,"%d",i);``sscanf则实现了对一次输入的多重检测读取，如：
+
+~~~~{c}
+if(sscanf(str,"%d /%d/%d", &month,&day,&year) == 3)
+    printf("Month: %d, day: %d, year: %d\n",month,day,year);
+else if (sscanf(str,"%d -%d -%d", &month,&day,&year) == 3)
+    printf("Month: %d, day: %d, year: %d\n",month,day,year);
+else
+    printf("Date not in the proper form.\n");
+~~~~
+
+####93. 可以将格式化串和问号表达式一起用，比如printf(num > 1 ? "%d apples.":"%d apple.",num);
+
+####94. 库的宏定义范围：&lt;float.h&gt;浮点型的特性；&lt;limits.h&gt;整值类型的大小；&lt;math.h&gt;数学计算（出错时多数会写入errno变量中），其中包含fmod（5.5,2.2） = 1.1；
+
+####95. size\_t strxfrm(char *s1, const char *s2, size_t n);该函数将s2转换后存在s1，返回转换后的字符数量。一般都是用两次：
+
+~~~~{c}
+size_t len;
+char *transformed;
+len = strxfrm(NULL, original, 0);
+transformed = malloc(len+1);
+strxfrm(transformed, original, len);
+~~~~
+
+####96. strpbrk函数用来查找第一个参数中与第二个参数中任意一个字符相匹配的最左边的一个字符；strspn和strcspn会返回一个表示字符串中特定位置的整数(size_t类型)，strspn返回第一个不属于给定字符集的字符下标；strcspn函数返回第一个属于给定字符集中的字符下标，如：
+
+~~~~{c}
+size_t len;
+char str[] = "Form follows function.";
+len = strspn(str, "morF");	/*len=4*/
+len = strspn(str," \t\n";	/*len=0*/
+len = strcspn(str, "morF");	/*len=0*/
+len = strcspn(str, " \t\n");	/*len=4*/
+~~~~
+
+####97. memset可以将数组全初始化为0，但是对于浮点数、结构体等，不是memset可以完全置0；
+
+####98. &lt;assert.h&gt;可以使用\#define NODEBUG禁用assert
+
+####99. &lt;errno.h&gt;errno变量用来存储数学函数错误。EDOM表示定义域错误，ERANGE表示值域错误，通常是太大。
+
+####100. &lt;signal.h&gt;``void (*signal(int sig, void (*func)(int)))(int);``作用是用自定义的func函数替换原先与sig相对性的函数。返回值是原先的函数指针。除非是abort或者raise函数引发的signal，否则不要用库函数，或者试图使用一个静态存储期限的变量。从处理函数返回时程序将从信号发生点继续运行，除了信号SIGABRT（终止程序），和SIGFPE（未定义）。信号处理完毕后，除非处理函数重新安装，否则该信号不会被同一函数再次处理。因此可以在返回之前再用signal函数重新安装。SIGSEGV表示段错误，调试时应该很有用。
+
+####101. 在字符串中小心放置??。如果要放置??，可以用?\?来代替。否则会被认为是三字符序列。
+
+####102. 任意程序开始时都隐含执行``setlocale(LC_ALL,"C");``如果运行``setlocale(LC_ALL,NULL);``则会返回当前区域设置。对于宽字符常量需要用L修饰，如L"abc"。
+
+####103. 用来检测多字符和宽字符：
+
+~~~~{c}
+int mbcheck`(const char *s)
+{
+    int n;
+    for (mblen(NULL, 0) ; ; s += n)
+    if ((n = mblen(s, MB_CUR_MAX)) <= 0)
+    return n;
+}
+
+int wccheck(wchar_t *wcs)
+{
+    char buf[MB_LEN_MAX];
+    int n;
+    for(wctomb (NULL,0) ; ; ++wcs)
+        if ((n = wactomb(buf, *wcs)) <= 0)
+            return -1;
+        else if (buf[n -1] == '\0')
+            return 0;
+}
+~~~~
+
+``wctomb (NULL,0)``这个函数是用来初始化多字符状态的。
+
+mbstowcs和wcstombs可以转换字符串，返回修改字符串的个数。
+
+####104. &lt;stdarg.h&gt;提供的三种宏可以视为三个函数：
+
+~~~~{c}
+void va_start(va_list ap, parmN);
+类型 va_arg(va_list ap, 类型);
+void va_end(va_list ap);
+~~~~
+
+通过第一个函数设置valist的可变参数是从哪里开始；第二个函数是从valist中返回下一个参数（不必手动增加，每次调用会自增），其类型为指定类型；第三个参数结束参数的调用，此时方可返回。声明函数时使用``int max(int n,...)``即可。
+
+####105. &lt;stdlib.h&gt;对于相同的种子，srand()将生成相同的随机数列。rand()函数获得随机数列的下一个值。选择1作为种子值和没有指明种子值是一样的。
+
+####106. 可以通过atexit(函数名)来指定退出时自动调用的方法。
+
+####107. getenv函数会返回指定字串在操作系统中某个字符串的意义，比如PATH。该结果储存在静态空间中，稍后函数调用时会改变。system用来执行外部命令，如果命令为空指针，则对命令环境测试，如果命令处理程序有效，则返回非0值。
+
+####108. 搜索和排序：
+
+~~~~{c}
+void *bsearch(const void *key, const void *base,size_t nmemb, size_t size, int (*compar)(const void *, const void *,));
+
+void qsort (void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *));
+~~~~
+
+####109. /和%与实现有关，因此可以用div和ldiv代替，前者用于整型，后者用于长整型。返回div_t类型，可用quot和rem求商和余数。效率是使用它们而不是/和%的原因，因为可以在一个指令里计算出两个结果。
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<h4 id="1scanfcchr">1. 为了跳过之前的回车，可以使用<code>scanf(“空格%c”,&amp;chr);</code>，其中的空格可以跳过零个或者若干个空白字符，包括换行、换页、行制表符、列制表符、空格</h4>
+
+<h4 id="22fg">2. 为了打印出小数点后两位数字，"%.2f"来输出。为了打印出自然书写格式的的浮点数字，可以用%g。</h4>
+
+<h4 id="3001770x0x7fffintlu">3. 整型常量：八进制和十六进制没有负数常量。书写为：八进制：0开头，如0177；十六进制：0x开头，如0x7fff。默认属于int型，可以在后边添加L、U表示长整型、无符号型。为了输出负数八进制或十六进制，可以用下列方法：</h4>
+
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">if</span><span class="token punctuation">(</span> i <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token function">printf<span class="token punctuation">(</span></span><span class="token string">"-%x"</span><span class="token punctuation">,</span><span class="token operator">-</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">else</span>
+    <span class="token function">printf<span class="token punctuation">(</span></span><span class="token string">"%x"</span><span class="token punctuation">,</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+
+<h4 id="4fllongdoubledoublelfflongdoublelf">4. 浮点型常量：默认以双精度浮点形式存储。后缀F、L表示单精度浮点型或者long double型。在读取double型时用%lf，输出时%f；读取或者输出long double型时用%Lf。</h4>
+
+<h4 id="533033escx1bx">5. 转义序列：连续的??要用\?来输出问号，否则会认为是三字符序列。八进制转义序列用\33或者\033表示ESC；十六进制转义序列用\x1B。x必须小写。</h4>
+
+<h4 id="6charsignedunsigned128">6. 如果用char来存储较小的整型时，必须用signed或者unsigned来声明是否带有符号位。（否则会在自动扩展时出现问题，比如大于128的数字变成负数）</h4>
+
+<h4 id="7">7.</h4>
+
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token function">getchar<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token string">'\n'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">/</span>\<span class="token operator">*</span>来跳过一行的输入\<span class="token operator">*</span><span class="token operator">/</span>
+
+<span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token function">getchar<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">' '</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">/</span>\<span class="token operator">*</span>来跳过空格的输入\<span class="token operator">*</span><span class="token operator">/</span>``
+</code></pre>scanf()后边如果再使用getchar时要注意，scanf后边输入的\n是会被getchar所读取的，一般是所不希望的。
+
+####8. sizeof()运算符一定要将所求目标用括号选中，否则容易出错。（sizeof运算符的优先等级高于二元运算符）。另一方面，返回值为无符号整型，容易在赋值到整型时溢出。
+
+####9. 同样，-10&lt;(unsigned int) 10的结果是假。
+
+####10. 运算时溢出，即便结果是由更大范围的类型来保存依然会溢出。如：
+
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">long</span> <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+<span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">1000</span><span class="token punctuation">;</span>
+i <span class="token operator">=</span> j <span class="token operator">*</span> j<span class="token comment" spellcheck="true">;//先溢出，再转换类型
+</span></code></pre>
+
+<h4 id="11100">11. 使用数组的时候一定要避免从1开始。能从0开始就一定要从0开始，否则容易产生难以察觉的错误。</h4>
+
+<h4 id="12aibib1a2">12. 数组下标使用++等带有作用的运算时要小心。如a[i] = b[i++]在不同电脑的实现是不同的，可能会成为b[1] = a[2]。</h4>
+
+<h4 id="13memcpyabsizeofastringh">13. 数组间的赋值：<code>memcpy(a, b, sizeof(a));</code>它比循环速度快。来自<string.h>。</string.h></h4>
+
+<h4 id="14">14. 函数不能返回数组。</h4>
+
+<h4 id="15unsignedlongint">15. 如果函数返回的类型非常长（如unsigned long int），那么有必要把返回类型单独放在一行</h4>
+
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">unsigned</span> <span class="token keyword">long</span> <span class="token keyword">int</span>
+<span class="token function">average<span class="token punctuation">(</span></span><span class="token keyword">float</span> a<span class="token punctuation">,</span> <span class="token keyword">float</span> b<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+<span class="token keyword">return</span> <span class="token punctuation">(</span> a <span class="token operator">+</span> b<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+<h4 id="16voidprintfhimmmmn">16. 在有返回值的函数需要丢弃返回值时，可以强制转换来明确表示丢弃，比如<code>(void) printf(”Hi,MMMM……\n“);</code>来表示丢弃返回值。</h4>
+
+<h4 id="17voidreturn">17. 在void 引导的函数中可以用<code>return;</code>来随时退出函数。</h4>
+
+<h4 id="18">18. 每个函数定义前都要有盒型注释，要求给出函数名、函数的目的、讨论每个形式参数的含义、描述返回值和罗列任何的副作用。（如会改变某个参数等）</h4>
+
+<h4 id="19constconstvoidfconstintppvoidfintconstpppvoidfconstintconstpconstvoidfintaa">19. 函数中用const来保护不需要修改的参数。在指针、数组类型中使用const要注意，如<code>void f(const int *p)</code>表示p所指向的数字不能改变。如果是<code>void f(int * const p)</code>则表示p指向的数字可以改变，但是p不可以改变。可以出现void f(const int * const p)来表示指针和指针指向的数字都不可变。如果不用const，即便是void f(int a[])中a也相当于指针，也可以改变的。</h4>
+
+<h4 id="20pa10p5a5">20. 指针可以当作数组名使用。如<code>*p = a[10]</code>,则p[5] 等价于 a[5]；</h4>
+
+<h4 id="21a1010aa">21. 多维数组名作为指针时要小心。如a[10][10]中a相当于 **a。</h4>
+
+<h4 id="22inta10i5aiiaaaa">22. Int a[10],i = 5；使用时a[i]和i[a]是一样的，但是千万别混着使用。函数参数中a[]和*a是一样的，但是*a更为通用。</h4>
+
+<h4 id="23printfppp">23. 可以用printf("%p",p);来显示p指针地址。</h4>
+
+<h4 id="2412341234316">24. 字符串里面的转义序列要小心使用。比如八进制的转义序列在三个数字或者第一个非八进制数字处结束，\1234 实际是\123和4。十六进制数的转义序列不限制为3个数字，而是到第一个非16进制数字截至。</h4>
+
+<h4 id="25">25.  如果字符串太长，不能在一行内放置，可以使用\来延长。\要求之后没有除回车外的字符，下一行要顶头开始。如：</h4>
+
+<pre class=" language-c"><code class=" language-c">    <span class="token function">printf<span class="token punctuation">(</span></span>“Put a \
+disk into drive a\n”<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+
+<p>不过会打乱缩进。还好C语言标准规定，只要两个字符串中间都是空白字符，则将两个字符串合并，如：</p>
+
+<pre class=" language-c"><code class=" language-c">    <span class="token function">printf<span class="token punctuation">(</span></span><span class="token string">"Put a "</span>
+
+    <span class="token string">"disk into drive a\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+
+<h4 id="26cabc1">26. C语言允许对字符串加下标，如"abc"[1]。这个特性使得字符串常量也可能改变，如</h4>
+
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">char</span> <span class="token operator">*</span>p <span class="token operator">=</span> <span class="token string">"abc"</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token operator">*</span>p <span class="token operator">=</span> <span class="token string">'x'</span><span class="token punctuation">;</span>
+</code></pre>但是这种特性会对程序造成不可预知的后果（如果编译器对同样的字符串是压缩存储，这将导致其它字符串可能变化）。但是下标还有一个很好的使用方法，如：``return "0123456789ABCDEF"[digit];``这句话可以简单地将十进制的数字转化为十六进制的字符。
+
+####27. 如果初始化字符串的长度和其本身长度一致时，编译器不会在后边加上'0'，也就不会破坏之后的数据。如：``Char str[7] = "srpsrp!",ch;``中，
+Ch的值是不确定的，而不是'\0'。这条仅知道即可。
+
+####28. 如果只显示字符串的一部分，则使用%.xs。如：
+
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">char</span> str<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"123456789"</span><span class="token punctuation">;</span>
+<span class="token function">printf<span class="token punctuation">(</span></span><span class="token string">"%.3s"</span><span class="token punctuation">,</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+
+<p>将显示123。</p>
+
+<h4 id="29putsstr">29. <code>puts(str);</code>将在输出字符串后强制输出一个换行。</h4>
+
+<h4 id="30scanfgets">30. 用scanf输入的字符永远不包括空白字符(空格、回车、换行、换页、换表格等)。gets则到回车才停止，并忽略回车。</h4>
+
+<h4 id="31scanfnsn">31. scanf天生不是安全的，它可能会溢出数组。使用％ns会更安全，n指读入的最大字符数。</h4>
+
+<h4 id="32strcpystrcpystr2strcpystr11234">32. strcpy 的返回值在较大的表达式中比较有用。如strcpy(str2,strcpy(str1,”1234”));</h4>
+
+<h4 id="33charplanetsmercuryvenusearthmarsjupitersaturnuranusneptuneplutoplanets981mars">33. 在空间敏感的程序中使用字符数组，可以使用<code>char *planets[] = {"Mercury","Venus","Earth","Mars","Jupiter","Saturn","Uranus","Neptune","Pluto"},</code>这样里面每一个字符串都只有本身的长度，而不是定长的。如果是定长数组（planets[9][81]），那会浪费不少空间，如Mars后边会空很多。</h4>
+
+<h4 id="34cargvargc">34. C程序的命令行中始终有一个空指针，即argv[argc]。</h4>
+
+<h4 id="35printfscanf">35. printf和scanf的第一个参数是字符串，并不只是字符串常量。因此可以实现下面的代码：</h4>
+
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">char</span> fmt <span class="token operator">=</span> <span class="token string">"%d\n"</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+<span class="token function">printf<span class="token punctuation">(</span></span>fmt<span class="token punctuation">,</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+
+<p>因此可以读入fmt，然后再用fmt作为格式化串输入。</p>
+
+<h4 id="36">36. #运算符在预处理时可以将宏的参数转换为字符串字面量。比如:</h4>
+
+<p><code>#define PRINT_INT(x)  printf(#x " = %d\n",x)</code>,将使PRINT_INT(var)输出为<code>var = 13\n</code>。</p>
+
+<h4 id="37definemk_idninintmk_id1mk_id2inti1i2">37. ##运算符在预处理时可以将两个记号合成一个记号。如<code>#define MK_ID(n) i##n</code>在<code>int MK_ID(1), MK_ID(2)</code>中等同于<code>int i1, i2</code>。</h4>
+
+<h4 id="38c">38. 在宏定义中缺少圆括号会导致C语言中最让人讨厌的错误。程序通常仍然可以编译通过，而且宏似乎也可以正常工作，但在某些情况下会出错。</h4>
+
+<h4 id="39">39. 一些预定义的宏：</h4>
+
+<pre><code>__LINE__    被编译的文件的行数
+
+__FILE__    被编译的文件的名字
+
+__DATE__    编译的日期
+
+__TIME__    编译的时间
+
+__STDC__    如果编译器接受标准C，那么为1
+</code></pre>
+
+<h4 id="40defined10ififdefineddebugendif">40. defined运算符引用于标识符时，如果标识符是一个定义过的宏返回1，否则返回0。通常与if结合使用，如 <code>#if defined(DEBUG)…#endif</code>。条件编译常用于保护头文件以避免重复包含。</h4>
+
+<h4 id="41linelinenn132767linen__line__">41. #line指令用来给程序代码编号。如<code>#line n</code>(n介于1和32767)，<code>#line n "文件名"</code>。它可以改变<code>__LINE__</code>宏。</h4>
+
+<h4 id="42">42. 宏的使用必须谨慎小心，建议仅在常量不止一次使用，或者常量可能的使用方式变化的时候使用。</h4>
+
+<h4 id="43defineconcatxyxyconcatabconcataconcatbcaconcatbcabcaconcat">43. ##运算符不能嵌套使用。比如<code>#define CONCAT(x,y) x##y</code>在<code>CONCAT(a,b)</code>时可以用，但是在<code>CONCAT(a,CONCAT(b,c));</code>时将成为<code>aCONCAT(b,c)</code>,而不是abc，因为没有名为<code>aCONCAT</code>的宏。</h4>
+
+<h4 id="44externintiii">44. <code>extern int i;</code>提示编译器i是程序中其他位置定义的，因此不为i分配空间。</h4>
+
+<h4 id="45ifndefendif">45. 为了防止头文件多次包含，用<code>#ifndef</code>和<code>#endif</code>把文件的内容括起来，来保护。如：</h4>
+
+<pre class=" language-c"><code class=" language-c">boolean<span class="token punctuation">.</span>h
+<span class="token property">#ifndef    BOOLEAN_H</span>
+<span class="token property">#define    BOOLEAN_H</span>
+<span class="token property">#define    TRUE    1</span>
+<span class="token property">#define    FALSE   0</span>
+<span class="token keyword">typedef</span>    <span class="token keyword">int</span> Bool<span class="token punctuation">;</span>
+#endif
+</code></pre>
+
+<h4 id="46">46. 划分源文件的规则：</h4>
+
+<p>把每组函数的集合放入单独的源文件，在与源文件同名的头文件中放置函数原型（以及使用这些函数所需要的定义和头文件），每个调用源文件的文件都要包括相应的头文件，这样编译器就可以检验原型和定义是否一致。</p>
+
+<h4 id="47structpart2part1">47. Struct可以使用赋值运算：<code>part2 = part1</code>。通常利用这个特性来实现数组的赋值：</h4>
+
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">struct</span> <span class="token punctuation">{</span><span class="token keyword">int</span> a<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token punctuation">}</span>a1<span class="token punctuation">,</span>a2<span class="token punctuation">;</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+a1 <span class="token operator">=</span> a2<span class="token punctuation">;</span>
+</code></pre>
+
+<p>但是不能使用a1 == a2来判断两者是否相等。</p>
+
+<h4 id="48">48. 为了能对两个结构使用=赋值，两者不仅仅需要定义一致，还需要结构标记一致或者使用共同的类型。比如</h4>
+
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">struct</span> example<span class="token punctuation">{</span><span class="token keyword">int</span> a<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token punctuation">}</span> a1<span class="token punctuation">;</span> 
+<span class="token keyword">struct</span> example a2<span class="token punctuation">;</span>
+</code></pre>
+
+<p>或者 </p>
+
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span><span class="token keyword">int</span> a<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token punctuation">}</span> example<span class="token punctuation">;</span> 
+example a1<span class="token punctuation">;</span> 
+example a2<span class="token punctuation">;</span>
+</code></pre>
+
+<p>（a1 和 a2可以是出现在不同位置的结构，如两个函数中。为了使用=，但是定义位置不同，所以要用上述两种方法解决问题）。</p>
+
+<h4 id="49">49.</h4>
+
+<pre class=" language-c"><code class=" language-c"> Struct part <span class="token punctuation">{</span><span class="token keyword">int</span> a<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token punctuation">}</span> a1<span class="token punctuation">;</span>
+<span class="token keyword">int</span> part<span class="token punctuation">;</span>
+</code></pre>是合法的，但是为了避免结构体part和整型变量part混淆，尽量不要使用。
+
+####50. 在结构中使用联合可以节省大量空间。比如同一个数组保存三类不同物品的信息时，可以将三类物品的定义整合为联合。为了区别表示其中保存的物品，可以在结构定义一个枚举变量来表明联合中存储的类型。如
+
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">struct</span><span class="token punctuation">{</span>
+<span class="token keyword">enum</span> <span class="token punctuation">(</span>INT_KIND<span class="token punctuation">,</span>FLOAT_KIND<span class="token punctuation">)</span> kind<span class="token punctuation">;</span>
+    <span class="token keyword">union</span><span class="token punctuation">{</span><span class="token keyword">int</span> i<span class="token punctuation">;</span> <span class="token keyword">float</span> t<span class="token punctuation">;</span><span class="token punctuation">}</span> u<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> number<span class="token punctuation">;</span>
+</code></pre>
+
+<p>可以通过number.kind确定存储的是整形还是实型变量，再提取number.u.i或者number.u.t。</p>
+
+<h4 id="51mallocmallocsizeofmallocsizeofstruct">51. 使用malloc来动态分配结构时，不要使用<code>malloc(sizeof(结构指针))</code>，而是<code>malloc(sizeof(struct 名字))</code>；</h4>
+
+<h4 id="52">52. 对于结构体不能使用==的一点补充，就是不可以对结构体按字节来对比。因为结构内部可能有空洞，对于它们而言，内部可以储存不同的数字。因此相同的结构按字节对比的结果可能不同，必须使用按成员的方式对比。</h4>
+
+<h4 id="53pelementpp">53. 使用结构联合和枚举类型的指针时，访问子元素时一定要用(*p).element。包括当被指向的单元自增时使用(*p)++，指针自加使用p++。</h4>
+
+<h4 id="54callocmalloccalloc1calloc">54. calloc函数会清除分配的内存，而malloc不会。有时需要用calloc为非空数组分配空间。通过调用1为第一个实际参数的calloc函数，可以为任何类型数据项分配空间：</h4>
+
+<p><code>p = calloc(1，sizeof(struct point));</code></p>
+
+<h4 id="55reallocmalloccallocrealloc">55. realloc的指针参数必须是来自malloc，calloc或者realloc生成的指针。如果不是这样，程序可能会行为异常。</h4>
+
+<h4 id="56realloc">56. realloc的准则：</h4>
+
+<ol>
+<li>realloc不会初始化扩展的内存空间。</li>
+<li>如果realloc不能扩展，原指针会变空指针。</li>
+<li>如果realloc函数调用时以空指针作为第一个实际参数，那么行为就像malloc。</li>
+<li>realloc函数的第二个参数如果是0，那么行为如同free。</li>
+</ol>
+
+<h4 id="57reallocrealloc">57. 一旦realloc函数返回，需要将指向本内存块的所有指针进行更新，因为realloc函数可能把原内存空间移动到了其他地方的内存。</h4>
+
+<h4 id="58">58. 释放内存块时一定要谨慎小心，避免几个指针都指向同一个内存块，此时很容易有悬空指针。</h4>
+
+<h4 id="59structnodenew_nodenew_nodemallocsizeofstructnodenew_nodemallocsizeofnew_node">59. 如果有<code>struct node *new_node;</code>要分配空间时要使用<code>new_node = malloc(sizeof (struct node));</code>而不是<code>new_node = malloc(sizeof (new_node));</code>,后者只分配了一个指针的空间，而不是一个结构的空间。</h4>
+
+<h4 id="60intpintpppp">60.<code>int *p(...)</code>和<code>int (*p)(....)</code>不同，前者是返回指针的函数，后者是指向函数的指针。需要后者指向某个函数时，简单的使用<code>p= 函数名</code>（当函数名后边没有括号时，编译器将产生指向函数的指针来代替函数。）;调用时，可以用<code>(*p)(参数)</code>，或者<code>p(参数)</code>。</h4>
+
+<h4 id="61voidfile_cmdvoidnew_cmdopen_cmdclose_cmdexit_cmdfile_cmd">61. 利用指向函数的指针可以用来产生菜单项。<code>void(*file_cmd[])(void) = {new_cmd,open_cmd,close_cmd,exit_cmd};</code>就是一个菜单函数的封装实例。通过对file_cmd进行下标操作就可以调用相应的函数。</h4>
+
+<h4 id="62qsortstrcmp">62. qsort不可以直接调用strcmp进行排序，因此需要下列函数进行辅助：</h4>
+
+<pre class=" language-c"><code class=" language-c">Int <span class="token function">compare_strings<span class="token punctuation">(</span></span><span class="token keyword">const</span> <span class="token keyword">void</span> <span class="token operator">*</span>p<span class="token punctuation">,</span><span class="token keyword">const</span> <span class="token keyword">void</span> <span class="token operator">*</span>q<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Return <span class="token function">strcmp<span class="token punctuation">(</span></span><span class="token operator">*</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span><span class="token punctuation">)</span> p<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span><span class="token punctuation">)</span>q<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+<h4 id="63static">63. static有三个用法：</h4>
+
+<ol>
+<li>声明变量和函数当前文件内有效；</li>
+<li>函数内的变量得以保留并在下次调用时使用；</li>
+<li>使变量初始化为0。</li>
+</ol>
+
+<h4 id="64externinttoupperinttoupper">64. 可以用<code>extern int toupper(int);</code>来强制使用函数版本的toupper。</h4>
+
+<h4 id="65malloccallocfreefree">65. malloc、calloc要和free封装在一个函数内，否则容易在free的时候跳出</h4>
+
+<h4 id="66assertassertdebugrelease">66. assert用在函数检查参数的时候非常方便。如果该函数需要保证参数输入的条件，用assert，这样保证输入参数有问题的时候可以在debug的时候发现，而release版又不会产生性能上的影响。</h4>
+
+<h4 id="67autostatic">67. 函数不能返回auto型的变量，但是可以返回static声明的静态变量。</h4>
+
+<h4 id="68rigister">68. rigister类型只对块内的变量有效，由于没有地址，因此取地址运算符&amp;是无效的。</h4>
+
+<h4 id="69externstatic">69. 函数的类型只有extern 和static两种，前者加与不加是一样的，后者使得函数只能在本文件内调用。</h4>
+
+<h4 id="70externintii">70. 对于某个文件内的全局变量，在另一个文件的函数内可以使用extern int i来获得之前的定义的变量。但是此时i在该文件中只有该函数的作用域。</h4>
+
+<h4 id="71intx10void">71. 处理复杂的声明时：始终从内向外读声明；做选择时，始终先[]和（）后是*，越先选取的，就越是它的本质。如：<code>int *(*x[10])(void);</code>是</h4>
+
+<ol>
+<li>x[10],数组；</li>
+<li>*，指向函数的指针数组；</li>
+<li>void，指向无参数函数的指针数组；</li>
+<li>int *，指向返回整型指针的无参数函数的指针数组。</li>
+</ol>
+
+<p>可以利用typedef来定义中间类型，简化理解过程：</p>
+
+<ol>
+<li>typedef int *Fcn(void);</li>
+<li>typedef Fcn *Fcn_ptr;</li>
+<li>typedef Fcn_ptr Fcn_ptr_array[10];</li>
+<li>Fcn_ptr_array x;</li>
+</ol>
+
+<p>注意不能出现以下情况：</p>
+
+<ol>
+<li>int f(int)[];(函数不能返回数组)</li>
+<li>int g(int)(int);（函数不能返回函数）</li>
+<li>int a[10](int);（函数型数组不存在）</li>
+</ol>
+
+<h4 id="72">72. 可以用下列技巧来在一个工程中合理的分配公有私有的函数：</h4>
+
+<pre class=" language-c"><code class=" language-c"><span class="token property">#define PUBLIC </span><span class="token comment" spellcheck="true">/*empty*/</span>
+<span class="token property">#define PRIVATE static</span>
+</code></pre>
+
+<p>这样就可以在声明函数的时候用上述修饰符来声明函数的定义范围了。</p>
+
+<h4 id="73ijiji0i">73. i&gt;&gt;j的值是i右移j位的结果。如果i是无符号数或非负值，左端补0；i是负值，则由实现定义的。因此最好仅对无符号数移位。</h4>
+
+<h4 id="74t01">74. ~0可以得到一个全部数位为1的数字。</h4>
+
+<h4 id="75">75. &amp;^|优先级低于判等和关系运算符，因此一般使用位运算符都用括号。</h4>
+
+<h4 id="76">76. 位运算惯用法：</h4>
+
+<ol>
+<li>设置位 <code>i |= 0x0010</code>；</li>
+<li>位清0 <code>i &amp;= ~0x0010</code>;</li>
+<li>测试位 <code>if (i &amp; 0x0010)</code></li>
+</ol>
+
+<h4 id="77structdateunsignedintday5month4year7scanf0">77. 结构体中可以在变量声明的时候在后边加冒号和数字来声明一个位域，如<code>struct date { unsigned int day:5 ,month: 4, year:7}</code>.但是使用的时候位域不可以使用&amp;来取地址，因此scanf要先读入到普通变量后再赋值。也可以在位域声明的时候不起名字，起到占位的作用。长度为0的位域则强制下一个位域放在一个存储单元的起始位置(用于对齐)。</h4>
+
+<h4 id="78unionint_dateunsignedintistructdatefddatesizeintdateiint">78. 联合常常用来用多种形式显示数字。比如<code>union int_date {unsigned int i; struct date fd;};</code>其中date结构体是代码中已经声明过的，size等同int。这样按照date类型存储后可以通过i得到一个int型的数字。</h4>
+
+<h4 id="79byteppbyte0x1000dosbytefarppmk_fpsegmentoffset">79. 指定一个指针的地址：如果计算机的指针和长整型一致，则可以直接赋值：<code>BYTE *p; p = (BYTE*) 0x1000;</code>如果是实模式的dos程序，则使用<code>BYTE far *p; p = MK_FP(segment, offset);</code></h4>
+
+<h4 id="80volatilevolatilep">80. 对于直接从用户输入缓冲得到的字符，需要用volatile 限定符声明中间变量。否则循环中中间变量没有变化过，可能被编译器优化后，使得每次读取中间变量时都是读取第一次的值。用volatile声明后编译器就会强制每次读取p的值时都从内存中重新获取。如：</h4>
+
+<pre><code>while (缓冲区未满) 
+{
+ 等待输入;
+ buffer[i] = *p;
+ if (buffer[i++] == '\n') break;
+}
+</code></pre>
+
+<p>此处的p就需要用volatile 声明。</p>
+
+<h4 id="81isprintdefineisprintcundefisprintc">81. 系统库里的很多函数都用宏重新封装过，如isprint()函数被重新定义为<code>#define isprint(c)</code>宏。要使用函数版本而不是宏的时候（比如函数指针），可以用#undef 宏名来取消它的宏定义；也可以用(isprint)(c)来强制个别调用时是函数。</h4>
+
+<h4 id="82offsetofstructscharaintb2floatcoffsetstructsa0">82. 宏offsetof参数是类型、指定成员，会计算起点到指定成员的字节数。如<code>struct s {char a;int b[2]; float c;} offset(struct s,a)</code>的结果为0。</h4>
+
+<h4 id="83fflushfpfpcommitfflushnullcommit0eoffp12">83. 可以用fflush(fp)来强制让fp指针的状态commit到硬盘。fflush(NULL)可以把所有的文件指针commit。没有错误返回0，有错返回EOF。fp必须处于（1）输出打开（2）为更新打开并且流的最后操作不是读，也就是说，是用来“清理”输出流的。</h4>
+
+<h4 id="84setvbufstream">84. 使用setvbuf函数必须在stream的任何操作之前使用。</h4>
+
+<h4 id="85rawfflush">85. r+、a+、w+在转换读或者写的时候，必须用文件定位函数将读转为写，或者用fflush或文件定位函数将写转为读。</h4>
+
+<h4 id="86filenametmpnamnulltmpnamfilename">86. <code>filename = tmpnam(NULL);</code>或者 <code>tmpnam(filename)</code>都可以生成临时的文件名。</h4>
+
+<h4 id="87printf">87. Printf类函数完整说明：</h4>
+
+<table>
+<tbody><tr>
+<td> </td><td>标志</td><td>最小字段宽度</td><td>精度</td><td>长度修饰符</td><td>转换说明符</td>
+</tr>
+<tr>
+<td>%</td><td>#0</td><td>12</td><td>.5</td><td>L</td><td>g</td>
+</tr>   
+</tbody></table>
+
+<p><em>标志</em>：可选项，允许多余一个。所有标志如下：</p>
+
+<table>
+<tbody><tr>
+<td>标志</td><td>含义</td>
+</tr>
+<tr>
+<td>-</td><td>在字段内左对齐</td>
+</tr>
+<tr>
+<td>+</td><td>以+开头的正符号数</td>
+</tr>
+<tr>
+<td>空格</td><td>空格取代正符号数的+号</td>
+</tr>
+<tr>
+<td>#</td><td>以0开头的八进制数，以0x开头的16进制数。浮点数始终是十进制。不能删除g或者G输出数的尾部0</td>
+</tr>
+<tr>
+<td>0(零)</td><td>用前导0填充宽度。如果是制定了精度的d、i、o、u、x，则忽略前导0</td>
+</tr>
+</tbody></table>
+
+<p><em>最小字段宽度</em>：可选项。如果字符数太少达不到字段宽度最小值，则对字符数量扩充（默认在左侧添加空格）。如果超过字段宽度，则完整的显示。如果宽度是*，则宽度由下一个参数决定。</p>
+
+<p><em>精度</em>：可选项。精度含义依赖于转换说明符：如果转换说明符是d、i、o、u、x、X，则精度表示最少数字位数，少于时左侧加0；如果是e、E、f，那么精度是小数点后的数位；如果是g、G，则表示最大有效位数；如果是s，则表示最大字符数；如果只有小数点，则精度为0；如果是*，则由下一个参数决定。</p>
+
+<p><em>长度修饰符</em>：可选项，h说明是short型的，l是long型的，L说明是long double型的。</p>
+
+<p><em>转换说明符</em>：</p>
+
+<table>
+<tbody><tr>
+<td>转换说明符</td><td>含义</td>
+</tr>
+<tr>
+<td>d、i</td><td>有符号整数的十进制形式</td>
+</tr>
+<tr>
+<td>O、u、x、X</td><td>8进制、10进制、或16进制</td>
+</tr>
+<tr>
+<td>f</td><td>十进制double型</td>
+</tr>
+<tr>
+<td>E、e</td><td>科学计数法的double型</td>
+</tr>
+<tr>
+<td>G、g</td><td>自动选择f还是e</td>
+</tr>
+<tr>
+<td>c</td><td>自动选择f还是e</td>
+</tr>
+<tr>
+<td>s</td><td>字符串输出，达到精度时或者遇到结尾时停止。</td>
+</tr>
+<tr>
+<td>p</td><td>void *型的指针</td>
+</tr>
+<tr>
+<td>n</td><td>匹配的实参必须是指向int的指针。可以和h和l搭配。会将输出的字符数量存储到指针指向的地址而不输出。</td>
+</tr>
+<tr>
+<td>%</td><td>字符%</td>
+</tr>
+</tbody></table>
+
+<p><em>示例</em>：（。表示空格）</p>
+
+<table>
+<tbody><tr>
+<td>转换说明</td><td>对123的结果</td><td>对-123的结果</td>
+</tr>
+<tr>
+<td>%8d</td><td>。。。。。123</td><td>。。。。-123</td>
+</tr>
+<tr>
+<td>%-8d</td><td>123。。。。。</td><td>-123。。。。</td>
+</tr>
+<tr>
+<td>%+8d</td><td>。。。。+123</td><td>。。。。-123</td>
+</tr>
+<tr>
+<td>% 8d</td><td>。。。。。123</td><td>。。。。-123</td>
+</tr>
+<tr>
+<td>%08d</td><td>00000123</td><td>-。。。。123</td>
+</tr>
+<tr>
+<td>%-+8d</td><td>+123。。。。。</td><td>-123。。。。</td>
+</tr>
+<tr>
+<td>%- 8d</td><td>。123。。。。</td><td>-123。。。。</td>
+</tr>
+<tr>
+<td>%+08d</td><td>+0000123</td><td>-0000123</td>
+</tr>
+<tr>
+<td>% 08d</td><td>。0000123</td><td>-0000123</td>
+</tr>
+</tbody></table>
+
+<table>
+<tbody><tr>
+<td>转换说明</td><td>对123的结果</td><td>对123.0的结果</td>
+</tr>
+<tr>
+<td>%8o</td><td>。。。。。173</td><td>-</td>
+</tr>
+<tr>
+<td>%#8o</td><td>。。。。0173</td><td>-</td>
+</tr>
+<tr>
+<td>%8x</td><td>。。。。。。7b</td><td>-</td>
+</tr>
+<tr>
+<td>%#8x</td><td>。。。。0x7b</td><td>-</td>
+</tr>
+<tr>
+<td>%8X</td><td>。。。。。。7B</td><td>-</td>
+</tr>
+<tr>
+<td>%#8X</td><td>。。。。0X7B</td><td>-</td>
+</tr>
+<tr>
+<td>%8g</td><td>-</td><td>。。。。。123</td>
+</tr>
+<tr>
+<td>%#8g</td><td>-</td><td>。123。000</td>
+</tr>
+<tr>
+<td>%8G</td><td>-</td><td>。。。。。123</td>
+</tr>
+<tr>
+<td>%#8G</td><td>-</td><td>。123。000</td>
+</tr>
+</tbody></table>
+
+<table>
+<tbody><tr>
+<td>转换说明</td><td>对"bogus"的结果</td><td>对"buzzword"的结果</td>
+</tr>
+<tr>
+<td>%6s</td><td>。bogus</td><td>buzzword</td>
+</tr>
+<tr>
+<td>%-6s</td><td>bogus。</td><td>buzzword</td>
+</tr>
+<tr>
+<td>%.4s</td><td>bogu</td><td>buzz</td>
+</tr>
+<tr>
+<td>%6.4s</td><td>。。bogu</td><td>。。buzz</td>
+</tr>
+<tr>
+<td>%-6.4s</td><td>bogu。。</td><td>buzz。。</td>
+</tr>
+</tbody></table>
+
+<table>
+<tbody><tr>
+<td>数</td><td>对%.4g产生的结果</td>
+</tr>
+<tr>
+<td>123456</td><td>1.235e+05</td>
+</tr>
+<tr>
+<td>12345.6</td><td>1.235e+04</td>
+</tr>
+<tr>
+<td>1234.56</td><td>1235</td>
+</tr>
+<tr>
+<td>123.456</td><td>123.5</td>
+</tr>
+<tr>
+<td>12.3456</td><td>12.35</td>
+</tr>
+<tr>
+<td>1.23456</td><td>1.235</td>
+</tr>
+<tr>
+<td>0.123456</td><td>0.1235</td>
+</tr>
+<tr>
+<td>0.0123456</td><td>0.01235</td>
+</tr>
+<tr>
+<td>0.00123456</td><td>0.001235</td>
+</tr>
+<tr>
+<td>0.000123456</td><td>0.0001235</td>
+</tr>
+<tr>
+<td>0.0000123456</td><td>0.00001235</td>
+</tr>
+<tr>
+<td>0.00000123456</td><td>0.000001235</td>
+</tr>
+</tbody></table>
+
+<table>
+<tbody><tr><td>其它</td></tr>
+<tr><td>printf("%6.4d",i)等价于printf("%*.4d",6,i);printf("%6.*d",4,i);printf("%*.*d",6,4,i);</td></tr>
+<tr>
+<td>printf("%d%n",123,&amp;len);</td><td>输出123</td><td>输出后len==3</td>
+</tr>
+</tbody></table>
+
+<h4 id="88scanf">88. scanf类完整说明：</h4>
+
+<p>scanf类函数在输入失败或者匹配失败的时候会提前返回。返回值是读入并赋值给实参的数据数量。因此可以用<code>while (scanf("%d",&amp;i) == 1){...}</code>来循环读取，直到读取失败为止。</p>
+
+<p>格式化串的组成：</p>
+
+<p><em>字符*</em>：可选项。*出现意味着赋值屏蔽：读入此项，但是不赋值。*匹配的数据项不计入scanf类函数的返回值。</p>
+
+<p><em>最大字段宽度</em>：可选项。限制了输入项字符的数量。如果开始时跳过了空白字符，对空白字符不进行统计。</p>
+
+<p><em>h、l和L</em>：同printf类函数的含义。</p>
+
+<p>转换说明符：</p>
+
+<table>
+<tbody><tr>
+<td>转换说明符</td><td>含义</td>
+</tr>
+<tr>
+<td>d</td><td>匹配十进制整数</td>
+</tr>
+<tr>
+<td>i</td><td>匹配整数，假定数是十进制的，除非0开头（8进制），或0x开头</td>
+</tr>
+<tr>
+<td>o</td><td>匹配八进制数，实参为unsigned int 指针</td>
+</tr>
+<tr>
+<td>u</td><td>匹配十进制数，实参为unsigned int 指针</td>
+</tr>
+<tr>
+<td>X、x</td><td>匹配十六进制数，实参为unsigned int 指针</td>
+</tr>
+<tr>
+<td>E、e、f、g、G</td><td>匹配float型</td>
+</tr>
+<tr>
+<td>s</td><td>匹配一序列非空字符串，并在末尾加'\0'</td>
+</tr>
+<tr>
+<td>[</td><td>匹配来自扫描集合的非空字符序列，然后在末尾添'\0'。可以是%[集合]或者%[^集合]，前者匹配集合内的字符，后者匹配集合外的字符。</td>
+</tr>
+<tr>
+<td>c</td><td>匹配其字段宽度的字符数，如果没有字段宽度，则匹配1个</td>
+</tr>
+<tr>
+<td>p</td><td>匹配printf输出相同的指针值</td>
+</tr>
+<tr>
+<td>n</td><td>将目前为止的读入字符数存入此int指针指向的变量，没有输入会匹配，scanf的返回值也不受影响。</td>
+</tr>
+<tr>
+<td>%</td><td>匹配%</td>
+</tr>
+</tbody></table>
+
+<p>示例：（。表示空格）</p>
+
+<table>
+<tbody><tr>
+<td>scanf的调用</td><td>输入</td><td>变量</td>
+</tr>
+<tr>
+<td>n = scanf ("%d%d",&amp;i,&amp;j);</td><td><del>12。</del>，。34'\n'</td><td>n:1;i:12;j:?</td>
+</tr>
+<tr>
+<td>n = scanf ("%d,%d",&amp;i,&amp;j);</td><td><del>12</del>。，。34'\n'</td><td>n:1;i:12;j:?</td>
+</tr>
+<tr>
+<td>n = scanf ("%d。,%d",&amp;i,&amp;j);</td><td><del>12。，。34</del>'\n'</td><td>n:1;i:12;j:34</td>
+</tr>
+<tr>
+<td>n = scanf ("%d,。%d",&amp;i,&amp;j);</td><td><del>12</del>。，。34'\n'</td><td>n:1;i:12;j:?</td>
+</tr>
+<tr>
+<td>n = scanf ("%*d%d",&amp;i);</td><td><del>12。34</del>'\n'</td><td>n:1;i:34</td>
+</tr>
+<tr>
+<td>n = scanf ("%*s%s", str);</td><td><del>My。Fair</del>。Lady'\n'</td><td>n:1;str:"Fair"</td>
+</tr>
+<tr>
+<td>n = scanf ("%1d%2d%3d",&amp;i,&amp;j,&amp;k);</td><td><del>12345</del>'\n'</td><td>n:3;i:1;j:23;k:45;</td>
+</tr>
+<tr>
+<td>n = scanf ("%2d%2s%2d",&amp;i,str,&amp;k);</td><td><del>123456</del>'\n'</td><td>n:3;i:12;str:"34";k:56;</td>
+</tr>
+<tr>
+<td>n = scanf ("%i%i%i",&amp;i,&amp;j,&amp;k);</td><td><del>12。012。0x12</del>'\n'</td><td>n:3;i:12;j:10;k:18;</td>
+</tr>
+<tr>
+<td>n = scanf ("%[0123456789]",str);</td><td><del>123</del>abc'\n'</td><td>n:1;str:"123";</td>
+</tr>
+<tr>
+<td>n = scanf ("%[0123456789]",str);</td><td>abc123'\n'</td><td>n:0;str:?</td>
+</tr>
+<tr>
+<td>n = scanf ("%[^0123456789]",str);</td><td><del>abc</del>123'\n'</td><td>n:1;str:"abc";</td>
+</tr>
+<tr>
+<td>n = scanf ("%*d%d%n",&amp;i,&amp;j);</td><td><del>10。20</del>。30'\n'</td><td>n:1;i:20;j:5</td>
+</tr>
+</tbody></table>
+
+<h4 id="89scanfnstr">89. 如上所述，<code>scanf ("%[^\n]",str);</code>可以轻松得到一行文字。</h4>
+
+<h4 id="90ungetcchfpgetcungetcgetcintchgetcfpeof">90. <code>ungetc(ch,fp);</code>可以轻松回退一次上次的getc操作，只保证第一次ungetc的调用是成功的。注意，getc所保存的应当是int型数据，否则<code>(ch = getc(fp)) ！= EOF</code> 可能会导致错误的结果。</h4>
+
+<h4 id="91ftellfpfp">91. ftell(fp)函数中fp如果是文本流，则返回的值不一定是字节计数，因此最好不要进行算术运算。</h4>
+
+<h4 id="92sprintfsscanfsprintfstrdisscanf">92. 可以用sprintf和sscanf对字符串进行读写操作。比如<code>sprintf(str,"%d",i);</code>sscanf则实现了对一次输入的多重检测读取，如：</h4>
+
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">sscanf<span class="token punctuation">(</span></span>str<span class="token punctuation">,</span><span class="token string">"%d /%d/%d"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>month<span class="token punctuation">,</span><span class="token operator">&amp;</span>day<span class="token punctuation">,</span><span class="token operator">&amp;</span>year<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">)</span>
+    <span class="token function">printf<span class="token punctuation">(</span></span><span class="token string">"Month: %d, day: %d, year: %d\n"</span><span class="token punctuation">,</span>month<span class="token punctuation">,</span>day<span class="token punctuation">,</span>year<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">sscanf<span class="token punctuation">(</span></span>str<span class="token punctuation">,</span><span class="token string">"%d -%d -%d"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>month<span class="token punctuation">,</span><span class="token operator">&amp;</span>day<span class="token punctuation">,</span><span class="token operator">&amp;</span>year<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">)</span>
+    <span class="token function">printf<span class="token punctuation">(</span></span><span class="token string">"Month: %d, day: %d, year: %d\n"</span><span class="token punctuation">,</span>month<span class="token punctuation">,</span>day<span class="token punctuation">,</span>year<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">else</span>
+    <span class="token function">printf<span class="token punctuation">(</span></span><span class="token string">"Date not in the proper form.\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+
+<h4 id="93printfnum1dapplesdapplenum">93. 可以将格式化串和问号表达式一起用，比如printf(num &gt; 1 ? "%d apples.":"%d apple.",num);</h4>
+
+<h4 id="94ltfloathgtltlimitshgtltmathhgterrnofmod552211">94. 库的宏定义范围：&lt;float.h&gt;浮点型的特性；&lt;limits.h&gt;整值类型的大小；&lt;math.h&gt;数学计算（出错时多数会写入errno变量中），其中包含fmod（5.5,2.2） = 1.1；</h4>
+
+<h4 id="95size_tstrxfrmchars1constchars2size_tns2s1">95. size_t strxfrm(char *s1, const char *s2, size_t n);该函数将s2转换后存在s1，返回转换后的字符数量。一般都是用两次：</h4>
+
+<pre class=" language-c"><code class=" language-c">size_t len<span class="token punctuation">;</span>
+<span class="token keyword">char</span> <span class="token operator">*</span>transformed<span class="token punctuation">;</span>
+len <span class="token operator">=</span> <span class="token function">strxfrm<span class="token punctuation">(</span></span>NULL<span class="token punctuation">,</span> original<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+transformed <span class="token operator">=</span> <span class="token function">malloc<span class="token punctuation">(</span></span>len<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">strxfrm<span class="token punctuation">(</span></span>transformed<span class="token punctuation">,</span> original<span class="token punctuation">,</span> len<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+
+<h4 id="96strpbrkstrspnstrcspnsize_tstrspnstrcspn">96. strpbrk函数用来查找第一个参数中与第二个参数中任意一个字符相匹配的最左边的一个字符；strspn和strcspn会返回一个表示字符串中特定位置的整数(size_t类型)，strspn返回第一个不属于给定字符集的字符下标；strcspn函数返回第一个属于给定字符集中的字符下标，如：</h4>
+
+<pre class=" language-c"><code class=" language-c">size_t len<span class="token punctuation">;</span>
+<span class="token keyword">char</span> str<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"Form follows function."</span><span class="token punctuation">;</span>
+len <span class="token operator">=</span> <span class="token function">strspn<span class="token punctuation">(</span></span>str<span class="token punctuation">,</span> <span class="token string">"morF"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">/*len=4*/</span>
+len <span class="token operator">=</span> <span class="token function">strspn<span class="token punctuation">(</span></span>str<span class="token punctuation">,</span><span class="token string">" \t\n"</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">/*len=0*/</span>
+len <span class="token operator">=</span> <span class="token function">strcspn<span class="token punctuation">(</span></span>str<span class="token punctuation">,</span> <span class="token string">"morF"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">/*len=0*/</span>
+len <span class="token operator">=</span> <span class="token function">strcspn<span class="token punctuation">(</span></span>str<span class="token punctuation">,</span> <span class="token string">" \t\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">/*len=4*/</span>
+</code></pre>
+
+<h4 id="97memset0memset0">97. memset可以将数组全初始化为0，但是对于浮点数、结构体等，不是memset可以完全置0；</h4>
+
+<h4 id="98ltasserthgtdefinenodebugassert">98. &lt;assert.h&gt;可以使用#define NODEBUG禁用assert</h4>
+
+<h4 id="99lterrnohgterrnoedomerange">99. &lt;errno.h&gt;errno变量用来存储数学函数错误。EDOM表示定义域错误，ERANGE表示值域错误，通常是太大。</h4>
+
+<h4 id="100ltsignalhgtvoidsignalintsigvoidfuncintintfuncsigabortraisesignalsigabrtsigfpesignalsigsegv">100. &lt;signal.h&gt;<code>void (*signal(int sig, void (*func)(int)))(int);</code>作用是用自定义的func函数替换原先与sig相对性的函数。返回值是原先的函数指针。除非是abort或者raise函数引发的signal，否则不要用库函数，或者试图使用一个静态存储期限的变量。从处理函数返回时程序将从信号发生点继续运行，除了信号SIGABRT（终止程序），和SIGFPE（未定义）。信号处理完毕后，除非处理函数重新安装，否则该信号不会被同一函数再次处理。因此可以在返回之前再用signal函数重新安装。SIGSEGV表示段错误，调试时应该很有用。</h4>
+
+<h4 id="101">101. 在字符串中小心放置??。如果要放置??，可以用?\?来代替。否则会被认为是三字符序列。</h4>
+
+<h4 id="102setlocalelc_allcsetlocalelc_allnullllabc">102. 任意程序开始时都隐含执行<code>setlocale(LC_ALL,"C");</code>如果运行<code>setlocale(LC_ALL,NULL);</code>则会返回当前区域设置。对于宽字符常量需要用L修饰，如L"abc"。</h4>
+
+<h4 id="103">103. 用来检测多字符和宽字符：</h4>
+
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">int</span> mbcheck`<span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span> n<span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token function">mblen<span class="token punctuation">(</span></span>NULL<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">;</span> <span class="token punctuation">;</span> s <span class="token operator">+</span><span class="token operator">=</span> n<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>n <span class="token operator">=</span> <span class="token function">mblen<span class="token punctuation">(</span></span>s<span class="token punctuation">,</span> MB_CUR_MAX<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> n<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">wccheck<span class="token punctuation">(</span></span>wchar_t <span class="token operator">*</span>wcs<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">char</span> buf<span class="token punctuation">[</span>MB_LEN_MAX<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> n<span class="token punctuation">;</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span>wctomb <span class="token punctuation">(</span>NULL<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">;</span> <span class="token punctuation">;</span> <span class="token operator">++</span>wcs<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>n <span class="token operator">=</span> <span class="token function">wactomb<span class="token punctuation">(</span></span>buf<span class="token punctuation">,</span> <span class="token operator">*</span>wcs<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>buf<span class="token punctuation">[</span>n <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'\0'</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+<p><code>wctomb (NULL,0)</code>这个函数是用来初始化多字符状态的。</p>
+
+<p>mbstowcs和wcstombs可以转换字符串，返回修改字符串的个数。</p>
+
+<h4 id="104ltstdarghgt">104. &lt;stdarg.h&gt;提供的三种宏可以视为三个函数：</h4>
+
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">void</span> <span class="token function">va_start<span class="token punctuation">(</span></span>va_list ap<span class="token punctuation">,</span> parmN<span class="token punctuation">)</span><span class="token punctuation">;</span>
+类型 <span class="token function">va_arg<span class="token punctuation">(</span></span>va_list ap<span class="token punctuation">,</span> 类型<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">va_end<span class="token punctuation">(</span></span>va_list ap<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+
+<p>通过第一个函数设置valist的可变参数是从哪里开始；第二个函数是从valist中返回下一个参数（不必手动增加，每次调用会自增），其类型为指定类型；第三个参数结束参数的调用，此时方可返回。声明函数时使用<code>int max(int n,...)</code>即可。</p>
+
+<h4 id="105ltstdlibhgtsrandrand1">105. &lt;stdlib.h&gt;对于相同的种子，srand()将生成相同的随机数列。rand()函数获得随机数列的下一个值。选择1作为种子值和没有指明种子值是一样的。</h4>
+
+<h4 id="106atexit">106. 可以通过atexit(函数名)来指定退出时自动调用的方法。</h4>
+
+<h4 id="107getenvpathsystem0">107. getenv函数会返回指定字串在操作系统中某个字符串的意义，比如PATH。该结果储存在静态空间中，稍后函数调用时会改变。system用来执行外部命令，如果命令为空指针，则对命令环境测试，如果命令处理程序有效，则返回非0值。</h4>
+
+<h4 id="108">108. 搜索和排序：</h4>
+
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">void</span> <span class="token operator">*</span><span class="token function">bsearch<span class="token punctuation">(</span></span><span class="token keyword">const</span> <span class="token keyword">void</span> <span class="token operator">*</span>key<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">void</span> <span class="token operator">*</span>base<span class="token punctuation">,</span>size_t nmemb<span class="token punctuation">,</span> size_t size<span class="token punctuation">,</span> <span class="token keyword">int</span> <span class="token punctuation">(</span><span class="token operator">*</span>compar<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">void</span> <span class="token operator">*</span><span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">void</span> <span class="token operator">*</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> qsort <span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span>base<span class="token punctuation">,</span> size_t nmemb<span class="token punctuation">,</span> size_t size<span class="token punctuation">,</span> <span class="token keyword">int</span> <span class="token punctuation">(</span><span class="token operator">*</span>compar<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">void</span> <span class="token operator">*</span><span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">void</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+
+<h4 id="109divldivdiv_tquotrem">109. /和%与实现有关，因此可以用div和ldiv代替，前者用于整型，后者用于长整型。返回div_t类型，可用quot和rem求商和余数。效率是使用它们而不是/和%的原因，因为可以在一个指令里计算出两个结果。</h4>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "Understanding-of-Restudy-C.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

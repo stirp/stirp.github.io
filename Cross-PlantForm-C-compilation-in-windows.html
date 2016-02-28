@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+　　这几天下来实在是为了这套系统折腾了不少，今天写下来，不仅仅是为了总结这几天的经验，更重要的是为了后来的人更好的搭建工作平台。
+
+　　如今最受欢迎的跨平台开源C语言IDE就是code::blocks了，目前版本10.05。虽然它自己带有minGW，但是那个安装包稍微有点大，而且版本稍微低了点。因此首先我们安装gcc，提供的版本是4.4.4。一路顺风安装下去。安装后检查下系统路径（我的电脑，属性，高级，环境变量，系统变量，path，在最后添加gcc的路径）
+
+　　gcc安装好了就安装code::blocks，一路下一步。先别急启动，打开安装目录，将汉化补丁放在【CodeBlocks主目录】\share\CodeBlocks\locale下边。第一次启动时会询问默认编译器，应该是找不到gcc的，不过可以点gcc，默认。进入程序后打开设置，environment，view，选择Chinese，重启程序。再打开设置，编译器和调试器，可执行工具链，根据你的gcc安装路径配置一下gcc安装；路径和程序文件。其中有几个文件名字跟原先的程序不同名，不过还是很容易找到相应的程序的。至此，大部分人的跨平台IDE就已经可以使用了。
+
+　　但是总有一些高级的要求，比如说，cunit进行单元测试。这个东东很有意思，我现在也没弄明白怎么玩，不过要用是没有问题的。首先下载cunit2.1.0（不要选用2.1.2，在windows安装有问题，也不好跟code::blocks集成），解压到你的工程目录下。进入CUnit，CUnit，用code::blocks打开CUnit.dsp,编译。编译后把生成的libCUnit.a改名为CUnit。然后向上，到Examples下边，把ExampleTests.c和ExampleTests.h添加到每个测试文件夹下边，然后把用code::blocks打开每个文件夹下边的dsp文件，根据引用的关系，把CUnit相应缺失的文件复制过来，添加到工程中。之后想要进行C的单元测试，直接打开这样的工程，将相应的测试加入exampletests.c就好了。也可以直接下砸我修改好的包。
+
+　　此外还有GUI库。一个常用C++GUI库是wxwidget，可以用wxFormBuilder制作界面，很好很强大，除了是c++以外真是没有缺点了。可惜我不会C++ （T_T）,但是还是要推荐出来。这个安装也不算麻烦，打开安装包，安装到一个位置，用cmd进入安装目录下的build\msw，执行make -f makefile.gcc BUILD=release SHARED=1 UNICODE=1 ，经过漫长的等待，终于编译好了。打开cb，在设置，全局变量的wx中设置wx安装目录，ok，新建一个，是不是能用了？嘿嘿。
+
+　　不过对于我来说，最常用的GUI库是GTK，谁让我只会C呢，没办法（囧）。GTK可以直接安装glade的包，因为做界面很多人用glade，直接安装很方便(如果不行，请下载gtk多合一解压缩即解即用包，覆盖即可)。这个就不用编译了，在cb的全局变量里面加入gtk和相应的全局变量就搞定了。更加简单了吧？
+
+　　ok，所有的测试代码均由cb自动生成，一试便知。诸位晚安。
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>　　这几天下来实在是为了这套系统折腾了不少，今天写下来，不仅仅是为了总结这几天的经验，更重要的是为了后来的人更好的搭建工作平台。</p>
+
+<p>　　如今最受欢迎的跨平台开源C语言IDE就是code::blocks了，目前版本10.05。虽然它自己带有minGW，但是那个安装包稍微有点大，而且版本稍微低了点。因此首先我们安装gcc，提供的版本是4.4.4。一路顺风安装下去。安装后检查下系统路径（我的电脑，属性，高级，环境变量，系统变量，path，在最后添加gcc的路径）</p>
+
+<p>　　gcc安装好了就安装code::blocks，一路下一步。先别急启动，打开安装目录，将汉化补丁放在【CodeBlocks主目录】\share\CodeBlocks\locale下边。第一次启动时会询问默认编译器，应该是找不到gcc的，不过可以点gcc，默认。进入程序后打开设置，environment，view，选择Chinese，重启程序。再打开设置，编译器和调试器，可执行工具链，根据你的gcc安装路径配置一下gcc安装；路径和程序文件。其中有几个文件名字跟原先的程序不同名，不过还是很容易找到相应的程序的。至此，大部分人的跨平台IDE就已经可以使用了。</p>
+
+<p>　　但是总有一些高级的要求，比如说，cunit进行单元测试。这个东东很有意思，我现在也没弄明白怎么玩，不过要用是没有问题的。首先下载cunit2.1.0（不要选用2.1.2，在windows安装有问题，也不好跟code::blocks集成），解压到你的工程目录下。进入CUnit，CUnit，用code::blocks打开CUnit.dsp,编译。编译后把生成的libCUnit.a改名为CUnit。然后向上，到Examples下边，把ExampleTests.c和ExampleTests.h添加到每个测试文件夹下边，然后把用code::blocks打开每个文件夹下边的dsp文件，根据引用的关系，把CUnit相应缺失的文件复制过来，添加到工程中。之后想要进行C的单元测试，直接打开这样的工程，将相应的测试加入exampletests.c就好了。也可以直接下砸我修改好的包。</p>
+
+<p>　　此外还有GUI库。一个常用C++GUI库是wxwidget，可以用wxFormBuilder制作界面，很好很强大，除了是c++以外真是没有缺点了。可惜我不会C++ （T_T）,但是还是要推荐出来。这个安装也不算麻烦，打开安装包，安装到一个位置，用cmd进入安装目录下的build\msw，执行make -f makefile.gcc BUILD=release SHARED=1 UNICODE=1 ，经过漫长的等待，终于编译好了。打开cb，在设置，全局变量的wx中设置wx安装目录，ok，新建一个，是不是能用了？嘿嘿。</p>
+
+<p>　　不过对于我来说，最常用的GUI库是GTK，谁让我只会C呢，没办法（囧）。GTK可以直接安装glade的包，因为做界面很多人用glade，直接安装很方便(如果不行，请下载gtk多合一解压缩即解即用包，覆盖即可)。这个就不用编译了，在cb的全局变量里面加入gtk和相应的全局变量就搞定了。更加简单了吧？</p>
+
+<p>　　ok，所有的测试代码均由cb自动生成，一试便知。诸位晚安。</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "Cross-PlantForm-C-compilation-in-windows.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

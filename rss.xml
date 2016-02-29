@@ -6,9 +6,7 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>好久不更新了，得肺结核了</title><link>http://blog.shrp.me//Too-Long-No-Update-Since-Got-Tuberculosis.html</link><pubdate>2012-03-13</pubdate><content:encoded>&lt;p&gt;　　很久没更新了，最近得了肺结核，一阵检查之类的，现在确诊了，只好从公司出来，好好治病。&lt;/p&gt;
-
-&lt;p&gt;　　正好好好写论文吧，也算是一个休整时期吧。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Too-Long-No-Update-Since-Got-Tuberculosis.html</guid></item><item><title>temp</title><link>http://blog.shrp.me//temp.html</link><pubdate>2016-02-19</pubdate><content:encoded>&lt;pre class=" language-java"&gt;&lt;code class=" language-java"&gt;
+    <item><title>temp</title><link>http://blog.shrp.me//temp.html</link><pubdate>2016-02-19</pubdate><content:encoded>&lt;pre class=" language-java"&gt;&lt;code class=" language-java"&gt;
 &lt;span class="token keyword"&gt;package&lt;/span&gt; com&lt;span class="token punctuation"&gt;.&lt;/span&gt;woqu&lt;span class="token punctuation"&gt;.&lt;/span&gt;crm&lt;span class="token punctuation"&gt;.&lt;/span&gt;server&lt;span class="token punctuation"&gt;;&lt;/span&gt;
 
 &lt;span class="token keyword"&gt;import&lt;/span&gt; java&lt;span class="token punctuation"&gt;.&lt;/span&gt;io&lt;span class="token punctuation"&gt;.&lt;/span&gt;UnsupportedEncodingException&lt;span class="token punctuation"&gt;;&lt;/span&gt;
@@ -135,7 +133,9 @@
 &lt;span class="token punctuation"&gt;}&lt;/span&gt;
 
 
-&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//temp.html</guid></item><item><title>无语了……本博客与淘宝商城没有任何联系！！！</title><link>http://blog.shrp.me//This-Blog-Has-Nothing-With-Tmall.html</link><pubdate>2012-01-12</pubdate><content:encoded>&lt;p&gt;　　我已经无语了……淘宝商城在毫无征兆的情况下改用了天猫作为名称，让我一下子不知所措。&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//temp.html</guid></item><item><title>好久不更新了，得肺结核了</title><link>http://blog.shrp.me//Too-Long-No-Update-Since-Got-Tuberculosis.html</link><pubdate>2012-03-13</pubdate><content:encoded>&lt;p&gt;　　很久没更新了，最近得了肺结核，一阵检查之类的，现在确诊了，只好从公司出来，好好治病。&lt;/p&gt;
+
+&lt;p&gt;　　正好好好写论文吧，也算是一个休整时期吧。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Too-Long-No-Update-Since-Got-Tuberculosis.html</guid></item><item><title>无语了……本博客与淘宝商城没有任何联系！！！</title><link>http://blog.shrp.me//This-Blog-Has-Nothing-With-Tmall.html</link><pubdate>2012-01-12</pubdate><content:encoded>&lt;p&gt;　　我已经无语了……淘宝商城在毫无征兆的情况下改用了天猫作为名称，让我一下子不知所措。&lt;/p&gt;
 
 &lt;p&gt;　　我的网站采用天猫是从我大二，也就是2007年底08年初的时候做的第一版就开始了。当时用的是&lt;a href="http://lynx.xinwen365.com"&gt;http://lynx.xinwen365.com&lt;/a&gt;吧，时间太过久远，记不清楚了。是采用iframe分栏的布局，记事本写的代码。后来该空间关闭，我换用花生壳的服务，在本机提供服务，地址&lt;a href="http://nada.eicp.net"&gt;http://nada.eicp.net&lt;/a&gt;。在这个URL上我做过两次升级，分别为第二版（2010年，纯手工静态，3个子站）和第三版（2011年2月纯php）。&lt;/p&gt;
 

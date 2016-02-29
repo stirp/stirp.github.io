@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+　　今天跟同事说起二分查找法中常见的一个问题，就是计算中点时会溢出的问题。
+
+　　常见的方法（a+b）/2就是铁定会溢出的方法。如果a和b很大，之和超出了它们定义的范围，那么运算结果可能会是负数，这绝对不是我们想要的。
+
+　　之后同事说他看到一个算法是(a+b)>1。其实这个问题只能说缓解了溢出的问题，实际问题还是存在的。为啥？比如int，当发生上溢的时候，溢出的进位其实进入了符号位；而右移的时候把符号位移到了第一位，此时计算结果是正确的；但是如果是无符号整型，溢出的时候已经丢弃了进位，右移后结果要少差一半。
+
+　　所以最好还是用a+（b-a）/2这样。除二或者右移一位都是可以的。当然，前提是因为我们知道a和b作为数组下标，都是正数，因此b-a不会下溢。如果你的数组奇怪到居然用负数左下标，呃，好吧，a和b做右移或除2处理再相加吧。不过记得要判断两个都是奇数的情况哦！
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>　　今天跟同事说起二分查找法中常见的一个问题，就是计算中点时会溢出的问题。</p>
+
+<p>　　常见的方法（a+b）/2就是铁定会溢出的方法。如果a和b很大，之和超出了它们定义的范围，那么运算结果可能会是负数，这绝对不是我们想要的。</p>
+
+<p>　　之后同事说他看到一个算法是(a+b)&gt;1。其实这个问题只能说缓解了溢出的问题，实际问题还是存在的。为啥？比如int，当发生上溢的时候，溢出的进位其实进入了符号位；而右移的时候把符号位移到了第一位，此时计算结果是正确的；但是如果是无符号整型，溢出的时候已经丢弃了进位，右移后结果要少差一半。</p>
+
+<p>　　所以最好还是用a+（b-a）/2这样。除二或者右移一位都是可以的。当然，前提是因为我们知道a和b作为数组下标，都是正数，因此b-a不会下溢。如果你的数组奇怪到居然用负数左下标，呃，好吧，a和b做右移或除2处理再相加吧。不过记得要判断两个都是奇数的情况哦！</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "A-Method-To-Find-Midlle-in-Binary-Search-in-C.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

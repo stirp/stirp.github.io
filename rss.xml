@@ -6,7 +6,9 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>temp</title><link>http://blog.shrp.me//temp.html</link><pubdate>2016-02-19</pubdate><content:encoded>&lt;pre class=" language-java"&gt;&lt;code class=" language-java"&gt;
+    <item><title>好久不更新了，得肺结核了</title><link>http://blog.shrp.me//Too-Long-No-Update-Since-Got-Tuberculosis.html</link><pubdate>2012-03-13</pubdate><content:encoded>&lt;p&gt;　　很久没更新了，最近得了肺结核，一阵检查之类的，现在确诊了，只好从公司出来，好好治病。&lt;/p&gt;
+
+&lt;p&gt;　　正好好好写论文吧，也算是一个休整时期吧。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Too-Long-No-Update-Since-Got-Tuberculosis.html</guid></item><item><title>temp</title><link>http://blog.shrp.me//temp.html</link><pubdate>2016-02-19</pubdate><content:encoded>&lt;pre class=" language-java"&gt;&lt;code class=" language-java"&gt;
 &lt;span class="token keyword"&gt;package&lt;/span&gt; com&lt;span class="token punctuation"&gt;.&lt;/span&gt;woqu&lt;span class="token punctuation"&gt;.&lt;/span&gt;crm&lt;span class="token punctuation"&gt;.&lt;/span&gt;server&lt;span class="token punctuation"&gt;;&lt;/span&gt;
 
 &lt;span class="token keyword"&gt;import&lt;/span&gt; java&lt;span class="token punctuation"&gt;.&lt;/span&gt;io&lt;span class="token punctuation"&gt;.&lt;/span&gt;UnsupportedEncodingException&lt;span class="token punctuation"&gt;;&lt;/span&gt;
@@ -133,7 +135,154 @@
 &lt;span class="token punctuation"&gt;}&lt;/span&gt;
 
 
-&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//temp.html</guid></item><item><title>重新学习C的领悟</title><link>http://blog.shrp.me//Understanding-Of-Restudy-C.html</link><pubdate>2011-04-25</pubdate><content:encoded>&lt;h4 id="1scanfcchr"&gt;1. 为了跳过之前的回车，可以使用&lt;code&gt;scanf(“空格%c”,&amp;amp;chr);&lt;/code&gt;，其中的空格可以跳过零个或者若干个空白字符，包括换行、换页、行制表符、列制表符、空格&lt;/h4&gt;
+&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//temp.html</guid></item><item><title>无语了……本博客与淘宝商城没有任何联系！！！</title><link>http://blog.shrp.me//This-Blog-Has-Nothing-With-Tmall.html</link><pubdate>2012-01-12</pubdate><content:encoded>&lt;p&gt;　　我已经无语了……淘宝商城在毫无征兆的情况下改用了天猫作为名称，让我一下子不知所措。&lt;/p&gt;
+
+&lt;p&gt;　　我的网站采用天猫是从我大二，也就是2007年底08年初的时候做的第一版就开始了。当时用的是&lt;a href="http://lynx.xinwen365.com"&gt;http://lynx.xinwen365.com&lt;/a&gt;吧，时间太过久远，记不清楚了。是采用iframe分栏的布局，记事本写的代码。后来该空间关闭，我换用花生壳的服务，在本机提供服务，地址&lt;a href="http://nada.eicp.net"&gt;http://nada.eicp.net&lt;/a&gt;。在这个URL上我做过两次升级，分别为第二版（2010年，纯手工静态，3个子站）和第三版（2011年2月纯php）。&lt;/p&gt;
+
+&lt;p&gt;　　现在已经第四版了，采用了php+js+文件管理。在互联网上的只是我的网站的子集，仅包括博客部分，所以后缀了一个Small；在我的本地还提供了SVN、资料分享、媒体分享（主要是我的设备比较多，没有媒体分享就需要把同一个电影来回拷贝，太麻烦）。&lt;/p&gt;
+
+&lt;p&gt;　　经过这么久的时间，我的网站一直采用这个名字，可见我的博客跟淘宝商城毫无关系。不要误会了哟~&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//This-Blog-Has-Nothing-With-Tmall.html</guid></item><item><title>打算在我的eeepc小笔电上边装个puppy</title><link>http://blog.shrp.me//Install-Puppy-Linux-in-My-EEEPC.html</link><pubdate>2011-12-28</pubdate><content:encoded>&lt;p&gt;　　原来我的小笔电EEEPC安装过两个Puppy版本，一个是曾经比较流行的小芭比Linux&lt;a href="http://www.minilinux.net/software/%E5%B0%8F%E8%8A%AD%E6%AF%94"&gt;链接1&lt;/a&gt;，貌似目前已经停止了；另一个是官方原版的lupu-520版本，目前已经是528版本了吧&lt;a href="http://bkhome.org/blog/?viewDetailed=02418"&gt;链接2&lt;/a&gt;。当时试了几种中文输入法，都不成功，改用了搜狗网页版，凑合用着。不过多试几次就没兴趣了。&lt;/p&gt;
+
+&lt;p&gt;　　再后来我的小笔电把win7换回xp的时候把c盘用ghost还原了，puppy自然也就不在了。今天打算再安装回去，正好单位的事情也办的差不多了，随手安装吧，嘿嘿，等这回安装好了再发文总结。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Install-Puppy-Linux-in-My-EEEPC.html</guid></item><item><title>二分查找法查找中点的方法（C语言）</title><link>http://blog.shrp.me//A-Method-To-Find-Midlle-in-Binary-Search-in-C.html</link><pubdate>2011-12-07</pubdate><content:encoded>&lt;p&gt;　　今天跟同事说起二分查找法中常见的一个问题，就是计算中点时会溢出的问题。&lt;/p&gt;
+
+&lt;p&gt;　　常见的方法（a+b）/2就是铁定会溢出的方法。如果a和b很大，之和超出了它们定义的范围，那么运算结果可能会是负数，这绝对不是我们想要的。&lt;/p&gt;
+
+&lt;p&gt;　　之后同事说他看到一个算法是(a+b)&amp;gt;1。其实这个问题只能说缓解了溢出的问题，实际问题还是存在的。为啥？比如int，当发生上溢的时候，溢出的进位其实进入了符号位；而右移的时候把符号位移到了第一位，此时计算结果是正确的；但是如果是无符号整型，溢出的时候已经丢弃了进位，右移后结果要少差一半。&lt;/p&gt;
+
+&lt;p&gt;　　所以最好还是用a+（b-a）/2这样。除二或者右移一位都是可以的。当然，前提是因为我们知道a和b作为数组下标，都是正数，因此b-a不会下溢。如果你的数组奇怪到居然用负数左下标，呃，好吧，a和b做右移或除2处理再相加吧。不过记得要判断两个都是奇数的情况哦！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//A-Method-To-Find-Midlle-in-Binary-Search-in-C.html</guid></item><item><title>关于函数指针的一点小研究</title><link>http://blog.shrp.me//something-about-pointer-point-to-method.html</link><pubdate>2011-10-07</pubdate><content:encoded>&lt;p&gt;　　C语言里有个特殊的指针，称为函数指针。这个东西比较可爱的一点是它本身是指向某函数的，可以用它来调用函数。&lt;/p&gt;
+
+&lt;p&gt;　　但是语言上有个说法，是一切未初始化的变量是bug的来源。那么函数指针初始化为什么好呢？&lt;/p&gt;
+
+&lt;p&gt;　　最最直接的想法是NULL。NULL当然没错了，但是它还不够智能，运行的时候闷头来个段错误，让人丈二和尚摸不着头脑，究竟是哪个指针跑飞了呢？&lt;/p&gt;
+
+&lt;p&gt;　　于是我简单的研究了一下。&lt;/p&gt;
+
+&lt;p&gt;　　首先定义了一个函数test：&lt;/p&gt;
+
+&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token keyword"&gt;void&lt;/span&gt; &lt;span class="token function"&gt;test&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
+&lt;span class="token punctuation"&gt;{&lt;/span&gt;
+    &lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token string"&gt;"test!\n"&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;span class="token punctuation"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这个函数很简单，就是在屏幕输出一行文字。&lt;/p&gt;
+
+&lt;p&gt;如果直接定义它的函数指针，那就是&lt;code&gt;void (*point)() = test;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;可是咱们说的是把它当做任意函数指针的地址。于是试了一下：&lt;/p&gt;
+
+&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token keyword"&gt;void&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token operator"&gt;*&lt;/span&gt;LynxArrayListInit&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;LynxArrayList &lt;span class="token operator"&gt;*&lt;/span&gt;myArrayList&lt;span class="token punctuation"&gt;,&lt;/span&gt;
+                            &lt;span class="token keyword"&gt;long&lt;/span&gt; increaseStep
+                           &lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token operator"&gt;=&lt;/span&gt; test&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;运行，OK！没有问题。&lt;/p&gt;
+
+&lt;p&gt;　　这样可以通过把函数指针初始化为报错的函数，可以调用exit终止掉非法调用，可以记录日志，可以做任何你想要做的事情，甚至忽略错误，让程序飞一会；或者添加第一个参数，记录下其余参数的数量，还可以把所有的参数都记录下来，以供改进。&lt;/p&gt;
+
+&lt;p&gt;　　不过……最好还是通过它重新初始化的好。为啥呢？因为test函数不消耗参数，栈内多了两个参数啊，这些参数都消耗不掉了。总之这对于程序的运行百害无一利，更何况程序指针已经飞了，继续跑基本也不正确了。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//something-about-pointer-point-to-method.html</guid></item><item><title>code::blocks在windows平台如何加载动态链接库dll</title><link>http://blog.shrp.me//codeblocks-dynamically-load-dll-in-windows.html</link><pubdate>2011-09-18</pubdate><content:encoded>&lt;p&gt;　　今天写一个数据结构，突然想到这种东西必然会经常复用，完全可以写个库来供以后调用。然后就研究了下code::blocks下怎么来写库，又怎么去调用。&lt;/p&gt;
+
+&lt;p&gt;　　首先是静态库。这个最为简单，只要选择static library项目新建。写好的库ctrl+F9，就能生成一个.a文件。要调用的时候只要在所需的项目中添加一个链接库，链接到这个.a文件即可。然后在项目中添加相应的.h文件，就像是使用正常的函数一样了。&lt;/p&gt;
+
+&lt;p&gt;　　其次是动态库。动态库略为复杂，不过也不难。首先写库的时候新建的时候选择dynamic link library，写好以后ctrl+f9会生成三个文件（10.05版本如此，好像之前的版本并非如此，还需更改编译选项，在项目属性的构建目标中选中选中红色选项框内的内容&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://stirp.github.io/img/1.JPG" alt="" title=""&gt;&lt;/p&gt;
+
+&lt;p&gt;）。生成的除了dll外，还有一个.a和一个.def文件。.def是给其它语言导入使用的，.a是一个导出库，类似于一个空壳实现。这时在新的项目中只要添加相应的头文件，并且在链接的时候链接到.a文件就行。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://stirp.github.io/img/2.JPG" alt="" title=""&gt;&lt;/p&gt;
+
+&lt;p&gt;　　当然，运行程序的时候，.dll应该在.exe的执行目录中。不要问执行目录和存放目录有什么区别……这个请参照win快捷方式的start in（或者称为启动位置？手头没有中文系统）属性。&lt;/p&gt;
+
+&lt;p&gt;　　不过如果不是cb生成的dll呢？我们只有.dll文件和.h文件，那也没有关系。直接把.dll文件替换上述.a文件，cb会根据dll当做.h的实现的。&lt;/p&gt;
+
+&lt;p&gt;　　如果更进一步，没有.h，只知道几个重要的函数怎么办？那也没关系，用windows.h提供的LoadLibrary函数就可以了。具体可以查看下说明。&lt;/p&gt;
+
+&lt;p&gt;　　下边我提供代码作为一个示例：&lt;/p&gt;
+
+&lt;p&gt;　　首先创建一个实验的动态链接库，比如我这里的LynxArrayList。 &lt;img src="http://stirp.github.io/img/lynxarrylist.png" alt="" title=""&gt;其中的main.c如下：&lt;/p&gt;
+
+&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token comment" spellcheck="true"&gt;/** @brief 简单的相加
+*
+* @param 第一个加数
+* @param 第二个加数
+* @return 返回相加的和
+*
+*/&lt;/span&gt;
+
+&lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token function"&gt;SampleAddInt&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; i1&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token keyword"&gt;int&lt;/span&gt; i2&lt;span class="token punctuation"&gt;)&lt;/span&gt;
+&lt;span class="token punctuation"&gt;{&lt;/span&gt;
+    &lt;span class="token keyword"&gt;return&lt;/span&gt; i1 &lt;span class="token operator"&gt;+&lt;/span&gt; i2&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;span class="token punctuation"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;version.h就不用看了，那个是自动更新版本号的。&lt;/p&gt;
+
+&lt;p&gt;然后更改为release，ctrl+F9，查看release目录下边生成了3个文件。然后删除除dll以外的文件（其实删不删都一样）。&lt;/p&gt;
+
+&lt;p&gt;新建一个普通的console application，在构造选项的链接器设置中添加刚才的.dll文件。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://stirp.github.io/img/lynxtest.png" alt="" title=""&gt;&lt;/p&gt;
+
+&lt;p&gt;之后在代码中声明SampleAddInt函数就行：&lt;/p&gt;
+
+&lt;p&gt;LynxArrayList.h文件：&lt;/p&gt;
+
+&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token property"&gt;#ifndef LYNXARRAYLIST_H_INCLUDED&lt;/span&gt;
+&lt;span class="token property"&gt;#define LYNXARRAYLIST_H_INCLUDED&lt;/span&gt;
+&lt;span class="token property"&gt;#ifdef __cplusplus&lt;/span&gt;
+&lt;span class="token keyword"&gt;extern&lt;/span&gt; &lt;span class="token string"&gt;"C"&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
+#endif
+&lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token function"&gt;SampleAddInt&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; i1&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token keyword"&gt;int&lt;/span&gt; i2&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;span class="token property"&gt;#ifdef __cplusplus&lt;/span&gt;
+&lt;span class="token punctuation"&gt;}&lt;/span&gt;
+#endif
+#endif&lt;span class="token comment" spellcheck="true"&gt; // LYNXARRAYLIST_H_INCLUDED
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后在main函数中include这个头文件，就可以使用SampleAddInt函数了。下边的主函数代码还示范了如何使用windows.h来动态加载dll，可以合理掌握dll的加载和释放时间，更加合理一些。&lt;/p&gt;
+
+&lt;p&gt;main.c文件：&lt;/p&gt;
+
+&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;stdlib.h&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;windows.h&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class="token property"&gt;#include &lt;/span&gt;&lt;span class="token string"&gt;"LynxArrayList.h"&lt;/span&gt;
+&lt;span class="token comment" spellcheck="true"&gt;/** @brief 主函数
+*
+* @return int
+*
+*/&lt;/span&gt;
+
+&lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token function"&gt;main&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
+&lt;span class="token punctuation"&gt;{&lt;/span&gt;
+    HINSTANCE hinstDLL&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    &lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token operator"&gt;*&lt;/span&gt;myfunc&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    hinstDLL &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;LoadLibrary&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token string"&gt;"libLynxArrayList.dll"&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;hinstDLL &lt;span class="token operator"&gt;!=&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;{&lt;/span&gt;
+        myfunc &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token keyword"&gt;int&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token function"&gt;GetProcAddress&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;hinstDLL&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token string"&gt;"SampleAddInt"&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
+    &lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token string"&gt;"%d\n"&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token function"&gt;myfunc&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token number"&gt;2&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    &lt;span class="token function"&gt;FreeLibrary&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;hinstDLL&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    &lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token string"&gt;"%d\n"&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token function"&gt;SampleAddInt&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token number"&gt;2&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token number"&gt;3&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;span class="token punctuation"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//codeblocks-dynamically-load-dll-in-windows.html</guid></item><item><title>http client 对于优酷和土豆的api调用</title><link>http://blog.shrp.me//using-http-client-for-api-of-youku-and-tudou.html</link><pubdate>2011-05-16</pubdate><content:encoded>&lt;p&gt;今天下午研究了一下午的土豆api调用，心得如下：&lt;/p&gt;
+
+&lt;p&gt;优酷api返回结果是text/html，可以直接使用httpentity的getcontent方法，并且通过其getcontentlength方法不为-1，得知返回结果是否有效。&lt;/p&gt;
+
+&lt;p&gt;土豆返回结果是text/plain，必须使用&lt;/p&gt;
+
+&lt;pre class=" language-java"&gt;&lt;code class=" language-java"&gt;HttpEntity entity &lt;span class="token operator"&gt;=&lt;/span&gt; response&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;getEntity&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后通过HttpEntity#getContent()绑定到bytearrayinputstream，然后再tostring转为字符串保存使用。&lt;/p&gt;
+
+&lt;p&gt;两者都是json结果，用jsondecode就得到了视频的详细信息了&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//using-http-client-for-api-of-youku-and-tudou.html</guid></item><item><title>一个设想的创业点</title><link>http://blog.shrp.me//A-Creation-of-Thinking.html</link><pubdate>2011-05-07</pubdate><content:encoded>&lt;p&gt;　　可以用触摸屏替换触摸板。&lt;/p&gt;
+
+&lt;p&gt;　　首先写一个iPhone程序和xp程序，让iPhone作为xp的多点触摸设备。&lt;/p&gt;
+
+&lt;p&gt;　　然后宣传这个理念，然后把公司并入硬件生产厂商，比如神舟，联想。触摸屏可以实现不开机的邮件、聊天，可以实现xp的程序快速启动等好处。还可以让它自己本身可以自由拆卸作为mp4使用。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//A-Creation-of-Thinking.html</guid></item><item><title>重新学习C的领悟</title><link>http://blog.shrp.me//Understanding-Of-Restudy-C.html</link><pubdate>2011-04-25</pubdate><content:encoded>&lt;h4 id="1scanfcchr"&gt;1. 为了跳过之前的回车，可以使用&lt;code&gt;scanf(“空格%c”,&amp;amp;chr);&lt;/code&gt;，其中的空格可以跳过零个或者若干个空白字符，包括换行、换页、行制表符、列制表符、空格&lt;/h4&gt;
 
 &lt;h4 id="22fg"&gt;2. 为了打印出小数点后两位数字，"%.2f"来输出。为了打印出自然书写格式的的浮点数字，可以用%g。&lt;/h4&gt;
 
@@ -153,16 +302,18 @@
 
 &lt;h4 id="7"&gt;7.&lt;/h4&gt;
 
-&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token keyword"&gt;while&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token function"&gt;getchar&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token operator"&gt;!=&lt;/span&gt; &lt;span class="token string"&gt;'\n'&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;\&lt;span class="token operator"&gt;*&lt;/span&gt;来跳过一行的输入\&lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;
+&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token keyword"&gt;while&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token function"&gt;getchar&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token operator"&gt;!=&lt;/span&gt; &lt;span class="token string"&gt;'\n'&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;&lt;span class="token comment" spellcheck="true"&gt;/*来跳过一行的输入*/&lt;/span&gt;
 
-&lt;span class="token keyword"&gt;while&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token function"&gt;getchar&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token operator"&gt;==&lt;/span&gt; &lt;span class="token string"&gt;' '&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;\&lt;span class="token operator"&gt;*&lt;/span&gt;来跳过空格的输入\&lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;``
-&lt;/code&gt;&lt;/pre&gt;scanf()后边如果再使用getchar时要注意，scanf后边输入的\n是会被getchar所读取的，一般是所不希望的。
+&lt;span class="token keyword"&gt;while&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token function"&gt;getchar&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token operator"&gt;==&lt;/span&gt; &lt;span class="token string"&gt;' '&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;&lt;span class="token comment" spellcheck="true"&gt;/*来跳过空格的输入*/&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-####8. sizeof()运算符一定要将所求目标用括号选中，否则容易出错。（sizeof运算符的优先等级高于二元运算符）。另一方面，返回值为无符号整型，容易在赋值到整型时溢出。
+&lt;p&gt;scanf()后边如果再使用getchar时要注意，scanf后边输入的\n是会被getchar所读取的，一般是所不希望的。&lt;/p&gt;
 
-####9. 同样，-10&amp;lt;(unsigned int) 10的结果是假。
+&lt;h4 id="8sizeofsizeof"&gt;8. sizeof()运算符一定要将所求目标用括号选中，否则容易出错。（sizeof运算符的优先等级高于二元运算符）。另一方面，返回值为无符号整型，容易在赋值到整型时溢出。&lt;/h4&gt;
 
-####10. 运算时溢出，即便结果是由更大范围的类型来保存依然会溢出。如：
+&lt;h4 id="910unsignedint10"&gt;9. 同样，-10&amp;lt;(unsigned int) 10的结果是假。&lt;/h4&gt;
+
+&lt;h4 id="10"&gt;10. 运算时溢出，即便结果是由更大范围的类型来保存依然会溢出。如：&lt;/h4&gt;
 
 &lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token keyword"&gt;long&lt;/span&gt; &lt;span class="token keyword"&gt;int&lt;/span&gt; i&lt;span class="token punctuation"&gt;;&lt;/span&gt;
 &lt;span class="token keyword"&gt;int&lt;/span&gt; j &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token number"&gt;1000&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
@@ -221,12 +372,15 @@ disk into drive a\n”&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;sp
 
 &lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token keyword"&gt;char&lt;/span&gt; &lt;span class="token operator"&gt;*&lt;/span&gt;p &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token string"&gt;"abc"&lt;/span&gt;&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;1&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
 &lt;span class="token operator"&gt;*&lt;/span&gt;p &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token string"&gt;'x'&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;但是这种特性会对程序造成不可预知的后果（如果编译器对同样的字符串是压缩存储，这将导致其它字符串可能变化）。但是下标还有一个很好的使用方法，如：``return "0123456789ABCDEF"[digit];``这句话可以简单地将十进制的数字转化为十六进制的字符。
+&lt;/code&gt;&lt;/pre&gt;
 
-####27. 如果初始化字符串的长度和其本身长度一致时，编译器不会在后边加上'0'，也就不会破坏之后的数据。如：``Char str[7] = "srpsrp!",ch;``中，
-Ch的值是不确定的，而不是'\0'。这条仅知道即可。
+&lt;p&gt;但是这种特性会对程序造成不可预知的后果（如果编译器对同样的字符串是压缩存储，这将导致其它字符串可能变化）。但是下标还有一个很好的使用方法，如：&lt;code&gt;return "0123456789ABCDEF"[digit];&lt;/code&gt;这句话可以简单地将十进制的数字转化为十六进制的字符。&lt;/p&gt;
 
-####28. 如果只显示字符串的一部分，则使用%.xs。如：
+&lt;h4 id="270charstr7srpsrpch"&gt;27. 如果初始化字符串的长度和其本身长度一致时，编译器不会在后边加上'0'，也就不会破坏之后的数据。如：&lt;code&gt;Char str[7] = "srpsrp!",ch;&lt;/code&gt;中，&lt;/h4&gt;
+
+&lt;p&gt;Ch的值是不确定的，而不是'\0'。这条仅知道即可。&lt;/p&gt;
+
+&lt;h4 id="28xs"&gt;28. 如果只显示字符串的一部分，则使用%.xs。如：&lt;/h4&gt;
 
 &lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token keyword"&gt;char&lt;/span&gt; str&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;10&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token string"&gt;"123456789"&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
 &lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token string"&gt;"%.3s"&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;str&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
@@ -696,9 +850,9 @@ example a2&lt;span class="token punctuation"&gt;;&lt;/span&gt;
 &lt;tbody&gt;&lt;tr&gt;&lt;td&gt;其它&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;printf("%6.4d",i)等价于printf("%*.4d",6,i);printf("%6.*d",4,i);printf("%*.*d",6,4,i);&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;printf("%d%n",123,&amp;amp;len);&lt;/td&gt;&lt;td&gt;输出123&lt;/td&gt;&lt;td&gt;输出后len==3&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;printf("%d%n",123,&amp;amp;len);&lt;/td&gt;&lt;td&gt;输出123&lt;/td&gt;&lt;td&gt;输出后len==3&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+
+
 
 &lt;h4 id="88scanf"&gt;88. scanf类完整说明：&lt;/h4&gt;
 
@@ -856,7 +1010,7 @@ len &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token func
 
 &lt;h4 id="103"&gt;103. 用来检测多字符和宽字符：&lt;/h4&gt;
 
-&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; mbcheck`&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token keyword"&gt;const&lt;/span&gt; &lt;span class="token keyword"&gt;char&lt;/span&gt; &lt;span class="token operator"&gt;*&lt;/span&gt;s&lt;span class="token punctuation"&gt;)&lt;/span&gt;
+&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token function"&gt;mbcheck&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token keyword"&gt;const&lt;/span&gt; &lt;span class="token keyword"&gt;char&lt;/span&gt; &lt;span class="token operator"&gt;*&lt;/span&gt;s&lt;span class="token punctuation"&gt;)&lt;/span&gt;
 &lt;span class="token punctuation"&gt;{&lt;/span&gt;
     &lt;span class="token keyword"&gt;int&lt;/span&gt; n&lt;span class="token punctuation"&gt;;&lt;/span&gt;
     &lt;span class="token keyword"&gt;for&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token function"&gt;mblen&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;NULL&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;;&lt;/span&gt; &lt;span class="token punctuation"&gt;;&lt;/span&gt; s &lt;span class="token operator"&gt;+&lt;/span&gt;&lt;span class="token operator"&gt;=&lt;/span&gt; n&lt;span class="token punctuation"&gt;)&lt;/span&gt;
@@ -902,174 +1056,5 @@ len &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token func
 &lt;span class="token keyword"&gt;void&lt;/span&gt; qsort &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token keyword"&gt;void&lt;/span&gt; &lt;span class="token operator"&gt;*&lt;/span&gt;base&lt;span class="token punctuation"&gt;,&lt;/span&gt; size_t nmemb&lt;span class="token punctuation"&gt;,&lt;/span&gt; size_t size&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token operator"&gt;*&lt;/span&gt;compar&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token keyword"&gt;const&lt;/span&gt; &lt;span class="token keyword"&gt;void&lt;/span&gt; &lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token keyword"&gt;const&lt;/span&gt; &lt;span class="token keyword"&gt;void&lt;/span&gt; &lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4 id="109divldivdiv_tquotrem"&gt;109. /和%与实现有关，因此可以用div和ldiv代替，前者用于整型，后者用于长整型。返回div_t类型，可用quot和rem求商和余数。效率是使用它们而不是/和%的原因，因为可以在一个指令里计算出两个结果。&lt;/h4&gt;</content:encoded><guid>http://blog.shrp.me//Understanding-Of-Restudy-C.html</guid></item><item><title>C语言研究：编写一个函数，返回一个指向另一个函数的指针</title><link>http://blog.shrp.me//C-Study-A-Method-That-Return-A-Pointer-Point-To-An-Other-Method.html</link><pubdate>2011-04-24</pubdate><content:encoded>&lt;p&gt;有函数int func(int a);
-要求编写函数，返回指向func的函数指针。
-实现：&lt;/p&gt;
-
-&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span class="token property"&gt;#include &lt;span class="token property"&gt;&amp;lt;stdlib.h&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token function"&gt;func&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; a&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-&lt;span class="token punctuation"&gt;{&lt;/span&gt;
-    &lt;span class="token keyword"&gt;return&lt;/span&gt; a&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token punctuation"&gt;}&lt;/span&gt;
-
-&lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token function"&gt;wishedFunc&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token keyword"&gt;void&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; a&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-&lt;span class="token punctuation"&gt;{&lt;/span&gt;
-    &lt;span class="token keyword"&gt;return&lt;/span&gt; func&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token punctuation"&gt;}&lt;/span&gt;
-
-&lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token function"&gt;main&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-&lt;span class="token punctuation"&gt;{&lt;/span&gt;
-    &lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token operator"&gt;*&lt;/span&gt;test&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; a&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    test &lt;span class="token operator"&gt;=&lt;/span&gt; func&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token keyword"&gt;if&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token function"&gt;test&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token number"&gt;10&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token operator"&gt;==&lt;/span&gt; &lt;span class="token function"&gt;wishedFunc&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token number"&gt;10&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-        &lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token string"&gt;"OK!\n"&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-    &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token punctuation"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//C-Study-A-Method-That-Return-A-Pointer-Point-To-An-Other-Method.html</guid></item><item><title>到底应该怎样打造一支健康的软件团队？（语文写作课上的遐想）</title><link>http://blog.shrp.me//How-To-Build-A-Healthy-SoftWare-Team.html</link><pubdate>2011-03-12</pubdate><content:encoded>&lt;p&gt;　　软件工程是一门年轻的科学，很多概念、方法，至今都在摸索之中。比如说，如何形成一支健康的、易于成功的软件团队，依然是那些顶级的秘密，即便是有过上百次成功经验的项目经理、团队管理者，依然会说这种成功的过程建立在团队当时情况之上的，是不可复制的。&lt;/p&gt;
-
-&lt;p&gt;　　到底为什么呢？&lt;/p&gt;
-
-&lt;p&gt;　　我们经常看到软件领域的两种比喻：很多老师、方法、软件组织的管理者都把做软件比作是盖楼房，要有人设计、制造，要有良好的接口，要易于维护，等等。唯有这样，才能工业化大规模生产。也有很多组织中的程序员把写程序比作写作文，要写代码，就要想写作文一样，避免打扰，专心致志，还要有灵感，才能才思泉涌。&lt;/p&gt;
-
-&lt;p&gt;　　我们要注意两个问题：一，这两类比喻有着行为学和方法论上的差别，是不能同时存在于一个团队中的；二，第一类说的是做软件，第二类说的是写程序。我相信，正是管理层和执行层概念的差别才是造成软件团队问题的根源。大家都在各说各话，怎么能统一步伐走向共同的目标呢？&lt;/p&gt;
-
-&lt;p&gt;　　做软件和写程序有区别吗？或者说，软件和程序有区别吗？&lt;/p&gt;
-
-&lt;p&gt;　　程序（program）是为实现特定目标或解决特定问题而用计算机语言编写的命令序列的集合。 软件是一系列按照特定顺序组织的计算机数据和指令的集合。（以上来自百度百科）说实话，我之前的概念来自于课堂，就是程序是小的、个人性质的玩意，而软件则是带有商业目的的一套产品；而看了百度百科，反倒好像两者一样了。&lt;/p&gt;
-
-&lt;p&gt;　　那如果两者一样，为什么会有差异如此大的两种方法呢？&lt;/p&gt;
-
-&lt;p&gt;　　那么就应该是看问题角度导致的差异了吧。管理层，作为现代经济体中的获益方，势必会想办法融入成熟的现代商业模式中，自然而然的把问题想成像是工业化大生产的模式，因为这样个人对于公司的影响就很小了，不可能出现一个普通的人事变动对公司造成大的影响。然而程序员作为决策的执行者，却时刻感受到工业化生产和编码过程方法论的不同，造成实际上的执行力低下。最明显的是我第一次实训的时候，虽然模块、功能都划分好了，让大家按部就班，但是结果很多人不能按时完成规定的任务，很多功能都堆到了最后。当然，这个问题最直接的原因是课业负担，但是我认为根本问题是想用工业化的方法来安排软件流程是必然不能顺利的。&lt;/p&gt;
-
-&lt;p&gt;　　那么完全按照写作文的方法呢？小峰做组长的时候我觉得就是这样的方法，但是也没成功。他的方法是规划了某个这个模块后，模块负责人要发挥自己的主观能动性，完全自觉自动的完成这个模块。虽然完全交由组员了，却使得控制力失去了。&lt;/p&gt;
-
-&lt;p&gt;　　由此我觉得这次实训我再次作为组长，方法要改一改。首先在大体上要自己规划，但是小块上边，除了接口外，剩下的要由他们自己实现。对于时间上边我要求每次任务都有时间的约束，每次耽误时间的交付都将扣除一定的分数直到及格线。一旦被扣到及格线，该名同学也就不必继续完成任务。他对于集体就不再负有责任了。交付的时候是有提交标准的，比如，要在测试用例里面编译通过（最基本要求），要有一定的质量。编译不过比没有交付好一些，不过少扣些分数而已。&lt;/p&gt;
-
-&lt;p&gt;　　总之，就是大体上，是个工业化分工合作的过程；在细节上，是个人比较自由的创作时间。或许这样可以打造一个比较成功的团队。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//How-To-Build-A-Healthy-SoftWare-Team.html</guid></item><item><title>使用GtkBuilder设计Gtk+界面</title><link>http://blog.shrp.me//Using-GTKBuilder-design-UI.html</link><pubdate>2011-03-08</pubdate><content:encoded>&lt;p&gt;1、使用glade设计Gtk+界面,保存为gtkbuilder文件,比如：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="language-xml"&gt;&amp;lt;?xml version="1.0"?&amp;gt;
-&amp;lt;!--Generated with glade3 3.4.5 on Sun Nov 29 12:39:11 2009 --&amp;gt;
-&amp;lt;interface&amp;gt;
-  &amp;lt;object class="GtkWindow" id="window1"&amp;gt;
-    &amp;lt;child&amp;gt;
-      &amp;lt;object class="GtkVBox" id="vbox1"&amp;gt;
-        &amp;lt;property name="visible"&amp;gt;True&amp;lt;/property&amp;gt;
-        &amp;lt;child&amp;gt;
-          &amp;lt;object class="GtkImage" id="image1"&amp;gt;
-            &amp;lt;property name="visible"&amp;gt;True&amp;lt;/property&amp;gt;
-            &amp;lt;property name="pixbuf"&amp;gt;stallman.jpg&amp;lt;/property&amp;gt;
-          &amp;lt;/object&amp;gt;
-        &amp;lt;/child&amp;gt;
-        &amp;lt;child&amp;gt;
-          &amp;lt;object class="GtkLabel" id="label1"&amp;gt;
-            &amp;lt;property name="visible"&amp;gt;True&amp;lt;/property&amp;gt;
-            &amp;lt;property name="label" translatable="yes"&amp;gt;Richard Stallman&amp;lt;/property&amp;gt;
-          &amp;lt;/object&amp;gt;
-          &amp;lt;packing&amp;gt;
-            &amp;lt;property name="position"&amp;gt;1&amp;lt;/property&amp;gt;
-          &amp;lt;/packing&amp;gt;
-        &amp;lt;/child&amp;gt;
-      &amp;lt;/object&amp;gt;
-    &amp;lt;/child&amp;gt;
-  &amp;lt;/object&amp;gt;
-&amp;lt;/interface&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;2、编写程序，调用GtkBuilder&lt;/p&gt;
-
-&lt;pre class=" language-cpp"&gt;&lt;code class=" language-cpp"&gt;&lt;span class="token property"&gt;#include &amp;lt;gtk/gtk.h&amp;gt;&lt;/span&gt;
-
-&lt;span class="token keyword"&gt;static&lt;/span&gt; &lt;span class="token keyword"&gt;void&lt;/span&gt; &lt;span class="token function"&gt;window_close&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;GtkWidget &lt;span class="token operator"&gt;*&lt;/span&gt;widget&lt;span class="token punctuation"&gt;,&lt;/span&gt;gpointer data&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-&lt;span class="token punctuation"&gt;{&lt;/span&gt;
-  &lt;span class="token function"&gt;gtk_main_quit&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token punctuation"&gt;}&lt;/span&gt;
-
-&lt;span class="token keyword"&gt;int&lt;/span&gt; &lt;span class="token function"&gt;main&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; argc&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token keyword"&gt;char&lt;/span&gt; &lt;span class="token operator"&gt;*&lt;/span&gt;argv&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-&lt;span class="token punctuation"&gt;{&lt;/span&gt;
-  GtkBuilder &lt;span class="token operator"&gt;*&lt;/span&gt;builder &lt;span class="token operator"&gt;=&lt;/span&gt; NULL&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-  GError &lt;span class="token operator"&gt;*&lt;/span&gt;error &lt;span class="token operator"&gt;=&lt;/span&gt; NULL&lt;span class="token punctuation"&gt;;&lt;/span&gt;     &lt;span class="token comment" spellcheck="true"&gt; //注意要初始化变量！！！
-&lt;/span&gt;  GtkWidget &lt;span class="token operator"&gt;*&lt;/span&gt;window &lt;span class="token operator"&gt;=&lt;/span&gt; NULL&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-  &lt;span class="token function"&gt;gtk_init&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token operator"&gt;&amp;amp;&lt;/span&gt;argc&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token operator"&gt;&amp;amp;&lt;/span&gt;argv&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-  builder&lt;span class="token operator"&gt;=&lt;/span&gt;&lt;span class="token function"&gt;gtk_builder_new&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-  &lt;span class="token function"&gt;gtk_builder_add_from_file&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;builder&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token string"&gt;"fsf.ui"&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token operator"&gt;&amp;amp;&lt;/span&gt;error&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
- window&lt;span class="token operator"&gt;=&lt;/span&gt;&lt;span class="token function"&gt;GTK_WIDGET&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token function"&gt;gtk_builder_get_object&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;builder&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token string"&gt;"window1"&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-  &lt;span class="token function"&gt;g_object_unref&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token function"&gt;G_OBJECT&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;builder&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
- &lt;span class="token function"&gt;g_signal_connect&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;window&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token string"&gt;"destroy"&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token function"&gt;G_CALLBACK&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;window_close&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;NULL&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-  &lt;span class="token function"&gt;gtk_widget_show_all&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;window&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-  &lt;span class="token function"&gt;gtk_main&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-  &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token punctuation"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;3、用cb编译运行，OK！ &lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Using-GTKBuilder-design-UI.html</guid></item><item><title>打造在windows下边的跨平台C语言代码编译环境</title><link>http://blog.shrp.me//Cross-PlantForm-C-compilation-in-windows.html</link><pubdate>2011-03-08</pubdate><content:encoded>&lt;p&gt;　　这几天下来实在是为了这套系统折腾了不少，今天写下来，不仅仅是为了总结这几天的经验，更重要的是为了后来的人更好的搭建工作平台。&lt;/p&gt;
-
-&lt;p&gt;　　如今最受欢迎的跨平台开源C语言IDE就是code::blocks了，目前版本10.05。虽然它自己带有minGW，但是那个安装包稍微有点大，而且版本稍微低了点。因此首先我们安装gcc，提供的版本是4.4.4。一路顺风安装下去。安装后检查下系统路径（我的电脑，属性，高级，环境变量，系统变量，path，在最后添加gcc的路径）&lt;/p&gt;
-
-&lt;p&gt;　　gcc安装好了就安装code::blocks，一路下一步。先别急启动，打开安装目录，将汉化补丁放在【CodeBlocks主目录】\share\CodeBlocks\locale下边。第一次启动时会询问默认编译器，应该是找不到gcc的，不过可以点gcc，默认。进入程序后打开设置，environment，view，选择Chinese，重启程序。再打开设置，编译器和调试器，可执行工具链，根据你的gcc安装路径配置一下gcc安装；路径和程序文件。其中有几个文件名字跟原先的程序不同名，不过还是很容易找到相应的程序的。至此，大部分人的跨平台IDE就已经可以使用了。&lt;/p&gt;
-
-&lt;p&gt;　　但是总有一些高级的要求，比如说，cunit进行单元测试。这个东东很有意思，我现在也没弄明白怎么玩，不过要用是没有问题的。首先下载cunit2.1.0（不要选用2.1.2，在windows安装有问题，也不好跟code::blocks集成），解压到你的工程目录下。进入CUnit，CUnit，用code::blocks打开CUnit.dsp,编译。编译后把生成的libCUnit.a改名为CUnit。然后向上，到Examples下边，把ExampleTests.c和ExampleTests.h添加到每个测试文件夹下边，然后把用code::blocks打开每个文件夹下边的dsp文件，根据引用的关系，把CUnit相应缺失的文件复制过来，添加到工程中。之后想要进行C的单元测试，直接打开这样的工程，将相应的测试加入exampletests.c就好了。也可以直接下砸我修改好的包。&lt;/p&gt;
-
-&lt;p&gt;　　此外还有GUI库。一个常用C++GUI库是wxwidget，可以用wxFormBuilder制作界面，很好很强大，除了是c++以外真是没有缺点了。可惜我不会C++ （T_T）,但是还是要推荐出来。这个安装也不算麻烦，打开安装包，安装到一个位置，用cmd进入安装目录下的build\msw，执行make -f makefile.gcc BUILD=release SHARED=1 UNICODE=1 ，经过漫长的等待，终于编译好了。打开cb，在设置，全局变量的wx中设置wx安装目录，ok，新建一个，是不是能用了？嘿嘿。&lt;/p&gt;
-
-&lt;p&gt;　　不过对于我来说，最常用的GUI库是GTK，谁让我只会C呢，没办法（囧）。GTK可以直接安装glade的包，因为做界面很多人用glade，直接安装很方便(如果不行，请下载gtk多合一解压缩即解即用包，覆盖即可)。这个就不用编译了，在cb的全局变量里面加入gtk和相应的全局变量就搞定了。更加简单了吧？&lt;/p&gt;
-
-&lt;p&gt;　　ok，所有的测试代码均由cb自动生成，一试便知。诸位晚安。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Cross-PlantForm-C-compilation-in-windows.html</guid></item><item><title>Virtualbox NAT模式下配置端口映射</title><link>http://blog.shrp.me//Virtualbox-NAT-port-forwarding.html</link><pubdate>2011-03-07</pubdate><content:encoded>&lt;p&gt;在VirtualBox NAT网络模式下面，Guest系统对Host系统和局域网内其他的机器都是不可见的，所以Guest上面的任何服务都不能被外界访问到。这样很多情况下，是不能接受的，比如想在Guest系统为Ubuntu的虚拟机上面开启SSH服务，怎么办呢？两个方法，1、把网络连接方式改成Bridge模式，这样虚拟机的Guest系统就有了自己的IP地址，相当于局域网内的一台主机，这样Host系统和局域网内的其他机器都可以访问他了。2、在NAT网络模式下，开启端口映射。需要什么服务就映射什么端口数据。今天我以VirtualBox的guest系统Ubuntu系统开启SSH服务为例来介绍怎么配置端口映射。&lt;/p&gt;
-
-&lt;p&gt;首先介绍一下NAT网络模式下端口映射的优点，首先节省一个IP地址（有些情况下，IP地址资源比较宝贵）；其次，这样可以避免Server暴露过多的接口，提供什么服务暴露什么接口，这样保证Server安全性。当然这种方式也有一定的局限性，服务的端口必须是固定的，假如服务的端口是动态的，那么这种方式就没有办法了，比如NFS服务就不能用端口映射来实现。&lt;/p&gt;
-
-&lt;p&gt;下面介绍怎样在VirtualBox的Guest系统Ubuntu中启用SSH服务，Host系统为Windows。SSH服务的端口是22端口，理论上可以把Host系统Windows的22端口映射到Ubuntu的22端口。这样做不好，假如有一天Host系统Windows也要在22端口上提供服务就没有办法了，所以我们准备用Host系统的2222端口，映射到Ubuntu的22端口。&lt;/p&gt;
-
-&lt;h5 id="1virtualbox"&gt;1. 首先从命令行进入到VirtualBox安装目录。&lt;/h5&gt;
-
-&lt;h5 id="2vboxmanageexevirtualbox32"&gt;2. 在安装目录下面，目录下面有VBoxManage.exe程序。如果你的VirtualBox版本是3.2之前的版本，请执行如下的命令：&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;VBoxManage setextradata "Linux Guest" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/guestssh/Protocol" TCP
-
-VBoxManage setextradata "Linux Guest" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/guestssh/GuestPort" 22
-
-VBoxManage setextradata "Linux Guest" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/guestssh/HostPort" 2222
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;其中“Linux Guest”是你虚拟机Ubuntu系统的名称，pcnet表示Ubuntu选的是PCNet的网卡，0表示第一块网卡，guestssh是自定义的名字。TCP表示只映射TCP协议的数据，当然也可以设置成UDP协议数据映射的。&lt;/p&gt;
-
-&lt;p&gt;通过以上命令就可以完成Host Windows系统2222端口到Guest Ubuntu系统的端口映射了。当然需要三个命令来完成端口映射挺麻烦的，Oracle公司也这样认为。在最新的3.2版本中，VirtualBox简化了端口映射的步骤，只要一条命令就可以了。
-&lt;code&gt;VBoxManage modifyvm "VM name" --natpf1 "guestssh,tcp,,2222,,22"&lt;/code&gt;
-“VM name”就是Guest系统的名字，guestssh还是用户自定义的名字。你可能发现第三个参数和第五个参数空白了，是什么意思呢？当Host系统有多块网卡的时候，通过第三个参数指定那款网卡的2222端口映射；如果Host系统有多块网卡时，通过第五个参数指定那个网卡的22端口接收数据。
-&lt;code&gt;VBoxManage modifyvm "VM name" --natpf1 "guestssh,tcp,,2222,10.0.2.19,22"&lt;/code&gt;
-以上的命令式将Host系统2222端口的数据映射到Guest系统的10.0.2.10网卡的22端口。&lt;/p&gt;
-
-&lt;h5 id="3ubuntusshserver"&gt;3. 已经设置好了端口映射，现在登录到Ubuntu中，安装SSH server。&lt;/h5&gt;
-
-&lt;p&gt;sudo apt-get install openssh-server4、在Windows平台下面用ssh工具，通过2222端口登录到Ubuntu就可以了。也可以从局域网内的机器上，用SSH工具，通过Host机器的2222端口登录到Ubuntu的ssh服务。&lt;/p&gt;
-
-&lt;p&gt;至此，Ubuntu的SSH服务已经暴露在局域网了。通过上面的描述可以看到在VirtualBox3.2版本中端口映射已经做得比较简单，并且非常完善了。&lt;/p&gt;
-
-&lt;p&gt;如有错误欢迎指正。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Virtualbox-NAT-port-forwarding.html</guid></item><item><title>目标达成</title><link>http://blog.shrp.me//goal-achieved.html</link><pubdate>2011-03-07</pubdate><content:encoded>&lt;p&gt;电脑上的盗版软件一扫而空，心情不由得开始舒畅起来，哈哈。如果说有遗憾，那就是virtual box性能确实不如vmware好，好像也没有端口映射，以后ubuntu怎么远程连接又是个麻烦事了。&lt;/p&gt;
-
-&lt;p&gt;project据说有个gantt什么东西可以画，visio也有类似的在线软件。还要继续寻找。&lt;/p&gt;
-
-&lt;p&gt;此外还有一些微软的powertools还没有装，但是为了避免移动硬盘也成为shadowUser的还原目标，明天用pe开机拷贝吧。&lt;/p&gt;
-
-&lt;p&gt;下一步的目标是给新浪写一个简历，看看能不能得到实习机会。然后把网站按照前几天的计划改进一下。然后把C语言最后几章的习题做了，拖了将近一年了，真囧。&lt;/p&gt;
-
-&lt;p&gt;这样就可以总结一篇C语言的心得，嘿嘿。&lt;/p&gt;
-
-&lt;p&gt;加油，继续前进，goon！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//goal-achieved.html</guid></item><item><title>自己的下一个目标</title><link>http://blog.shrp.me//my-next-goal.html</link><pubdate>2011-03-06</pubdate><content:encoded>&lt;p&gt;将系统中的盗版软件基本全部清理。&lt;/p&gt;
-
-&lt;p&gt;之所以是基本，是因为我的xp是盗版（虽然有正版xp，不过却给小笔记本装了）。不过好在我还有正版vista，而且是闲置不用，就当是把授权转给xp吧。&lt;/p&gt;
-
-&lt;p&gt;还有就是office无可替代，尤其是visio、project。这个专业要用，没有办法了。&lt;/p&gt;
-
-&lt;p&gt;连同写网页的phpdesigner也是盗版，很惭愧，今后用gvim吧。&lt;/p&gt;
-
-&lt;p&gt;服务器也是盗版（汗……）只不过实在需要虚拟路径。等赚钱后再买正版的支持下，呵呵。&lt;/p&gt;
-
-&lt;p&gt;其它软件，就参照-·」&lt;a href="http://blog.sina.com.cn/s/blog_46dac66f0100003u.html"&gt;http://blog.sina.com.cn/s/blog_46dac66f0100003u.html&lt;/a&gt;这个来替换吧。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//my-next-goal.html</guid></item><item><title>网站下一步开发方向</title><link>http://blog.shrp.me//next-develop-of-my-site.html</link><pubdate>2011-03-06</pubdate><content:encoded>&lt;p&gt;添加多图办法：先制作8个网页，分别是添加0-7个图片。这下就可以图文并茂了。&lt;/p&gt;
-
-&lt;p&gt;添加删除文章办法，这个有点麻烦，可以是修改到文章就像从来没有一样，也可以做到添加删除线。这个慢慢考虑吧。&lt;/p&gt;
-
-&lt;p&gt;文章后加留言，不用翻页。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//next-develop-of-my-site.html</guid></item></channel>
+&lt;h4 id="109divldivdiv_tquotrem"&gt;109. /和%与实现有关，因此可以用div和ldiv代替，前者用于整型，后者用于长整型。返回div_t类型，可用quot和rem求商和余数。效率是使用它们而不是/和%的原因，因为可以在一个指令里计算出两个结果。&lt;/h4&gt;</content:encoded><guid>http://blog.shrp.me//Understanding-Of-Restudy-C.html</guid></item></channel>
 </rss>

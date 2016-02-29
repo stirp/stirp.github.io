@@ -62,7 +62,7 @@ else
 ~~~~{c}
 while (getchar() != '\n');/*来跳过一行的输入*/
 
-while (getchar() == ' ');/*来跳过空格的输入*/``
+while (getchar() == ' ');/*来跳过空格的输入*/
 ~~~~
 scanf()后边如果再使用getchar时要注意，scanf后边输入的\n是会被getchar所读取的，一般是所不希望的。
 
@@ -830,7 +830,7 @@ void qsort (void *base, size_t nmemb, size_t size, int (*compar)(const void *, c
 
 <pre class=" language-c"><code class=" language-c"><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token function">getchar<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token string">'\n'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*来跳过一行的输入*/</span>
 
-<span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token function">getchar<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">' '</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*来跳过空格的输入*/</span>``
+<span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token function">getchar<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">' '</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*来跳过空格的输入*/</span>
 </code></pre>scanf()后边如果再使用getchar时要注意，scanf后边输入的\n是会被getchar所读取的，一般是所不希望的。
 
 ####8. sizeof()运算符一定要将所求目标用括号选中，否则容易出错。（sizeof运算符的优先等级高于二元运算符）。另一方面，返回值为无符号整型，容易在赋值到整型时溢出。

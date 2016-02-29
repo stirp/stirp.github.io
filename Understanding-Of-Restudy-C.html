@@ -60,9 +60,9 @@ else
 ####7. 
 
 ~~~~{c}
-while (getchar() != '\n');/\*来跳过一行的输入\*/
+while (getchar() != '\n');/*来跳过一行的输入*/
 
-while (getchar() == ' ');/\*来跳过空格的输入\*/``
+while (getchar() == ' ');/*来跳过空格的输入*/``
 ~~~~
 scanf()后边如果再使用getchar时要注意，scanf后边输入的\n是会被getchar所读取的，一般是所不希望的。
 
@@ -135,6 +135,7 @@ disk into drive a\n”);
 char *p = "abc"[1];
 *p = 'x';
 ~~~~
+
 但是这种特性会对程序造成不可预知的后果（如果编译器对同样的字符串是压缩存储，这将导致其它字符串可能变化）。但是下标还有一个很好的使用方法，如：``return "0123456789ABCDEF"[digit];``这句话可以简单地将十进制的数字转化为十六进制的字符。
 
 ####27. 如果初始化字符串的长度和其本身长度一致时，编译器不会在后边加上'0'，也就不会破坏之后的数据。如：``Char str[7] = "srpsrp!",ch;``中，
@@ -754,7 +755,7 @@ len = strcspn(str, " \t\n");	/*len=4*/
 ####103. 用来检测多字符和宽字符：
 
 ~~~~{c}
-int mbcheck`(const char *s)
+int mbcheck(const char *s)
 {
     int n;
     for (mblen(NULL, 0) ; ; s += n)
@@ -827,9 +828,9 @@ void qsort (void *base, size_t nmemb, size_t size, int (*compar)(const void *, c
 
 <h4 id="7">7.</h4>
 
-<pre class=" language-c"><code class=" language-c"><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token function">getchar<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token string">'\n'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">/</span>\<span class="token operator">*</span>来跳过一行的输入\<span class="token operator">*</span><span class="token operator">/</span>
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token function">getchar<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token string">'\n'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*来跳过一行的输入*/</span>
 
-<span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token function">getchar<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">' '</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">/</span>\<span class="token operator">*</span>来跳过空格的输入\<span class="token operator">*</span><span class="token operator">/</span>``
+<span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token function">getchar<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">' '</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*来跳过空格的输入*/</span>``
 </code></pre>scanf()后边如果再使用getchar时要注意，scanf后边输入的\n是会被getchar所读取的，一般是所不希望的。
 
 ####8. sizeof()运算符一定要将所求目标用括号选中，否则容易出错。（sizeof运算符的优先等级高于二元运算符）。另一方面，返回值为无符号整型，容易在赋值到整型时溢出。
@@ -895,12 +896,15 @@ disk into drive a\n”<span class="token punctuation">)</span><span class="token
 
 <pre class=" language-c"><code class=" language-c"><span class="token keyword">char</span> <span class="token operator">*</span>p <span class="token operator">=</span> <span class="token string">"abc"</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 <span class="token operator">*</span>p <span class="token operator">=</span> <span class="token string">'x'</span><span class="token punctuation">;</span>
-</code></pre>但是这种特性会对程序造成不可预知的后果（如果编译器对同样的字符串是压缩存储，这将导致其它字符串可能变化）。但是下标还有一个很好的使用方法，如：``return "0123456789ABCDEF"[digit];``这句话可以简单地将十进制的数字转化为十六进制的字符。
+</code></pre>
 
-####27. 如果初始化字符串的长度和其本身长度一致时，编译器不会在后边加上'0'，也就不会破坏之后的数据。如：``Char str[7] = "srpsrp!",ch;``中，
-Ch的值是不确定的，而不是'\0'。这条仅知道即可。
+<p>但是这种特性会对程序造成不可预知的后果（如果编译器对同样的字符串是压缩存储，这将导致其它字符串可能变化）。但是下标还有一个很好的使用方法，如：<code>return "0123456789ABCDEF"[digit];</code>这句话可以简单地将十进制的数字转化为十六进制的字符。</p>
 
-####28. 如果只显示字符串的一部分，则使用%.xs。如：
+<h4 id="270charstr7srpsrpch">27. 如果初始化字符串的长度和其本身长度一致时，编译器不会在后边加上'0'，也就不会破坏之后的数据。如：<code>Char str[7] = "srpsrp!",ch;</code>中，</h4>
+
+<p>Ch的值是不确定的，而不是'\0'。这条仅知道即可。</p>
+
+<h4 id="28xs">28. 如果只显示字符串的一部分，则使用%.xs。如：</h4>
 
 <pre class=" language-c"><code class=" language-c"><span class="token keyword">char</span> str<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"123456789"</span><span class="token punctuation">;</span>
 <span class="token function">printf<span class="token punctuation">(</span></span><span class="token string">"%.3s"</span><span class="token punctuation">,</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1530,7 +1534,7 @@ len <span class="token operator">=</span> <span class="token function">strcspn<s
 
 <h4 id="103">103. 用来检测多字符和宽字符：</h4>
 
-<pre class=" language-c"><code class=" language-c"><span class="token keyword">int</span> mbcheck`<span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">)</span>
+<pre class=" language-c"><code class=" language-c"><span class="token keyword">int</span> <span class="token function">mbcheck<span class="token punctuation">(</span></span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">)</span>
 <span class="token punctuation">{</span>
     <span class="token keyword">int</span> n<span class="token punctuation">;</span>
     <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token function">mblen<span class="token punctuation">(</span></span>NULL<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">;</span> <span class="token punctuation">;</span> s <span class="token operator">+</span><span class="token operator">=</span> n<span class="token punctuation">)</span>

@@ -593,7 +593,7 @@ while (缓冲区未满)
 <tr><td>其它</td></tr>
 <tr><td>printf("%6.4d",i)等价于printf("%*.4d",6,i);printf("%6.*d",4,i);printf("%*.*d",6,4,i);</d></tr>
 <tr>
-<td>printf("%d%n",123,&len);</td><td>输出123</td><td>输出后len==3</td>
+<table><tr><td>printf("%d%n",123,&len);</td><td>输出123</td><td>输出后len==3</td></tr></table>
 </tr>
 </table>
 
@@ -1377,9 +1377,9 @@ example a2<span class="token punctuation">;</span>
 <tbody><tr><td>其它</td></tr>
 <tr><td>printf("%6.4d",i)等价于printf("%*.4d",6,i);printf("%6.*d",4,i);printf("%*.*d",6,4,i);</td></tr>
 <tr>
-<td>printf("%d%n",123,&amp;len);</td><td>输出123</td><td>输出后len==3</td>
-</tr>
-</tbody></table>
+</tr></tbody></table><table><tbody><tr><td>printf("%d%n",123,&amp;len);</td><td>输出123</td><td>输出后len==3</td></tr></tbody></table>
+
+
 
 <h4 id="88scanf">88. scanf类完整说明：</h4>
 

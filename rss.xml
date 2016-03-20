@@ -6,8 +6,25 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>temp</title><link>http://blog.shrp.me//temp.html</link><pubdate>2016-02-19</pubdate><content:encoded>&lt;pre class=" language-java"&gt;&lt;code class=" language-java"&gt;
-&lt;span class="token keyword"&gt;package&lt;/span&gt; com&lt;span class="token punctuation"&gt;.&lt;/span&gt;woqu&lt;span class="token punctuation"&gt;.&lt;/span&gt;crm&lt;span class="token punctuation"&gt;.&lt;/span&gt;server&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+    <item><title>从PHP迁移到Java遇到的问题</title><link>http://blog.shrp.me//Problems-in-Code-Transfer-From-PHP-To-JAVA.html</link><pubdate>2016-03-20</pubdate><content:encoded>&lt;p&gt;有一段PHP代码是这样的：&lt;/p&gt;
+
+&lt;pre class=" language-php"&gt;&lt;code class=" language-php"&gt;&lt;span class="token variable"&gt;$s&lt;/span&gt;&lt;span class="token operator"&gt;=&lt;/span&gt;&lt;span class="token string"&gt;'%Qw%e1%16%11%4'&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;span class="token variable"&gt;$r&lt;/span&gt; &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;urldecode&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token variable"&gt;$s&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;span class="token variable"&gt;$result&lt;/span&gt; &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;md5&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token variable"&gt;$r&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;乍看之下迁移到Java好像很容易嘛，可是实际操作了一下才发现，这个问题并不好解决。&lt;/p&gt;
+
+&lt;p&gt;为什么呢？&lt;/p&gt;
+
+&lt;p&gt;问题就出在PHP的urldecode函数，并不需要字符串是符合urlencode规范的。&lt;/p&gt;
+
+&lt;p&gt;比如我示例中的字符串，%Qw不是一个合理的十六进制数字，Java版本会报错，中止decode；但是PHP并不会，它把不符合条件的都当作单独的字符来解析，比如%Qw就不再是一个转义的字符了，而是三个单独的字符。&lt;/p&gt;
+
+&lt;p&gt;那么这么一段urldecode代码迁移到Java后就换成下述代码：&lt;/p&gt;
+
+&lt;pre class=" language-java"&gt;&lt;code class=" language-java"&gt;
+&lt;span class="token keyword"&gt;package&lt;/span&gt; me&lt;span class="token punctuation"&gt;.&lt;/span&gt;shrp&lt;span class="token punctuation"&gt;.&lt;/span&gt;blog&lt;span class="token punctuation"&gt;;&lt;/span&gt;
 
 &lt;span class="token keyword"&gt;import&lt;/span&gt; java&lt;span class="token punctuation"&gt;.&lt;/span&gt;io&lt;span class="token punctuation"&gt;.&lt;/span&gt;UnsupportedEncodingException&lt;span class="token punctuation"&gt;;&lt;/span&gt;
 &lt;span class="token keyword"&gt;import&lt;/span&gt; java&lt;span class="token punctuation"&gt;.&lt;/span&gt;util&lt;span class="token punctuation"&gt;.&lt;/span&gt;LinkedList&lt;span class="token punctuation"&gt;;&lt;/span&gt;
@@ -133,7 +150,7 @@
 &lt;span class="token punctuation"&gt;}&lt;/span&gt;
 
 
-&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//temp.html</guid></item><item><title>好久不更新了，得肺结核了</title><link>http://blog.shrp.me//Too-Long-No-Update-Since-Got-Tuberculosis.html</link><pubdate>2012-03-13</pubdate><content:encoded>&lt;p&gt;　　很久没更新了，最近得了肺结核，一阵检查之类的，现在确诊了，只好从公司出来，好好治病。&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//Problems-in-Code-Transfer-From-PHP-To-JAVA.html</guid></item><item><title>好久不更新了，得肺结核了</title><link>http://blog.shrp.me//Too-Long-No-Update-Since-Got-Tuberculosis.html</link><pubdate>2012-03-13</pubdate><content:encoded>&lt;p&gt;　　很久没更新了，最近得了肺结核，一阵检查之类的，现在确诊了，只好从公司出来，好好治病。&lt;/p&gt;
 
 &lt;p&gt;　　正好好好写论文吧，也算是一个休整时期吧。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Too-Long-No-Update-Since-Got-Tuberculosis.html</guid></item><item><title>无语了……本博客与淘宝商城没有任何联系！！！</title><link>http://blog.shrp.me//This-Blog-Has-Nothing-With-Tmall.html</link><pubdate>2012-01-12</pubdate><content:encoded>&lt;p&gt;　　我已经无语了……淘宝商城在毫无征兆的情况下改用了天猫作为名称，让我一下子不知所措。&lt;/p&gt;
 

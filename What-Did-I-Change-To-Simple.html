@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+Simple是一款基于GitHub JS API的博客系统，我选择它是因为它可以在GitHub提供的静态页面就能管理博客，写博文。不过它的缺点也很明显，GitHub的JS API不是专门的博客API，效率没有那么高；在移动终端上不完备的键盘也使得其无后台的优点没那么明显。
+
+我的版本一个改进是编辑框支持Tab键，这个跟功能在火狐上表现正常，但是在Chrome上还是会失去焦点——不过好在tab键还是输入了的，更多的我也不管了。
+
+第二个功能呢是支持了以markdown格式备份博文。其实这个功能很简单，如果你看得懂，用bash去执行这个过程效率会更高；不过既然Simple是无后端的，所以一个基于页面的导出功能还是有点用的，至少当你换博客系统的时候没那么麻烦。不过时间会很长，提前准备瓜子小板凳哈。
+
+还有一个功能是支持RSS的生成。我找了很多JS生成XML的代码，发现没有合适的方案；好在RSS格式本身不麻烦，根据一个模板来生成RSS还是很简单的，当然，由于要读取多次博文内容，生成RSS的时间还是挺长的，所以最后没有采用保存的时候自动生成，而是作者自己手动生成的方法。不过我遗留了一点小问题，由于手头没有IE，所以IE的兼容性暂时没有做。
+
+还有一点点小改进，一个是文件名自动加html后缀，一个是时间自动取当前时间，免得忘记存时间了。
+
+终于这个轻巧的博客系统可以随便用了，哇哈哈哈~
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>Simple是一款基于GitHub JS API的博客系统，我选择它是因为它可以在GitHub提供的静态页面就能管理博客，写博文。不过它的缺点也很明显，GitHub的JS API不是专门的博客API，效率没有那么高；在移动终端上不完备的键盘也使得其无后台的优点没那么明显。</p>
+
+<p>我的版本一个改进是编辑框支持Tab键，这个跟功能在火狐上表现正常，但是在Chrome上还是会失去焦点——不过好在tab键还是输入了的，更多的我也不管了。</p>
+
+<p>第二个功能呢是支持了以markdown格式备份博文。其实这个功能很简单，如果你看得懂，用bash去执行这个过程效率会更高；不过既然Simple是无后端的，所以一个基于页面的导出功能还是有点用的，至少当你换博客系统的时候没那么麻烦。不过时间会很长，提前准备瓜子小板凳哈。</p>
+
+<p>还有一个功能是支持RSS的生成。我找了很多JS生成XML的代码，发现没有合适的方案；好在RSS格式本身不麻烦，根据一个模板来生成RSS还是很简单的，当然，由于要读取多次博文内容，生成RSS的时间还是挺长的，所以最后没有采用保存的时候自动生成，而是作者自己手动生成的方法。不过我遗留了一点小问题，由于手头没有IE，所以IE的兼容性暂时没有做。</p>
+
+<p>还有一点点小改进，一个是文件名自动加html后缀，一个是时间自动取当前时间，免得忘记存时间了。</p>
+
+<p>终于这个轻巧的博客系统可以随便用了，哇哈哈哈~</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "What-Did-I-Change-To-Simple.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

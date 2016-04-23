@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/">
     <channel>
         <title>尚弟的小笔记</title>
         <atom:link href="http://blog.shrp.me//rss.xml" rel="self" type="application/rss+xml"/>
@@ -6,7 +7,62 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>我的Simple改了什么</title><link>http://blog.shrp.me//What-Did-I-Change-To-Simple.html</link><pubdate>2016-03-23</pubdate><content:encoded>&lt;p&gt;Simple是一款基于GitHub JS API的博客系统，我选择它是因为它可以在GitHub提供的静态页面就能管理博客，写博文。不过它的缺点也很明显，GitHub的JS API不是专门的博客API，效率没有那么高；在移动终端上不完备的键盘也使得其无后台的优点没那么明显。&lt;/p&gt;
+    <item><title>浅谈SSH客户端配置</title><link>http://blog.shrp.me//How-To-Configure-SSH-Client.html</link><pubdate>2016-04-18</pubdate><content:encoded>&lt;p&gt;SSH客户端对于很多IT从业人员都是必备，然而很多人仅仅是用了最基本的功能。当遇到了比如RSA Key等安全措施时，不能有效利用客户端，繁琐的操作流程影响了他们的工作热情。本文就简单说明一下SSH客户端的功能，帮助大家保持高效的开发工作。&lt;/p&gt;
+
+&lt;h2 id="1sshkeygenauthrorized_keys"&gt;1. 基本连接功能（端口，用户，ssh-keygen，authrorized_keys)&lt;/h2&gt;
+
+&lt;p&gt;一个基本的ssh是这么使用的：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ssh 192.168.1.16
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;命令会连接192.168.1.16机器的22端口，并且使用当前机器登录的用户名称去登录。大多数情况下目标机器的用户名称都不会是你当前电脑的用户名称，所以一般需要用ssh 用户名@ip的方式去使用。&lt;/p&gt;
+
+&lt;p&gt;此外目前在公网的机器大多都会遇到蠕虫不断搜索ssh的端口号然后用密码字典crack的情况，因此大多机器的ssh端口号都会改到30000已上，比如36022端口。这种情况就需要指定ssh命令的端口号：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ssh -p 36022 dev@192.168.1.16
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;到目前为止，我们已经可以自由登录服务器了。但是我们发现每次都要输入密码，是个很麻烦的事情；能不能不输入密码登录呢？当然可以，我们可以执行ssh-keygen命令，可以一路回车，默认会在~/.ssh/下生成两个文件，id_rsa和id_rsa.pub文件，其中id_rsa是私钥，任何情况下你都不需要把这个文件给其他人；而id_rsa.pub是公钥，给谁都无所谓。然后通过正常的ssh登录到目标服务器，将id_rsa.pub的内容附加到目标机器目标用户的~/.ssh/authorized_keys文件里的单独一行，要保证~/.ssh目录的权限是700，authorized_keys的权限是600。然后再试一试，这次是不是不用密码了？&lt;/p&gt;
+
+&lt;h2 id="2sshconfig"&gt;2. ssh config（保持链接，自动跳转）&lt;/h2&gt;
+
+&lt;p&gt;然而你会发现每次都输入用户名密码ip地址，真是烦。ssh也想到了，提供了ssh_config。&lt;/p&gt;
+
+&lt;p&gt;一个常见的配置如下：&lt;/p&gt;
+
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;Host jumper
+    HostName jumper
+    User dev
+    Port &lt;span class="token number"&gt;36022&lt;/span&gt;
+    IdentityFile &lt;span class="token operator"&gt;~&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;ssh&lt;span class="token operator"&gt;/&lt;/span&gt;jumper
+    ForwardAgent yes
+    ServerAliveInterval &lt;span class="token number"&gt;60&lt;/span&gt;
+    ControlMaster auto
+    ControlPath &lt;span class="token operator"&gt;/&lt;/span&gt;tmp&lt;span class="token operator"&gt;/&lt;/span&gt;ssh_mux_&lt;span class="token operator"&gt;%&lt;/span&gt;h_&lt;span class="token operator"&gt;%&lt;/span&gt;p_&lt;span class="token operator"&gt;%&lt;/span&gt;r
+    ControlPersist 4h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;第一行表示你ssh时的配置名，像这个配置只要ssh jumper即可；HostName是实际连接时使用的ip、机器名称，这个需要是本地ping得通的机器名；User是待连接的用户名；Port是ssh连接的端口号；IdentityFile是刚才所说的私钥文件；ForwardAgent可以持有通过验证的本地的key——如果你的登录是双因子的，它可以持用通过双因子验证或者输入了passphrase    的key，简化之后的登录行为；ServerAliveInterval用于保持ssh的连接，避免长时间不动作被服务器断开；ControlMaster则是开启了一个控制器，ControlPath是控制连接的保持文件，ControlPersist表示保持文件存活时间，如果第一次ssh之后，再次ssh同一台主机，ssh可以利用之前的连接文件，避免了二次登录，当然也不需要密码。&lt;/p&gt;
+
+&lt;p&gt;上边这个配置文件通常是登录跳板机时使用的，然而我们每次都需要先ssh跳板机，然后在跳板机再去ssh目标服务器，实在是不方便。能不能从本地直接通过sshconfig就登录目标服务器呢？当然是可以的啦。&lt;/p&gt;
+
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;Host server&lt;span class="token number"&gt;-1&lt;/span&gt; server&lt;span class="token number"&gt;-2&lt;/span&gt; server&lt;span class="token number"&gt;-3&lt;/span&gt;
+    HostName &lt;span class="token operator"&gt;%&lt;/span&gt;h
+    User dev
+    ProxyCommand ssh jumper nc &lt;span class="token operator"&gt;%&lt;/span&gt;h &lt;span class="token operator"&gt;%&lt;/span&gt;p
+    IdentityFile &lt;span class="token operator"&gt;~&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;ssh&lt;span class="token operator"&gt;/&lt;/span&gt;server
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Host自然还是我们ssh时的名称，但是HostName是个变量，表示我们ssh的实际地址是上边Host中的某一个——这也就表示这三个服务器名称是跳板机所能够ping通的一个地址。但是通常用户的跳板机权限很低，无法编辑/etc/hosts文件来提供服务器名称和ip地址的解析，而HostName写服务器的ip名称显得特别不方便，有没有办法呢？其实是有的，参考项目&lt;a href="https://github.com/figiel/hosts"&gt;hosts&lt;/a&gt;，通过跳板机的~/.bashrc文件指定本地hosts文件就可以为大多数程序提供名称和ip的解析。ProxyCommand则表示ssh的过程是先通过ssh 跳板机，再执行 nc 再次执行后边的命令。因此跳板机需要保证拥有nc命令，如果没有，可以手动编译一个或者上传一个。最后的IdentityFile表示你在server里添加过公钥对应的私钥路径。如此设置以后，当你ssh server-1的时候会自动通过jumper配置到跳板机，然后通过nc命令到相应的服务器了。当然，rsync命令也能通过上述配置传送文件了，这样向某个服务器传文件或者从某个服务器down日志就不必再通过跳板机保存一次啦。&lt;/p&gt;
+
+&lt;h2 id="3"&gt;3. 端口转发，数据库等工具设置&lt;/h2&gt;
+
+&lt;p&gt;端口转发非常简单，通过&lt;code&gt;ssh -D 端口号 host&lt;/code&gt;命令就连接到远端服务器的同时在本地端口号开一个socket代理，通过它你可以直接访问跳板机后边的资源，浏览器也可以通过它访问一些内部的http服务。&lt;/p&gt;
+
+&lt;p&gt;而数据库工具也大多提供了ssh的配置，通常可以在sql客户端的ssh一栏添加跳板机的地址，ssh端口号，用户名和私钥，sql的地址和端口号就是sql服务器的内部ip地址和端口号，就可以不通过vpn访问跳板机后边隐藏的数据库啦。&lt;/p&gt;
+
+&lt;p&gt;目前开发人员需要的ssh配置大体就这么多啦。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//How-To-Configure-SSH-Client.html</guid></item><item><title>我的Simple改了什么</title><link>http://blog.shrp.me//What-Did-I-Change-To-Simple.html</link><pubdate>2016-03-23</pubdate><content:encoded>&lt;p&gt;Simple是一款基于GitHub JS API的博客系统，我选择它是因为它可以在GitHub提供的静态页面就能管理博客，写博文。不过它的缺点也很明显，GitHub的JS API不是专门的博客API，效率没有那么高；在移动终端上不完备的键盘也使得其无后台的优点没那么明显。&lt;/p&gt;
 
 &lt;p&gt;我的版本一个改进是编辑框支持Tab键，这个跟功能在火狐上表现正常，但是在Chrome上还是会失去焦点——不过好在tab键还是输入了的，更多的我也不管了。&lt;/p&gt;
 
@@ -305,9 +361,5 @@
 
 &lt;p&gt;然后通过HttpEntity#getContent()绑定到bytearrayinputstream，然后再tostring转为字符串保存使用。&lt;/p&gt;
 
-&lt;p&gt;两者都是json结果，用jsondecode就得到了视频的详细信息了&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//using-http-client-for-api-of-youku-and-tudou.html</guid></item><item><title>一个设想的创业点</title><link>http://blog.shrp.me//A-Creation-of-Thinking.html</link><pubdate>2011-05-07</pubdate><content:encoded>&lt;p&gt;　　可以用触摸屏替换触摸板。&lt;/p&gt;
-
-&lt;p&gt;　　首先写一个iPhone程序和xp程序，让iPhone作为xp的多点触摸设备。&lt;/p&gt;
-
-&lt;p&gt;　　然后宣传这个理念，然后把公司并入硬件生产厂商，比如神舟，联想。触摸屏可以实现不开机的邮件、聊天，可以实现xp的程序快速启动等好处。还可以让它自己本身可以自由拆卸作为mp4使用。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//A-Creation-of-Thinking.html</guid></item></channel>
+&lt;p&gt;两者都是json结果，用jsondecode就得到了视频的详细信息了&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//using-http-client-for-api-of-youku-and-tudou.html</guid></item></channel>
 </rss>

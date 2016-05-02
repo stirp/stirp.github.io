@@ -7,7 +7,20 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>浅谈SSH客户端配置</title><link>http://blog.shrp.me//How-To-Configure-SSH-Client.html</link><pubdate>2016-04-18</pubdate><content:encoded>&lt;p&gt;SSH客户端对于很多IT从业人员都是必备，然而很多人仅仅是用了最基本的功能。当遇到了比如RSA Key等安全措施时，不能有效利用客户端，繁琐的操作流程影响了他们的工作热情。本文就简单说明一下SSH客户端的功能，帮助大家保持高效的开发工作。&lt;/p&gt;
+    <item><title>AppleDNS的Mac受害及恢复</title><link>http://blog.shrp.me//Restore-from-AppleDNS.html</link><pubdate>2016-05-02</pubdate><content:encoded>&lt;p&gt;自己一直关注小众软件，之前小众介绍了一款&lt;a href="https://github.com/gongjianhui/AppleDNS/"&gt;AppleDNS&lt;/a&gt;用于苹果用户的应用商店加速，自己其实不是特别需要，但是为了更加丝般顺畅的使用，按耐不住心里的期望，就试了一把。&lt;/p&gt;
+
+&lt;p&gt;其实这种DNS类的加速方案不是没有过，但是由于苹果的IP地址范围其实很广，加上网络情况的瞬息万变，这种方案的可用性、有效期其实并不长；而这一款的网址库似乎是通过抓包分析的，恐怕连一些https的服务器也包括进去了；但是https的情况更加复杂，可能过两天服务器说换就换了，原有的host就失效了。&lt;/p&gt;
+
+&lt;p&gt;但是我试用的过程中产生了更严重的后果，使用的时候Mac的App Store不能更新，也无法安装新应用，提示“无法验证产品分发文件。它可能已损坏或尚无签名”。于是很失望的把AppleDNS下掉了，心想刷下DNS，过两天它自己就升级了，不用太担心。&lt;/p&gt;
+
+&lt;p&gt;可谁成想过了半个月，其他App都升级了，当时无法升级的还是无法升级。于是打开控制台，看到错误&lt;/p&gt;
+
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;&lt;span class="token number"&gt;16&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;&lt;span class="token number"&gt;5&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;&lt;span class="token number"&gt;2&lt;/span&gt; &lt;span class="token number"&gt;15&lt;/span&gt;&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token number"&gt;18&lt;/span&gt;&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token number"&gt;44.410&lt;/span&gt; storedownloadd&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;522&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;:&lt;/span&gt; &lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token operator"&gt;*&lt;/span&gt; Assertion failure &lt;span class="token keyword"&gt;in&lt;/span&gt; &lt;span class="token operator"&gt;-&lt;/span&gt;&lt;span class="token punctuation"&gt;[&lt;/span&gt;CheckPreflightOperation verifyDistributionAtURL&lt;span class="token punctuation"&gt;:&lt;/span&gt;allowsDevSign&lt;span class="token punctuation"&gt;:&lt;/span&gt;allowsUnsigned&lt;span class="token punctuation"&gt;:&lt;/span&gt;osVersionToBeInstalled&lt;span class="token punctuation"&gt;:&lt;/span&gt;error&lt;span class="token punctuation"&gt;:&lt;/span&gt;distributionController&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token operator"&gt;/&lt;/span&gt;Library&lt;span class="token operator"&gt;/&lt;/span&gt;Caches&lt;span class="token operator"&gt;/&lt;/span&gt;com&lt;span class="token punctuation"&gt;.&lt;/span&gt;apple&lt;span class="token punctuation"&gt;.&lt;/span&gt;xbs&lt;span class="token operator"&gt;/&lt;/span&gt;Sources&lt;span class="token operator"&gt;/&lt;/span&gt;Commerce&lt;span class="token operator"&gt;/&lt;/span&gt;Commerce&lt;span class="token number"&gt;-462.9&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;CommerceKit&lt;span class="token operator"&gt;/&lt;/span&gt;CheckPreflightOperation&lt;span class="token punctuation"&gt;.&lt;/span&gt;m&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token number"&gt;291&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;才知道这是中招了，一定是App Store把某种验证文件从当时错误的验证服务器保存在本地了，现在再行升级虽然不受AppleDNS的影响了，却还是无法升级的。经过google，发现有人通过创建用户，输入自己的AppleID，是可以升级的。我想，这说明阻止升级的文件是在用户目录的，用户目录最著名的供程序使用的目录是哪里？当然是~/Library/Caches啦，于是进去清空，然后安装、升级，进度条又一次开心的跑起来了。&lt;/p&gt;
+
+&lt;p&gt;看来在苹果上用DNS类产品还真是挺危险的，如果产生问题的不是Mac而是iOS，那恐怕只能等苹果自己修复了。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Restore-from-AppleDNS.html</guid></item><item><title>浅谈SSH客户端配置</title><link>http://blog.shrp.me//How-To-Configure-SSH-Client.html</link><pubdate>2016-04-18</pubdate><content:encoded>&lt;p&gt;SSH客户端对于很多IT从业人员都是必备，然而很多人仅仅是用了最基本的功能。当遇到了比如RSA Key等安全措施时，不能有效利用客户端，繁琐的操作流程影响了他们的工作热情。本文就简单说明一下SSH客户端的功能，帮助大家保持高效的开发工作。&lt;/p&gt;
 
 &lt;h2 id="1sshkeygenauthrorized_keys"&gt;1. 基本连接功能（端口，用户，ssh-keygen，authrorized_keys)&lt;/h2&gt;
 
@@ -27,7 +40,7 @@
 
 &lt;h2 id="2sshconfig"&gt;2. ssh config（保持链接，自动跳转）&lt;/h2&gt;
 
-&lt;p&gt;然而你会发现每次都输入用户名密码ip地址，真是烦。ssh也想到了，提供了ssh_config。&lt;/p&gt;
+&lt;p&gt;然而你会发现每次都输入用户名ip地址，真是烦。ssh也想到了，提供了ssh_config。&lt;/p&gt;
 
 &lt;p&gt;一个常见的配置如下：&lt;/p&gt;
 
@@ -54,7 +67,9 @@
     IdentityFile &lt;span class="token operator"&gt;~&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;ssh&lt;span class="token operator"&gt;/&lt;/span&gt;server
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Host自然还是我们ssh时的名称，但是HostName是个变量，表示我们ssh的实际地址是上边Host中的某一个——这也就表示这三个服务器名称是跳板机所能够ping通的一个地址。但是通常用户的跳板机权限很低，无法编辑/etc/hosts文件来提供服务器名称和ip地址的解析，而HostName写服务器的ip名称显得特别不方便，有没有办法呢？其实是有的，参考项目&lt;a href="https://github.com/figiel/hosts"&gt;hosts&lt;/a&gt;，通过跳板机的~/.bashrc文件指定本地hosts文件就可以为大多数程序提供名称和ip的解析。ProxyCommand则表示ssh的过程是先通过ssh 跳板机，再执行 nc 再次执行后边的命令。因此跳板机需要保证拥有nc命令，如果没有，可以手动编译一个或者上传一个。最后的IdentityFile表示你在server里添加过公钥对应的私钥路径。如此设置以后，当你ssh server-1的时候会自动通过jumper配置到跳板机，然后通过nc命令到相应的服务器了。当然，rsync命令也能通过上述配置传送文件了，这样向某个服务器传文件或者从某个服务器down日志就不必再通过跳板机保存一次啦。&lt;/p&gt;
+&lt;p&gt;Host自然还是我们ssh时的名称，但是HostName是个变量，表示我们ssh的实际地址是上边Host中的某一个——这也就表示这三个服务器名称是跳板机所能够ping通的一个地址。但是通常用户的跳板机权限很低，无法编辑/etc/hosts文件来提供服务器名称和ip地址的解析，而HostName写服务器的ip名称显得特别不方便，有没有办法呢？其实是有的，参考项目&lt;a href="https://github.com/figiel/hosts"&gt;hosts&lt;/a&gt;，通过跳板机的~/.bashrc文件指定本地hosts文件就可以为大多数程序提供名称和ip的解析。ProxyCommand则表示ssh的过程是先通过ssh 跳板机，再执行 nc 再次执行后边的命令。因此跳板机需要保证拥有nc命令，如果没有，可以手动编译一个或者上传一个。最后的IdentityFile表示你在server里添加过公钥对应的私钥路径。如此设置以后，当你ssh server-1的时候会自动通过jumper配置到跳板机，然后通过nc命令到相应的服务器了。当然，rsync命令也能通过上述配置传送文件了，这样向某个服务器传文件或者从某个服务器down日志就不必再通过跳板机保存一次啦。需要注意的是此时目标服务器的authorized_key内放的是本地机器的公钥，而不是跳板机的公钥。&lt;/p&gt;
+
+&lt;p&gt;ps:nc 也可以用-W参数，形式为&lt;code&gt;ProxyCommand ssh jumper -W %h:%p&lt;/code&gt;不过经过实验，不能多层跳转（比如先ssh develop 再ssh jumper 再ssh server1），而nc可以做到多层跳。如果你不需要多层跳转，-W参数最容易，也不需要copy nc程序。&lt;/p&gt;
 
 &lt;h2 id="3"&gt;3. 端口转发，数据库等工具设置&lt;/h2&gt;
 
@@ -350,16 +365,5 @@
     &lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token string"&gt;"%d\n"&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token function"&gt;SampleAddInt&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token number"&gt;2&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token number"&gt;3&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
     &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token number"&gt;0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
 &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//codeblocks-dynamically-load-dll-in-windows.html</guid></item><item><title>http client 对于优酷和土豆的api调用</title><link>http://blog.shrp.me//using-http-client-for-api-of-youku-and-tudou.html</link><pubdate>2011-05-16</pubdate><content:encoded>&lt;p&gt;今天下午研究了一下午的土豆api调用，心得如下：&lt;/p&gt;
-
-&lt;p&gt;优酷api返回结果是text/html，可以直接使用httpentity的getcontent方法，并且通过其getcontentlength方法不为-1，得知返回结果是否有效。&lt;/p&gt;
-
-&lt;p&gt;土豆返回结果是text/plain，必须使用&lt;/p&gt;
-
-&lt;pre class=" language-java"&gt;&lt;code class=" language-java"&gt;HttpEntity entity &lt;span class="token operator"&gt;=&lt;/span&gt; response&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;getEntity&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然后通过HttpEntity#getContent()绑定到bytearrayinputstream，然后再tostring转为字符串保存使用。&lt;/p&gt;
-
-&lt;p&gt;两者都是json结果，用jsondecode就得到了视频的详细信息了&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//using-http-client-for-api-of-youku-and-tudou.html</guid></item></channel>
+&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//codeblocks-dynamically-load-dll-in-windows.html</guid></item></channel>
 </rss>

@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+自己一直关注小众软件，之前小众介绍了一款[AppleDNS](https://github.com/gongjianhui/AppleDNS/)用于苹果用户的应用商店加速，自己其实不是特别需要，但是为了更加丝般顺畅的使用，按耐不住心里的期望，就试了一把。
+
+其实这种DNS类的加速方案不是没有过，但是由于苹果的IP地址范围其实很广，加上网络情况的瞬息万变，这种方案的可用性、有效期其实并不长；而这一款的网址库似乎是通过抓包分析的，恐怕连一些https的服务器也包括进去了；但是https的情况更加复杂，可能过两天服务器说换就换了，原有的host就失效了。
+
+但是我试用的过程中产生了更严重的后果，使用的时候Mac的App Store不能更新，也无法安装新应用，提示“无法验证产品分发文件。它可能已损坏或尚无签名”。于是很失望的把AppleDNS下掉了，心想刷下DNS，过两天它自己就升级了，不用太担心。
+
+可谁成想过了半个月，其他App都升级了，当时无法升级的还是无法升级。于是打开控制台，看到错误
+
+~~~~{bash}
+16/5/2 15:18:44.410 storedownloadd[522]: *** Assertion failure in -[CheckPreflightOperation verifyDistributionAtURL:allowsDevSign:allowsUnsigned:osVersionToBeInstalled:error:distributionController:], /Library/Caches/com.apple.xbs/Sources/Commerce/Commerce-462.9/CommerceKit/CheckPreflightOperation.m:291
+~~~~
+
+才知道这是中招了，一定是App Store把某种验证文件从当时错误的验证服务器保存在本地了，现在再行升级虽然不受AppleDNS的影响了，却还是无法升级的。经过google，发现有人通过创建用户，输入自己的AppleID，是可以升级的。我想，这说明阻止升级的文件是在用户目录的，用户目录最著名的供程序使用的目录是哪里？当然是~/Library/Caches啦，于是进去清空，然后安装、升级，进度条又一次开心的跑起来了。
+
+看来在苹果上用DNS类产品还真是挺危险的，如果产生问题的不是Mac而是iOS，那恐怕只能等苹果自己修复了。
+
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>自己一直关注小众软件，之前小众介绍了一款<a href="https://github.com/gongjianhui/AppleDNS/">AppleDNS</a>用于苹果用户的应用商店加速，自己其实不是特别需要，但是为了更加丝般顺畅的使用，按耐不住心里的期望，就试了一把。</p>
+
+<p>其实这种DNS类的加速方案不是没有过，但是由于苹果的IP地址范围其实很广，加上网络情况的瞬息万变，这种方案的可用性、有效期其实并不长；而这一款的网址库似乎是通过抓包分析的，恐怕连一些https的服务器也包括进去了；但是https的情况更加复杂，可能过两天服务器说换就换了，原有的host就失效了。</p>
+
+<p>但是我试用的过程中产生了更严重的后果，使用的时候Mac的App Store不能更新，也无法安装新应用，提示“无法验证产品分发文件。它可能已损坏或尚无签名”。于是很失望的把AppleDNS下掉了，心想刷下DNS，过两天它自己就升级了，不用太担心。</p>
+
+<p>可谁成想过了半个月，其他App都升级了，当时无法升级的还是无法升级。于是打开控制台，看到错误</p>
+
+<pre class=" language-bash"><code class=" language-bash"><span class="token number">16</span><span class="token operator">/</span><span class="token number">5</span><span class="token operator">/</span><span class="token number">2</span> <span class="token number">15</span><span class="token punctuation">:</span><span class="token number">18</span><span class="token punctuation">:</span><span class="token number">44.410</span> storedownloadd<span class="token punctuation">[</span><span class="token number">522</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span> Assertion failure <span class="token keyword">in</span> <span class="token operator">-</span><span class="token punctuation">[</span>CheckPreflightOperation verifyDistributionAtURL<span class="token punctuation">:</span>allowsDevSign<span class="token punctuation">:</span>allowsUnsigned<span class="token punctuation">:</span>osVersionToBeInstalled<span class="token punctuation">:</span>error<span class="token punctuation">:</span>distributionController<span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token operator">/</span>Library<span class="token operator">/</span>Caches<span class="token operator">/</span>com<span class="token punctuation">.</span>apple<span class="token punctuation">.</span>xbs<span class="token operator">/</span>Sources<span class="token operator">/</span>Commerce<span class="token operator">/</span>Commerce<span class="token number">-462.9</span><span class="token operator">/</span>CommerceKit<span class="token operator">/</span>CheckPreflightOperation<span class="token punctuation">.</span>m<span class="token punctuation">:</span><span class="token number">291</span>
+</code></pre>
+
+<p>才知道这是中招了，一定是App Store把某种验证文件从当时错误的验证服务器保存在本地了，现在再行升级虽然不受AppleDNS的影响了，却还是无法升级的。经过google，发现有人通过创建用户，输入自己的AppleID，是可以升级的。我想，这说明阻止升级的文件是在用户目录的，用户目录最著名的供程序使用的目录是哪里？当然是~/Library/Caches啦，于是进去清空，然后安装、升级，进度条又一次开心的跑起来了。</p>
+
+<p>看来在苹果上用DNS类产品还真是挺危险的，如果产生问题的不是Mac而是iOS，那恐怕只能等苹果自己修复了。</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "Restore-from-AppleDNS.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

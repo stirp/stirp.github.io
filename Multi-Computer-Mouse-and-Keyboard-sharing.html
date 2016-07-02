@@ -42,7 +42,7 @@
 
 首先介绍下多机共享软件的原理：此类软件都是通过网络连接，将控制机的键鼠动作和粘贴板的行为同步到被控制机器，从而达到用一套键鼠操作多台电脑的目的，节约用户的桌面空间，方便用户用一套软件控制多台机器。功能原理其实非常简单，因此测评主要注重用户体验。
 
-1. [Synergy](http://symless.com/synergy/)
+###1. [Synergy](http://symless.com/synergy/)
 
 Synergy 应该是最流行的一款多机共享操作的软件了，至少从[alternativeto.net](http://alternativeto.net/software/mouse-without-borders2)来看是这样的；它的功能强大，简单好用，但是设置使用也是相对来说比较麻烦的。
 
@@ -70,7 +70,7 @@ Synergy 应该是最流行的一款多机共享操作的软件了，至少从[al
 
 它的收费目前分基本版和高级版，都是一次性购买，目前基本版10美元，高级版29美元。目前来说高级版的ssl和客服支持对于大多数人来说什么用也没有，10美元的lifetime access买这么一款给力的软件实在是……太便宜了。只能说作者现在要养活这么一个开发团队，难度有点高啊，很大可能若干年后作者跑路。不过Synergy的代码是开源的，开源社区会接盘。至少我还在用的话肯定会想办法去编译兼容版本的。
 
-2. [ShareMouse](http://www.keyboard-and-mouse-sharing.com/index.html)
+###2. [ShareMouse](http://www.keyboard-and-mouse-sharing.com/index.html)
 
 今天就是试用它以后才发现它做的真的很不错，如果是同一个局域网的话，安装好以后都不用设置就已经连接到一起了——不过在公司怎么办呢？那只好买收费版啦。它的另一个好处是没有服务端和客户端的区别，玩游戏时可以用一台电脑控制一台平板，睡觉的时候用平板控制电脑关机——等等，平板怎么把鼠标挪出屏幕呢？好吧，这个功能用处似乎不太多……
 
@@ -92,15 +92,48 @@ Synergy 应该是最流行的一款多机共享操作的软件了，至少从[al
 
 缺点也是有的，最大的一个痛点是除了直接互联外，如果想自己加一台机器进来只能使用IP而不能使用HOSTNAME——也就是说，在使用DHCP的公司内，好像更加难用了。按键映射在跨平台的时候是个问题，我总不能Mac用Cmd+v而到Windows使用ctrl+v吧。Linux也要支持啊。
 
-至于收费么……它不仅不是一次性收费，每年的年费还特别高：即便是按照每年最便宜的年费，标准版是$8.97，高级版是$22.48。这是你一次性要交5年的情况下才有如此优惠。
+至于收费么……它不仅不是一次性收费，每年的年费还特别高：即便是按照每年最便宜的年费，标准版是\$8.97，高级版是\$22.48。这是你一次性要交5年的情况下才有如此优惠。
 
-如果你只是在家里的两台电脑之间这么用，它的免费版还是挺值得推荐的；但凡你的使用场景比较复杂，那它就只能爱莫能助了。
+如果你只是在家里的两台电脑之间这么用，它的免费版还是挺值得推荐的(但是文件拖动是不支持的)；但凡你的使用场景比较复杂，那它就只能爱莫能助了。
 
-3. [Mouse without Borders]
-4. [teleport]
-5. [across]
+###3. [Mouse without Borders](https://www.microsoft.com/en-us/download/details.aspx?id=35460)
+
+这款软件更像是钦定的感觉，你问我资瓷不资瓷，我当然是资瓷的啦，家里的两台Windows电脑已经使用它来替换Synergy了。作为微软官方的产品，它只支持Windows系列的系统；但是它的设定也简单，也没有客户端服务端的区别，文件的粘贴复制、拖拽更加流畅，没有卡死的情况发生。如果仅从文件操作这点来说，其它两个软件还是有点图样。
+
+基本功能：支持最多4台机器互联和控制，相互之间可以水平也可以上下各两台。可以通过鼠标拖拽和复制粘贴功能实现文件的粘贴，文本和图片的复制粘贴也是可以的。文件的复制粘贴会弹气泡提示。拖动到第二台机器的时候也会显示拖动的图标，跟在一台机器似的，效果相当赞。
+
+热键：有不少热键可以用，比Synergy多多了。
+
+死角：这个功能当然也有啦，也不能指定几个像素。并有全屏自动禁止切换
+
+按键映射：这个有，但是为啥Windows之间还要映射……
+
+操作系统支持：Sorry，Windows only
+
+安全：这个是通过软件显示自己的code，在另一台输入来实现的互联。所以不会导致你的电脑被别人控制的。
 
 
+登陆界面：如同ShareMouse，不管你的服务端和客户端是不是登陆界面，它都支持。UAC也不能阻止。
+
+此外它还支持IP的mapping，类似host功能，这是它应对跨子网DHCP的策略：你自己把ip写进去，然后用hostname去连接。
+
+如果你只用Windows，没有理由不用它改用其他软件。Windows最好的体验，外加免费。
+
+###4. [teleport](http://abyssoft.com/software/teleport/)
+
+一款只支持Mac的软件，简历上说作者从04年到现在都在苹果做开发。这么说来这软件就像是上边那款一样，都是官方出品啊。作者还有一款soundfly，是把声音传到另一台去的，难道这是airplay的原型？不明觉厉。
+
+不过看它的界面，真是非常非常简单，恐怕也没有办法在家以外使用。我就不进行尝试了，有需要的人可以试一试~
+
+###5. [across](http://www.acrosscenter.com/)
+
+如果说上边几款软件通过TCP/IP来使用，这款软件就有意思多了，它使用蓝牙虚拟为键盘和鼠标，从而进一步操作对方的。然而它还是需要在控制和被控机器都安装自己，从而限制了它的使用范围。因此他只支持Mac和Windows和安卓（没有蓝牙的Windows台式机和iOS残念中……）
+
+不过话说它并不贵，	Windows客户端6.99美刀，Mac客户端6.99美刀，一起买9.99美刀。
+
+###6. [Multiplicity](http://edgerunner.com/multiplicity)
+
+这款软件似乎又是只能支持Windows的，不过它有几个特点：可以同时锁定解锁，可以单独一台显示器（这跟硬件KVM几乎一样了啊！）。由于上边这条特性，它也可以远程工作，通过VPN工作，反正就一台显示器嘛，显示就是了。价格是一次性买断的， 我看还是比较合理，对于运维同学可以入手，其他人就算了吧……
 <!-- markdown end -->
     </div>
     <div class="entry" id="main">
@@ -109,9 +142,7 @@ Synergy 应该是最流行的一款多机共享操作的软件了，至少从[al
 
 <p>首先介绍下多机共享软件的原理：此类软件都是通过网络连接，将控制机的键鼠动作和粘贴板的行为同步到被控制机器，从而达到用一套键鼠操作多台电脑的目的，节约用户的桌面空间，方便用户用一套软件控制多台机器。功能原理其实非常简单，因此测评主要注重用户体验。</p>
 
-<ol>
-<li><a href="http://symless.com/synergy/">Synergy</a></li>
-</ol>
+<h3 id="1synergyhttpsymlesscomsynergy">1. <a href="http://symless.com/synergy/">Synergy</a></h3>
 
 <p>Synergy 应该是最流行的一款多机共享操作的软件了，至少从<a href="http://alternativeto.net/software/mouse-without-borders2">alternativeto.net</a>来看是这样的；它的功能强大，简单好用，但是设置使用也是相对来说比较麻烦的。</p>
 
@@ -139,9 +170,7 @@ Synergy 应该是最流行的一款多机共享操作的软件了，至少从[al
 
 <p>它的收费目前分基本版和高级版，都是一次性购买，目前基本版10美元，高级版29美元。目前来说高级版的ssl和客服支持对于大多数人来说什么用也没有，10美元的lifetime access买这么一款给力的软件实在是……太便宜了。只能说作者现在要养活这么一个开发团队，难度有点高啊，很大可能若干年后作者跑路。不过Synergy的代码是开源的，开源社区会接盘。至少我还在用的话肯定会想办法去编译兼容版本的。</p>
 
-<ol>
-<li><a href="http://www.keyboard-and-mouse-sharing.com/index.html">ShareMouse</a></li>
-</ol>
+<h3 id="2sharemousehttpwwwkeyboardandmousesharingcomindexhtml">2. <a href="http://www.keyboard-and-mouse-sharing.com/index.html">ShareMouse</a></h3>
 
 <p>今天就是试用它以后才发现它做的真的很不错，如果是同一个局域网的话，安装好以后都不用设置就已经连接到一起了——不过在公司怎么办呢？那只好买收费版啦。它的另一个好处是没有服务端和客户端的区别，玩游戏时可以用一台电脑控制一台平板，睡觉的时候用平板控制电脑关机——等等，平板怎么把鼠标挪出屏幕呢？好吧，这个功能用处似乎不太多……</p>
 
@@ -163,15 +192,47 @@ Synergy 应该是最流行的一款多机共享操作的软件了，至少从[al
 
 <p>缺点也是有的，最大的一个痛点是除了直接互联外，如果想自己加一台机器进来只能使用IP而不能使用HOSTNAME——也就是说，在使用DHCP的公司内，好像更加难用了。按键映射在跨平台的时候是个问题，我总不能Mac用Cmd+v而到Windows使用ctrl+v吧。Linux也要支持啊。</p>
 
-<p>至于收费么……它不仅不是一次性收费，每年的年费还特别高：即便是按照每年最便宜的年费，标准版是<span style="color: inherit;" class="MathJax_Preview"></span><span role="presentation" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mn>8.97</mn><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#xFF0C;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x9AD8;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x7EA7;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x7248;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x662F;</mo></mrow></math>" style="position: relative;" tabindex="0" id="MathJax-Element-93-Frame" class="MathJax"><nobr aria-hidden="true"><span style="width: 7.453em; display: inline-block;" role="math" id="MathJax-Span-1531" class="math"><span style="display: inline-block; position: relative; width: 5.721em; height: 0px; font-size: 130%;"><span style="position: absolute; clip: rect(1.412em, 1005.72em, 2.7em, -1000em); top: -2.356em; left: 0em;"><span id="MathJax-Span-1532" class="mrow"><span style="font-family: MathJax_Main;" id="MathJax-Span-1533" class="mn">8.97</span><span id="MathJax-Span-1534" class="texatom"><span id="MathJax-Span-1535" class="mrow"><span id="MathJax-Span-1536" class="mo"><span style="font-family: STIXGeneral,&quot;Arial Unicode MS&quot;,serif; font-size: 77%; font-style: normal; font-weight: normal;">，</span></span></span></span><span id="MathJax-Span-1537" class="texatom"><span id="MathJax-Span-1538" class="mrow"><span id="MathJax-Span-1539" class="mo"><span style="font-family: STIXGeneral,&quot;Arial Unicode MS&quot;,serif; font-size: 77%; font-style: normal; font-weight: normal;">高</span></span></span></span><span id="MathJax-Span-1540" class="texatom"><span id="MathJax-Span-1541" class="mrow"><span id="MathJax-Span-1542" class="mo"><span style="font-family: STIXGeneral,&quot;Arial Unicode MS&quot;,serif; font-size: 77%; font-style: normal; font-weight: normal;">级</span></span></span></span><span id="MathJax-Span-1543" class="texatom"><span id="MathJax-Span-1544" class="mrow"><span id="MathJax-Span-1545" class="mo"><span style="font-family: STIXGeneral,&quot;Arial Unicode MS&quot;,serif; font-size: 77%; font-style: normal; font-weight: normal;">版</span></span></span></span><span id="MathJax-Span-1546" class="texatom"><span id="MathJax-Span-1547" class="mrow"><span id="MathJax-Span-1548" class="mo"><span style="font-family: STIXGeneral,&quot;Arial Unicode MS&quot;,serif; font-size: 77%; font-style: normal; font-weight: normal;">是</span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.356em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.323em; border-left: 0px solid; width: 0px; height: 1.425em;"></span></span></nobr><span role="presentation" class="MJX_Assistive_MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>8.97</mn><mrow class="MJX-TeXAtom-ORD"><mo>，</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>高</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>级</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>版</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>是</mo></mrow></math></span></span><script id="MathJax-Element-93" type="math/tex">8.97，高级版是</script>22.48。这是你一次性要交5年的情况下才有如此优惠。</p>
+<p>至于收费么……它不仅不是一次性收费，每年的年费还特别高：即便是按照每年最便宜的年费，标准版是<span>$</span>8.97，高级版是<span>$</span>22.48。这是你一次性要交5年的情况下才有如此优惠。</p>
 
-<p>如果你只是在家里的两台电脑之间这么用，它的免费版还是挺值得推荐的；但凡你的使用场景比较复杂，那它就只能爱莫能助了。</p>
+<p>如果你只是在家里的两台电脑之间这么用，它的免费版还是挺值得推荐的(但是文件拖动是不支持的)；但凡你的使用场景比较复杂，那它就只能爱莫能助了。</p>
 
-<ol>
-<li>[Mouse without Borders]</li>
-<li>[teleport]</li>
-<li>[across]</li>
-</ol>
+<h3 id="3mousewithoutbordershttpswwwmicrosoftcomenusdownloaddetailsaspxid35460">3. <a href="https://www.microsoft.com/en-us/download/details.aspx?id=35460">Mouse without Borders</a></h3>
+
+<p>这款软件更像是钦定的感觉，你问我资瓷不资瓷，我当然是资瓷的啦，家里的两台Windows电脑已经使用它来替换Synergy了。作为微软官方的产品，它只支持Windows系列的系统；但是它的设定也简单，也没有客户端服务端的区别，文件的粘贴复制、拖拽更加流畅，没有卡死的情况发生。如果仅从文件操作这点来说，其它两个软件还是有点图样。</p>
+
+<p>基本功能：支持最多4台机器互联和控制，相互之间可以水平也可以上下各两台。可以通过鼠标拖拽和复制粘贴功能实现文件的粘贴，文本和图片的复制粘贴也是可以的。文件的复制粘贴会弹气泡提示。拖动到第二台机器的时候也会显示拖动的图标，跟在一台机器似的，效果相当赞。</p>
+
+<p>热键：有不少热键可以用，比Synergy多多了。</p>
+
+<p>死角：这个功能当然也有啦，也不能指定几个像素。并有全屏自动禁止切换</p>
+
+<p>按键映射：这个有，但是为啥Windows之间还要映射……</p>
+
+<p>操作系统支持：Sorry，Windows only</p>
+
+<p>安全：这个是通过软件显示自己的code，在另一台输入来实现的互联。所以不会导致你的电脑被别人控制的。</p>
+
+<p>登陆界面：如同ShareMouse，不管你的服务端和客户端是不是登陆界面，它都支持。UAC也不能阻止。</p>
+
+<p>此外它还支持IP的mapping，类似host功能，这是它应对跨子网DHCP的策略：你自己把ip写进去，然后用hostname去连接。</p>
+
+<p>如果你只用Windows，没有理由不用它改用其他软件。Windows最好的体验，外加免费。</p>
+
+<h3 id="4teleporthttpabyssoftcomsoftwareteleport">4. <a href="http://abyssoft.com/software/teleport/">teleport</a></h3>
+
+<p>一款只支持Mac的软件，简历上说作者从04年到现在都在苹果做开发。这么说来这软件就像是上边那款一样，都是官方出品啊。作者还有一款soundfly，是把声音传到另一台去的，难道这是airplay的原型？不明觉厉。</p>
+
+<p>不过看它的界面，真是非常非常简单，恐怕也没有办法在家以外使用。我就不进行尝试了，有需要的人可以试一试~</p>
+
+<h3 id="5acrosshttpwwwacrosscentercom">5. <a href="http://www.acrosscenter.com/">across</a></h3>
+
+<p>如果说上边几款软件通过TCP/IP来使用，这款软件就有意思多了，它使用蓝牙虚拟为键盘和鼠标，从而进一步操作对方的。然而它还是需要在控制和被控机器都安装自己，从而限制了它的使用范围。因此他只支持Mac和Windows和安卓（没有蓝牙的Windows台式机和iOS残念中……）</p>
+
+<p>不过话说它并不贵，    Windows客户端6.99美刀，Mac客户端6.99美刀，一起买9.99美刀。</p>
+
+<h3 id="6multiplicityhttpedgerunnercommultiplicity">6. <a href="http://edgerunner.com/multiplicity">Multiplicity</a></h3>
+
+<p>这款软件似乎又是只能支持Windows的，不过它有几个特点：可以同时锁定解锁，可以单独一台显示器（这跟硬件KVM几乎一样了啊！）。由于上边这条特性，它也可以远程工作，通过VPN工作，反正就一台显示器嘛，显示就是了。价格是一次性买断的， 我看还是比较合理，对于运维同学可以入手，其他人就算了吧……</p>
 <!-- content end -->
     </div>
     <br>

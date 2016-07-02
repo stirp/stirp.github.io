@@ -62,15 +62,39 @@ Synergy 应该是最流行的一款多机共享操作的软件了，至少从[al
 
 安全：由于客户端必须指定服务端IP，并且只能从服务端控制客户端，其控制的安全还是有保障的，很难被其他人控制了你的客户端。如果使用高级账户的SSL功能，网络也不能劫持到你通过网络传输的密码了，还是比较安全的。
 
-缺点么，使用一段时间后我也发现很多了：它好像只支持从Mac主机拖拽拖拽“文件”到Windows客户端，目录拖拽过去变成了一个很小的文件（或许因为Mac的文件夹也是文件，没有当做文件夹处理）；而且只能拖拽到客户端的桌面。复制文本和图片是双向的，但是有时候需要在复制的机器上找个地方粘贴一下，否则不能同步到其它机器——这可能跟文本复制粘贴的程序相关，我不止一次发现在客户端的Windows的微信客户端不能直接粘贴文本，必须要在客户端打开记事本粘贴一下再复制才能粘贴到微信。服务器的截图倒是可以直接粘贴到微信，但是视截图大小，需要等一下子才能在客户端粘贴。使用复制粘贴不能将文件从一台电脑拷贝到另一台。
+登陆界面：不管你的服务端和客户端是不是登陆界面，它都支持把鼠标挪进不同的机器，并且控制。
 
-还有一个不算缺点的缺点：由于账号体系不是原生的，所以你机器的IP地址是没有中心服务器管理的——也就是说，如果你的两台设备在一个大局域网的不同子网内，没有做hostname的跨子网通知，并且强制DHCP，那么你就只能每次DHCP后重新在客户端设置服务端IP。如果能通过账号体系将自己的IP上报再下发，
+缺点么，使用一段时间后我也发现很多了：它好像只支持从主机拖拽拖拽文件到Windows客户端而不能反向操作，Mac目录拖拽过去变成了一个很小的文件而不能使用（或许因为Mac的文件夹也是文件，没有当做文件夹处理）。复制文本和图片是双向的，但是有时候需要在进行复制的机器上找个地方粘贴一下，否则不能同步到其它机器——这可能跟文本复制粘贴的程序相关，我不止一次发现在客户端的Windows的微信客户端不能直接粘贴文本，必须要在客户端系统打开记事本粘贴一下再复制才能粘贴到客户端的微信。服务器的截图倒是可以直接粘贴到微信，但是根据截图大小，需要等网络传输后才能在客户端粘贴（高度怀疑没有压缩，直接传位图了），而且网络传输没有进度条，因此你不知道到底什么时候才能粘贴。使用复制粘贴不能将文件从一台电脑拷贝到另一台。还有，当客户端Windows的UAC窗口出现时，它是不能控制客户端的——UAC把它的能力禁止了。
 
-它的收费目前分基本版和高级版，都是一次性购买，目前基本版10美元，高级版29美元。目前来说高级版的ssl和客服支持对于大多数人来说什么用也没有，10美元的lifetime access买这么一款给力的软件实在是……只能说作者现在要养活这么一个开发团队，难度有点高啊；很大可能若干年后作者跑路。不过Synergy的代码是开源的，开源社区会接盘。至少我必用的话肯定会想办法去兼容编译的。
+还有一个不算缺点的缺点：由于账号体系不是原生的，所以你机器的IP地址是没有中心服务器管理的——也就是说，如果你的两台设备在一个大局域网的不同子网内，没有做hostname的跨子网通知，并且强制DHCP，那么你就只能每次DHCP后重新在客户端设置服务端IP。如果能通过账号体系将自己的IP上报再下发到客户端，客户端再连接此IP的话就能解决这个问题了。
+
+它的收费目前分基本版和高级版，都是一次性购买，目前基本版10美元，高级版29美元。目前来说高级版的ssl和客服支持对于大多数人来说什么用也没有，10美元的lifetime access买这么一款给力的软件实在是……太便宜了。只能说作者现在要养活这么一个开发团队，难度有点高啊，很大可能若干年后作者跑路。不过Synergy的代码是开源的，开源社区会接盘。至少我还在用的话肯定会想办法去编译兼容版本的。
 
 2. [ShareMouse](http://www.keyboard-and-mouse-sharing.com/index.html)
 
+今天就是试用它以后才发现它做的真的很不错，如果是同一个局域网的话，安装好以后都不用设置就已经连接到一起了——不过在公司怎么办呢？那只好买收费版啦。它的另一个好处是没有服务端和客户端的区别，玩游戏时可以用一台电脑控制一台平板，睡觉的时候用平板控制电脑关机——等等，平板怎么把鼠标挪出屏幕呢？好吧，这个功能用处似乎不太多……
 
+基本功能：免费版支持最多2台机器互联和控制，高级版支持9台。可以通过鼠标拖拽和复制粘贴功能实现文件的粘贴，文本和图片的复制粘贴也是可以的。文件的复制粘贴会显示进度条，但是拖拽文件的时候没有显示，会卡死接受文件的目录——对，它接受文件的时候可以在任意文件夹。
+
+热键：只有直接跳到另一个屏幕的热键和粘贴的热键ctrl+v，不过这就够了吧。
+
+死角：这个功能当然也有啦，不过似乎不能指定几个像素。此外还有全屏自动禁止切换，这样玩游戏的时候另一台看电影听音乐，不会影响打游戏的。
+
+按键映射：这个我真没找到……
+
+操作系统支持：Mac Windows，很多真正有多屏使用需要的人免不了要用Linux的，这个客户端的缺失其实影响应该很大吧
+
+安全：免费的不能加密码，加密码后客户端是相同密码的就可以连接。也就是想在公司用，掏钱是肯定嗒。
+
+登陆界面：不管你的服务端和客户端是不是登陆界面，它都支持把鼠标挪进不同的机器，并且控制。而且UAC界面也能控制哦。
+
+简单试了一下，如果它是一次性购买的话我肯定就用它替代Synergy了——跟Synergy一样的流畅，方便，外加比它简单的配置，文件复制粘贴，都直击痛点。而且进入离开某台机器的时候可以屏幕变暗，真是太简单了有木有。
+
+缺点也是有的，最大的一个痛点是除了直接互联外，如果想自己加一台机器进来只能使用IP而不能使用HOSTNAME——也就是说，在使用DHCP的公司内，好像更加难用了。按键映射在跨平台的时候是个问题，我总不能Mac用Cmd+v而到Windows使用ctrl+v吧。Linux也要支持啊。
+
+至于收费么……它不仅不是一次性收费，每年的年费还特别高：即便是按照每年最便宜的年费，标准版是$8.97，高级版是$22.48。这是你一次性要交5年的情况下才有如此优惠。
+
+如果你只是在家里的两台电脑之间这么用，它的免费版还是挺值得推荐的；但凡你的使用场景比较复杂，那它就只能爱莫能助了。
 
 3. [Mouse without Borders]
 4. [teleport]
@@ -107,15 +131,44 @@ Synergy 应该是最流行的一款多机共享操作的软件了，至少从[al
 
 <p>安全：由于客户端必须指定服务端IP，并且只能从服务端控制客户端，其控制的安全还是有保障的，很难被其他人控制了你的客户端。如果使用高级账户的SSL功能，网络也不能劫持到你通过网络传输的密码了，还是比较安全的。</p>
 
-<p>缺点么，使用一段时间后我也发现很多了：它好像只支持从Mac主机拖拽拖拽“文件”到Windows客户端，目录拖拽过去变成了一个很小的文件（或许因为Mac的文件夹也是文件，没有当做文件夹处理）；而且只能拖拽到客户端的桌面。复制文本和图片是双向的，但是有时候需要在复制的机器上找个地方粘贴一下，否则不能同步到其它机器——这可能跟文本复制粘贴的程序相关，我不止一次发现在客户端的Windows的微信客户端不能直接粘贴文本，必须要在客户端打开记事本粘贴一下再复制才能粘贴到微信。服务器的截图倒是可以直接粘贴到微信，但是视截图大小，需要等一下子才能在客户端粘贴。使用复制粘贴不能将文件从一台电脑拷贝到另一台。</p>
+<p>登陆界面：不管你的服务端和客户端是不是登陆界面，它都支持把鼠标挪进不同的机器，并且控制。</p>
 
-<p>还有一个不算缺点的缺点：由于账号体系不是原生的，所以你机器的IP地址是没有中心服务器管理的——也就是说，如果你的两台设备在一个大局域网的不同子网内，没有做hostname的跨子网通知，并且强制DHCP，那么你就只能每次DHCP后重新在客户端设置服务端IP。如果能通过账号体系将自己的IP上报再下发，</p>
+<p>缺点么，使用一段时间后我也发现很多了：它好像只支持从主机拖拽拖拽文件到Windows客户端而不能反向操作，Mac目录拖拽过去变成了一个很小的文件而不能使用（或许因为Mac的文件夹也是文件，没有当做文件夹处理）。复制文本和图片是双向的，但是有时候需要在进行复制的机器上找个地方粘贴一下，否则不能同步到其它机器——这可能跟文本复制粘贴的程序相关，我不止一次发现在客户端的Windows的微信客户端不能直接粘贴文本，必须要在客户端系统打开记事本粘贴一下再复制才能粘贴到客户端的微信。服务器的截图倒是可以直接粘贴到微信，但是根据截图大小，需要等网络传输后才能在客户端粘贴（高度怀疑没有压缩，直接传位图了），而且网络传输没有进度条，因此你不知道到底什么时候才能粘贴。使用复制粘贴不能将文件从一台电脑拷贝到另一台。还有，当客户端Windows的UAC窗口出现时，它是不能控制客户端的——UAC把它的能力禁止了。</p>
 
-<p>它的收费目前分基本版和高级版，都是一次性购买，目前基本版10美元，高级版29美元。目前来说高级版的ssl和客服支持对于大多数人来说什么用也没有，10美元的lifetime access买这么一款给力的软件实在是……只能说作者现在要养活这么一个开发团队，难度有点高啊；很大可能若干年后作者跑路。不过Synergy的代码是开源的，开源社区会接盘。至少我必用的话肯定会想办法去兼容编译的。</p>
+<p>还有一个不算缺点的缺点：由于账号体系不是原生的，所以你机器的IP地址是没有中心服务器管理的——也就是说，如果你的两台设备在一个大局域网的不同子网内，没有做hostname的跨子网通知，并且强制DHCP，那么你就只能每次DHCP后重新在客户端设置服务端IP。如果能通过账号体系将自己的IP上报再下发到客户端，客户端再连接此IP的话就能解决这个问题了。</p>
+
+<p>它的收费目前分基本版和高级版，都是一次性购买，目前基本版10美元，高级版29美元。目前来说高级版的ssl和客服支持对于大多数人来说什么用也没有，10美元的lifetime access买这么一款给力的软件实在是……太便宜了。只能说作者现在要养活这么一个开发团队，难度有点高啊，很大可能若干年后作者跑路。不过Synergy的代码是开源的，开源社区会接盘。至少我还在用的话肯定会想办法去编译兼容版本的。</p>
 
 <ol>
-<li><p><a href="http://www.keyboard-and-mouse-sharing.com/index.html">ShareMouse</a></p></li>
-<li><p>[Mouse without Borders]</p></li>
+<li><a href="http://www.keyboard-and-mouse-sharing.com/index.html">ShareMouse</a></li>
+</ol>
+
+<p>今天就是试用它以后才发现它做的真的很不错，如果是同一个局域网的话，安装好以后都不用设置就已经连接到一起了——不过在公司怎么办呢？那只好买收费版啦。它的另一个好处是没有服务端和客户端的区别，玩游戏时可以用一台电脑控制一台平板，睡觉的时候用平板控制电脑关机——等等，平板怎么把鼠标挪出屏幕呢？好吧，这个功能用处似乎不太多……</p>
+
+<p>基本功能：免费版支持最多2台机器互联和控制，高级版支持9台。可以通过鼠标拖拽和复制粘贴功能实现文件的粘贴，文本和图片的复制粘贴也是可以的。文件的复制粘贴会显示进度条，但是拖拽文件的时候没有显示，会卡死接受文件的目录——对，它接受文件的时候可以在任意文件夹。</p>
+
+<p>热键：只有直接跳到另一个屏幕的热键和粘贴的热键ctrl+v，不过这就够了吧。</p>
+
+<p>死角：这个功能当然也有啦，不过似乎不能指定几个像素。此外还有全屏自动禁止切换，这样玩游戏的时候另一台看电影听音乐，不会影响打游戏的。</p>
+
+<p>按键映射：这个我真没找到……</p>
+
+<p>操作系统支持：Mac Windows，很多真正有多屏使用需要的人免不了要用Linux的，这个客户端的缺失其实影响应该很大吧</p>
+
+<p>安全：免费的不能加密码，加密码后客户端是相同密码的就可以连接。也就是想在公司用，掏钱是肯定嗒。</p>
+
+<p>登陆界面：不管你的服务端和客户端是不是登陆界面，它都支持把鼠标挪进不同的机器，并且控制。而且UAC界面也能控制哦。</p>
+
+<p>简单试了一下，如果它是一次性购买的话我肯定就用它替代Synergy了——跟Synergy一样的流畅，方便，外加比它简单的配置，文件复制粘贴，都直击痛点。而且进入离开某台机器的时候可以屏幕变暗，真是太简单了有木有。</p>
+
+<p>缺点也是有的，最大的一个痛点是除了直接互联外，如果想自己加一台机器进来只能使用IP而不能使用HOSTNAME——也就是说，在使用DHCP的公司内，好像更加难用了。按键映射在跨平台的时候是个问题，我总不能Mac用Cmd+v而到Windows使用ctrl+v吧。Linux也要支持啊。</p>
+
+<p>至于收费么……它不仅不是一次性收费，每年的年费还特别高：即便是按照每年最便宜的年费，标准版是<span style="color: inherit;" class="MathJax_Preview"></span><span role="presentation" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mn>8.97</mn><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#xFF0C;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x9AD8;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x7EA7;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x7248;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x662F;</mo></mrow></math>" style="position: relative;" tabindex="0" id="MathJax-Element-93-Frame" class="MathJax"><nobr aria-hidden="true"><span style="width: 7.453em; display: inline-block;" role="math" id="MathJax-Span-1531" class="math"><span style="display: inline-block; position: relative; width: 5.721em; height: 0px; font-size: 130%;"><span style="position: absolute; clip: rect(1.412em, 1005.72em, 2.7em, -1000em); top: -2.356em; left: 0em;"><span id="MathJax-Span-1532" class="mrow"><span style="font-family: MathJax_Main;" id="MathJax-Span-1533" class="mn">8.97</span><span id="MathJax-Span-1534" class="texatom"><span id="MathJax-Span-1535" class="mrow"><span id="MathJax-Span-1536" class="mo"><span style="font-family: STIXGeneral,&quot;Arial Unicode MS&quot;,serif; font-size: 77%; font-style: normal; font-weight: normal;">，</span></span></span></span><span id="MathJax-Span-1537" class="texatom"><span id="MathJax-Span-1538" class="mrow"><span id="MathJax-Span-1539" class="mo"><span style="font-family: STIXGeneral,&quot;Arial Unicode MS&quot;,serif; font-size: 77%; font-style: normal; font-weight: normal;">高</span></span></span></span><span id="MathJax-Span-1540" class="texatom"><span id="MathJax-Span-1541" class="mrow"><span id="MathJax-Span-1542" class="mo"><span style="font-family: STIXGeneral,&quot;Arial Unicode MS&quot;,serif; font-size: 77%; font-style: normal; font-weight: normal;">级</span></span></span></span><span id="MathJax-Span-1543" class="texatom"><span id="MathJax-Span-1544" class="mrow"><span id="MathJax-Span-1545" class="mo"><span style="font-family: STIXGeneral,&quot;Arial Unicode MS&quot;,serif; font-size: 77%; font-style: normal; font-weight: normal;">版</span></span></span></span><span id="MathJax-Span-1546" class="texatom"><span id="MathJax-Span-1547" class="mrow"><span id="MathJax-Span-1548" class="mo"><span style="font-family: STIXGeneral,&quot;Arial Unicode MS&quot;,serif; font-size: 77%; font-style: normal; font-weight: normal;">是</span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.356em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.323em; border-left: 0px solid; width: 0px; height: 1.425em;"></span></span></nobr><span role="presentation" class="MJX_Assistive_MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>8.97</mn><mrow class="MJX-TeXAtom-ORD"><mo>，</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>高</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>级</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>版</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>是</mo></mrow></math></span></span><script id="MathJax-Element-93" type="math/tex">8.97，高级版是</script>22.48。这是你一次性要交5年的情况下才有如此优惠。</p>
+
+<p>如果你只是在家里的两台电脑之间这么用，它的免费版还是挺值得推荐的；但凡你的使用场景比较复杂，那它就只能爱莫能助了。</p>
+
+<ol>
+<li>[Mouse without Borders]</li>
 <li>[teleport]</li>
 <li>[across]</li>
 </ol>

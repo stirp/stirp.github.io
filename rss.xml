@@ -7,7 +7,66 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>多机共享键鼠软件横向测评</title><link>http://blog.shrp.me//Multi-Computer-Mouse-and-Keyboard-sharing.html</link><pubdate>2016-07-02</pubdate><content:encoded>&lt;p&gt;我用了多年的多机共享软件Synergy，一直孤陋寡闻以为跨屏共享软件就只有这么一个，直到前两天在小众软件看到了&lt;a href="http://www.appinn.com/sharemouse/"&gt;sharemouse&lt;/a&gt;这款软件，试用后发现功能感觉更为强大；稍后更是检索了一番，发现了一众多屏共享软件，于是挑选了几个有代表性的软件做了简单的测试。&lt;/p&gt;
+    <item><title>Mac如何提高文件描述符个数</title><link>http://blog.shrp.me//Increase-Number-of-file-descriptor.html</link><pubdate>2016-07-09</pubdate><content:encoded>&lt;p&gt;　　作为一个常年使用Mac进行开发的程序猿，或多或少会接触到一些高并发的任务，动辄就需要电脑来它几千个线程，几万几十万个QPS。&lt;/p&gt;
+
+&lt;p&gt;　　但是Mac的普通版本并没有为这种行为进行优化，最简单的，你在终端输入ulimit -a，你会看到当前系统能够打开的文件描述符默认只有……256。这根本不够好嘛？！&lt;/p&gt;
+
+&lt;p&gt;　　但是作为一个Linux使用经验丰富的人，你一定以为它可以通过/etc下的配置修改。可惜Mac不是Linux而是FreeBSD体系，而且它这个配置自成一派，如果不谷歌一番，我还真不知道怎么改呢。&lt;/p&gt;
+
+&lt;p&gt;　　在最新版的EI Capitan系统，要修改这个值，首先需要关闭csrutil。Mac对csrutil的安全措施很到位，你使用sudo是不能关闭的，首先需要进入recovery mode，也就是重启时按下command+r，进入恢复模式，然后打开终端，输入csrutil disable，然后重启，建立如下两个文件：&lt;/p&gt;
+
+&lt;p&gt;/Library/LaunchDaemons/limit.maxfiles.plist&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-xml"&gt;&amp;lt;?xml version="1.0" encoding="UTF-8"?&amp;gt;  
+&amp;lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"  
+        "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&amp;gt;
+&amp;lt;plist version="1.0"&amp;gt;  
+  &amp;lt;dict&amp;gt;
+    &amp;lt;key&amp;gt;Label&amp;lt;/key&amp;gt;
+    &amp;lt;string&amp;gt;limit.maxfiles&amp;lt;/string&amp;gt;
+    &amp;lt;key&amp;gt;ProgramArguments&amp;lt;/key&amp;gt;
+    &amp;lt;array&amp;gt;
+      &amp;lt;string&amp;gt;launchctl&amp;lt;/string&amp;gt;
+      &amp;lt;string&amp;gt;limit&amp;lt;/string&amp;gt;
+      &amp;lt;string&amp;gt;maxfiles&amp;lt;/string&amp;gt;
+      &amp;lt;string&amp;gt;524288&amp;lt;/string&amp;gt;
+      &amp;lt;string&amp;gt;524288&amp;lt;/string&amp;gt;
+    &amp;lt;/array&amp;gt;
+    &amp;lt;key&amp;gt;RunAtLoad&amp;lt;/key&amp;gt;
+    &amp;lt;true/&amp;gt;
+    &amp;lt;key&amp;gt;ServiceIPC&amp;lt;/key&amp;gt;
+    &amp;lt;false/&amp;gt;
+  &amp;lt;/dict&amp;gt;
+&amp;lt;/plist&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;/Library/LaunchDaemons/limit.maxproc.plist&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-xml"&gt;&amp;lt;?xml version="1.0" encoding="UTF-8"?&amp;gt;  
+&amp;lt;!DOCTYPE plist PUBLIC "-//Apple/DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&amp;gt;  
+  &amp;lt;plist version="1.0"&amp;gt;
+    &amp;lt;dict&amp;gt;
+      &amp;lt;key&amp;gt;Label&amp;lt;/key&amp;gt;
+        &amp;lt;string&amp;gt;limit.maxproc&amp;lt;/string&amp;gt;
+      &amp;lt;key&amp;gt;ProgramArguments&amp;lt;/key&amp;gt;
+        &amp;lt;array&amp;gt;
+          &amp;lt;string&amp;gt;launchctl&amp;lt;/string&amp;gt;
+          &amp;lt;string&amp;gt;limit&amp;lt;/string&amp;gt;
+          &amp;lt;string&amp;gt;maxproc&amp;lt;/string&amp;gt;
+          &amp;lt;string&amp;gt;2048&amp;lt;/string&amp;gt;
+          &amp;lt;string&amp;gt;2048&amp;lt;/string&amp;gt;
+        &amp;lt;/array&amp;gt;
+      &amp;lt;key&amp;gt;RunAtLoad&amp;lt;/key&amp;gt;
+        &amp;lt;true /&amp;gt;
+      &amp;lt;key&amp;gt;ServiceIPC&amp;lt;/key&amp;gt;
+        &amp;lt;false /&amp;gt;
+    &amp;lt;/dict&amp;gt;
+  &amp;lt;/plist&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;再重启一次，执行ulimit -a，你就会发现数字都变化了，现在可以安心测试了！&lt;/p&gt;
+
+&lt;p&gt;PS：其实你可以先建立文件再进入恢复模式的，这样一次重启就足够了&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Increase-Number-of-file-descriptor.html</guid></item><item><title>多机共享键鼠软件横向测评</title><link>http://blog.shrp.me//Multi-Computer-Mouse-and-Keyboard-sharing.html</link><pubdate>2016-07-02</pubdate><content:encoded>&lt;p&gt;我用了多年的多机共享软件Synergy，一直孤陋寡闻以为跨屏共享软件就只有这么一个，直到前两天在小众软件看到了&lt;a href="http://www.appinn.com/sharemouse/"&gt;sharemouse&lt;/a&gt;这款软件，试用后发现功能感觉更为强大；稍后更是检索了一番，发现了一众多屏共享软件，于是挑选了几个有代表性的软件做了简单的测试。&lt;/p&gt;
 
 &lt;p&gt;首先介绍下多机共享软件的原理：此类软件都是通过网络连接，将控制机的键鼠动作和粘贴板的行为同步到被控制机器，从而达到用一套键鼠操作多台电脑的目的，节约用户的桌面空间，方便用户用一套软件控制多台机器。功能原理其实非常简单，因此测评主要注重用户体验。&lt;/p&gt;
 
@@ -134,7 +193,7 @@
 
 &lt;h2 id="2sshconfig"&gt;2. ssh config（保持链接，自动跳转）&lt;/h2&gt;
 
-&lt;p&gt;然而你会发现每次都输入用户名ip地址，真是烦。ssh也想到了，提供了ssh_config。&lt;/p&gt;
+&lt;p&gt;然而你会发现每次都输入用户名ip地址，真是烦。ssh也想到了，提供了ssh_config(位置~/.ssh/config)。&lt;/p&gt;
 
 &lt;p&gt;一个常见的配置如下：&lt;/p&gt;
 
@@ -341,36 +400,5 @@
 
 &lt;p&gt;　　之后同事说他看到一个算法是(a+b)&amp;gt;1。其实这个问题只能说缓解了溢出的问题，实际问题还是存在的。为啥？比如int，当发生上溢的时候，溢出的进位其实进入了符号位；而右移的时候把符号位移到了第一位，此时计算结果是正确的；但是如果是无符号整型，溢出的时候已经丢弃了进位，右移后结果要少差一半。&lt;/p&gt;
 
-&lt;p&gt;　　所以最好还是用a+（b-a）/2这样。除二或者右移一位都是可以的。当然，前提是因为我们知道a和b作为数组下标，都是正数，因此b-a不会下溢。如果你的数组奇怪到居然用负数左下标，呃，好吧，a和b做右移或除2处理再相加吧。不过记得要判断两个都是奇数的情况哦！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//A-Method-To-Find-Midlle-in-Binary-Search-in-C.html</guid></item><item><title>关于函数指针的一点小研究</title><link>http://blog.shrp.me//something-about-pointer-point-to-method.html</link><pubdate>2011-10-07</pubdate><content:encoded>&lt;p&gt;　　C语言里有个特殊的指针，称为函数指针。这个东西比较可爱的一点是它本身是指向某函数的，可以用它来调用函数。&lt;/p&gt;
-
-&lt;p&gt;　　但是语言上有个说法，是一切未初始化的变量是bug的来源。那么函数指针初始化为什么好呢？&lt;/p&gt;
-
-&lt;p&gt;　　最最直接的想法是NULL。NULL当然没错了，但是它还不够智能，运行的时候闷头来个段错误，让人丈二和尚摸不着头脑，究竟是哪个指针跑飞了呢？&lt;/p&gt;
-
-&lt;p&gt;　　于是我简单的研究了一下。&lt;/p&gt;
-
-&lt;p&gt;　　首先定义了一个函数test：&lt;/p&gt;
-
-&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token keyword"&gt;void&lt;/span&gt; &lt;span class="token function"&gt;test&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-&lt;span class="token punctuation"&gt;{&lt;/span&gt;
-    &lt;span class="token function"&gt;printf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token string"&gt;"test!\n"&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token punctuation"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这个函数很简单，就是在屏幕输出一行文字。&lt;/p&gt;
-
-&lt;p&gt;如果直接定义它的函数指针，那就是&lt;code&gt;void (*point)() = test;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;可是咱们说的是把它当做任意函数指针的地址。于是试了一下：&lt;/p&gt;
-
-&lt;pre class=" language-c"&gt;&lt;code class=" language-c"&gt;&lt;span class="token keyword"&gt;void&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token operator"&gt;*&lt;/span&gt;LynxArrayListInit&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;LynxArrayList &lt;span class="token operator"&gt;*&lt;/span&gt;myArrayList&lt;span class="token punctuation"&gt;,&lt;/span&gt;
-                            &lt;span class="token keyword"&gt;long&lt;/span&gt; increaseStep
-                           &lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token operator"&gt;=&lt;/span&gt; test&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;运行，OK！没有问题。&lt;/p&gt;
-
-&lt;p&gt;　　这样可以通过把函数指针初始化为报错的函数，可以调用exit终止掉非法调用，可以记录日志，可以做任何你想要做的事情，甚至忽略错误，让程序飞一会；或者添加第一个参数，记录下其余参数的数量，还可以把所有的参数都记录下来，以供改进。&lt;/p&gt;
-
-&lt;p&gt;　　不过……最好还是通过它重新初始化的好。为啥呢？因为test函数不消耗参数，栈内多了两个参数啊，这些参数都消耗不掉了。总之这对于程序的运行百害无一利，更何况程序指针已经飞了，继续跑基本也不正确了。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//something-about-pointer-point-to-method.html</guid></item></channel>
+&lt;p&gt;　　所以最好还是用a+（b-a）/2这样。除二或者右移一位都是可以的。当然，前提是因为我们知道a和b作为数组下标，都是正数，因此b-a不会下溢。如果你的数组奇怪到居然用负数左下标，呃，好吧，a和b做右移或除2处理再相加吧。不过记得要判断两个都是奇数的情况哦！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//A-Method-To-Find-Midlle-in-Binary-Search-in-C.html</guid></item></channel>
 </rss>

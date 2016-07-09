@@ -1,0 +1,243 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+　　作为一个常年使用Mac进行开发的程序猿，或多或少会接触到一些高并发的任务，动辄就需要电脑来它几千个线程，几万几十万个QPS。
+
+　　但是Mac的普通版本并没有为这种行为进行优化，最简单的，你在终端输入ulimit -a，你会看到当前系统能够打开的文件描述符默认只有……256。这根本不够好嘛？！
+
+　　但是作为一个Linux使用经验丰富的人，你一定以为它可以通过/etc下的配置修改。可惜Mac不是Linux而是FreeBSD体系，而且它这个配置自成一派，如果不谷歌一番，我还真不知道怎么改呢。
+
+　　在最新版的EI Capitan系统，要修改这个值，首先需要关闭csrutil。Mac对csrutil的安全措施很到位，你使用sudo是不能关闭的，首先需要进入recovery mode，也就是重启时按下command+r，进入恢复模式，然后打开终端，输入csrutil disable，然后重启，建立如下两个文件：
+
+/Library/LaunchDaemons/limit.maxfiles.plist
+
+~~~~{xml}
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"  
+        "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">  
+  <dict>
+    <key>Label</key>
+    <string>limit.maxfiles</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>launchctl</string>
+      <string>limit</string>
+      <string>maxfiles</string>
+      <string>524288</string>
+      <string>524288</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>ServiceIPC</key>
+    <false/>
+  </dict>
+</plist>
+~~~~
+
+/Library/LaunchDaemons/limit.maxproc.plist
+
+~~~~{xml}
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE plist PUBLIC "-//Apple/DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">  
+  <plist version="1.0">
+    <dict>
+      <key>Label</key>
+        <string>limit.maxproc</string>
+      <key>ProgramArguments</key>
+        <array>
+          <string>launchctl</string>
+          <string>limit</string>
+          <string>maxproc</string>
+          <string>2048</string>
+          <string>2048</string>
+        </array>
+      <key>RunAtLoad</key>
+        <true />
+      <key>ServiceIPC</key>
+        <false />
+    </dict>
+  </plist>
+~~~~
+
+再重启一次，执行ulimit -a，你就会发现数字都变化了，现在可以安心测试了！
+
+PS：其实你可以先建立文件再进入恢复模式的，这样一次重启就足够了
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>　　作为一个常年使用Mac进行开发的程序猿，或多或少会接触到一些高并发的任务，动辄就需要电脑来它几千个线程，几万几十万个QPS。</p>
+
+<p>　　但是Mac的普通版本并没有为这种行为进行优化，最简单的，你在终端输入ulimit -a，你会看到当前系统能够打开的文件描述符默认只有……256。这根本不够好嘛？！</p>
+
+<p>　　但是作为一个Linux使用经验丰富的人，你一定以为它可以通过/etc下的配置修改。可惜Mac不是Linux而是FreeBSD体系，而且它这个配置自成一派，如果不谷歌一番，我还真不知道怎么改呢。</p>
+
+<p>　　在最新版的EI Capitan系统，要修改这个值，首先需要关闭csrutil。Mac对csrutil的安全措施很到位，你使用sudo是不能关闭的，首先需要进入recovery mode，也就是重启时按下command+r，进入恢复模式，然后打开终端，输入csrutil disable，然后重启，建立如下两个文件：</p>
+
+<p>/Library/LaunchDaemons/limit.maxfiles.plist</p>
+
+<pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;  
+&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"  
+        "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;plist version="1.0"&gt;  
+  &lt;dict&gt;
+    &lt;key&gt;Label&lt;/key&gt;
+    &lt;string&gt;limit.maxfiles&lt;/string&gt;
+    &lt;key&gt;ProgramArguments&lt;/key&gt;
+    &lt;array&gt;
+      &lt;string&gt;launchctl&lt;/string&gt;
+      &lt;string&gt;limit&lt;/string&gt;
+      &lt;string&gt;maxfiles&lt;/string&gt;
+      &lt;string&gt;524288&lt;/string&gt;
+      &lt;string&gt;524288&lt;/string&gt;
+    &lt;/array&gt;
+    &lt;key&gt;RunAtLoad&lt;/key&gt;
+    &lt;true/&gt;
+    &lt;key&gt;ServiceIPC&lt;/key&gt;
+    &lt;false/&gt;
+  &lt;/dict&gt;
+&lt;/plist&gt;
+</code></pre>
+
+<p>/Library/LaunchDaemons/limit.maxproc.plist</p>
+
+<pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;  
+&lt;!DOCTYPE plist PUBLIC "-//Apple/DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;  
+  &lt;plist version="1.0"&gt;
+    &lt;dict&gt;
+      &lt;key&gt;Label&lt;/key&gt;
+        &lt;string&gt;limit.maxproc&lt;/string&gt;
+      &lt;key&gt;ProgramArguments&lt;/key&gt;
+        &lt;array&gt;
+          &lt;string&gt;launchctl&lt;/string&gt;
+          &lt;string&gt;limit&lt;/string&gt;
+          &lt;string&gt;maxproc&lt;/string&gt;
+          &lt;string&gt;2048&lt;/string&gt;
+          &lt;string&gt;2048&lt;/string&gt;
+        &lt;/array&gt;
+      &lt;key&gt;RunAtLoad&lt;/key&gt;
+        &lt;true /&gt;
+      &lt;key&gt;ServiceIPC&lt;/key&gt;
+        &lt;false /&gt;
+    &lt;/dict&gt;
+  &lt;/plist&gt;
+</code></pre>
+
+<p>再重启一次，执行ulimit -a，你就会发现数字都变化了，现在可以安心测试了！</p>
+
+<p>PS：其实你可以先建立文件再进入恢复模式的，这样一次重启就足够了</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "Increase-Number-of-file-descriptor.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

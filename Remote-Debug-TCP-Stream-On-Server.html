@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+　　如果只是一个http业务，一般是不需要调试其TCP流的；但是现在我正在处理一个基于TCP长连接的协议，有时候有任何问题，通过TCP流都可以帮助我调试服务。
+
+　　但是这只是本地开发时常见的情况，如果要调试测试服务器乃至生产服务器接受的数据流是否正常呢？当然可以在服务器运行tcpdump，比如```tcpdump -i eth0 tcp port 抓包端口号 -w /tmp/debug.cap```，然后将debug.cap从服务器scp到本地来，用wireshark详细研究。
+
+　　但是有时候调试，服务正常与否跟相应时间什么的也有关系，这种事后研究的方式就不方便了，可以直接ssh服务器，通过tcpdump输出到管道，然后管道这边通过wireshark去抓包分析，省去了scp的麻烦，也能实时调试了。
+
+　　可以使用命令```ssh fedSDE "sudo tcpdump -s 0 -U -n -i eth0 port 抓包端口号 -w -" | wireshark -k -i -```来轻松做到这点。
+
+　　不过有时候会有异常，“sudo：抱歉，您必须拥有一个终端来执行 sudo”，则需要使用管理员修改/etc/sudoers，把```Defaults    requiretty```这一行注释掉就可以了。
+
+从此妈妈再也不用担心我调试服务器上的流量啦！
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>　　如果只是一个http业务，一般是不需要调试其TCP流的；但是现在我正在处理一个基于TCP长连接的协议，有时候有任何问题，通过TCP流都可以帮助我调试服务。</p>
+
+<p>　　但是这只是本地开发时常见的情况，如果要调试测试服务器乃至生产服务器接受的数据流是否正常呢？当然可以在服务器运行tcpdump，比如<code>tcpdump -i eth0 tcp port 抓包端口号 -w /tmp/debug.cap</code>，然后将debug.cap从服务器scp到本地来，用wireshark详细研究。</p>
+
+<p>　　但是有时候调试，服务正常与否跟相应时间什么的也有关系，这种事后研究的方式就不方便了，可以直接ssh服务器，通过tcpdump输出到管道，然后管道这边通过wireshark去抓包分析，省去了scp的麻烦，也能实时调试了。</p>
+
+<p>　　可以使用命令<code>ssh fedSDE "sudo tcpdump -s 0 -U -n -i eth0 port 抓包端口号 -w -" | wireshark -k -i -</code>来轻松做到这点。</p>
+
+<p>　　不过有时候会有异常，“sudo：抱歉，您必须拥有一个终端来执行 sudo”，则需要使用管理员修改/etc/sudoers，把<code>Defaults    requiretty</code>这一行注释掉就可以了。</p>
+
+<p>从此妈妈再也不用担心我调试服务器上的流量啦！</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "Remote-Debug-TCP-Stream-On-Server.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

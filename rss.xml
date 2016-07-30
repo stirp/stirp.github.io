@@ -7,7 +7,17 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>Mac如何提高文件描述符个数</title><link>http://blog.shrp.me//Increase-Number-of-file-descriptor.html</link><pubdate>2016-07-09</pubdate><content:encoded>&lt;p&gt;　　作为一个常年使用Mac进行开发的程序猿，或多或少会接触到一些高并发的任务，动辄就需要电脑来它几千个线程，几万几十万个QPS。&lt;/p&gt;
+    <item><title>远程调试服务器的tcp流</title><link>http://blog.shrp.me//Remote-Debug-TCP-Stream-On-Server.html</link><pubdate>2016-07-27</pubdate><content:encoded>&lt;p&gt;　　如果只是一个http业务，一般是不需要调试其TCP流的；但是现在我正在处理一个基于TCP长连接的协议，有时候有任何问题，通过TCP流都可以帮助我调试服务。&lt;/p&gt;
+
+&lt;p&gt;　　但是这只是本地开发时常见的情况，如果要调试测试服务器乃至生产服务器接受的数据流是否正常呢？当然可以在服务器运行tcpdump，比如&lt;code&gt;tcpdump -i eth0 tcp port 抓包端口号 -w /tmp/debug.cap&lt;/code&gt;，然后将debug.cap从服务器scp到本地来，用wireshark详细研究。&lt;/p&gt;
+
+&lt;p&gt;　　但是有时候调试，服务正常与否跟相应时间什么的也有关系，这种事后研究的方式就不方便了，可以直接ssh服务器，通过tcpdump输出到管道，然后管道这边通过wireshark去抓包分析，省去了scp的麻烦，也能实时调试了。&lt;/p&gt;
+
+&lt;p&gt;　　可以使用命令&lt;code&gt;ssh fedSDE "sudo tcpdump -s 0 -U -n -i eth0 port 抓包端口号 -w -" | wireshark -k -i -&lt;/code&gt;来轻松做到这点。&lt;/p&gt;
+
+&lt;p&gt;　　不过有时候会有异常，“sudo：抱歉，您必须拥有一个终端来执行 sudo”，则需要使用管理员修改/etc/sudoers，把&lt;code&gt;Defaults    requiretty&lt;/code&gt;这一行注释掉就可以了。&lt;/p&gt;
+
+&lt;p&gt;从此妈妈再也不用担心我调试服务器上的流量啦！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Remote-Debug-TCP-Stream-On-Server.html</guid></item><item><title>Mac如何提高文件描述符个数</title><link>http://blog.shrp.me//Increase-Number-of-file-descriptor.html</link><pubdate>2016-07-09</pubdate><content:encoded>&lt;p&gt;　　作为一个常年使用Mac进行开发的程序猿，或多或少会接触到一些高并发的任务，动辄就需要电脑来它几千个线程，几万几十万个QPS。&lt;/p&gt;
 
 &lt;p&gt;　　但是Mac的普通版本并没有为这种行为进行优化，最简单的，你在终端输入ulimit -a，你会看到当前系统能够打开的文件描述符默认只有……256。这根本不够好嘛？！&lt;/p&gt;
 
@@ -394,11 +404,5 @@
 
 &lt;p&gt;　　经过这么久的时间，我的网站一直采用这个名字，可见我的博客跟淘宝商城毫无关系。不要误会了哟~&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//This-Blog-Has-Nothing-With-Tmall.html</guid></item><item><title>打算在我的eeepc小笔电上边装个puppy</title><link>http://blog.shrp.me//Install-Puppy-Linux-in-My-EEEPC.html</link><pubdate>2011-12-28</pubdate><content:encoded>&lt;p&gt;　　原来我的小笔电EEEPC安装过两个Puppy版本，一个是曾经比较流行的小芭比Linux&lt;a href="http://www.minilinux.net/software/%E5%B0%8F%E8%8A%AD%E6%AF%94"&gt;链接1&lt;/a&gt;，貌似目前已经停止了；另一个是官方原版的lupu-520版本，目前已经是528版本了吧&lt;a href="http://bkhome.org/blog/?viewDetailed=02418"&gt;链接2&lt;/a&gt;。当时试了几种中文输入法，都不成功，改用了搜狗网页版，凑合用着。不过多试几次就没兴趣了。&lt;/p&gt;
 
-&lt;p&gt;　　再后来我的小笔电把win7换回xp的时候把c盘用ghost还原了，puppy自然也就不在了。今天打算再安装回去，正好单位的事情也办的差不多了，随手安装吧，嘿嘿，等这回安装好了再发文总结。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Install-Puppy-Linux-in-My-EEEPC.html</guid></item><item><title>二分查找法查找中点的方法（C语言）</title><link>http://blog.shrp.me//A-Method-To-Find-Midlle-in-Binary-Search-in-C.html</link><pubdate>2011-12-07</pubdate><content:encoded>&lt;p&gt;　　今天跟同事说起二分查找法中常见的一个问题，就是计算中点时会溢出的问题。&lt;/p&gt;
-
-&lt;p&gt;　　常见的方法（a+b）/2就是铁定会溢出的方法。如果a和b很大，之和超出了它们定义的范围，那么运算结果可能会是负数，这绝对不是我们想要的。&lt;/p&gt;
-
-&lt;p&gt;　　之后同事说他看到一个算法是(a+b)&amp;gt;1。其实这个问题只能说缓解了溢出的问题，实际问题还是存在的。为啥？比如int，当发生上溢的时候，溢出的进位其实进入了符号位；而右移的时候把符号位移到了第一位，此时计算结果是正确的；但是如果是无符号整型，溢出的时候已经丢弃了进位，右移后结果要少差一半。&lt;/p&gt;
-
-&lt;p&gt;　　所以最好还是用a+（b-a）/2这样。除二或者右移一位都是可以的。当然，前提是因为我们知道a和b作为数组下标，都是正数，因此b-a不会下溢。如果你的数组奇怪到居然用负数左下标，呃，好吧，a和b做右移或除2处理再相加吧。不过记得要判断两个都是奇数的情况哦！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//A-Method-To-Find-Midlle-in-Binary-Search-in-C.html</guid></item></channel>
+&lt;p&gt;　　再后来我的小笔电把win7换回xp的时候把c盘用ghost还原了，puppy自然也就不在了。今天打算再安装回去，正好单位的事情也办的差不多了，随手安装吧，嘿嘿，等这回安装好了再发文总结。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Install-Puppy-Linux-in-My-EEEPC.html</guid></item></channel>
 </rss>

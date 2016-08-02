@@ -7,7 +7,11 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>远程调试服务器的tcp流</title><link>http://blog.shrp.me//Remote-Debug-TCP-Stream-On-Server.html</link><pubdate>2016-07-27</pubdate><content:encoded>&lt;p&gt;　　如果只是一个http业务，一般是不需要调试其TCP流的；但是现在我正在处理一个基于TCP长连接的协议，有时候有任何问题，通过TCP流都可以帮助我调试服务。&lt;/p&gt;
+    <item><title>Charles 出4啦</title><link>http://blog.shrp.me//Charles-Update-to-4.html</link><pubdate>2016-08-02</pubdate><content:encoded>&lt;p&gt;　　很多人用Windows抓Http包的时候都用fiddler，在Mac上用Charles则是最好的选择。&lt;/p&gt;
+
+&lt;p&gt;　　刚好Charles这两天出第四版了，试了下比原先的UI更线代了，功能也更强大了，而且好像价格也更优惠了。&lt;/p&gt;
+
+&lt;p&gt;　　于是赶紧买买买，正版计划又前进了一小步，哈哈~&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Charles-Update-to-4.html</guid></item><item><title>远程调试服务器的tcp流</title><link>http://blog.shrp.me//Remote-Debug-TCP-Stream-On-Server.html</link><pubdate>2016-07-27</pubdate><content:encoded>&lt;p&gt;　　如果只是一个http业务，一般是不需要调试其TCP流的；但是现在我正在处理一个基于TCP长连接的协议，有时候有任何问题，通过TCP流都可以帮助我调试服务。&lt;/p&gt;
 
 &lt;p&gt;　　但是这只是本地开发时常见的情况，如果要调试测试服务器乃至生产服务器接受的数据流是否正常呢？当然可以在服务器运行tcpdump，比如&lt;code&gt;tcpdump -i eth0 tcp port 抓包端口号 -w /tmp/debug.cap&lt;/code&gt;，然后将debug.cap从服务器scp到本地来，用wireshark详细研究。&lt;/p&gt;
 
@@ -402,7 +406,5 @@
 
 &lt;p&gt;　　现在已经第四版了，采用了php+js+文件管理。在互联网上的只是我的网站的子集，仅包括博客部分，所以后缀了一个Small；在我的本地还提供了SVN、资料分享、媒体分享（主要是我的设备比较多，没有媒体分享就需要把同一个电影来回拷贝，太麻烦）。&lt;/p&gt;
 
-&lt;p&gt;　　经过这么久的时间，我的网站一直采用这个名字，可见我的博客跟淘宝商城毫无关系。不要误会了哟~&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//This-Blog-Has-Nothing-With-Tmall.html</guid></item><item><title>打算在我的eeepc小笔电上边装个puppy</title><link>http://blog.shrp.me//Install-Puppy-Linux-in-My-EEEPC.html</link><pubdate>2011-12-28</pubdate><content:encoded>&lt;p&gt;　　原来我的小笔电EEEPC安装过两个Puppy版本，一个是曾经比较流行的小芭比Linux&lt;a href="http://www.minilinux.net/software/%E5%B0%8F%E8%8A%AD%E6%AF%94"&gt;链接1&lt;/a&gt;，貌似目前已经停止了；另一个是官方原版的lupu-520版本，目前已经是528版本了吧&lt;a href="http://bkhome.org/blog/?viewDetailed=02418"&gt;链接2&lt;/a&gt;。当时试了几种中文输入法，都不成功，改用了搜狗网页版，凑合用着。不过多试几次就没兴趣了。&lt;/p&gt;
-
-&lt;p&gt;　　再后来我的小笔电把win7换回xp的时候把c盘用ghost还原了，puppy自然也就不在了。今天打算再安装回去，正好单位的事情也办的差不多了，随手安装吧，嘿嘿，等这回安装好了再发文总结。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Install-Puppy-Linux-in-My-EEEPC.html</guid></item></channel>
+&lt;p&gt;　　经过这么久的时间，我的网站一直采用这个名字，可见我的博客跟淘宝商城毫无关系。不要误会了哟~&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//This-Blog-Has-Nothing-With-Tmall.html</guid></item></channel>
 </rss>

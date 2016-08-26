@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+　　昨晚从五月天鸟巢的演唱会归来，心情久久不能平静。之前上iTunes查看，最新的专辑都没有上架；昨晚再看，已然有了，赶紧买下来听，质量真的还是很不错的。
+
+　　不过说起演唱会，觉得有的地方不错，有的地方却低于预期。五月天的互动做的不错，不过跟以前耳闻的那种级别，好像是稍微差了点，唱歌之间说的其实跟听众关系不大（或许跟五迷来说关系比较大）；而且还说从台上能看到每一位观众的脸……感觉怪怪的。大哥这里是鸟巢啊怎么看啊！最后退场居然什么也没说，朝三个方向三鞠躬就结束了。我本来以为会说点什么，欢迎大家下次继续来神马的……
+
+　　最让人接受不能的是牛奶广告强行植入……唱了两首歌，阿信坐在台上喝了杯牛奶，还被说白色的粘稠的液体……大雾。
+
+　　不过，歌曲安排的很好，每节都有快歌慢歌，老歌新歌，让听众都能参与进来；每首歌都或多或少做了修改，听众不是来听CD的；演唱会是18:30-21:30,大家回家都能坐地铁很方便。
+
+　　随文带几张拍的图片：）
+
+ ![](http://stirp.github.io/img/thumb_IMG_1091_1024.jpg)
+
+ ![](http://stirp.github.io/img/thumb_IMG_1093_1024.jpg)
+
+ ![](http://stirp.github.io/img/thumb_WechatIMG9_1024.jpg)
+
+ ![](http://stirp.github.io/img/thumb_WechatIMG12_1024.jpg)
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>　　昨晚从五月天鸟巢的演唱会归来，心情久久不能平静。之前上iTunes查看，最新的专辑都没有上架；昨晚再看，已然有了，赶紧买下来听，质量真的还是很不错的。</p>
+
+<p>　　不过说起演唱会，觉得有的地方不错，有的地方却低于预期。五月天的互动做的不错，不过跟以前耳闻的那种级别，好像是稍微差了点，唱歌之间说的其实跟听众关系不大（或许跟五迷来说关系比较大）；而且还说从台上能看到每一位观众的脸……感觉怪怪的。大哥这里是鸟巢啊怎么看啊！最后退场居然什么也没说，朝三个方向三鞠躬就结束了。我本来以为会说点什么，欢迎大家下次继续来神马的……</p>
+
+<p>　　最让人接受不能的是牛奶广告强行植入……唱了两首歌，阿信坐在台上喝了杯牛奶，还被说白色的粘稠的液体……大雾。</p>
+
+<p>　　不过，歌曲安排的很好，每节都有快歌慢歌，老歌新歌，让听众都能参与进来；每首歌都或多或少做了修改，听众不是来听CD的；演唱会是18:30-21:30,大家回家都能坐地铁很方便。</p>
+
+<p>　　随文带几张拍的图片：）</p>
+
+<p><img src="http://stirp.github.io/img/thumb_IMG_1091_1024.jpg" alt="" title=""></p>
+
+<p><img src="http://stirp.github.io/img/thumb_IMG_1093_1024.jpg" alt="" title=""></p>
+
+<p><img src="http://stirp.github.io/img/thumb_WechatIMG9_1024.jpg" alt="" title=""></p>
+
+<p><img src="http://stirp.github.io/img/thumb_WechatIMG12_1024.jpg" alt="" title=""></p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "Return-From-May-Day-Concert.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

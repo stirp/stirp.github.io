@@ -7,7 +7,23 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>Charles 出4啦</title><link>http://blog.shrp.me//Charles-Update-to-4.html</link><pubdate>2016-08-02</pubdate><content:encoded>&lt;p&gt;　　很多人用Windows抓Http包的时候都用fiddler，在Mac上用Charles则是最好的选择。&lt;/p&gt;
+    <item><title>五月天演唱会归来</title><link>http://blog.shrp.me//Return-From-May-Day-Concert.html</link><pubdate>2016-08-27</pubdate><content:encoded>&lt;p&gt;　　昨晚从五月天鸟巢的演唱会归来，心情久久不能平静。之前上iTunes查看，最新的专辑都没有上架；昨晚再看，已然有了，赶紧买下来听，质量真的还是很不错的。&lt;/p&gt;
+
+&lt;p&gt;　　不过说起演唱会，觉得有的地方不错，有的地方却低于预期。五月天的互动做的不错，不过跟以前耳闻的那种级别，好像是稍微差了点，唱歌之间说的其实跟听众关系不大（或许跟五迷来说关系比较大）；而且还说从台上能看到每一位观众的脸……感觉怪怪的。大哥这里是鸟巢啊怎么看啊！最后退场居然什么也没说，朝三个方向三鞠躬就结束了。我本来以为会说点什么，欢迎大家下次继续来神马的……&lt;/p&gt;
+
+&lt;p&gt;　　最让人接受不能的是牛奶广告强行植入……唱了两首歌，阿信坐在台上喝了杯牛奶，还被说白色的粘稠的液体……大雾。&lt;/p&gt;
+
+&lt;p&gt;　　不过，歌曲安排的很好，每节都有快歌慢歌，老歌新歌，让听众都能参与进来；每首歌都或多或少做了修改，听众不是来听CD的；演唱会是18:30-21:30,大家回家都能坐地铁很方便。&lt;/p&gt;
+
+&lt;p&gt;　　随文带几张拍的图片：）&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://stirp.github.io/img/thumb_IMG_1091_1024.jpg" alt="" title=""&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://stirp.github.io/img/thumb_IMG_1093_1024.jpg" alt="" title=""&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://stirp.github.io/img/thumb_WechatIMG9_1024.jpg" alt="" title=""&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://stirp.github.io/img/thumb_WechatIMG12_1024.jpg" alt="" title=""&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Return-From-May-Day-Concert.html</guid></item><item><title>Charles 出4啦</title><link>http://blog.shrp.me//Charles-Update-to-4.html</link><pubdate>2016-08-02</pubdate><content:encoded>&lt;p&gt;　　很多人用Windows抓Http包的时候都用fiddler，在Mac上用Charles则是最好的选择。&lt;/p&gt;
 
 &lt;p&gt;　　刚好Charles这两天出第四版了，试了下比原先的UI更线代了，功能也更强大了，而且好像价格也更优惠了。&lt;/p&gt;
 
@@ -400,11 +416,5 @@
 
 &lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//Problems-in-Code-Transfer-From-PHP-To-JAVA.html</guid></item><item><title>好久不更新了，得肺结核了</title><link>http://blog.shrp.me//Too-Long-No-Update-Since-Got-Tuberculosis.html</link><pubdate>2012-03-13</pubdate><content:encoded>&lt;p&gt;　　很久没更新了，最近得了肺结核，一阵检查之类的，现在确诊了，只好从公司出来，好好治病。&lt;/p&gt;
 
-&lt;p&gt;　　正好好好写论文吧，也算是一个休整时期吧。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Too-Long-No-Update-Since-Got-Tuberculosis.html</guid></item><item><title>无语了……本博客与淘宝商城没有任何联系！！！</title><link>http://blog.shrp.me//This-Blog-Has-Nothing-With-Tmall.html</link><pubdate>2012-01-12</pubdate><content:encoded>&lt;p&gt;　　我已经无语了……淘宝商城在毫无征兆的情况下改用了天猫作为名称，让我一下子不知所措。&lt;/p&gt;
-
-&lt;p&gt;　　我的网站采用天猫是从我大二，也就是2007年底08年初的时候做的第一版就开始了。当时用的是&lt;a href="http://lynx.xinwen365.com"&gt;http://lynx.xinwen365.com&lt;/a&gt;吧，时间太过久远，记不清楚了。是采用iframe分栏的布局，记事本写的代码。后来该空间关闭，我换用花生壳的服务，在本机提供服务，地址&lt;a href="http://nada.eicp.net"&gt;http://nada.eicp.net&lt;/a&gt;。在这个URL上我做过两次升级，分别为第二版（2010年，纯手工静态，3个子站）和第三版（2011年2月纯php）。&lt;/p&gt;
-
-&lt;p&gt;　　现在已经第四版了，采用了php+js+文件管理。在互联网上的只是我的网站的子集，仅包括博客部分，所以后缀了一个Small；在我的本地还提供了SVN、资料分享、媒体分享（主要是我的设备比较多，没有媒体分享就需要把同一个电影来回拷贝，太麻烦）。&lt;/p&gt;
-
-&lt;p&gt;　　经过这么久的时间，我的网站一直采用这个名字，可见我的博客跟淘宝商城毫无关系。不要误会了哟~&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//This-Blog-Has-Nothing-With-Tmall.html</guid></item></channel>
+&lt;p&gt;　　正好好好写论文吧，也算是一个休整时期吧。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Too-Long-No-Update-Since-Got-Tuberculosis.html</guid></item></channel>
 </rss>

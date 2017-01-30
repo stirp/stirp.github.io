@@ -7,7 +7,161 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>JetBrains,为信仰充值</title><link>http://blog.shrp.me//JetBrains-Charge-For-Faith.html</link><pubdate>2016-10-08</pubdate><content:encoded>&lt;p&gt;　　上个月底我的 IntelliJ 教育版到期了，虽然我可以简单的收个邮件继续用免费的教育版，但是其实本质上它也是盗版，因为我在使用他进行商业开发，挣养家糊口的费用呢，是违反 Licence 的。&lt;/p&gt;
+    <item><title>OpenWRT安装OpenVPN</title><link>http://blog.shrp.me//Install-OpenVPN-on-OpenWRT.html</link><pubdate>2017-01-30</pubdate><content:encoded>&lt;p&gt;　　苹果升级iOS10和Mac OS X Sierra有一段时间了，我的iPhone一不小心就中招升级了，导致我在外边玩游戏速度特别差，也不能拨号回家。&lt;/p&gt;
+
+&lt;p&gt;　　之前尝试着装个L2tp服务器，发现问题多多，始终不能成功；正好这次放假看到了知乎这个&lt;a href="https://www.zhihu.com/question/21751217/answer/32851461"&gt;答案&lt;/a&gt;，所以就尝试着按照这个方式装一个OpenVPN服务器。&lt;/p&gt;
+
+&lt;p&gt;　　1、安装相应的软件：&lt;/p&gt;
+
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;opkg update
+opkg install openvpn&lt;span class="token operator"&gt;-&lt;/span&gt;polarssl
+opkg install openvpn&lt;span class="token operator"&gt;-&lt;/span&gt;easy&lt;span class="token operator"&gt;-&lt;/span&gt;rsa
+&lt;/code&gt;&lt;/pre&gt;　　原文说的KEY_CN就是被注解掉的，所以不用执行相应的sed。
+
+　　2、修改/etc/easy-rsa/vars，把原文所说的
+
+&lt;pre&gt;&lt;code&gt;KEY_SIZE=2048
+export KEY_COUNTRY=CN
+export KEY_PROVINCE=Canton
+export KEY_CITY=city_name
+export KEY_ORG=org_name
+export KEY_EMAIL=email_address
+&lt;/code&gt;&lt;/pre&gt;
+
+
+都修改一下，然后执行
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;source &lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;easy&lt;span class="token operator"&gt;-&lt;/span&gt;rsa&lt;span class="token operator"&gt;/&lt;/span&gt;vars
+clean&lt;span class="token operator"&gt;-&lt;/span&gt;all
+&lt;/code&gt;&lt;/pre&gt;来做好生成证书的准备。
+
+　　3、执行命令生成证书
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;pkitool –initca
+pkitool &lt;span class="token operator"&gt;--&lt;/span&gt;server 服务端名称
+pkitool 客户端名称&lt;span class="token number"&gt;0&lt;/span&gt;
+pkitool 客户端名称&lt;span class="token number"&gt;1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;理论上有一个客户端就需要生成一套客户端的证书，当然，你也可以按照我的一会列出的参数，一套证书多个客户端使用。
+
+　　4、执行```build-dh```来生成Diffie Hellman参数
+
+　　5、生成ta.key ```openvpn --genkey --secret /etc/easy-rsa/keys/ta.key```
+
+　　6、编辑/etc/config/network，修改lan下的option ifname ，增加tun0
+
+　　7、修改/etc/config/openvpn
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;config openvpn my&lt;span class="token operator"&gt;-&lt;/span&gt;server
+    option enabled &lt;span class="token number"&gt;1&lt;/span&gt;
+    option local &lt;span class="token number"&gt;0.0&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token number"&gt;0.0&lt;/span&gt;
+    option port &lt;span class="token number"&gt;1194&lt;/span&gt;
+    option proto tcp
+    option dev tun
+    option ca &lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;easy&lt;span class="token operator"&gt;-&lt;/span&gt;rsa&lt;span class="token operator"&gt;/&lt;/span&gt;keys&lt;span class="token operator"&gt;/&lt;/span&gt;ca&lt;span class="token punctuation"&gt;.&lt;/span&gt;crt
+    option cert &lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;easy&lt;span class="token operator"&gt;-&lt;/span&gt;rsa&lt;span class="token operator"&gt;/&lt;/span&gt;keys&lt;span class="token operator"&gt;/&lt;/span&gt;my&lt;span class="token operator"&gt;-&lt;/span&gt;server&lt;span class="token punctuation"&gt;.&lt;/span&gt;crt
+    option key &lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;easy&lt;span class="token operator"&gt;-&lt;/span&gt;rsa&lt;span class="token operator"&gt;/&lt;/span&gt;keys&lt;span class="token operator"&gt;/&lt;/span&gt;my&lt;span class="token operator"&gt;-&lt;/span&gt;server&lt;span class="token punctuation"&gt;.&lt;/span&gt;key
+    option dh &lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;easy&lt;span class="token operator"&gt;-&lt;/span&gt;rsa&lt;span class="token operator"&gt;/&lt;/span&gt;keys&lt;span class="token operator"&gt;/&lt;/span&gt;dh2048&lt;span class="token punctuation"&gt;.&lt;/span&gt;pem
+    option server &lt;span class="token string"&gt;"172.8.0.0 255.255.255.0"&lt;/span&gt;
+    list push &lt;span class="token string"&gt;"redirect-gateway def1"&lt;/span&gt;
+    list push &lt;span class="token string"&gt;"dhcp-option DNS 172.8.0.1"&lt;/span&gt;
+    list push &lt;span class="token string"&gt;"dhcp-option WINS 172.8.0.1"&lt;/span&gt;
+    option client_to_client &lt;span class="token number"&gt;1&lt;/span&gt;
+    option duplicate_cn &lt;span class="token number"&gt;1&lt;/span&gt; &lt;span class="token comment" spellcheck="true"&gt;#允许一个证书多个客户端使用
+&lt;/span&gt;    option keepalive &lt;span class="token string"&gt;"10 120"&lt;/span&gt;
+    option tls_auth &lt;span class="token string"&gt;"/etc/easy-rsa/keys/ta.key 0"&lt;/span&gt;
+    option tls_server &lt;span class="token number"&gt;1&lt;/span&gt;
+    option comp_lzo yes
+    option max_clients &lt;span class="token number"&gt;100&lt;/span&gt;
+    option persist_key &lt;span class="token number"&gt;1&lt;/span&gt;
+    option persist_tun &lt;span class="token number"&gt;1&lt;/span&gt;
+    option status &lt;span class="token operator"&gt;/&lt;/span&gt;tmp&lt;span class="token operator"&gt;/&lt;/span&gt;openvpn&lt;span class="token operator"&gt;-&lt;/span&gt;status&lt;span class="token punctuation"&gt;.&lt;/span&gt;log
+    option log         &lt;span class="token operator"&gt;/&lt;/span&gt;tmp&lt;span class="token operator"&gt;/&lt;/span&gt;openvpn&lt;span class="token punctuation"&gt;.&lt;/span&gt;log
+    option verb &lt;span class="token number"&gt;3&lt;/span&gt;
+    option mute &lt;span class="token number"&gt;20&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;　　8、添加路由做测试 &lt;code&gt;iptables -t nat -A POSTROUTING -s 172.8.0.0/24 -j MASQUERADE&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;　　9、添加路由，保证以后重启能正常使用&lt;code&gt;iptables -A FORWARD -s 172.8.0.0/24 -j ACCEPT&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;　　10、编辑&lt;code&gt;/etc/config/firewall&lt;/code&gt;，在wan开放1194端口&lt;/p&gt;
+
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;config rule
+option enabled &lt;span class="token string"&gt;'1'&lt;/span&gt;
+option target &lt;span class="token string"&gt;'ACCEPT'&lt;/span&gt;
+option src &lt;span class="token string"&gt;'wan'&lt;/span&gt;
+option name &lt;span class="token string"&gt;'Allow-WAN-OpenVPN-Input'&lt;/span&gt;
+option family &lt;span class="token string"&gt;'ipv4'&lt;/span&gt;
+option proto &lt;span class="token string"&gt;'tcp'&lt;/span&gt;
+option dest_port &lt;span class="token string"&gt;'1194'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;　　11、重启服务生效 &lt;/p&gt;
+
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;init&lt;span class="token punctuation"&gt;.&lt;/span&gt;d&lt;span class="token operator"&gt;/&lt;/span&gt;openvpn enable
+reboot（or &lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;init&lt;span class="token punctuation"&gt;.&lt;/span&gt;d&lt;span class="token operator"&gt;/&lt;/span&gt;network restart&lt;span class="token punctuation"&gt;;&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;init&lt;span class="token punctuation"&gt;.&lt;/span&gt;d&lt;span class="token operator"&gt;/&lt;/span&gt;firewall restart&lt;span class="token punctuation"&gt;;&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;init&lt;span class="token punctuation"&gt;.&lt;/span&gt;d&lt;span class="token operator"&gt;/&lt;/span&gt;openvpn start&lt;span class="token punctuation"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;客户端只要把相应的ca.crt,ta.key,客户端.crt，客户端.key下载下来，编辑文本文件vpn.ovpn，内容如下：&lt;/p&gt;
+
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;client
+proto tcp
+remote 服务器ip &lt;span class="token number"&gt;1194&lt;/span&gt;
+dev tun
+comp&lt;span class="token operator"&gt;-&lt;/span&gt;lzo
+nobind
+ca ca&lt;span class="token punctuation"&gt;.&lt;/span&gt;crt
+cert 客户端&lt;span class="token punctuation"&gt;.&lt;/span&gt;crt
+key 客户端&lt;span class="token punctuation"&gt;.&lt;/span&gt;key
+tls&lt;span class="token operator"&gt;-&lt;/span&gt;auth ta&lt;span class="token punctuation"&gt;.&lt;/span&gt;key &lt;span class="token number"&gt;1&lt;/span&gt;
+route&lt;span class="token operator"&gt;-&lt;/span&gt;delay &lt;span class="token number"&gt;2&lt;/span&gt;
+route&lt;span class="token operator"&gt;-&lt;/span&gt;method exe
+verb &lt;span class="token number"&gt;3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果需要拨号后使用代理，只需要添加如下参数：&lt;/p&gt;
+
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;dhcp&lt;span class="token operator"&gt;-&lt;/span&gt;option PROXY_HTTP 代理ip 代理端口
+dhcp&lt;span class="token operator"&gt;-&lt;/span&gt;option PROXY_HTTPS 代理ip 代理端口
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果要使用自动代理，添加如下参数：&lt;/p&gt;
+
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;dhcp&lt;span class="token operator"&gt;-&lt;/span&gt;option PROXY_AUTO_CONFIG_URL http&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;example&lt;span class="token punctuation"&gt;.&lt;/span&gt;tld&lt;span class="token operator"&gt;/&lt;/span&gt;proxy&lt;span class="token punctuation"&gt;.&lt;/span&gt;pac
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;不过上述几个参数并非所有openVPN客户端支持。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Install-OpenVPN-on-OpenWRT.html</guid></item><item><title>OpenWRT折腾KCPTUN</title><link>http://blog.shrp.me//KCPTUN-over-OpenWRT.html</link><pubdate>2017-01-29</pubdate><content:encoded>&lt;p&gt;　　年前刚好看到有个&lt;a href="https://github.com/xtaci/kcptun"&gt;KCPTUN&lt;/a&gt;项目，用于高ping网络的加速，趁过年也给家里的路由器加个速。&lt;/p&gt;
+
+&lt;p&gt;　　先到要加速的服务器上安装server端。先下载服务端程序并且解压缩&lt;/p&gt;
+
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;wget https&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;github&lt;span class="token punctuation"&gt;.&lt;/span&gt;com&lt;span class="token operator"&gt;/&lt;/span&gt;xtaci&lt;span class="token operator"&gt;/&lt;/span&gt;kcptun&lt;span class="token operator"&gt;/&lt;/span&gt;releases&lt;span class="token operator"&gt;/&lt;/span&gt;download&lt;span class="token operator"&gt;/&lt;/span&gt;v20170120&lt;span class="token operator"&gt;/&lt;/span&gt;kcptun&lt;span class="token operator"&gt;-&lt;/span&gt;linux&lt;span class="token number"&gt;-386&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&lt;span class="token number"&gt;20170120&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;tar&lt;span class="token punctuation"&gt;.&lt;/span&gt;gz
+
+tar &lt;span class="token operator"&gt;-&lt;/span&gt;zxcf kcptun&lt;span class="token operator"&gt;-&lt;/span&gt;linux&lt;span class="token number"&gt;-386&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&lt;span class="token number"&gt;20170120&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;tar&lt;span class="token punctuation"&gt;.&lt;/span&gt;gz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;得到了两个程序&lt;/p&gt;
+
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;rwxr&lt;span class="token operator"&gt;-&lt;/span&gt;xr&lt;span class="token operator"&gt;-&lt;/span&gt;x &lt;span class="token number"&gt;1&lt;/span&gt;  &lt;span class="token number"&gt;2908832&lt;/span&gt;  &lt;span class="token number"&gt;1&lt;/span&gt;月 &lt;span class="token number"&gt;20&lt;/span&gt; &lt;span class="token number"&gt;03&lt;/span&gt;&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token number"&gt;45&lt;/span&gt; client_linux_386
+&lt;span class="token operator"&gt;-&lt;/span&gt;rwxr&lt;span class="token operator"&gt;-&lt;/span&gt;xr&lt;span class="token operator"&gt;-&lt;/span&gt;x &lt;span class="token number"&gt;1&lt;/span&gt;  &lt;span class="token number"&gt;2896448&lt;/span&gt;  &lt;span class="token number"&gt;1&lt;/span&gt;月 &lt;span class="token number"&gt;20&lt;/span&gt; &lt;span class="token number"&gt;03&lt;/span&gt;&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token number"&gt;45&lt;/span&gt; server_linux_386
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用如下命令开始服务端的转发&lt;/p&gt;
+
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;root&lt;span class="token operator"&gt;/&lt;/span&gt;kcptun&lt;span class="token operator"&gt;/&lt;/span&gt;server_linux_386 &lt;span class="token operator"&gt;-&lt;/span&gt;t &lt;span class="token string"&gt;"shadowsocks服务器ip:端口"&lt;/span&gt; &lt;span class="token operator"&gt;-&lt;/span&gt;l &lt;span class="token string"&gt;":加速端口"&lt;/span&gt; &lt;span class="token operator"&gt;--&lt;/span&gt;mode fast2 &lt;span class="token operator"&gt;--&lt;/span&gt;key &lt;span class="token string"&gt;"密码"&lt;/span&gt; &lt;span class="token operator"&gt;--&lt;/span&gt;nocomp &lt;span class="token operator"&gt;&amp;amp;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;　　然后在OpenWRT路由器上安装客户端，原项目没有ar71xx的程序，可以到&lt;a href="https://github.com/bettermanbao/openwrt-kcptun/releases"&gt;https://github.com/bettermanbao/openwrt-kcptun/releases&lt;/a&gt;下载，解压后也是两个程序，我们只需要如下这个程序就足够了&lt;/p&gt;
+
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;rwxrwxr&lt;span class="token operator"&gt;-&lt;/span&gt;x    &lt;span class="token number"&gt;1&lt;/span&gt; &lt;span class="token number"&gt;1000&lt;/span&gt;     &lt;span class="token number"&gt;1000&lt;/span&gt;       &lt;span class="token number"&gt;1241980&lt;/span&gt; Jan &lt;span class="token number"&gt;20&lt;/span&gt; &lt;span class="token number"&gt;10&lt;/span&gt;&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token number"&gt;03&lt;/span&gt; client_linux_mips
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用如下命令启动客户端&lt;/p&gt;
+
+&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;client_linux_mips &lt;span class="token operator"&gt;-&lt;/span&gt;r &lt;span class="token string"&gt;"服务端ip:端口"&lt;/span&gt; &lt;span class="token operator"&gt;-&lt;/span&gt;l &lt;span class="token string"&gt;":444"&lt;/span&gt; &lt;span class="token operator"&gt;--&lt;/span&gt;mode fast2 &lt;span class="token operator"&gt;--&lt;/span&gt;key &lt;span class="token string"&gt;"密码"&lt;/span&gt; &lt;span class="token operator"&gt;--&lt;/span&gt;nocomp &lt;span class="token operator"&gt;&amp;amp;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果不加--nocomp，会在client端遇到
+main.go:64: stream opened
+&lt;code&gt;panic: runtime error: slice bounds out of range错误&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;使用了以后网络速度杠杠的~&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//KCPTUN-over-OpenWRT.html</guid></item><item><title>JetBrains,为信仰充值</title><link>http://blog.shrp.me//JetBrains-Charge-For-Faith.html</link><pubdate>2016-10-08</pubdate><content:encoded>&lt;p&gt;　　上个月底我的 IntelliJ 教育版到期了，虽然我可以简单的收个邮件继续用免费的教育版，但是其实本质上它也是盗版，因为我在使用他进行商业开发，挣养家糊口的费用呢，是违反 Licence 的。&lt;/p&gt;
 
 &lt;p&gt;　　于是今天索性买了全家桶一年期，明年今日，还得继续买。我想想我现在应该没什么东西还是盗版了吧。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//JetBrains-Charge-For-Faith.html</guid></item><item><title>五月天演唱会归来</title><link>http://blog.shrp.me//Return-From-May-Day-Concert.html</link><pubdate>2016-08-27</pubdate><content:encoded>&lt;p&gt;　　昨晚从五月天鸟巢的演唱会归来，心情久久不能平静。之前上iTunes查看，最新的专辑都没有上架；昨晚再看，已然有了，赶紧买下来听，质量真的还是很不错的。&lt;/p&gt;
 
@@ -262,159 +416,5 @@
 
 &lt;p&gt;而数据库工具也大多提供了ssh的配置，通常可以在sql客户端的ssh一栏添加跳板机的地址，ssh端口号，用户名和私钥，sql的地址和端口号就是sql服务器的内部ip地址和端口号，就可以不通过vpn访问跳板机后边隐藏的数据库啦。&lt;/p&gt;
 
-&lt;p&gt;目前开发人员需要的ssh配置大体就这么多啦。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//How-To-Configure-SSH-Client.html</guid></item><item><title>我的Simple改了什么</title><link>http://blog.shrp.me//What-Did-I-Change-To-Simple.html</link><pubdate>2016-03-23</pubdate><content:encoded>&lt;p&gt;Simple是一款基于GitHub JS API的博客系统，我选择它是因为它可以在GitHub提供的静态页面就能管理博客，写博文。不过它的缺点也很明显，GitHub的JS API不是专门的博客API，效率没有那么高；在移动终端上不完备的键盘也使得其无后台的优点没那么明显。&lt;/p&gt;
-
-&lt;p&gt;我的版本一个改进是编辑框支持Tab键，这个跟功能在火狐上表现正常，但是在Chrome上还是会失去焦点——不过好在tab键还是输入了的，更多的我也不管了。&lt;/p&gt;
-
-&lt;p&gt;第二个功能呢是支持了以markdown格式备份博文。其实这个功能很简单，如果你看得懂，用bash去执行这个过程效率会更高；不过既然Simple是无后端的，所以一个基于页面的导出功能还是有点用的，至少当你换博客系统的时候没那么麻烦。不过时间会很长，提前准备瓜子小板凳哈。&lt;/p&gt;
-
-&lt;p&gt;还有一个功能是支持RSS的生成。我找了很多JS生成XML的代码，发现没有合适的方案；好在RSS格式本身不麻烦，根据一个模板来生成RSS还是很简单的，当然，由于要读取多次博文内容，生成RSS的时间还是挺长的，所以最后没有采用保存的时候自动生成，而是作者自己手动生成的方法。不过我遗留了一点小问题，由于手头没有IE，所以IE的兼容性暂时没有做。&lt;/p&gt;
-
-&lt;p&gt;还有一点点小改进，一个是文件名自动加html后缀，一个是时间自动取当前时间，免得忘记存时间了。&lt;/p&gt;
-
-&lt;p&gt;终于这个轻巧的博客系统可以随便用了，哇哈哈哈~&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//What-Did-I-Change-To-Simple.html</guid></item><item><title>从PHP迁移到Java遇到的问题</title><link>http://blog.shrp.me//Problems-in-Code-Transfer-From-PHP-To-JAVA.html</link><pubdate>2016-03-20</pubdate><content:encoded>&lt;p&gt;有一段PHP代码是这样的：&lt;/p&gt;
-
-&lt;pre class=" language-php"&gt;&lt;code class=" language-php"&gt;&lt;span class="token variable"&gt;$s&lt;/span&gt;&lt;span class="token operator"&gt;=&lt;/span&gt;&lt;span class="token string"&gt;'%Qw%e1%16%11%4'&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token variable"&gt;$r&lt;/span&gt; &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;urldecode&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token variable"&gt;$s&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token variable"&gt;$result&lt;/span&gt; &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token function"&gt;md5&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token variable"&gt;$r&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;乍看之下迁移到Java好像很容易嘛，可是实际操作了一下才发现，这个问题并不好解决。&lt;/p&gt;
-
-&lt;p&gt;为什么呢？&lt;/p&gt;
-
-&lt;p&gt;问题就出在PHP的urldecode函数，并不需要字符串是符合urlencode规范的。&lt;/p&gt;
-
-&lt;p&gt;比如我示例中的字符串，%Qw不是一个合理的十六进制数字，Java版本会报错，中止decode；但是PHP并不会，它把不符合条件的都当作单独的字符来解析，比如%Qw就不再是一个转义的字符了，而是三个单独的字符。&lt;/p&gt;
-
-&lt;p&gt;那么这么一段urldecode代码迁移到Java后就换成下述代码：&lt;/p&gt;
-
-&lt;pre class=" language-java"&gt;&lt;code class=" language-java"&gt;
-&lt;span class="token keyword"&gt;package&lt;/span&gt; me&lt;span class="token punctuation"&gt;.&lt;/span&gt;shrp&lt;span class="token punctuation"&gt;.&lt;/span&gt;blog&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-
-&lt;span class="token keyword"&gt;import&lt;/span&gt; java&lt;span class="token punctuation"&gt;.&lt;/span&gt;io&lt;span class="token punctuation"&gt;.&lt;/span&gt;UnsupportedEncodingException&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token keyword"&gt;import&lt;/span&gt; java&lt;span class="token punctuation"&gt;.&lt;/span&gt;util&lt;span class="token punctuation"&gt;.&lt;/span&gt;LinkedList&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-&lt;span class="token keyword"&gt;import&lt;/span&gt; java&lt;span class="token punctuation"&gt;.&lt;/span&gt;util&lt;span class="token punctuation"&gt;.&lt;/span&gt;List&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-
-&lt;span class="token comment" spellcheck="true"&gt;/**
- * Created by shangrenpeng on 16/2/18.
- */&lt;/span&gt;
-&lt;span class="token keyword"&gt;public&lt;/span&gt; &lt;span class="token keyword"&gt;class&lt;/span&gt; &lt;span class="token class-name"&gt;PHPUrlDecoder&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-    &lt;span class="token keyword"&gt;public&lt;/span&gt; &lt;span class="token keyword"&gt;static&lt;/span&gt; &lt;span class="token keyword"&gt;byte&lt;/span&gt;&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; &lt;span class="token function"&gt;decode&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;String s&lt;span class="token punctuation"&gt;,&lt;/span&gt; String enc&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-            &lt;span class="token keyword"&gt;throws&lt;/span&gt; UnsupportedEncodingException &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-
-        &lt;span class="token keyword"&gt;int&lt;/span&gt; numChars &lt;span class="token operator"&gt;=&lt;/span&gt; s&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;length&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        List&lt;span class="token operator"&gt;&amp;lt;&lt;/span&gt;Byte&amp;gt; sb &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token keyword"&gt;new&lt;/span&gt; &lt;span class="token class-name"&gt;LinkedList&lt;/span&gt;&lt;span class="token operator"&gt;&amp;lt;&lt;/span&gt;&amp;gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;int&lt;/span&gt; i &lt;span class="token operator"&gt;=&lt;/span&gt;&lt;span class="token number"&gt; 0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-
-        &lt;span class="token keyword"&gt;if&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;enc&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;length&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token operator"&gt;==&lt;/span&gt;&lt;span class="token number"&gt; 0&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-            &lt;span class="token keyword"&gt;throw&lt;/span&gt; &lt;span class="token keyword"&gt;new&lt;/span&gt; &lt;span class="token class-name"&gt;UnsupportedEncodingException&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token string"&gt;"URLDecoder: empty string enc parameter"&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-
-        &lt;span class="token keyword"&gt;char&lt;/span&gt; c&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;byte&lt;/span&gt;&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; bytes &lt;span class="token operator"&gt;=&lt;/span&gt; null&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token keyword"&gt;while&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;i &lt;span class="token operator"&gt;&amp;lt;&lt;/span&gt; numChars&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-            c &lt;span class="token operator"&gt;=&lt;/span&gt; s&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;charAt&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;i&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-            &lt;span class="token keyword"&gt;switch&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;c&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-                &lt;span class="token keyword"&gt;case&lt;/span&gt; &lt;span class="token string"&gt;'+'&lt;/span&gt;&lt;span class="token operator"&gt;:&lt;/span&gt;
-                    &lt;span class="token function"&gt;addBytes&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;sb&lt;span class="token punctuation"&gt;,&lt;/span&gt;String&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;valueOf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token string"&gt;' '&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;getBytes&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token string"&gt;"UTF-8"&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-                    i&lt;span class="token operator"&gt;++&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-                    &lt;span class="token keyword"&gt;break&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-                &lt;span class="token keyword"&gt;case&lt;/span&gt; &lt;span class="token string"&gt;'%'&lt;/span&gt;&lt;span class="token operator"&gt;:&lt;/span&gt;
-                &lt;span class="token comment" spellcheck="true"&gt;/*
-                 * Starting with this instance of %, process all
-                 * consecutive substrings of the form %xy. Each
-                 * substring %xy will yield a byte. Convert all
-                 * consecutive  bytes obtained this way to whatever
-                 * character(s) they represent in the provided
-                 * encoding.
-                 */&lt;/span&gt;
-
-                    &lt;span class="token keyword"&gt;try&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-                        &lt;span class="token keyword"&gt;if&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token operator"&gt;!&lt;/span&gt;&lt;span class="token function"&gt;canParse&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;s &lt;span class="token punctuation"&gt;,&lt;/span&gt;i&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;{&lt;/span&gt;
-                            &lt;span class="token function"&gt;addBytes&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;sb&lt;span class="token punctuation"&gt;,&lt;/span&gt;String&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;valueOf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;c&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;getBytes&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token string"&gt;"UTF-8"&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-                            i&lt;span class="token operator"&gt;++&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-                            &lt;span class="token keyword"&gt;break&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-                        &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-
-                       &lt;span class="token comment" spellcheck="true"&gt; // (numChars-i)/3 is an upper bound for the number
-&lt;/span&gt;                       &lt;span class="token comment" spellcheck="true"&gt; // of remaining bytes
-&lt;/span&gt;                        &lt;span class="token keyword"&gt;if&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;bytes &lt;span class="token operator"&gt;==&lt;/span&gt; null&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-                            bytes &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token keyword"&gt;new&lt;/span&gt; &lt;span class="token class-name"&gt;byte&lt;/span&gt;&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;numChars&lt;span class="token operator"&gt;-&lt;/span&gt;i&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token number"&gt;/3&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-                        &lt;span class="token keyword"&gt;int&lt;/span&gt; pos &lt;span class="token operator"&gt;=&lt;/span&gt;&lt;span class="token number"&gt; 0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-
-                        &lt;span class="token keyword"&gt;while&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;i&lt;span class="token number"&gt;+2&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token operator"&gt;&amp;lt;&lt;/span&gt; numChars&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token operator"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-                                &lt;span class="token punctuation"&gt;(&lt;/span&gt;c&lt;span class="token operator"&gt;==&lt;/span&gt;&lt;span class="token string"&gt;'%'&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-
-                            &lt;span class="token keyword"&gt;int&lt;/span&gt; v &lt;span class="token operator"&gt;=&lt;/span&gt; Integer&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;parseInt&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;s&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;substring&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;i&lt;span class="token number"&gt;+1&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;i&lt;span class="token number"&gt;+3&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token number"&gt;,16&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;&lt;span class="token comment" spellcheck="true"&gt;
-//                            if (v &amp;lt; 0){
-&lt;/span&gt;&lt;span class="token comment" spellcheck="true"&gt;//                                throw new IllegalArgumentException("URLDecoder: Illegal hex characters in escape (%) pattern - negative value");
-&lt;/span&gt;&lt;span class="token comment" spellcheck="true"&gt;//                            }
-&lt;/span&gt;
-                            bytes&lt;span class="token punctuation"&gt;[&lt;/span&gt;pos&lt;span class="token operator"&gt;++&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token keyword"&gt;byte&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; v&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-                            i&lt;span class="token operator"&gt;+&lt;/span&gt;&lt;span class="token operator"&gt;=&lt;/span&gt;&lt;span class="token number"&gt; 3&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-                            &lt;span class="token keyword"&gt;if&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;i &lt;span class="token operator"&gt;&amp;lt;&lt;/span&gt; numChars&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-                                c &lt;span class="token operator"&gt;=&lt;/span&gt; s&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;charAt&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;i&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-                        &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-                        &lt;span class="token function"&gt;addBytes&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;sb&lt;span class="token punctuation"&gt;,&lt;/span&gt; bytes&lt;span class="token punctuation"&gt;,&lt;/span&gt;pos&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-                    &lt;span class="token punctuation"&gt;}&lt;/span&gt; &lt;span class="token keyword"&gt;catch&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token class-name"&gt;NumberFormatException&lt;/span&gt; e&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-                        &lt;span class="token keyword"&gt;throw&lt;/span&gt; &lt;span class="token keyword"&gt;new&lt;/span&gt; &lt;span class="token class-name"&gt;IllegalArgumentException&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;
-                                &lt;span class="token string"&gt;"URLDecoder: Illegal hex characters in escape (%) pattern - "&lt;/span&gt;
-                                        &lt;span class="token operator"&gt;+&lt;/span&gt; e&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;getMessage&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-                    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-                    &lt;span class="token keyword"&gt;break&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-                &lt;span class="token keyword"&gt;default&lt;/span&gt;&lt;span class="token operator"&gt;:&lt;/span&gt;
-                    &lt;span class="token function"&gt;addBytes&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;sb&lt;span class="token punctuation"&gt;,&lt;/span&gt;String&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;valueOf&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;c&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;getBytes&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token string"&gt;"UTF-8"&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-                    i&lt;span class="token operator"&gt;++&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-                    &lt;span class="token keyword"&gt;break&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-            &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-        &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-
-        &lt;span class="token keyword"&gt;final&lt;/span&gt; Byte&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; ret &lt;span class="token operator"&gt;=&lt;/span&gt; sb&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;toArray&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token keyword"&gt;new&lt;/span&gt; &lt;span class="token class-name"&gt;Byte&lt;/span&gt;&lt;span class="token punctuation"&gt;[&lt;/span&gt;sb&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;size&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-
-        &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token function"&gt;toPrimitive&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;ret&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-
-    &lt;span class="token keyword"&gt;public&lt;/span&gt; &lt;span class="token keyword"&gt;static&lt;/span&gt; &lt;span class="token keyword"&gt;final&lt;/span&gt; &lt;span class="token keyword"&gt;byte&lt;/span&gt;&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; EMPTY_BYTE_ARRAY &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token keyword"&gt;new&lt;/span&gt; &lt;span class="token class-name"&gt;byte&lt;/span&gt;&lt;span class="token number"&gt;[0&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-
-    &lt;span class="token keyword"&gt;public&lt;/span&gt; &lt;span class="token keyword"&gt;static&lt;/span&gt; &lt;span class="token keyword"&gt;byte&lt;/span&gt;&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; &lt;span class="token function"&gt;toPrimitive&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;Byte&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; array&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-        &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;array &lt;span class="token operator"&gt;==&lt;/span&gt; null&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-            &lt;span class="token keyword"&gt;return&lt;/span&gt; null&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token punctuation"&gt;}&lt;/span&gt; &lt;span class="token keyword"&gt;else&lt;/span&gt; &lt;span class="token keyword"&gt;if&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;array&lt;span class="token punctuation"&gt;.&lt;/span&gt;length &lt;span class="token operator"&gt;==&lt;/span&gt;&lt;span class="token number"&gt; 0&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-            &lt;span class="token keyword"&gt;return&lt;/span&gt; EMPTY_BYTE_ARRAY&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token punctuation"&gt;}&lt;/span&gt; &lt;span class="token keyword"&gt;else&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-            &lt;span class="token keyword"&gt;byte&lt;/span&gt;&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; result &lt;span class="token operator"&gt;=&lt;/span&gt; &lt;span class="token keyword"&gt;new&lt;/span&gt; &lt;span class="token class-name"&gt;byte&lt;/span&gt;&lt;span class="token punctuation"&gt;[&lt;/span&gt;array&lt;span class="token punctuation"&gt;.&lt;/span&gt;length&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-
-            &lt;span class="token keyword"&gt;for&lt;/span&gt;&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; i &lt;span class="token operator"&gt;=&lt;/span&gt;&lt;span class="token number"&gt; 0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt; i &lt;span class="token operator"&gt;&amp;lt;&lt;/span&gt; array&lt;span class="token punctuation"&gt;.&lt;/span&gt;length&lt;span class="token punctuation"&gt;;&lt;/span&gt; &lt;span class="token operator"&gt;++&lt;/span&gt;i&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-                result&lt;span class="token punctuation"&gt;[&lt;/span&gt;i&lt;span class="token punctuation"&gt;]&lt;/span&gt; &lt;span class="token operator"&gt;=&lt;/span&gt; array&lt;span class="token punctuation"&gt;[&lt;/span&gt;i&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;byteValue&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-            &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-
-            &lt;span class="token keyword"&gt;return&lt;/span&gt; result&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-
-    &lt;span class="token keyword"&gt;private&lt;/span&gt; &lt;span class="token keyword"&gt;static&lt;/span&gt; &lt;span class="token keyword"&gt;void&lt;/span&gt; &lt;span class="token function"&gt;addBytes&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token keyword"&gt;final&lt;/span&gt; List&lt;span class="token operator"&gt;&amp;lt;&lt;/span&gt;Byte&amp;gt; sb&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token keyword"&gt;final&lt;/span&gt; &lt;span class="token keyword"&gt;byte&lt;/span&gt;&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; bytes&lt;span class="token punctuation"&gt;,&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; pos&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-        &lt;span class="token keyword"&gt;for&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; j &lt;span class="token operator"&gt;=&lt;/span&gt;&lt;span class="token number"&gt; 0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt; j &lt;span class="token operator"&gt;&amp;lt;&lt;/span&gt; pos&lt;span class="token punctuation"&gt;;&lt;/span&gt; j&lt;span class="token operator"&gt;++&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;{&lt;/span&gt;
-            sb&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;add&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;bytes&lt;span class="token punctuation"&gt;[&lt;/span&gt;j&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-
-    &lt;span class="token keyword"&gt;private&lt;/span&gt; &lt;span class="token keyword"&gt;static&lt;/span&gt; &lt;span class="token keyword"&gt;void&lt;/span&gt; &lt;span class="token function"&gt;addBytes&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token keyword"&gt;final&lt;/span&gt; List&lt;span class="token operator"&gt;&amp;lt;&lt;/span&gt;Byte&amp;gt; sb&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token keyword"&gt;final&lt;/span&gt; &lt;span class="token keyword"&gt;byte&lt;/span&gt;&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt; bytes&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-        &lt;span class="token keyword"&gt;for&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token keyword"&gt;int&lt;/span&gt; j &lt;span class="token operator"&gt;=&lt;/span&gt;&lt;span class="token number"&gt; 0&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt; j &lt;span class="token operator"&gt;&amp;lt;&lt;/span&gt; bytes&lt;span class="token punctuation"&gt;.&lt;/span&gt;length&lt;span class="token punctuation"&gt;;&lt;/span&gt; j&lt;span class="token operator"&gt;++&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;{&lt;/span&gt;
-            sb&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;add&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;bytes&lt;span class="token punctuation"&gt;[&lt;/span&gt;j&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-
-    &lt;span class="token keyword"&gt;private&lt;/span&gt; &lt;span class="token keyword"&gt;static&lt;/span&gt; &lt;span class="token keyword"&gt;boolean&lt;/span&gt; &lt;span class="token function"&gt;canParse&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;&lt;span class="token keyword"&gt;final&lt;/span&gt; String s&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token keyword"&gt;final&lt;/span&gt; &lt;span class="token keyword"&gt;int&lt;/span&gt; i&lt;span class="token punctuation"&gt;)&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-        &lt;span class="token keyword"&gt;try&lt;/span&gt; &lt;span class="token punctuation"&gt;{&lt;/span&gt;
-            &lt;span class="token keyword"&gt;int&lt;/span&gt; v &lt;span class="token operator"&gt;=&lt;/span&gt; Integer&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;parseInt&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;s&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token function"&gt;substring&lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;/span&gt;i&lt;span class="token number"&gt;+1&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt;i&lt;span class="token number"&gt;+3&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token number"&gt;,16&lt;/span&gt;&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-            &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token boolean"&gt;true&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token punctuation"&gt;}&lt;/span&gt; &lt;span class="token keyword"&gt;catch&lt;/span&gt; &lt;span class="token punctuation"&gt;(&lt;/span&gt;&lt;span class="token class-name"&gt;Exception&lt;/span&gt; e&lt;span class="token punctuation"&gt;)&lt;/span&gt;&lt;span class="token punctuation"&gt;{&lt;/span&gt;
-            &lt;span class="token keyword"&gt;return&lt;/span&gt; &lt;span class="token boolean"&gt;false&lt;/span&gt;&lt;span class="token punctuation"&gt;;&lt;/span&gt;
-        &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-    &lt;span class="token punctuation"&gt;}&lt;/span&gt;
-&lt;span class="token punctuation"&gt;}&lt;/span&gt;
-
-
-&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//Problems-in-Code-Transfer-From-PHP-To-JAVA.html</guid></item></channel>
+&lt;p&gt;目前开发人员需要的ssh配置大体就这么多啦。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//How-To-Configure-SSH-Client.html</guid></item></channel>
 </rss>

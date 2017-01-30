@@ -128,8 +128,11 @@ option proto 'tcp'
 option dest_port '1194'
 ~~~~
 
-　　11、重启服务生效 ```/etc/init.d/openvpn enable```
-```reboot（or /etc/init.d/network restart;/etc/init.d/firewall restart;/etc/init.d/openvpn start)```
+　　11、重启服务生效 
+~~~~{bash}
+/etc/init.d/openvpn enable
+reboot（or /etc/init.d/network restart;/etc/init.d/firewall restart;/etc/init.d/openvpn start)
+~~~~
 
 客户端只要把相应的ca.crt,ta.key,客户端.crt，客户端.key下载下来，编辑文本文件vpn.ovpn，内容如下：
 ~~~~{bash}
@@ -252,8 +255,11 @@ option proto <span class="token string">'tcp'</span>
 option dest_port <span class="token string">'1194'</span>
 </code></pre>
 
-<p>　　11、重启服务生效 <code>/etc/init.d/openvpn enable</code>
-<code>reboot（or /etc/init.d/network restart;/etc/init.d/firewall restart;/etc/init.d/openvpn start)</code></p>
+<p>　　11、重启服务生效 </p>
+
+<pre class=" language-bash"><code class=" language-bash"><span class="token operator">/</span>etc<span class="token operator">/</span>init<span class="token punctuation">.</span>d<span class="token operator">/</span>openvpn enable
+reboot（or <span class="token operator">/</span>etc<span class="token operator">/</span>init<span class="token punctuation">.</span>d<span class="token operator">/</span>network restart<span class="token punctuation">;</span><span class="token operator">/</span>etc<span class="token operator">/</span>init<span class="token punctuation">.</span>d<span class="token operator">/</span>firewall restart<span class="token punctuation">;</span><span class="token operator">/</span>etc<span class="token operator">/</span>init<span class="token punctuation">.</span>d<span class="token operator">/</span>openvpn start<span class="token punctuation">)</span>
+</code></pre>
 
 <p>客户端只要把相应的ca.crt,ta.key,客户端.crt，客户端.key下载下来，编辑文本文件vpn.ovpn，内容如下：</p>
 

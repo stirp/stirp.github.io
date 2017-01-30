@@ -1,0 +1,363 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+　　苹果升级iOS10和Mac OS X Sierra有一段时间了，我的iPhone一不小心就中招升级了，导致我在外边玩游戏速度特别差，也不能拨号回家。
+
+　　之前尝试着装个L2tp服务器，发现问题多多，始终不能成功；正好这次放假看到了知乎这个[答案](https://www.zhihu.com/question/21751217/answer/32851461)，所以就尝试着按照这个方式装一个OpenVPN服务器。
+
+　　1、安装相应的软件：
+~~~~{bash}
+opkg update
+opkg install openvpn-polarssl
+opkg install openvpn-easy-rsa
+~~~~
+　　原文说的KEY_CN就是被注解掉的，所以不用执行相应的sed。
+
+　　2、修改/etc/easy-rsa/vars，把原文所说的
+```
+KEY_SIZE=2048
+export KEY_COUNTRY=CN
+export KEY_PROVINCE=Canton
+export KEY_CITY=city_name
+export KEY_ORG=org_name
+export KEY_EMAIL=email_address
+```
+都修改一下，然后执行
+~~~~{bash}
+source /etc/easy-rsa/vars
+clean-all
+~~~~
+来做好生成证书的准备。
+
+　　3、执行命令生成证书
+~~~~{bash}
+pkitool –initca
+pkitool --server 服务端名称
+pkitool 客户端名称0
+pkitool 客户端名称1
+~~~~
+理论上有一个客户端就需要生成一套客户端的证书，当然，你也可以按照我的一会列出的参数，一套证书多个客户端使用。
+
+　　4、执行```build-dh```来生成Diffie Hellman参数
+
+　　5、生成ta.key ```openvpn --genkey --secret /etc/easy-rsa/keys/ta.key```
+
+　　6、编辑/etc/config/network，修改lan下的option ifname ，增加tun0
+
+　　7、修改/etc/config/openvpn
+~~~~{bash}
+config openvpn my-server
+	option enabled 1
+	option local 0.0.0.0
+	option port 1194
+	option proto tcp
+	option dev tun
+	option ca /etc/easy-rsa/keys/ca.crt
+	option cert /etc/easy-rsa/keys/my-server.crt
+	option key /etc/easy-rsa/keys/my-server.key
+	option dh /etc/easy-rsa/keys/dh2048.pem
+	option server "172.8.0.0 255.255.255.0"
+	list push "redirect-gateway def1"
+	list push "dhcp-option DNS 172.8.0.1"
+	list push "dhcp-option WINS 172.8.0.1"
+	option client_to_client 1
+	option duplicate_cn 1 #允许一个证书多个客户端使用
+	option keepalive "10 120"
+	option tls_auth "/etc/easy-rsa/keys/ta.key 0"
+	option tls_server 1
+	option comp_lzo yes
+	option max_clients 100
+	option persist_key 1
+	option persist_tun 1
+	option status /tmp/openvpn-status.log
+	option log         /tmp/openvpn.log
+	option verb 3
+	option mute 20
+~~~~
+
+　　8、添加路由做测试 ```iptables -t nat -A POSTROUTING -s 172.8.0.0/24 -j MASQUERADE```
+
+　　9、添加路由，保证以后重启能正常使用```iptables -A FORWARD -s 172.8.0.0/24 -j ACCEPT```
+
+　　10、编辑``/etc/config/firewall``，在wan开放1194端口
+~~~~{bash}
+config rule
+option enabled '1'
+option target 'ACCEPT'
+option src 'wan'
+option name 'Allow-WAN-OpenVPN-Input'
+option family 'ipv4'
+option proto 'tcp'
+option dest_port '1194'
+~~~~
+
+　　11、重启服务生效 ```/etc/init.d/openvpn enable```
+```reboot（or /etc/init.d/network restart;/etc/init.d/firewall restart;/etc/init.d/openvpn start)```
+
+客户端只要把相应的ca.crt,ta.key,客户端.crt，客户端.key下载下来，编辑文本文件vpn.ovpn，内容如下：
+~~~~{bash}
+client
+proto tcp
+remote 服务器ip 1194
+dev tun
+comp-lzo
+nobind
+ca ca.crt
+cert 客户端.crt
+key 客户端.key
+tls-auth ta.key 1
+route-delay 2
+route-method exe
+verb 3
+~~~~
+
+如果需要拨号后使用代理，只需要添加如下参数：
+
+~~~~{bash}
+dhcp-option PROXY_HTTP 代理ip 代理端口
+dhcp-option PROXY_HTTPS 代理ip 代理端口
+~~~~
+
+如果要使用自动代理，添加如下参数：
+
+~~~~{bash}
+dhcp-option PROXY_AUTO_CONFIG_URL http://example.tld/proxy.pac
+~~~~
+
+不过上述几个参数并非所有openVPN客户端支持。
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>　　苹果升级iOS10和Mac OS X Sierra有一段时间了，我的iPhone一不小心就中招升级了，导致我在外边玩游戏速度特别差，也不能拨号回家。</p>
+
+<p>　　之前尝试着装个L2tp服务器，发现问题多多，始终不能成功；正好这次放假看到了知乎这个<a href="https://www.zhihu.com/question/21751217/answer/32851461">答案</a>，所以就尝试着按照这个方式装一个OpenVPN服务器。</p>
+
+<p>　　1、安装相应的软件：</p>
+
+<pre class=" language-bash"><code class=" language-bash">opkg update
+opkg install openvpn<span class="token operator">-</span>polarssl
+opkg install openvpn<span class="token operator">-</span>easy<span class="token operator">-</span>rsa
+</code></pre>　　原文说的KEY_CN就是被注解掉的，所以不用执行相应的sed。
+
+　　2、修改/etc/easy-rsa/vars，把原文所说的
+
+<pre><code>KEY_SIZE=2048
+export KEY_COUNTRY=CN
+export KEY_PROVINCE=Canton
+export KEY_CITY=city_name
+export KEY_ORG=org_name
+export KEY_EMAIL=email_address
+</code></pre>
+
+
+都修改一下，然后执行
+<pre class=" language-bash"><code class=" language-bash">source <span class="token operator">/</span>etc<span class="token operator">/</span>easy<span class="token operator">-</span>rsa<span class="token operator">/</span>vars
+clean<span class="token operator">-</span>all
+</code></pre>来做好生成证书的准备。
+
+　　3、执行命令生成证书
+<pre class=" language-bash"><code class=" language-bash">pkitool –initca
+pkitool <span class="token operator">--</span>server 服务端名称
+pkitool 客户端名称<span class="token number">0</span>
+pkitool 客户端名称<span class="token number">1</span>
+</code></pre>理论上有一个客户端就需要生成一套客户端的证书，当然，你也可以按照我的一会列出的参数，一套证书多个客户端使用。
+
+　　4、执行```build-dh```来生成Diffie Hellman参数
+
+　　5、生成ta.key ```openvpn --genkey --secret /etc/easy-rsa/keys/ta.key```
+
+　　6、编辑/etc/config/network，修改lan下的option ifname ，增加tun0
+
+　　7、修改/etc/config/openvpn
+<pre class=" language-bash"><code class=" language-bash">config openvpn my<span class="token operator">-</span>server
+    option enabled <span class="token number">1</span>
+    option local <span class="token number">0.0</span><span class="token punctuation">.</span><span class="token number">0.0</span>
+    option port <span class="token number">1194</span>
+    option proto tcp
+    option dev tun
+    option ca <span class="token operator">/</span>etc<span class="token operator">/</span>easy<span class="token operator">-</span>rsa<span class="token operator">/</span>keys<span class="token operator">/</span>ca<span class="token punctuation">.</span>crt
+    option cert <span class="token operator">/</span>etc<span class="token operator">/</span>easy<span class="token operator">-</span>rsa<span class="token operator">/</span>keys<span class="token operator">/</span>my<span class="token operator">-</span>server<span class="token punctuation">.</span>crt
+    option key <span class="token operator">/</span>etc<span class="token operator">/</span>easy<span class="token operator">-</span>rsa<span class="token operator">/</span>keys<span class="token operator">/</span>my<span class="token operator">-</span>server<span class="token punctuation">.</span>key
+    option dh <span class="token operator">/</span>etc<span class="token operator">/</span>easy<span class="token operator">-</span>rsa<span class="token operator">/</span>keys<span class="token operator">/</span>dh2048<span class="token punctuation">.</span>pem
+    option server <span class="token string">"172.8.0.0 255.255.255.0"</span>
+    list push <span class="token string">"redirect-gateway def1"</span>
+    list push <span class="token string">"dhcp-option DNS 172.8.0.1"</span>
+    list push <span class="token string">"dhcp-option WINS 172.8.0.1"</span>
+    option client_to_client <span class="token number">1</span>
+    option duplicate_cn <span class="token number">1</span> <span class="token comment" spellcheck="true">#允许一个证书多个客户端使用
+</span>    option keepalive <span class="token string">"10 120"</span>
+    option tls_auth <span class="token string">"/etc/easy-rsa/keys/ta.key 0"</span>
+    option tls_server <span class="token number">1</span>
+    option comp_lzo yes
+    option max_clients <span class="token number">100</span>
+    option persist_key <span class="token number">1</span>
+    option persist_tun <span class="token number">1</span>
+    option status <span class="token operator">/</span>tmp<span class="token operator">/</span>openvpn<span class="token operator">-</span>status<span class="token punctuation">.</span>log
+    option log         <span class="token operator">/</span>tmp<span class="token operator">/</span>openvpn<span class="token punctuation">.</span>log
+    option verb <span class="token number">3</span>
+    option mute <span class="token number">20</span>
+</code></pre>
+
+<p>　　8、添加路由做测试 <code>iptables -t nat -A POSTROUTING -s 172.8.0.0/24 -j MASQUERADE</code></p>
+
+<p>　　9、添加路由，保证以后重启能正常使用<code>iptables -A FORWARD -s 172.8.0.0/24 -j ACCEPT</code></p>
+
+<p>　　10、编辑<code>/etc/config/firewall</code>，在wan开放1194端口</p>
+
+<pre class=" language-bash"><code class=" language-bash">config rule
+option enabled <span class="token string">'1'</span>
+option target <span class="token string">'ACCEPT'</span>
+option src <span class="token string">'wan'</span>
+option name <span class="token string">'Allow-WAN-OpenVPN-Input'</span>
+option family <span class="token string">'ipv4'</span>
+option proto <span class="token string">'tcp'</span>
+option dest_port <span class="token string">'1194'</span>
+</code></pre>
+
+<p>　　11、重启服务生效 <code>/etc/init.d/openvpn enable</code>
+<code>reboot（or /etc/init.d/network restart;/etc/init.d/firewall restart;/etc/init.d/openvpn start)</code></p>
+
+<p>客户端只要把相应的ca.crt,ta.key,客户端.crt，客户端.key下载下来，编辑文本文件vpn.ovpn，内容如下：</p>
+
+<pre class=" language-bash"><code class=" language-bash">client
+proto tcp
+remote 服务器ip <span class="token number">1194</span>
+dev tun
+comp<span class="token operator">-</span>lzo
+nobind
+ca ca<span class="token punctuation">.</span>crt
+cert 客户端<span class="token punctuation">.</span>crt
+key 客户端<span class="token punctuation">.</span>key
+tls<span class="token operator">-</span>auth ta<span class="token punctuation">.</span>key <span class="token number">1</span>
+route<span class="token operator">-</span>delay <span class="token number">2</span>
+route<span class="token operator">-</span>method exe
+verb <span class="token number">3</span>
+</code></pre>
+
+<p>如果需要拨号后使用代理，只需要添加如下参数：</p>
+
+<pre class=" language-bash"><code class=" language-bash">dhcp<span class="token operator">-</span>option PROXY_HTTP 代理ip 代理端口
+dhcp<span class="token operator">-</span>option PROXY_HTTPS 代理ip 代理端口
+</code></pre>
+
+<p>如果要使用自动代理，添加如下参数：</p>
+
+<pre class=" language-bash"><code class=" language-bash">dhcp<span class="token operator">-</span>option PROXY_AUTO_CONFIG_URL http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span>example<span class="token punctuation">.</span>tld<span class="token operator">/</span>proxy<span class="token punctuation">.</span>pac
+</code></pre>
+
+<p>不过上述几个参数并非所有openVPN客户端支持。</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "Install-OpenVPN-on-OpenWRT.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

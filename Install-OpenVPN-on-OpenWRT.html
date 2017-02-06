@@ -48,6 +48,7 @@ opkg update
 opkg install openvpn-polarssl
 opkg install openvpn-easy-rsa
 ~~~~
+
 　　原文说的KEY_CN就是被注解掉的，所以不用执行相应的sed。
 
 　　2、修改/etc/easy-rsa/vars，把原文所说的
@@ -64,6 +65,7 @@ export KEY_EMAIL=email_address
 source /etc/easy-rsa/vars
 clean-all
 ~~~~
+
 来做好生成证书的准备。
 
 　　3、执行命令生成证书
@@ -73,6 +75,7 @@ pkitool --server 服务端名称
 pkitool 客户端名称0
 pkitool 客户端名称1
 ~~~~
+
 理论上有一个客户端就需要生成一套客户端的证书，当然，你也可以按照我的一会列出的参数，一套证书多个客户端使用。
 
 　　4、执行```build-dh```来生成Diffie Hellman参数
@@ -181,9 +184,11 @@ dhcp-option PROXY_AUTO_CONFIG_URL http://example.tld/proxy.pac
 <pre class=" language-bash"><code class=" language-bash">opkg update
 opkg install openvpn<span class="token operator">-</span>polarssl
 opkg install openvpn<span class="token operator">-</span>easy<span class="token operator">-</span>rsa
-</code></pre>　　原文说的KEY_CN就是被注解掉的，所以不用执行相应的sed。
+</code></pre>
 
-　　2、修改/etc/easy-rsa/vars，把原文所说的
+<p>　　原文说的KEY_CN就是被注解掉的，所以不用执行相应的sed。</p>
+
+<p>　　2、修改/etc/easy-rsa/vars，把原文所说的</p>
 
 <pre><code>KEY_SIZE=2048
 export KEY_COUNTRY=CN
@@ -193,22 +198,28 @@ export KEY_ORG=org_name
 export KEY_EMAIL=email_address
 </code></pre>
 
+<p>都修改一下，然后执行</p>
 
-都修改一下，然后执行
 <pre class=" language-bash"><code class=" language-bash">source <span class="token operator">/</span>etc<span class="token operator">/</span>easy<span class="token operator">-</span>rsa<span class="token operator">/</span>vars
 clean<span class="token operator">-</span>all
-</code></pre>来做好生成证书的准备。
+</code></pre>
 
-　　3、执行命令生成证书
+<p>来做好生成证书的准备。</p>
+
+<p>　　3、执行命令生成证书</p>
+
 <pre class=" language-bash"><code class=" language-bash">pkitool –initca
 pkitool <span class="token operator">--</span>server 服务端名称
 pkitool 客户端名称<span class="token number">0</span>
 pkitool 客户端名称<span class="token number">1</span>
-</code></pre>理论上有一个客户端就需要生成一套客户端的证书，当然，你也可以按照我的一会列出的参数，一套证书多个客户端使用。
+</code></pre>
 
-　　4、执行```build-dh```来生成Diffie Hellman参数
+<p>理论上有一个客户端就需要生成一套客户端的证书，当然，你也可以按照我的一会列出的参数，一套证书多个客户端使用。</p>
 
-　　5、生成ta.key
+<p>　　4、执行<code>build-dh</code>来生成Diffie Hellman参数</p>
+
+<p>　　5、生成ta.key</p>
+
 <pre class=" language-bash"><code class=" language-bash">openvpn <span class="token operator">--</span>genkey <span class="token operator">--</span>secret <span class="token operator">/</span>etc<span class="token operator">/</span>easy<span class="token operator">-</span>rsa<span class="token operator">/</span>keys<span class="token operator">/</span>ta<span class="token punctuation">.</span>key
 </code></pre>
 

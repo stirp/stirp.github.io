@@ -77,7 +77,10 @@ pkitool 客户端名称1
 
 　　4、执行```build-dh```来生成Diffie Hellman参数
 
-　　5、生成ta.key ```openvpn --genkey --secret /etc/easy-rsa/keys/ta.key```
+　　5、生成ta.key
+~~~~{bash}
+openvpn --genkey --secret /etc/easy-rsa/keys/ta.key
+~~~~
 
 　　6、编辑/etc/config/network，修改lan下的option ifname ，增加tun0
 
@@ -205,11 +208,14 @@ pkitool 客户端名称<span class="token number">1</span>
 
 　　4、执行```build-dh```来生成Diffie Hellman参数
 
-　　5、生成ta.key ```openvpn --genkey --secret /etc/easy-rsa/keys/ta.key```
+　　5、生成ta.key
+<pre class=" language-bash"><code class=" language-bash">openvpn <span class="token operator">--</span>genkey <span class="token operator">--</span>secret <span class="token operator">/</span>etc<span class="token operator">/</span>easy<span class="token operator">-</span>rsa<span class="token operator">/</span>keys<span class="token operator">/</span>ta<span class="token punctuation">.</span>key
+</code></pre>
 
-　　6、编辑/etc/config/network，修改lan下的option ifname ，增加tun0
+<p>　　6、编辑/etc/config/network，修改lan下的option ifname ，增加tun0</p>
 
-　　7、修改/etc/config/openvpn
+<p>　　7、修改/etc/config/openvpn</p>
+
 <pre class=" language-bash"><code class=" language-bash">config openvpn my<span class="token operator">-</span>server
     option enabled <span class="token number">1</span>
     option local <span class="token number">0.0</span><span class="token punctuation">.</span><span class="token number">0.0</span>

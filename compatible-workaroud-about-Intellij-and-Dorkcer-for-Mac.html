@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+　　今天在配置Intellij使用Docker for mac的时候发现需要使用api-url，但是Docker for mac并没有api-url。经过搜索发现[这里(http://www.cnblogs.com/micrari/p/6169936.html)](http://www.cnblogs.com/micrari/p/6169936.html)有解决方案，简单来讲是使用socat将unix的socket文件转发到本地的tcp端口。鉴于互联网链接可能失效，附文如后：
+
+>笔者在自己的Mac上安装的是Docker for Mac，而不是Docker Toolbox。
+>
+>这两者最主要的区别在于Docker for Mac用HyperKit作为虚拟化解决方案而不是VirtualBox,相比Docker Toolbox，Docker for Mac更加native些。
+Docker for Mac 通过```/var/tmp/docker.sock```暴露API。
+>
+>JetBrains系IDE有一款叫[Docker Integration](https://youtrack.jetbrains.com/issue/IDEA-153973#comment=27-1484220)的插件。
+>
+>当笔者尝试配置此插件时，发现它对Docker for Mac用户不是太友好。而在笔者的另一台安装Docker Toolbox的Mac上却是相当容易的。
+>
+><img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213143354058-100182548.png"></img>
+>
+>当打开配置页，默认的显示结果如图所示，API URL为https://192.168.99.100:2376。然而这并不起作用，没办法和Docker建立连接。
+>
+>当我尝试在API URL中随便填入```unix:///var/run/docker.sock```，IDE提示如下。
+><img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213144232917-1999769934.png"></img>
+>点开More info，会进到这个[issue](https://youtrack.jetbrains.com/issue/IDEA-153973#comment=27-1484220)
+><img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213143354058-100182548.png"></img>
+>发现Docker Integration与Docker for Mac的兼容性问题有一个workaround
+
+>在命令行输入
+
+>```brew install socat```
+
+>安装socat
+
+>再输入命令
+
+>```socat -d -d TCP-L:8099,fork UNIX:/var/run/docker.sock```
+
+>再在IntelliJ中配置API URL为```tcp://localhost:8099```
+可以看到最终成功连接到docker，如下图所示。
+><img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213150704479-236755813.png"></img>
+><img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213150447120-1352983762.png"></img>
+>笔者阅读了相关ISSUE，事实上，这个问题并没有真正的解决，只是目前有这么个workaround。
+
+
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>　　今天在配置Intellij使用Docker for mac的时候发现需要使用api-url，但是Docker for mac并没有api-url。经过搜索发现<a href="http://www.cnblogs.com/micrari/p/6169936.html">这里(http://www.cnblogs.com/micrari/p/6169936.html)</a>有解决方案，简单来讲是使用socat将unix的socket文件转发到本地的tcp端口。鉴于互联网链接可能失效，附文如后：</p>
+
+<blockquote>
+  <p>笔者在自己的Mac上安装的是Docker for Mac，而不是Docker Toolbox。</p>
+  
+  <p>这两者最主要的区别在于Docker for Mac用HyperKit作为虚拟化解决方案而不是VirtualBox,相比Docker Toolbox，Docker for Mac更加native些。
+  Docker for Mac 通过<code>/var/tmp/docker.sock</code>暴露API。</p>
+  
+  <p>JetBrains系IDE有一款叫<a href="https://youtrack.jetbrains.com/issue/IDEA-153973#comment=27-1484220">Docker Integration</a>的插件。</p>
+  
+  <p>当笔者尝试配置此插件时，发现它对Docker for Mac用户不是太友好。而在笔者的另一台安装Docker Toolbox的Mac上却是相当容易的。</p>
+  
+  <p><img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213143354058-100182548.png"></p>
+  
+  <p>当打开配置页，默认的显示结果如图所示，API URL为https://192.168.99.100:2376。然而这并不起作用，没办法和Docker建立连接。</p>
+  
+  <p>当我尝试在API URL中随便填入<code>unix:///var/run/docker.sock</code>，IDE提示如下。
+  <img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213144232917-1999769934.png">
+  点开More info，会进到这个<a href="https://youtrack.jetbrains.com/issue/IDEA-153973#comment=27-1484220">issue</a>
+  <img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213143354058-100182548.png">
+  发现Docker Integration与Docker for Mac的兼容性问题有一个workaround</p>
+  
+  <p>在命令行输入</p>
+  
+  <p><code>brew install socat</code></p>
+  
+  <p>安装socat</p>
+  
+  <p>再输入命令</p>
+  
+  <p><code>socat -d -d TCP-L:8099,fork UNIX:/var/run/docker.sock</code></p>
+  
+  <p>再在IntelliJ中配置API URL为<code>tcp://localhost:8099</code>
+  可以看到最终成功连接到docker，如下图所示。
+  <img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213150704479-236755813.png">
+  <img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213150447120-1352983762.png">
+  笔者阅读了相关ISSUE，事实上，这个问题并没有真正的解决，只是目前有这么个workaround。</p>
+</blockquote>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "compatible-workaroud-about-Intellij-and-Dorkcer-for-Mac.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

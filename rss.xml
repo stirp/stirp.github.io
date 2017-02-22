@@ -7,7 +7,44 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>在CentOS7安装PPTP client和Gnome的PPTP界面</title><link>http://blog.shrp.me//Install-pptp-and-gnome-pptp-client-on-centos7.html</link><pubdate>2017-02-06</pubdate><content:encoded>&lt;p&gt;不知道为什么，CentOS7默认的yum源里没有PPTP的GNOME客户端，设置很不方便。&lt;/p&gt;
+    <item><title>Intellij 和 docker for Mac的兼容方案</title><link>http://blog.shrp.me//compatible-workaroud-about-Intellij-and-Dorkcer-for-Mac.html</link><pubdate>2017-02-22</pubdate><content:encoded>&lt;p&gt;　　今天在配置Intellij使用Docker for mac的时候发现需要使用api-url，但是Docker for mac并没有api-url。经过搜索发现&lt;a href="http://www.cnblogs.com/micrari/p/6169936.html"&gt;这里(http://www.cnblogs.com/micrari/p/6169936.html)&lt;/a&gt;有解决方案，简单来讲是使用socat将unix的socket文件转发到本地的tcp端口。鉴于互联网链接可能失效，附文如后：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;笔者在自己的Mac上安装的是Docker for Mac，而不是Docker Toolbox。&lt;/p&gt;
+  
+  &lt;p&gt;这两者最主要的区别在于Docker for Mac用HyperKit作为虚拟化解决方案而不是VirtualBox,相比Docker Toolbox，Docker for Mac更加native些。
+  Docker for Mac 通过&lt;code&gt;/var/tmp/docker.sock&lt;/code&gt;暴露API。&lt;/p&gt;
+  
+  &lt;p&gt;JetBrains系IDE有一款叫&lt;a href="https://youtrack.jetbrains.com/issue/IDEA-153973#comment=27-1484220"&gt;Docker Integration&lt;/a&gt;的插件。&lt;/p&gt;
+  
+  &lt;p&gt;当笔者尝试配置此插件时，发现它对Docker for Mac用户不是太友好。而在笔者的另一台安装Docker Toolbox的Mac上却是相当容易的。&lt;/p&gt;
+  
+  &lt;p&gt;&lt;img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213143354058-100182548.png"&gt;&lt;/p&gt;
+  
+  &lt;p&gt;当打开配置页，默认的显示结果如图所示，API URL为https://192.168.99.100:2376。然而这并不起作用，没办法和Docker建立连接。&lt;/p&gt;
+  
+  &lt;p&gt;当我尝试在API URL中随便填入&lt;code&gt;unix:///var/run/docker.sock&lt;/code&gt;，IDE提示如下。
+  &lt;img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213144232917-1999769934.png"&gt;
+  点开More info，会进到这个&lt;a href="https://youtrack.jetbrains.com/issue/IDEA-153973#comment=27-1484220"&gt;issue&lt;/a&gt;
+  &lt;img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213143354058-100182548.png"&gt;
+  发现Docker Integration与Docker for Mac的兼容性问题有一个workaround&lt;/p&gt;
+  
+  &lt;p&gt;在命令行输入&lt;/p&gt;
+  
+  &lt;p&gt;&lt;code&gt;brew install socat&lt;/code&gt;&lt;/p&gt;
+  
+  &lt;p&gt;安装socat&lt;/p&gt;
+  
+  &lt;p&gt;再输入命令&lt;/p&gt;
+  
+  &lt;p&gt;&lt;code&gt;socat -d -d TCP-L:8099,fork UNIX:/var/run/docker.sock&lt;/code&gt;&lt;/p&gt;
+  
+  &lt;p&gt;再在IntelliJ中配置API URL为&lt;code&gt;tcp://localhost:8099&lt;/code&gt;
+  可以看到最终成功连接到docker，如下图所示。
+  &lt;img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213150704479-236755813.png"&gt;
+  &lt;img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213150447120-1352983762.png"&gt;
+  笔者阅读了相关ISSUE，事实上，这个问题并没有真正的解决，只是目前有这么个workaround。&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded><guid>http://blog.shrp.me//compatible-workaroud-about-Intellij-and-Dorkcer-for-Mac.html</guid></item><item><title>在CentOS7安装PPTP client和Gnome的PPTP界面</title><link>http://blog.shrp.me//Install-pptp-and-gnome-pptp-client-on-centos7.html</link><pubdate>2017-02-06</pubdate><content:encoded>&lt;p&gt;不知道为什么，CentOS7默认的yum源里没有PPTP的GNOME客户端，设置很不方便。&lt;/p&gt;
 
 &lt;p&gt;那么简单的方式就是直接安装其他源的rpm,比如&lt;a href="http://li.nux.ro/download/nux/dextop/el7/x86_64/"&gt;http://li.nux.ro/download/nux/dextop/el7/x86_64/&lt;/a&gt;。&lt;/p&gt;
 
@@ -367,18 +404,5 @@ main.go:64: stream opened
 
 &lt;h3 id="6multiplicityhttpedgerunnercommultiplicity"&gt;6. &lt;a href="http://edgerunner.com/multiplicity"&gt;Multiplicity&lt;/a&gt;&lt;/h3&gt;
 
-&lt;p&gt;这款软件似乎又是只能支持Windows的，不过它有几个特点：可以同时锁定解锁，可以单独一台显示器（这跟硬件KVM几乎一样了啊！）。由于上边这条特性，它也可以远程工作，通过VPN工作，反正就一台显示器嘛，显示就是了。价格是一次性买断的， 我看还是比较合理，对于运维同学可以入手，其他人就算了吧……&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Multi-Computer-Mouse-and-Keyboard-sharing.html</guid></item><item><title>AppleDNS的Mac受害及恢复</title><link>http://blog.shrp.me//Restore-from-AppleDNS.html</link><pubdate>2016-05-02</pubdate><content:encoded>&lt;p&gt;自己一直关注小众软件，之前小众介绍了一款&lt;a href="https://github.com/gongjianhui/AppleDNS/"&gt;AppleDNS&lt;/a&gt;用于苹果用户的应用商店加速，自己其实不是特别需要，但是为了更加丝般顺畅的使用，按耐不住心里的期望，就试了一把。&lt;/p&gt;
-
-&lt;p&gt;其实这种DNS类的加速方案不是没有过，但是由于苹果的IP地址范围其实很广，加上网络情况的瞬息万变，这种方案的可用性、有效期其实并不长；而这一款的网址库似乎是通过抓包分析的，恐怕连一些https的服务器也包括进去了；但是https的情况更加复杂，可能过两天服务器说换就换了，原有的host就失效了。&lt;/p&gt;
-
-&lt;p&gt;但是我试用的过程中产生了更严重的后果，使用的时候Mac的App Store不能更新，也无法安装新应用，提示“无法验证产品分发文件。它可能已损坏或尚无签名”。于是很失望的把AppleDNS下掉了，心想刷下DNS，过两天它自己就升级了，不用太担心。&lt;/p&gt;
-
-&lt;p&gt;可谁成想过了半个月，其他App都升级了，当时无法升级的还是无法升级。于是打开控制台，看到错误&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;&lt;span class="token number"&gt;16&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;&lt;span class="token number"&gt;5&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;&lt;span class="token number"&gt;2&lt;/span&gt; &lt;span class="token number"&gt;15&lt;/span&gt;&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token number"&gt;18&lt;/span&gt;&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token number"&gt;44.410&lt;/span&gt; storedownloadd&lt;span class="token punctuation"&gt;[&lt;/span&gt;&lt;span class="token number"&gt;522&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;:&lt;/span&gt; &lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token operator"&gt;*&lt;/span&gt;&lt;span class="token operator"&gt;*&lt;/span&gt; Assertion failure &lt;span class="token keyword"&gt;in&lt;/span&gt; &lt;span class="token operator"&gt;-&lt;/span&gt;&lt;span class="token punctuation"&gt;[&lt;/span&gt;CheckPreflightOperation verifyDistributionAtURL&lt;span class="token punctuation"&gt;:&lt;/span&gt;allowsDevSign&lt;span class="token punctuation"&gt;:&lt;/span&gt;allowsUnsigned&lt;span class="token punctuation"&gt;:&lt;/span&gt;osVersionToBeInstalled&lt;span class="token punctuation"&gt;:&lt;/span&gt;error&lt;span class="token punctuation"&gt;:&lt;/span&gt;distributionController&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token punctuation"&gt;]&lt;/span&gt;&lt;span class="token punctuation"&gt;,&lt;/span&gt; &lt;span class="token operator"&gt;/&lt;/span&gt;Library&lt;span class="token operator"&gt;/&lt;/span&gt;Caches&lt;span class="token operator"&gt;/&lt;/span&gt;com&lt;span class="token punctuation"&gt;.&lt;/span&gt;apple&lt;span class="token punctuation"&gt;.&lt;/span&gt;xbs&lt;span class="token operator"&gt;/&lt;/span&gt;Sources&lt;span class="token operator"&gt;/&lt;/span&gt;Commerce&lt;span class="token operator"&gt;/&lt;/span&gt;Commerce&lt;span class="token number"&gt;-462.9&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;CommerceKit&lt;span class="token operator"&gt;/&lt;/span&gt;CheckPreflightOperation&lt;span class="token punctuation"&gt;.&lt;/span&gt;m&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token number"&gt;291&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;才知道这是中招了，一定是App Store把某种验证文件从当时错误的验证服务器保存在本地了，现在再行升级虽然不受AppleDNS的影响了，却还是无法升级的。经过google，发现有人通过创建用户，输入自己的AppleID，是可以升级的。我想，这说明阻止升级的文件是在用户目录的，用户目录最著名的供程序使用的目录是哪里？当然是~/Library/Caches啦，于是进去清空，然后安装、升级，进度条又一次开心的跑起来了。&lt;/p&gt;
-
-&lt;p&gt;看来在苹果上用DNS类产品还真是挺危险的，如果产生问题的不是Mac而是iOS，那恐怕只能等苹果自己修复了。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Restore-from-AppleDNS.html</guid></item></channel>
+&lt;p&gt;这款软件似乎又是只能支持Windows的，不过它有几个特点：可以同时锁定解锁，可以单独一台显示器（这跟硬件KVM几乎一样了啊！）。由于上边这条特性，它也可以远程工作，通过VPN工作，反正就一台显示器嘛，显示就是了。价格是一次性买断的， 我看还是比较合理，对于运维同学可以入手，其他人就算了吧……&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Multi-Computer-Mouse-and-Keyboard-sharing.html</guid></item></channel>
 </rss>

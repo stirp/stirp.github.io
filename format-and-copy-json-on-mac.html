@@ -38,26 +38,26 @@
     </div>
     <div id="md" style="display: none;">
 <!-- markdown -->
-现在的Restful接口非常多，我们开发会经常遇到调试json的地方。但是json一般都是compact过的，肉眼很难观察，但是打开页面、工具去解析又很麻烦。有什么好办法呢？这个在Mac上有个非常轻松的解决办法，那就是使用命令行工具[jq](https://stedolan.github.io/jq/)。	
+　　现在的Restful接口非常多，我们开发会经常遇到调试json的地方。但是json一般都是compact过的，肉眼很难观察，但是打开页面、工具去解析又很麻烦。有什么好办法呢？这个在Mac上有个非常轻松的解决办法，那就是使用命令行工具[jq](https://stedolan.github.io/jq/)。	
 
-首先需要安装工具jq，Mac可以直接使用brew安装。
+　　首先需要安装工具jq，Mac可以直接使用brew安装。
 
-然后在你的终端里使用命令```pbpaste | jq "." | pbcopy; pbpaste | jq; echo -e "\033[0;32mjson copied to clipboard!"```就可以一行命令把粘贴板里的json文本格式化，并重新复制到粘贴板。
+　　然后在你的终端里使用命令```pbpaste | jq "." | pbcopy; pbpaste | jq; echo -e "\033[0;32mjson copied to clipboard!"```就可以一行命令把粘贴板里的json文本格式化，并重新复制到粘贴板。
 
-当然这么做非常繁琐，所以你需要把它alias为bash命令。对于fish，我单独制作了一个function，你可以将我的脚本放到function目录内使用，地址[https://raw.githubusercontent.com/stirp/oh-my-fish/master/functions/jsonfmt.fish](https://raw.githubusercontent.com/stirp/oh-my-fish/master/functions/jsonfmt.fish)
+　　当然这么做非常繁琐，所以你需要把它alias为bash命令。对于fish，我单独制作了一个function，你可以将我的脚本放到function目录内使用，地址[https://raw.githubusercontent.com/stirp/oh-my-fish/master/functions/jsonfmt.fish](https://raw.githubusercontent.com/stirp/oh-my-fish/master/functions/jsonfmt.fish)
 
 本文参考知乎文章[【Mac小技巧】一键format json](https://zhuanlan.zhihu.com/p/26134439)
 <!-- markdown end -->
     </div>
     <div class="entry" id="main">
 <!-- content -->
-<p>现在的Restful接口非常多，我们开发会经常遇到调试json的地方。但是json一般都是compact过的，肉眼很难观察，但是打开页面、工具去解析又很麻烦。有什么好办法呢？这个在Mac上有个非常轻松的解决办法，那就是使用命令行工具<a href="https://stedolan.github.io/jq/">jq</a>。    </p>
+<p>　　现在的Restful接口非常多，我们开发会经常遇到调试json的地方。但是json一般都是compact过的，肉眼很难观察，但是打开页面、工具去解析又很麻烦。有什么好办法呢？这个在Mac上有个非常轻松的解决办法，那就是使用命令行工具<a href="https://stedolan.github.io/jq/">jq</a>。    </p>
 
-<p>首先需要安装工具jq，Mac可以直接使用brew安装。</p>
+<p>　　首先需要安装工具jq，Mac可以直接使用brew安装。</p>
 
-<p>然后在你的终端里使用命令<code>pbpaste | jq "." | pbcopy; pbpaste | jq; echo -e "\033[0;32mjson copied to clipboard!"</code>就可以一行命令把粘贴板里的json文本格式化，并重新复制到粘贴板。</p>
+<p>　　然后在你的终端里使用命令<code>pbpaste | jq "." | pbcopy; pbpaste | jq; echo -e "\033[0;32mjson copied to clipboard!"</code>就可以一行命令把粘贴板里的json文本格式化，并重新复制到粘贴板。</p>
 
-<p>当然这么做非常繁琐，所以你需要把它alias为bash命令。对于fish，我单独制作了一个function，你可以将我的脚本放到function目录内使用，地址<a href="https://raw.githubusercontent.com/stirp/oh-my-fish/master/functions/jsonfmt.fish">https://raw.githubusercontent.com/stirp/oh-my-fish/master/functions/jsonfmt.fish</a></p>
+<p>　　当然这么做非常繁琐，所以你需要把它alias为bash命令。对于fish，我单独制作了一个function，你可以将我的脚本放到function目录内使用，地址<a href="https://raw.githubusercontent.com/stirp/oh-my-fish/master/functions/jsonfmt.fish">https://raw.githubusercontent.com/stirp/oh-my-fish/master/functions/jsonfmt.fish</a></p>
 
 <p>本文参考知乎文章<a href="https://zhuanlan.zhihu.com/p/26134439">【Mac小技巧】一键format json</a></p>
 <!-- content end -->

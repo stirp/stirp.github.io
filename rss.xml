@@ -13,7 +13,9 @@
 
 &lt;p&gt;　　然后在你的终端里使用命令&lt;code&gt;pbpaste | jq "." | pbcopy; pbpaste | jq; echo -e "\033[0;32mjson copied to clipboard!"&lt;/code&gt;就可以一行命令把粘贴板里的json文本格式化，并重新复制到粘贴板。&lt;/p&gt;
 
-&lt;p&gt;　　当然这么做非常繁琐，所以你需要把它alias为bash命令。对于fish，我单独制作了一个function，你可以将我的脚本放到function目录内使用，地址&lt;a href="https://raw.githubusercontent.com/stirp/oh-my-fish/master/functions/jsonfmt.fish"&gt;https://raw.githubusercontent.com/stirp/oh-my-fish/master/functions/jsonfmt.fish&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;　　当然这么做非常繁琐，所以你需要把它alias为bash命令。对于fish，我单独制作了一个function，你可以将我的脚本放到function目录内使用，地址&lt;a href="https://raw.githubusercontent.com/stirp/oh-my-fish/master/functions/jsonfmt.fish"&gt;https://raw.githubusercontent.com/stirp/oh-my-fish/master/functions/jsonfmt.fish&lt;/a&gt;。最终效果如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://stirp.github.io/img/WX20170401-183739.png" alt="" title=""&gt;&lt;/p&gt;
 
 &lt;p&gt;本文参考知乎文章&lt;a href="https://zhuanlan.zhihu.com/p/26134439"&gt;【Mac小技巧】一键format json&lt;/a&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//format-and-copy-json-on-mac.html</guid></item><item><title>Intellij 和 docker for Mac的兼容方案</title><link>http://blog.shrp.me//compatible-workaroud-about-Intellij-and-Dorkcer-for-Mac.html</link><pubdate>2017-02-22</pubdate><content:encoded>&lt;p&gt;　　今天在配置Intellij使用Docker for mac的时候发现需要使用api-url，但是Docker for mac并没有api-url。经过搜索发现&lt;a href="http://www.cnblogs.com/micrari/p/6169936.html"&gt;这里(http://www.cnblogs.com/micrari/p/6169936.html)&lt;/a&gt;有解决方案，简单来讲是使用socat将unix的socket文件转发到本地的tcp端口。鉴于互联网链接可能失效，附文如后：&lt;/p&gt;
 

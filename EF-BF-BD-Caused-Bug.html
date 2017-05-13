@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+　　最近在公司遇到一件奇怪的事情，我司私有协议的业务服务器总是收到奇怪的请求，导致收到的包解包失败。
+
+　　这个私有协议原理是先收到一个消息头，再收到一个长度，根据长度得到后边数据的长度，最后再把数据解析为相应的 Bytes 或者字符串，完成解包。
+
+　　然而实际却总是收到跟声明情况不符合的数据，特点就是消息头声明了后边数据是一个字符串性质的内容，字节长度是x，但是实际发出的数据字节长度是超过x的，因此发现这个包在理应结束后还是没有遇到结束符号，解包出了问题，这条流已无法继续使用了，只能断开连接。
+
+　　可是业务的流量来自于一个私有协议的请求分发服务，相当于网络入口，这个服务的编码程序也是久经使用的，经过内网发向业务服务器，是不会无故发出向下图这样不正确的包啊。（图中 ca 表示一个 String 类型的消息，9c 是长度。但是经过 9c 也解析不到任何有意义的数据）
+
+ ![](http://stirp.github.io/img/Jietu20170513-232035.png)
+
+　　不过仔细观察图上的流，我发现字节流里有不寻常的出现了很多 EF BF BD 。这几个字节为什么会突然多这么多？一个字符串出现很多同样的字符是很可疑的。上网搜索，发现这个是 UTF-8 的无效字符，Java 在构造 String 的时候如果遇到了非法的 UTF-8 字符，就会使用 EF BF BD 替换。于是查看请求路由的源码，发现它是在应用层上解开了私有协议，对于收到用户发来的消息头，长度和内容，如果消息是 String 内容，就会使用 UTF-8 把消息内容构造成 String，转发的时候则使用了构造后 String 的 getBytes 写入到流内，而此时的长度跟之前写入的长度根本对不上。所以实际上消息分发服务就已经出了问题，只是这在 String 的构造器上并不抛出异常，因此消息分发服务对此一无所知。
+
+　　其实知道问题怎么发生的是最难的，解决问题反而是简单的。
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>　　最近在公司遇到一件奇怪的事情，我司私有协议的业务服务器总是收到奇怪的请求，导致收到的包解包失败。</p>
+
+<p>　　这个私有协议原理是先收到一个消息头，再收到一个长度，根据长度得到后边数据的长度，最后再把数据解析为相应的 Bytes 或者字符串，完成解包。</p>
+
+<p>　　然而实际却总是收到跟声明情况不符合的数据，特点就是消息头声明了后边数据是一个字符串性质的内容，字节长度是x，但是实际发出的数据字节长度是超过x的，因此发现这个包在理应结束后还是没有遇到结束符号，解包出了问题，这条流已无法继续使用了，只能断开连接。</p>
+
+<p>　　可是业务的流量来自于一个私有协议的请求分发服务，相当于网络入口，这个服务的编码程序也是久经使用的，经过内网发向业务服务器，是不会无故发出向下图这样不正确的包啊。（图中 ca 表示一个 String 类型的消息，9c 是长度。但是经过 9c 也解析不到任何有意义的数据）</p>
+
+<p><img src="http://stirp.github.io/img/Jietu20170513-232035.png" alt="" title=""></p>
+
+<p>　　不过仔细观察图上的流，我发现字节流里有不寻常的出现了很多 EF BF BD 。这几个字节为什么会突然多这么多？一个字符串出现很多同样的字符是很可疑的。上网搜索，发现这个是 UTF-8 的无效字符，Java 在构造 String 的时候如果遇到了非法的 UTF-8 字符，就会使用 EF BF BD 替换。于是查看请求路由的源码，发现它是在应用层上解开了私有协议，对于收到用户发来的消息头，长度和内容，如果消息是 String 内容，就会使用 UTF-8 把消息内容构造成 String，转发的时候则使用了构造后 String 的 getBytes 写入到流内，而此时的长度跟之前写入的长度根本对不上。所以实际上消息分发服务就已经出了问题，只是这在 String 的构造器上并不抛出异常，因此消息分发服务对此一无所知。</p>
+
+<p>　　其实知道问题怎么发生的是最难的，解决问题反而是简单的。</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "EF-BF-BD-Caused-Bug.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

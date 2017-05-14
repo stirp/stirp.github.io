@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+  估计大家这几天都被勒索病毒刷了屏，我也来凑凑热闹，简单说下我的方案——备份。
+
+  看到这里读者大概会觉得我大概是石乐志，备份有什么难的，普天下的人都会备份，还要你出来讲啊。但是如果你深入思考一下勒索病毒的特点，你会发现传统的备份方案在勒索病毒进一步发展后很有可能无效。
+
+  首先，备份一般按时效分，有实时备份和定时备份。如果是实时备份，那么备份写入的地方一定是当前系统有写入权限的地方，你的备份也可以被病毒加密。如果说是类似Ghost的备份方案，病毒完全可以做到对一部分内容进行加密，比如开头512字节，中间512字节和结尾512字节。这样做可以兼顾加密速度和破坏效果，实时备份此时就是引狼入室，不仅最新备份无法使用，连旧的都有可能一起感染。如果是定时备份，也可以通过病毒延迟发作，在潜伏期内进入设备——这跟现在的病毒发作方式其实有点关系，因为现在加密过程是需要时间的，在此期间接入保存设备也会导致备份被破坏。
+
+  其次，对于我来说，我有大量的视频资源需要备份，2T的备份就需要一块2T的硬盘，这样的消耗其实相当大。所以使用移动硬盘备份这样的方案，对我来说成本就相当的高，而可靠性却很一般。
+
+  最后，我认为对于有潜伏期的勒索病毒而言，一个能通过私有协议持续写入备份，又能够提供历史版本的备份设备是最合适的。私有协议使得备份只能通过特定应用备份，历史版本又能在最新几个备份是已感染的情况下，找到一个干净的备份来还原，降低损失。
+
+  最终我买了NAS来做这个备份。我买的这个NAS是包含了备份软件的，备份会通过其他协议上传到服务器，并不是通过网络共享来写入的。如果使用网络共享，就有可能破坏已经进入共享的文件。而且它能够提供32个版本的文件历史，因此如果某天我本地被感染并且把加密后的文件上传，我也还是可以恢复出未感染的文件。
+
+  这样即便是有带有潜伏期的勒索者病毒，也无法破坏我已经备份的内容了。只是有一个缺点，硬盘还是得买够，NAS、本地都要有一份。要不然万一NAS被攻击了丢数据，可就追悔莫及啦。
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>估计大家这几天都被勒索病毒刷了屏，我也来凑凑热闹，简单说下我的方案——备份。</p>
+
+<p>看到这里读者大概会觉得我大概是石乐志，备份有什么难的，普天下的人都会备份，还要你出来讲啊。但是如果你深入思考一下勒索病毒的特点，你会发现传统的备份方案在勒索病毒进一步发展后很有可能无效。</p>
+
+<p>首先，备份一般按时效分，有实时备份和定时备份。如果是实时备份，那么备份写入的地方一定是当前系统有写入权限的地方，你的备份也可以被病毒加密。如果说是类似Ghost的备份方案，病毒完全可以做到对一部分内容进行加密，比如开头512字节，中间512字节和结尾512字节。这样做可以兼顾加密速度和破坏效果，实时备份此时就是引狼入室，不仅最新备份无法使用，连旧的都有可能一起感染。如果是定时备份，也可以通过病毒延迟发作，在潜伏期内进入设备——这跟现在的病毒发作方式其实有点关系，因为现在加密过程是需要时间的，在此期间接入保存设备也会导致备份被破坏。</p>
+
+<p>其次，对于我来说，我有大量的视频资源需要备份，2T的备份就需要一块2T的硬盘，这样的消耗其实相当大。所以使用移动硬盘备份这样的方案，对我来说成本就相当的高，而可靠性却很一般。</p>
+
+<p>最后，我认为对于有潜伏期的勒索病毒而言，一个能通过私有协议持续写入备份，又能够提供历史版本的备份设备是最合适的。私有协议使得备份只能通过特定应用备份，历史版本又能在最新几个备份是已感染的情况下，找到一个干净的备份来还原，降低损失。</p>
+
+<p>最终我买了NAS来做这个备份。我买的这个NAS是包含了备份软件的，备份会通过其他协议上传到服务器，并不是通过网络共享来写入的。如果使用网络共享，就有可能破坏已经进入共享的文件。而且它能够提供32个版本的文件历史，因此如果某天我本地被感染并且把加密后的文件上传，我也还是可以恢复出未感染的文件。</p>
+
+<p>这样即便是有带有潜伏期的勒索者病毒，也无法破坏我已经备份的内容了。只是有一个缺点，硬盘还是得买够，NAS、本地都要有一份。要不然万一NAS被攻击了丢数据，可就追悔莫及啦。</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "importance-of-backup.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

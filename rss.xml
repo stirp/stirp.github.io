@@ -7,7 +7,19 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>EF BF BD 引发的血案</title><link>http://blog.shrp.me//EF-BF-BD-Caused-Bug.html</link><pubdate>2017-05-13</pubdate><content:encoded>&lt;p&gt;　　最近在公司遇到一件奇怪的事情，我司私有协议的业务服务器总是收到奇怪的请求，导致收到的包解包失败。&lt;/p&gt;
+    <item><title>面对勒索病毒的数据备份方案</title><link>http://blog.shrp.me//importance-of-backup.html</link><pubdate>2017-05-15</pubdate><content:encoded>&lt;p&gt;估计大家这几天都被勒索病毒刷了屏，我也来凑凑热闹，简单说下我的方案——备份。&lt;/p&gt;
+
+&lt;p&gt;看到这里读者大概会觉得我大概是石乐志，备份有什么难的，普天下的人都会备份，还要你出来讲啊。但是如果你深入思考一下勒索病毒的特点，你会发现传统的备份方案在勒索病毒进一步发展后很有可能无效。&lt;/p&gt;
+
+&lt;p&gt;首先，备份一般按时效分，有实时备份和定时备份。如果是实时备份，那么备份写入的地方一定是当前系统有写入权限的地方，你的备份也可以被病毒加密。如果说是类似Ghost的备份方案，病毒完全可以做到对一部分内容进行加密，比如开头512字节，中间512字节和结尾512字节。这样做可以兼顾加密速度和破坏效果，实时备份此时就是引狼入室，不仅最新备份无法使用，连旧的都有可能一起感染。如果是定时备份，也可以通过病毒延迟发作，在潜伏期内进入设备——这跟现在的病毒发作方式其实有点关系，因为现在加密过程是需要时间的，在此期间接入保存设备也会导致备份被破坏。&lt;/p&gt;
+
+&lt;p&gt;其次，对于我来说，我有大量的视频资源需要备份，2T的备份就需要一块2T的硬盘，这样的消耗其实相当大。所以使用移动硬盘备份这样的方案，对我来说成本就相当的高，而可靠性却很一般。&lt;/p&gt;
+
+&lt;p&gt;最后，我认为对于有潜伏期的勒索病毒而言，一个能通过私有协议持续写入备份，又能够提供历史版本的备份设备是最合适的。私有协议使得备份只能通过特定应用备份，历史版本又能在最新几个备份是已感染的情况下，找到一个干净的备份来还原，降低损失。&lt;/p&gt;
+
+&lt;p&gt;最终我买了NAS来做这个备份。我买的这个NAS是包含了备份软件的，备份会通过其他协议上传到服务器，并不是通过网络共享来写入的。如果使用网络共享，就有可能破坏已经进入共享的文件。而且它能够提供32个版本的文件历史，因此如果某天我本地被感染并且把加密后的文件上传，我也还是可以恢复出未感染的文件。&lt;/p&gt;
+
+&lt;p&gt;这样即便是有带有潜伏期的勒索者病毒，也无法破坏我已经备份的内容了。只是有一个缺点，硬盘还是得买够，NAS、本地都要有一份。要不然万一NAS被攻击了丢数据，可就追悔莫及啦。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//importance-of-backup.html</guid></item><item><title>EF BF BD 引发的血案</title><link>http://blog.shrp.me//EF-BF-BD-Caused-Bug.html</link><pubdate>2017-05-13</pubdate><content:encoded>&lt;p&gt;　　最近在公司遇到一件奇怪的事情，我司私有协议的业务服务器总是收到奇怪的请求，导致收到的包解包失败。&lt;/p&gt;
 
 &lt;p&gt;　　这个私有协议原理是先收到一个消息头，再收到一个长度，根据长度得到后边数据的长度，最后再把数据解析为相应的 Bytes 或者字符串，完成解包。&lt;/p&gt;
 
@@ -263,15 +275,5 @@ main.go:64: stream opened
 
 &lt;p&gt;　　刚好Charles这两天出第四版了，试了下比原先的UI更线代了，功能也更强大了，而且好像价格也更优惠了。&lt;/p&gt;
 
-&lt;p&gt;　　于是赶紧买买买，正版计划又前进了一小步，哈哈~&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Charles-Update-to-4.html</guid></item><item><title>远程调试服务器的tcp流</title><link>http://blog.shrp.me//Remote-Debug-TCP-Stream-On-Server.html</link><pubdate>2016-07-27</pubdate><content:encoded>&lt;p&gt;　　如果只是一个http业务，一般是不需要调试其TCP流的；但是现在我正在处理一个基于TCP长连接的协议，有时候有任何问题，通过TCP流都可以帮助我调试服务。&lt;/p&gt;
-
-&lt;p&gt;　　但是这只是本地开发时常见的情况，如果要调试测试服务器乃至生产服务器接受的数据流是否正常呢？当然可以在服务器运行tcpdump，比如&lt;code&gt;tcpdump -i eth0 tcp port 抓包端口号 -w /tmp/debug.cap&lt;/code&gt;，然后将debug.cap从服务器scp到本地来，用wireshark详细研究。&lt;/p&gt;
-
-&lt;p&gt;　　但是有时候调试，服务正常与否跟相应时间什么的也有关系，这种事后研究的方式就不方便了，可以直接ssh服务器，通过tcpdump输出到管道，然后管道这边通过wireshark去抓包分析，省去了scp的麻烦，也能实时调试了。&lt;/p&gt;
-
-&lt;p&gt;　　可以使用命令&lt;code&gt;ssh fedSDE "sudo tcpdump -s 0 -U -n -i eth0 port 抓包端口号 -w -" | wireshark -k -i -&lt;/code&gt;来轻松做到这点。&lt;/p&gt;
-
-&lt;p&gt;　　不过有时候会有异常，“sudo：抱歉，您必须拥有一个终端来执行 sudo”，则需要使用管理员修改/etc/sudoers，把&lt;code&gt;Defaults    requiretty&lt;/code&gt;这一行注释掉就可以了。&lt;/p&gt;
-
-&lt;p&gt;从此妈妈再也不用担心我调试服务器上的流量啦！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Remote-Debug-TCP-Stream-On-Server.html</guid></item></channel>
+&lt;p&gt;　　于是赶紧买买买，正版计划又前进了一小步，哈哈~&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Charles-Update-to-4.html</guid></item></channel>
 </rss>

@@ -7,7 +7,17 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>面对勒索病毒的数据备份方案</title><link>http://blog.shrp.me//importance-of-backup.html</link><pubdate>2017-05-15</pubdate><content:encoded>&lt;p&gt;估计大家这几天都被勒索病毒刷了屏，我也来凑凑热闹，简单说下我的方案——备份。&lt;/p&gt;
+    <item><title>碰巧发现一个水友电脑中了病毒</title><link>http://blog.shrp.me//find-a-cyber-friend-get-his-computer-infected-by-computer-virus.html</link><pubdate>2017-09-20</pubdate><content:encoded>&lt;p&gt;　　今天恰好看到有人在玩星际菠菜，我想起早以前在YY玩菠菜的经历，心理痒痒，也想试试手气，于是也打开网站上去找找菠菜的入口在哪里。&lt;/p&gt;
+
+&lt;p&gt;　　没成想打开唯一的live.htm，却没发现菠菜的入口。难道入口屏蔽了？于是F12看看吧，不看不要紧，一看吓一跳，如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://stirp.github.io/img/Jietu20170920-145708.png" alt="" title=""&gt;&lt;/p&gt;
+
+&lt;p&gt;　　虽然咱不太懂vbscript，但是这段代码大致意思还是看得懂的：先找到一个路径，尝试写入一些二进制数据，然后调用运行这个文件，文件名是svchost.exe。这个名字不就是Windows系统最常用的系统进程嘛！这段代码看起来就是个病毒啊！&lt;/p&gt;
+
+&lt;p&gt;　　然后用二进制编辑软件把这段二进制保存起来，提交&lt;a href="https://www.virustotal.com/zh-cn/file/fd6c69c345f1e32924f0a5bb7393e191b393a78d58e2c6413b03ced7482f2320/analysis/"&gt;在线工具&lt;/a&gt;，提示极大可能是病毒,创建病毒文件于C:\Program Files\Microsoft\DesktopLayer.exe。赶紧跟对方反应了这个问题，最终确认他电脑中了DesktopLayer病毒，所有机器都感染了，可能还有水友也因为观看直播中病毒。后续处理就简单了，网上有专杀工具，搜索下载就好了，据说专杀效果还是挺不错的。&lt;/p&gt;
+
+&lt;p&gt;　　病毒实在是很难防范，搞得我都想装个iOS虚拟机上网了……哈哈，当然是玩笑了。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//find-a-cyber-friend-get-his-computer-infected-by-computer-virus.html</guid></item><item><title>面对勒索病毒的数据备份方案</title><link>http://blog.shrp.me//importance-of-backup.html</link><pubdate>2017-05-15</pubdate><content:encoded>&lt;p&gt;估计大家这几天都被勒索病毒刷了屏，我也来凑凑热闹，简单说下我的方案——备份。&lt;/p&gt;
 
 &lt;p&gt;看到这里读者大概会觉得我大概是石乐志，备份有什么难的，普天下的人都会备份，还要你出来讲啊。但是如果你深入思考一下勒索病毒的特点，你会发现传统的备份方案在勒索病毒进一步发展后很有可能无效。&lt;/p&gt;
 
@@ -271,9 +281,5 @@ main.go:64: stream opened
 
 &lt;p&gt;&lt;img src="http://stirp.github.io/img/thumb_WechatIMG9_1024.jpg" alt="" title=""&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src="http://stirp.github.io/img/thumb_WechatIMG12_1024.jpg" alt="" title=""&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Return-From-May-Day-Concert.html</guid></item><item><title>Charles 出4啦</title><link>http://blog.shrp.me//Charles-Update-to-4.html</link><pubdate>2016-08-02</pubdate><content:encoded>&lt;p&gt;　　很多人用Windows抓Http包的时候都用fiddler，在Mac上用Charles则是最好的选择。&lt;/p&gt;
-
-&lt;p&gt;　　刚好Charles这两天出第四版了，试了下比原先的UI更线代了，功能也更强大了，而且好像价格也更优惠了。&lt;/p&gt;
-
-&lt;p&gt;　　于是赶紧买买买，正版计划又前进了一小步，哈哈~&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Charles-Update-to-4.html</guid></item></channel>
+&lt;p&gt;&lt;img src="http://stirp.github.io/img/thumb_WechatIMG12_1024.jpg" alt="" title=""&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Return-From-May-Day-Concert.html</guid></item></channel>
 </rss>

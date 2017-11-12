@@ -171,6 +171,10 @@ dhcp-option PROXY_AUTO_CONFIG_URL http://example.tld/proxy.pac
 ~~~~
 
 不过上述几个参数并非所有openVPN客户端支持。
+
+update-2017-11-12:
+
+经过升级到openwrt 15.05.1后，发现openvpn-polarssl出现了segment fault，在路由器上没法调试，改用openvpn-openssl后，发现没有问题，配置等无需修改，完全兼容。
 <!-- markdown end -->
     </div>
     <div class="entry" id="main">
@@ -307,6 +311,10 @@ dhcp<span class="token operator">-</span>option PROXY_HTTPS 代理ip 代理端�
 </code></pre>
 
 <p>不过上述几个参数并非所有openVPN客户端支持。</p>
+
+<p>update-2017-11-12:</p>
+
+<p>经过升级到openwrt 15.05.1后，发现openvpn-polarssl出现了segment fault，在路由器上没法调试，改用openvpn-openssl后，发现没有问题，配置等无需修改，完全兼容。</p>
 <!-- content end -->
     </div>
     <br>

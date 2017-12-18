@@ -7,7 +7,23 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>碰巧发现一个水友电脑中了病毒</title><link>http://blog.shrp.me//find-a-cyber-friend-get-his-computer-infected-by-computer-virus.html</link><pubdate>2017-09-20</pubdate><content:encoded>&lt;p&gt;　　今天恰好看到有人在玩星际菠菜，我想起早以前在YY玩菠菜的经历，心理痒痒，也想试试手气，于是也打开网站上去找找菠菜的入口在哪里。&lt;/p&gt;
+    <item><title>在Mac OS X管理多个Java环境</title><link>http://blog.shrp.me//Manage-Multi-Java-version-on-Mac-OS-X.html</link><pubdate>2017-12-18</pubdate><content:encoded>&lt;p&gt;　　Java刚出了Java9，Java10也在日程上了。然而Java的相关环境实在是太多，对于某些增强型的组件，是依赖某个特定版本的Java进行工作的，当手头的项目多，不得不对不同版本的Java进行开发的时候，就必须来回不停切换版本，实在是不方便。其实不同版本的Java目录是不同的，完全可以同时存在。通过本文介绍的工具Jenv就可以管理本机的多个Java环境，并且通过简单的配置就可以让指定项目使用特定的Java版本，无需再进行反复切换了。这个工具本身还是开源的，地址就在&lt;a href="https://github.com/gcuisinier/jenv"&gt;https://github.com/gcuisinier/jenv&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;　　先要强调，Jenv是个脚本软件，作用环境限于shell环境内，如果是使用IDE比如eclipse，Intellij，那它体现不出它自己的价值，毕竟IDE一般都具有管理JDK的功能。安装Jenv的方式很简单，直接clone到~/.jenv中，然后把bin目录添加到系统路径中，重启shell就好啦。&lt;/p&gt;
+
+&lt;p&gt;　　&lt;code&gt;&amp;gt; git clone https://github.com/gcuisinier/jenv.git ~/.jenv&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;　　&lt;code&gt;&amp;gt; vim ~/.local/share/omf/init.fish&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;　　&lt;code&gt;&amp;gt; cp fish/jenv.fish ~/.config/fish/functions/&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;　　在文件中添加&lt;code&gt;set PATH $HOME/.jenv/bin $PATH&lt;/code&gt;。这是fish shell的安装方式，其他方式可以参考官方文档。&lt;/p&gt;
+
+&lt;p&gt;　　装好以后通过&lt;code&gt;jenv add /Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home&lt;/code&gt;可以将安装在该目录下的Java添加到jenv中。目前的jenv在fish上有点问题，jenv默认有两个文件夹不存在，因此需要先执行&lt;code&gt;mkdir ~/.jenv/versions&lt;/code&gt; 和 &lt;code&gt;mkdir ~/.jenv/plugins&lt;/code&gt;先建立目录才能执行jenv add和jenv enable-plugins.&lt;/p&gt;
+
+&lt;p&gt;　　Jenv有两个环境，global和local，分别对应全局jdk和文件夹内的jdk版本指定。对于我来说，一般全局使用最新的Java版本，在不能使用最新Java的文件夹内执行&lt;code&gt;jenv local 1.8.0&lt;/code&gt;来指定比如1.8.0版本。如果使用了maven，gradle等编译管理软件，需要用&lt;code&gt;jev enabel-plugin maven&lt;/code&gt;来重定向mvn命令，以便maven也使用指定的Java版本。其他工具，比如gradle，原理是类似的。&lt;/p&gt;
+
+&lt;p&gt;　　有了这个工具，从此再也不怕多种版本的Java开发啦！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Manage-Multi-Java-version-on-Mac-OS-X.html</guid></item><item><title>碰巧发现一个水友电脑中了病毒</title><link>http://blog.shrp.me//find-a-cyber-friend-get-his-computer-infected-by-computer-virus.html</link><pubdate>2017-09-20</pubdate><content:encoded>&lt;p&gt;　　今天恰好看到有人在玩星际菠菜，我想起早以前在YY玩菠菜的经历，心理痒痒，也想试试手气，于是也打开网站上去找找菠菜的入口在哪里。&lt;/p&gt;
 
 &lt;p&gt;　　没成想打开唯一的live.htm，却没发现菠菜的入口。难道入口屏蔽了？于是F12看看吧，不看不要紧，一看吓一跳，如下图：&lt;/p&gt;
 
@@ -229,7 +245,11 @@ dhcp&lt;span class="token operator"&gt;-&lt;/span&gt;option PROXY_HTTPS 代理ip
 &lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;dhcp&lt;span class="token operator"&gt;-&lt;/span&gt;option PROXY_AUTO_CONFIG_URL http&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;example&lt;span class="token punctuation"&gt;.&lt;/span&gt;tld&lt;span class="token operator"&gt;/&lt;/span&gt;proxy&lt;span class="token punctuation"&gt;.&lt;/span&gt;pac
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;不过上述几个参数并非所有openVPN客户端支持。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Install-OpenVPN-on-OpenWRT.html</guid></item><item><title>OpenWRT折腾KCPTUN</title><link>http://blog.shrp.me//KCPTUN-over-OpenWRT.html</link><pubdate>2017-01-29</pubdate><content:encoded>&lt;p&gt;　　年前刚好看到有个&lt;a href="https://github.com/xtaci/kcptun"&gt;KCPTUN&lt;/a&gt;项目，用于高ping网络的加速，趁过年也给家里的路由器加个速。&lt;/p&gt;
+&lt;p&gt;不过上述几个参数并非所有openVPN客户端支持。&lt;/p&gt;
+
+&lt;p&gt;update-2017-11-12:&lt;/p&gt;
+
+&lt;p&gt;经过升级到openwrt 15.05.1后，发现openvpn-polarssl出现了segment fault，在路由器上没法调试，改用openvpn-openssl后，发现没有问题，配置等无需修改，完全兼容。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Install-OpenVPN-on-OpenWRT.html</guid></item><item><title>OpenWRT折腾KCPTUN</title><link>http://blog.shrp.me//KCPTUN-over-OpenWRT.html</link><pubdate>2017-01-29</pubdate><content:encoded>&lt;p&gt;　　年前刚好看到有个&lt;a href="https://github.com/xtaci/kcptun"&gt;KCPTUN&lt;/a&gt;项目，用于高ping网络的加速，趁过年也给家里的路由器加个速。&lt;/p&gt;
 
 &lt;p&gt;　　先到要加速的服务器上安装server端。先下载服务端程序并且解压缩&lt;/p&gt;
 
@@ -265,21 +285,5 @@ main.go:64: stream opened
 
 &lt;p&gt;使用了以后网络速度杠杠的~&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//KCPTUN-over-OpenWRT.html</guid></item><item><title>JetBrains,为信仰充值</title><link>http://blog.shrp.me//JetBrains-Charge-For-Faith.html</link><pubdate>2016-10-08</pubdate><content:encoded>&lt;p&gt;　　上个月底我的 IntelliJ 教育版到期了，虽然我可以简单的收个邮件继续用免费的教育版，但是其实本质上它也是盗版，因为我在使用他进行商业开发，挣养家糊口的费用呢，是违反 Licence 的。&lt;/p&gt;
 
-&lt;p&gt;　　于是今天索性买了全家桶一年期，明年今日，还得继续买。我想想我现在应该没什么东西还是盗版了吧。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//JetBrains-Charge-For-Faith.html</guid></item><item><title>五月天演唱会归来</title><link>http://blog.shrp.me//Return-From-May-Day-Concert.html</link><pubdate>2016-08-27</pubdate><content:encoded>&lt;p&gt;　　昨晚从五月天鸟巢的演唱会归来，心情久久不能平静。之前上iTunes查看，最新的专辑都没有上架；昨晚再看，已然有了，赶紧买下来听，质量真的还是很不错的。&lt;/p&gt;
-
-&lt;p&gt;　　不过说起演唱会，觉得有的地方不错，有的地方却低于预期。五月天的互动做的不错，不过跟以前耳闻的那种级别，好像是稍微差了点，唱歌之间说的其实跟听众关系不大（或许跟五迷来说关系比较大）；而且还说从台上能看到每一位观众的脸……感觉怪怪的。大哥这里是鸟巢啊怎么看啊！最后退场居然什么也没说，朝三个方向三鞠躬就结束了。我本来以为会说点什么，欢迎大家下次继续来神马的……&lt;/p&gt;
-
-&lt;p&gt;　　最让人接受不能的是牛奶广告强行植入……唱了两首歌，阿信坐在台上喝了杯牛奶，还被说白色的粘稠的液体……大雾。&lt;/p&gt;
-
-&lt;p&gt;　　不过，歌曲安排的很好，每节都有快歌慢歌，老歌新歌，让听众都能参与进来；每首歌都或多或少做了修改，听众不是来听CD的；演唱会是18:30-21:30,大家回家都能坐地铁很方便。&lt;/p&gt;
-
-&lt;p&gt;　　随文带几张拍的图片：）&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://stirp.github.io/img/thumb_IMG_1091_1024.jpg" alt="" title=""&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://stirp.github.io/img/thumb_IMG_1093_1024.jpg" alt="" title=""&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://stirp.github.io/img/thumb_WechatIMG9_1024.jpg" alt="" title=""&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://stirp.github.io/img/thumb_WechatIMG12_1024.jpg" alt="" title=""&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Return-From-May-Day-Concert.html</guid></item></channel>
+&lt;p&gt;　　于是今天索性买了全家桶一年期，明年今日，还得继续买。我想想我现在应该没什么东西还是盗版了吧。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//JetBrains-Charge-For-Faith.html</guid></item></channel>
 </rss>

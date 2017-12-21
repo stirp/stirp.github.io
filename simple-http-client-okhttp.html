@@ -1,0 +1,456 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+
+[OKHttp](https://github.com/square/okhttp)支持以下功能：
+
+1. http/2支持，同一个host可以共享一个端口
+2. 如果http/2不支持，则使用连接池降低请求延迟
+3. 透明gzip请求的返回
+4. 可以针对重复的网络请求进行缓存
+
+下文将分几个方向介绍OKHttp：
+
+1.引用
+
+当前最新版本是3.9.1，使用maven仓库引入即可，maven配置如下：
+
+```xml
+	<dependency>
+	    <groupId>com.squareup.okhttp3</groupId>
+	    <artifactId>okhttp</artifactId>
+	    <version>3.9.1</version>
+	</dependency>
+```
+gradle 配置如下：
+
+```json
+compile 'com.squareup.okhttp3:okhttp:3.9.1'
+```
+
+2.先引入一个函数来表示具体的请求，后边的执行大多会使用这个函数来发起具体的请求
+
+```java
+private static Response executeRequest(final OkHttpClient okHttpClient, final Request build) {
+        try {
+            final Response response = okHttpClient.newCall(build).execute();
+            if (response.isSuccessful()) {
+                System.out.println(response.code() + " : " + response.body().string().length());
+            } else {
+                System.out.println(response.code());
+            }
+            return response;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+```
+
+3.基本的get请求
+
+```java
+final Request build = new Request.Builder().url("http://blog.shrp.me")
+                .header("PostId", "12345")
+                .addHeader("client-version", "3.9.1")
+                .build();
+        System.out.print("simple get: ");
+        executeRequest(okHttpClient, build);
+```
+
+4.基本的post请求
+
+```java
+final MediaType parse = MediaType.parse("application/json");
+        final RequestBody requestBody = RequestBody.create(parse, "{}");
+        final Request build = new Request.Builder().url("http://blog.shrp.me")
+                .post(requestBody)
+                .header("PostId", "12345")
+                .addHeader("client-version", "3.9.1")
+                .build();
+        System.out.print("simple post: ");
+        executeRequest(okHttpClient, build);
+```
+
+5.multipart post请求
+
+```java
+final MultipartBody form = new MultipartBody.Builder().addFormDataPart(
+                "test", "test"
+        ).build();
+        final Request build = new Request.Builder().url("http://blog.shrp.me")
+                .post(form)
+                .header("PostId", "12345")
+                .addHeader("client-version", "3.9.1")
+                .build();
+        System.out.print("multipart post: ");
+```
+
+6.带有缓存功能的get
+
+```java
+final File cacheDir = Files.createTempDirectory("test").toFile();
+        final Cache cache = new Cache(cacheDir, MAX_SIZE);
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder().cache(cache).build();
+        final Request build = new Request.Builder().url("http://blog.shrp.me")
+                .header("PostId", "12345")
+                .cacheControl(CacheControl.FORCE_NETWORK)
+                .addHeader("client-version", "3.9.1")
+                .build();
+        System.out.print("cached get: ");
+        final Response response = executeRequest(okHttpClient, build);
+        assert response.networkResponse() != null;
+        final Request request2 = new Request.Builder().url("http://blog.shrp.me")
+                .header("PostId", "12345")
+                .cacheControl(CacheControl.FORCE_CACHE)
+                .addHeader("client-version", "3.9.1")
+                .build();
+        final Response response2 = executeRequest(okHttpClient, request2);
+        assert response2.cacheResponse() != null;
+```
+
+7.异步请求
+
+```java
+final Request build = new Request.Builder().url("http://blog.shrp.me")
+                .header("PostId", "12345")
+                .addHeader("client-version", "3.9.1")
+                .build();
+        System.out.print("async get: ");
+        okHttpClient.newCall(build).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                System.out.println(call.request().url() + " is failed. " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    System.out.println(response.code() + " : " + response.body().string().length());
+                } else {
+                    System.out.println(response.code());
+                }
+            }
+        });
+```
+
+8.带有拦截器的请求
+
+```java
+ final File cacheDir = Files.createTempDirectory("test").toFile();
+        final Cache cache = new Cache(cacheDir, MAX_SIZE);
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder().cache(cache)
+                .addInterceptor(chain -> {
+//                    System.out.println("intercept 1.");
+                    final Response proceed = chain.proceed(chain.request());
+                    System.out.println("intercept 1 return.");
+                    return proceed;
+                })
+                .addInterceptor(chain -> {
+                    System.out.println("intercept 2.");
+                    final Response proceed = chain.proceed(chain.request());
+                    System.out.println("intercept 2 return.");
+                    return proceed;
+                })
+                .addNetworkInterceptor(chain -> {
+                    System.out.println("network intercept.");
+                    final Response proceed = chain.proceed(chain.request());
+                    System.out.println("network intercept return.");
+                    return proceed;
+                })
+                .build();
+        final Request build = new Request.Builder().url("http://blog.shrp.me")
+                .header("PostId", "12345")
+                .addHeader("client-version", "3.9.1")
+                .build();
+        System.out.print("intercept get: ");
+        executeRequest(okHttpClient, build);
+        System.out.print("intercept get from cache: ");
+        executeRequest(okHttpClient, build);
+```
+
+9.还可以添加认证器，在异步调用后使用cancel取消等功能。
+
+  okhttp的api更易用，据说性能也不错。以后有机会可以进行性能的比较。
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p><a href="https://github.com/square/okhttp">OKHttp</a>支持以下功能：</p>
+
+<ol>
+<li>http/2支持，同一个host可以共享一个端口</li>
+<li>如果http/2不支持，则使用连接池降低请求延迟</li>
+<li>透明gzip请求的返回</li>
+<li>可以针对重复的网络请求进行缓存</li>
+</ol>
+
+<p>下文将分几个方向介绍OKHttp：</p>
+
+<p>1.引用</p>
+
+<p>当前最新版本是3.9.1，使用maven仓库引入即可，maven配置如下：</p>
+
+<pre><code class="xml">    &lt;dependency&gt;
+        &lt;groupId&gt;com.squareup.okhttp3&lt;/groupId&gt;
+        &lt;artifactId&gt;okhttp&lt;/artifactId&gt;
+        &lt;version&gt;3.9.1&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+
+<p>gradle 配置如下：</p>
+
+<pre><code class="json">compile 'com.squareup.okhttp3:okhttp:3.9.1'
+</code></pre>
+
+<p>2.先引入一个函数来表示具体的请求，后边的执行大多会使用这个函数来发起具体的请求</p>
+
+<pre><code class="java">private static Response executeRequest(final OkHttpClient okHttpClient, final Request build) {
+        try {
+            final Response response = okHttpClient.newCall(build).execute();
+            if (response.isSuccessful()) {
+                System.out.println(response.code() + " : " + response.body().string().length());
+            } else {
+                System.out.println(response.code());
+            }
+            return response;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+</code></pre>
+
+<p>3.基本的get请求</p>
+
+<pre><code class="java">final Request build = new Request.Builder().url("http://blog.shrp.me")
+                .header("PostId", "12345")
+                .addHeader("client-version", "3.9.1")
+                .build();
+        System.out.print("simple get: ");
+        executeRequest(okHttpClient, build);
+</code></pre>
+
+<p>4.基本的post请求</p>
+
+<pre><code class="java">final MediaType parse = MediaType.parse("application/json");
+        final RequestBody requestBody = RequestBody.create(parse, "{}");
+        final Request build = new Request.Builder().url("http://blog.shrp.me")
+                .post(requestBody)
+                .header("PostId", "12345")
+                .addHeader("client-version", "3.9.1")
+                .build();
+        System.out.print("simple post: ");
+        executeRequest(okHttpClient, build);
+</code></pre>
+
+<p>5.multipart post请求</p>
+
+<pre><code class="java">final MultipartBody form = new MultipartBody.Builder().addFormDataPart(
+                "test", "test"
+        ).build();
+        final Request build = new Request.Builder().url("http://blog.shrp.me")
+                .post(form)
+                .header("PostId", "12345")
+                .addHeader("client-version", "3.9.1")
+                .build();
+        System.out.print("multipart post: ");
+</code></pre>
+
+<p>6.带有缓存功能的get</p>
+
+<pre><code class="java">final File cacheDir = Files.createTempDirectory("test").toFile();
+        final Cache cache = new Cache(cacheDir, MAX_SIZE);
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder().cache(cache).build();
+        final Request build = new Request.Builder().url("http://blog.shrp.me")
+                .header("PostId", "12345")
+                .cacheControl(CacheControl.FORCE_NETWORK)
+                .addHeader("client-version", "3.9.1")
+                .build();
+        System.out.print("cached get: ");
+        final Response response = executeRequest(okHttpClient, build);
+        assert response.networkResponse() != null;
+        final Request request2 = new Request.Builder().url("http://blog.shrp.me")
+                .header("PostId", "12345")
+                .cacheControl(CacheControl.FORCE_CACHE)
+                .addHeader("client-version", "3.9.1")
+                .build();
+        final Response response2 = executeRequest(okHttpClient, request2);
+        assert response2.cacheResponse() != null;
+</code></pre>
+
+<p>7.异步请求</p>
+
+<pre><code class="java">final Request build = new Request.Builder().url("http://blog.shrp.me")
+                .header("PostId", "12345")
+                .addHeader("client-version", "3.9.1")
+                .build();
+        System.out.print("async get: ");
+        okHttpClient.newCall(build).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                System.out.println(call.request().url() + " is failed. " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    System.out.println(response.code() + " : " + response.body().string().length());
+                } else {
+                    System.out.println(response.code());
+                }
+            }
+        });
+</code></pre>
+
+<p>8.带有拦截器的请求</p>
+
+<pre><code class="java"> final File cacheDir = Files.createTempDirectory("test").toFile();
+        final Cache cache = new Cache(cacheDir, MAX_SIZE);
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder().cache(cache)
+                .addInterceptor(chain -&gt; {
+//                    System.out.println("intercept 1.");
+                    final Response proceed = chain.proceed(chain.request());
+                    System.out.println("intercept 1 return.");
+                    return proceed;
+                })
+                .addInterceptor(chain -&gt; {
+                    System.out.println("intercept 2.");
+                    final Response proceed = chain.proceed(chain.request());
+                    System.out.println("intercept 2 return.");
+                    return proceed;
+                })
+                .addNetworkInterceptor(chain -&gt; {
+                    System.out.println("network intercept.");
+                    final Response proceed = chain.proceed(chain.request());
+                    System.out.println("network intercept return.");
+                    return proceed;
+                })
+                .build();
+        final Request build = new Request.Builder().url("http://blog.shrp.me")
+                .header("PostId", "12345")
+                .addHeader("client-version", "3.9.1")
+                .build();
+        System.out.print("intercept get: ");
+        executeRequest(okHttpClient, build);
+        System.out.print("intercept get from cache: ");
+        executeRequest(okHttpClient, build);
+</code></pre>
+
+<p>9.还可以添加认证器，在异步调用后使用cancel取消等功能。</p>
+
+<p>okhttp的api更易用，据说性能也不错。以后有机会可以进行性能的比较。</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "simple-http-client-okhttp.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

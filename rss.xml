@@ -7,7 +7,44 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>简单的Http客户端——OKHttp</title><link>http://blog.shrp.me//simple-http-client-okhttp.html</link><pubdate>2017-12-21</pubdate><content:encoded>&lt;p&gt;&lt;a href="https://github.com/square/okhttp"&gt;OKHttp&lt;/a&gt;支持以下功能：&lt;/p&gt;
+    <item><title>一个不严谨的 String Intern 测试</title><link>http://blog.shrp.me//a-None-Strict-String-Intern-Test.html</link><pubdate>2018-01-15</pubdate><content:encoded>&lt;p&gt;　　今天在 Reeder 上看到一个关于 String Intern 的&lt;a href="http://www.importnew.com/27694.html"&gt;文章&lt;/a&gt;，自己测试了一下，发现有些地方并不严谨。&lt;/p&gt;
+
+&lt;p&gt;　　原文用了一段如下代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="java"&gt;public static void main(String[] args) {
+    String s = new String("1");
+    s.intern();
+    String s2 = "1";
+    System.out.println(s == s2);
+    String s3 = new String("1") + new String("1");
+    s3.intern();
+    String s4 = "11";
+    System.out.println(s3 == s4);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;　　目的很明确，希望通过==判断 intern 能否为下一次赋值从 intern 的池里提供。然而这段代码做了一个假设：在 main 函数之前，没有任何字符串被 intern。&lt;/p&gt;
+
+&lt;p&gt;　　然而我在Java8以上测试，却发现了有意思的情况。考虑以下代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="java"&gt;    public static void main(String[] args) {
+        String s =  String.valueOf(1) + String.valueOf(1);
+        s.intern();
+        String s2 = "11";
+        System.out.println(s == s2);
+
+        String s3 = String.valueOf(1) + String.valueOf(2);
+        s3.intern();
+        String s4 = "12";
+        System.out.println(s3 == s4);
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;　　按照原文作者的假设，结果应该都是 true 才对，第一次 intern 的时候该对象保存进入常量，第二次赋值的时候取出，因此==的两个结果是 true。&lt;/p&gt;
+
+&lt;p&gt;　　但是在我的机器和其他同事的机器上却发现有人是 false，true，有人是 false，false，有人是 true，true。也就是说，JVM 根据某些信息提前进行了 intern，这种 intern 操作来自哪里，我暂时还不知道，有知道的同学可以帮忙在回复里解释一下。&lt;/p&gt;
+
+&lt;p&gt;　　BTW，调用 intern 却不是用其返回值作为对象，那么这次使用的对象不一定是在 Intern 里存储的那个对象，使用==的结果并不是确定的。这种类似 C 的未定义行为，不能作为 Java 特性的说明，也不能在生产代码里使用，原文的原理是正确的，但是代码却没有说服力了。这从另一个角度提醒我们写代码还是要大胆假设，小心求证。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//a-None-Strict-String-Intern-Test.html</guid></item><item><title>简单的Http客户端——OKHttp</title><link>http://blog.shrp.me//simple-http-client-okhttp.html</link><pubdate>2017-12-21</pubdate><content:encoded>&lt;p&gt;&lt;a href="https://github.com/square/okhttp"&gt;OKHttp&lt;/a&gt;支持以下功能：&lt;/p&gt;
 
 &lt;ol&gt;
 &lt;li&gt;http/2支持，同一个host可以共享一个端口&lt;/li&gt;
@@ -170,7 +207,7 @@
 
 &lt;p&gt;9.还可以添加认证器，在异步调用后使用cancel取消等功能。&lt;/p&gt;
 
-&lt;p&gt;okhttp的api更易用，据说性能也不错。以后有机会可以进行性能的比较。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//simple-http-client-okhttp.html</guid></item><item><title>在Mac OS X管理多个Java环境</title><link>http://blog.shrp.me//Manage-Multi-Java-version-on-Mac-OS-X.html</link><pubdate>2017-12-18</pubdate><content:encoded>&lt;p&gt;　　Java刚出了Java9，Java10也在日程上了。然而Java的相关环境实在是太多，对于某些增强型的组件，是依赖某个特定版本的Java进行工作的，当手头的项目多，不得不对不同版本的Java进行开发的时候，就必须来回不停切换版本，实在是不方便。其实不同版本的Java目录是不同的，完全可以同时存在。通过本文介绍的工具Jenv就可以管理本机的多个Java环境，并且通过简单的配置就可以让指定项目使用特定的Java版本，无需再进行反复切换了。这个工具本身还是开源的，地址就在&lt;a href="https://github.com/gcuisinier/jenv"&gt;https://github.com/gcuisinier/jenv&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;okhttp的api更易用，据说性能也不错。以后有机会可以进行性能的比较。本文代码可以在&lt;a href="https://github.com/stirp/MyTests"&gt;https://github.com/stirp/MyTests&lt;/a&gt;找到。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//simple-http-client-okhttp.html</guid></item><item><title>在Mac OS X管理多个Java环境</title><link>http://blog.shrp.me//Manage-Multi-Java-version-on-Mac-OS-X.html</link><pubdate>2017-12-18</pubdate><content:encoded>&lt;p&gt;　　Java刚出了Java9，Java10也在日程上了。然而Java的相关环境实在是太多，对于某些增强型的组件，是依赖某个特定版本的Java进行工作的，当手头的项目多，不得不对不同版本的Java进行开发的时候，就必须来回不停切换版本，实在是不方便。其实不同版本的Java目录是不同的，完全可以同时存在。通过本文介绍的工具Jenv就可以管理本机的多个Java环境，并且通过简单的配置就可以让指定项目使用特定的Java版本，无需再进行反复切换了。这个工具本身还是开源的，地址就在&lt;a href="https://github.com/gcuisinier/jenv"&gt;https://github.com/gcuisinier/jenv&lt;/a&gt;。&lt;/p&gt;
 
 &lt;p&gt;　　先要强调，Jenv是个脚本软件，作用环境限于shell环境内，如果是使用IDE比如eclipse，Intellij，那它体现不出它自己的价值，毕竟IDE一般都具有管理JDK的功能。安装Jenv的方式很简单，直接clone到~/.jenv中，然后把bin目录添加到系统路径中，重启shell就好啦。&lt;/p&gt;
 
@@ -416,39 +453,5 @@ dhcp&lt;span class="token operator"&gt;-&lt;/span&gt;option PROXY_HTTPS 代理ip
 
 &lt;p&gt;update-2017-11-12:&lt;/p&gt;
 
-&lt;p&gt;经过升级到openwrt 15.05.1后，发现openvpn-polarssl出现了segment fault，在路由器上没法调试，改用openvpn-openssl后，发现没有问题，配置等无需修改，完全兼容。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Install-OpenVPN-on-OpenWRT.html</guid></item><item><title>OpenWRT折腾KCPTUN</title><link>http://blog.shrp.me//KCPTUN-over-OpenWRT.html</link><pubdate>2017-01-29</pubdate><content:encoded>&lt;p&gt;　　年前刚好看到有个&lt;a href="https://github.com/xtaci/kcptun"&gt;KCPTUN&lt;/a&gt;项目，用于高ping网络的加速，趁过年也给家里的路由器加个速。&lt;/p&gt;
-
-&lt;p&gt;　　先到要加速的服务器上安装server端。先下载服务端程序并且解压缩&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;wget https&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;github&lt;span class="token punctuation"&gt;.&lt;/span&gt;com&lt;span class="token operator"&gt;/&lt;/span&gt;xtaci&lt;span class="token operator"&gt;/&lt;/span&gt;kcptun&lt;span class="token operator"&gt;/&lt;/span&gt;releases&lt;span class="token operator"&gt;/&lt;/span&gt;download&lt;span class="token operator"&gt;/&lt;/span&gt;v20170120&lt;span class="token operator"&gt;/&lt;/span&gt;kcptun&lt;span class="token operator"&gt;-&lt;/span&gt;linux&lt;span class="token number"&gt;-386&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&lt;span class="token number"&gt;20170120&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;tar&lt;span class="token punctuation"&gt;.&lt;/span&gt;gz
-
-tar &lt;span class="token operator"&gt;-&lt;/span&gt;zxcf kcptun&lt;span class="token operator"&gt;-&lt;/span&gt;linux&lt;span class="token number"&gt;-386&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&lt;span class="token number"&gt;20170120&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;tar&lt;span class="token punctuation"&gt;.&lt;/span&gt;gz
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;得到了两个程序&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;rwxr&lt;span class="token operator"&gt;-&lt;/span&gt;xr&lt;span class="token operator"&gt;-&lt;/span&gt;x &lt;span class="token number"&gt;1&lt;/span&gt;  &lt;span class="token number"&gt;2908832&lt;/span&gt;  &lt;span class="token number"&gt;1&lt;/span&gt;月 &lt;span class="token number"&gt;20&lt;/span&gt; &lt;span class="token number"&gt;03&lt;/span&gt;&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token number"&gt;45&lt;/span&gt; client_linux_386
-&lt;span class="token operator"&gt;-&lt;/span&gt;rwxr&lt;span class="token operator"&gt;-&lt;/span&gt;xr&lt;span class="token operator"&gt;-&lt;/span&gt;x &lt;span class="token number"&gt;1&lt;/span&gt;  &lt;span class="token number"&gt;2896448&lt;/span&gt;  &lt;span class="token number"&gt;1&lt;/span&gt;月 &lt;span class="token number"&gt;20&lt;/span&gt; &lt;span class="token number"&gt;03&lt;/span&gt;&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token number"&gt;45&lt;/span&gt; server_linux_386
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;使用如下命令开始服务端的转发&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;root&lt;span class="token operator"&gt;/&lt;/span&gt;kcptun&lt;span class="token operator"&gt;/&lt;/span&gt;server_linux_386 &lt;span class="token operator"&gt;-&lt;/span&gt;t &lt;span class="token string"&gt;"shadowsocks服务器ip:端口"&lt;/span&gt; &lt;span class="token operator"&gt;-&lt;/span&gt;l &lt;span class="token string"&gt;":加速端口"&lt;/span&gt; &lt;span class="token operator"&gt;--&lt;/span&gt;mode fast2 &lt;span class="token operator"&gt;--&lt;/span&gt;key &lt;span class="token string"&gt;"密码"&lt;/span&gt; &lt;span class="token operator"&gt;--&lt;/span&gt;nocomp &lt;span class="token operator"&gt;&amp;amp;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;　　然后在OpenWRT路由器上安装客户端，原项目没有ar71xx的程序，可以到&lt;a href="https://github.com/bettermanbao/openwrt-kcptun/releases"&gt;https://github.com/bettermanbao/openwrt-kcptun/releases&lt;/a&gt;下载，解压后也是两个程序，我们只需要如下这个程序就足够了&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;rwxrwxr&lt;span class="token operator"&gt;-&lt;/span&gt;x    &lt;span class="token number"&gt;1&lt;/span&gt; &lt;span class="token number"&gt;1000&lt;/span&gt;     &lt;span class="token number"&gt;1000&lt;/span&gt;       &lt;span class="token number"&gt;1241980&lt;/span&gt; Jan &lt;span class="token number"&gt;20&lt;/span&gt; &lt;span class="token number"&gt;10&lt;/span&gt;&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token number"&gt;03&lt;/span&gt; client_linux_mips
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;使用如下命令启动客户端&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;client_linux_mips &lt;span class="token operator"&gt;-&lt;/span&gt;r &lt;span class="token string"&gt;"服务端ip:端口"&lt;/span&gt; &lt;span class="token operator"&gt;-&lt;/span&gt;l &lt;span class="token string"&gt;":444"&lt;/span&gt; &lt;span class="token operator"&gt;--&lt;/span&gt;mode fast2 &lt;span class="token operator"&gt;--&lt;/span&gt;key &lt;span class="token string"&gt;"密码"&lt;/span&gt; &lt;span class="token operator"&gt;--&lt;/span&gt;nocomp &lt;span class="token operator"&gt;&amp;amp;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果不加--nocomp，会在client端遇到
-main.go:64: stream opened
-&lt;code&gt;panic: runtime error: slice bounds out of range错误&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;使用了以后网络速度杠杠的~&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//KCPTUN-over-OpenWRT.html</guid></item></channel>
+&lt;p&gt;经过升级到openwrt 15.05.1后，发现openvpn-polarssl出现了segment fault，在路由器上没法调试，改用openvpn-openssl后，发现没有问题，配置等无需修改，完全兼容。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Install-OpenVPN-on-OpenWRT.html</guid></item></channel>
 </rss>

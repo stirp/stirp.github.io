@@ -7,7 +7,19 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>一个不严谨的 String Intern 测试</title><link>http://blog.shrp.me//a-None-Strict-String-Intern-Test.html</link><pubdate>2018-01-15</pubdate><content:encoded>&lt;p&gt;　　今天在 Reeder 上看到一个关于 String Intern 的&lt;a href="http://www.importnew.com/27694.html"&gt;文章&lt;/a&gt;，自己测试了一下，发现有些地方并不严谨。&lt;/p&gt;
+    <item><title>程序员工作用什么操作系统？</title><link>http://blog.shrp.me//Which-OS-Do-Programers-Prefer-At-Work.html</link><pubdate>2018-03-10</pubdate><content:encoded>&lt;h1 id=""&gt;程序员工作用什么操作系统？&lt;/h1&gt;
+
+&lt;p&gt;　　今天偶然看到之前关注的 vpsee 网站一篇09年的文章(&lt;a href="https://www.vpsee.com/2009/06/why-programmers-love-mac/"&gt;为什么国外程序员爱用 Mac？ | vpsee.com&lt;/a&gt;)在讨论为什么程序员喜欢用 Mac，文章后洋洋洒洒数百个评论或激昂，或讽刺，或诅咒，或炫耀，好不热闹。恰好最近一个.Net 开发同事想用 Mac 开发 Java 程序，一个 Java 开发 同事想把自己的 Mac 换成 Windows，真是有意思。于是我也按耐不住，想要说点什么。&lt;/p&gt;
+
+&lt;p&gt;　　开始前我想先声明一下，如果说有人说这个话题没有偏颇，我真不太相信。每个人连颜色都有自己的偏好，操作系统这么复杂而又常用的东西如果没有喜好那也太大条了。我当然也不例外。就目前而言，我作为一个开发，是用 Mac 多一些，也喜欢用 Mac；但是我并不觉得每个程序员都用，或者每个程序员都喜欢用 Mac 是正常的，正相反，我觉得最多只有一半喜欢或者应该用 Mac来从事开发工作。&lt;/p&gt;
+
+&lt;p&gt;　　先说 Windwos。Windows 借中国早先盗版的问题最先在群众中普及，我也不例外，从98年家里的第一台电脑开始就在用 Windows。这个系统我们用得多了，也就耳熟能详怎么去把玩到极致：从 DOS 时代在启动文件里调整虚拟内存，到9x 的简繁转换，再到 NT 内核系统的服务优化，再到 Windows10 的免费升级。应用怎么查杀，注册表的大体结构，游戏使用的 direct 技术和安装方法，不论是写代码，玩游戏，还是看电影听音乐，基本是无所不能。更不要说.NET 程序员了，目前来说只在 Windows 工作。甚至包括怎么分区，多久备份一次，怎么快速备份恢复，一个老 Windows 程序员估计都有自己的方案，以免在升级失败，电脑蓝屏时还不用耽误太久工作。尽管这些技能都跟程序开发没有直接关系，却能帮助我们尽快解决手头的问题，把精力集中在开发上。然而并不是程序员都是.NET 程序员，Windows 也不是100%契合所有开发人员的需求，有些问题会一而再再而三的坑害开发，比如说中文版 Windows 默认的字符编码是 GB2312，而大多数部署到 Linux 的软件都得处理 UTF-8。那么开发在部署的时候经常要注意自己的代码里处理字符集转换，一些文字要提前处理成 UTF-8。而且即便是在 Windows 保存为 UTF-8文件，还会面临另一个问题：BOM 头。在 Windows 上 BOM 一般不会惹什么麻烦，但是当部署到 Linux 服务器的时候，结果就不好说了；ImportNews 网站的 RSS 甚至就带有 BOM 头，而带有 BOM 头的 RSS 是不符合 XML 规范的。一个 Java 专业社区的组件都有这样的 bug，还能指望 Windwos 开发对于 Linux 开发有多友好呢？再比如说 Windows 的目录是分磁盘的，C:\，D:\等等，而且目录的分割用\而不是/。这对一些预计部署在 Linux 的服务的开发带来了负面的影响。再有就是孱弱的命令行环境了，自带的命令稀缺，Linux 的工具链工具几乎不支持，这对于工作面对 Linux 服务器的程序员来说都不是什么好事情。&lt;/p&gt;
+
+&lt;p&gt;　　再说 Linux。我刚开始用 Linux 还是高三的时候，是很经典的小红帽 Red Hat，好像一共6张 CD 光盘。当时就是尝个鲜，装好了以后主要在窗口界面里乱用。后来工作后才真正开始学习怎么去用 Linux，看《鸟哥的 Linux 私房菜》，把服务部署到 Linux 服务器上，但是当时开发还是 Windows。在进行了1年的 跨平台开发后，被字符集坑惨的我开始用最流行的 Ubuntu 来开发程序，当时使用的是 Ubuntu10 LTS。 Ubuntu确实简单易上手，互联网上也充斥着大量使用 Ubuntu 的经验，基本上遇到什么问题都能用搜索引擎得到质量比较高的回答。Linux 跟生产的环境是相当契合的，不太容易出现环境部署的问题。但是 Ubuntu 最大的问题就是官方仓库东西还是不够，必须添加私有源；可是私有源到了后期却或多或少带有的陈旧核心组件，都可能存在不同乃至冲突。有时候甚至为了看 flash，装个 vpn 而安装的某个源带入的依赖跟系统最新的根本不搭，导致后续的更新都不能应用了。解决问题一定是有方法的，但是却需要开发者投入不少的精力去跟踪操作系统里发生了什么冲突，怎么去解决。此后我还用过 cent OS，Mint，Arch，然而大同小异，总是因为系统里安装的什么东西不兼容，从而系统没法完整升级。这种情况一开始可能只是几个包，但是后来不满足依赖的升级越来越多，而且有时候为了某个特定的需要，比如 docker，还不得不升级。这些冲突解决起来痛苦而且耗费时间，因此Linux最适合还是放在服务器里，不出事情几年都想不起升个级的。&lt;/p&gt;
+
+&lt;p&gt;　　至于 Mac 么，真的是我用过最省心的操作系统了。插上移动硬盘就自动备份，不管是换电脑，还是出问题重装系统，都可以在一个小时左右恢复搞定，而且恢复以后打开浏览器，上次没关闭的窗口还热乎着呢。目录符合 unix 风格，程序跑起来没什么毛病。工具链也有，很多脚本都是可以直接用的。用 Mac 开发，既可以不断享受升级，又不会太折腾，可以把精力集中在代码本身。不过 Mac 也不是完全没有问题。就我自己遇到的就有这么几种情况：每次升级都有可能一些安全性的提升导致某些软件用不了；1024以下的端口默认不可以被用户程序占用；命令其实是 BSD 版本的，参数跟 Linux 上的并不一致；默认文件系统不是大小写敏感的，甚至很多软件都不支持在大小写敏感的分区上使用（没想到吧）；并不太可能做到完全不用鼠标，不过用鼠标的次数还是可以比较少的。&lt;/p&gt;
+
+&lt;p&gt;　　在我看来，其实并没有一个最合适的电脑。如果想省心省力，能够集中精力去开发的，也就是 Mac 了，这也是大多数中年程序员的首选，每天除了工作还要肩负养家糊口的重担，没有太多时间去折腾设备，用一款 Mac 可以帮助他们做到这点。如果是刚刚开始工作的程序员，有大把时间去折腾，那选择一款 Linux 长时间使用就比较合适，能够更熟悉自己软件部署的环境，写出的代码就更容易减少出 bug 的可能，如果剩下的软件也能维护好升级和依赖的关系，配置的足够好，免鼠标什么的没问题，开发效率也可以得到提升。至于剩下的程序员，或者要开发 Windows 程序，或者 Windows 非常熟悉，或者对系统差异足够熟悉的，用 Windows 开发并不会给他们带来不便。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Which-OS-Do-Programers-Prefer-At-Work.html</guid></item><item><title>一个不严谨的 String Intern 测试</title><link>http://blog.shrp.me//a-None-Strict-String-Intern-Test.html</link><pubdate>2018-01-15</pubdate><content:encoded>&lt;p&gt;　　今天在 Reeder 上看到一个关于 String Intern 的&lt;a href="http://www.importnew.com/27694.html"&gt;文章&lt;/a&gt;，自己测试了一下，发现有些地方并不严谨。&lt;/p&gt;
 
 &lt;p&gt;　　原文用了一段如下代码：&lt;/p&gt;
 
@@ -318,140 +330,5 @@
 sudo yum install http&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;li&lt;span class="token punctuation"&gt;.&lt;/span&gt;nux&lt;span class="token punctuation"&gt;.&lt;/span&gt;ro&lt;span class="token operator"&gt;/&lt;/span&gt;download&lt;span class="token operator"&gt;/&lt;/span&gt;nux&lt;span class="token operator"&gt;/&lt;/span&gt;dextop&lt;span class="token operator"&gt;/&lt;/span&gt;el7&lt;span class="token operator"&gt;/&lt;/span&gt;x86_64&lt;span class="token operator"&gt;/&lt;/span&gt;NetworkManager&lt;span class="token operator"&gt;-&lt;/span&gt;pptp&lt;span class="token operator"&gt;-&lt;/span&gt;gnome&lt;span class="token number"&gt;-0.9&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token number"&gt;8.2&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&lt;span class="token number"&gt;4&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;el7&lt;span class="token punctuation"&gt;.&lt;/span&gt;nux&lt;span class="token punctuation"&gt;.&lt;/span&gt;x86_64&lt;span class="token punctuation"&gt;.&lt;/span&gt;rpm
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;之后在系统的网络设置中就能够添加自己的配置啦！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Install-pptp-and-gnome-pptp-client-on-centos7.html</guid></item><item><title>OpenWRT安装OpenVPN</title><link>http://blog.shrp.me//Install-OpenVPN-on-OpenWRT.html</link><pubdate>2017-01-30</pubdate><content:encoded>&lt;p&gt;　　苹果升级iOS10和Mac OS X Sierra有一段时间了，我的iPhone一不小心就中招升级了，导致我在外边玩游戏速度特别差，也不能拨号回家。&lt;/p&gt;
-
-&lt;p&gt;　　之前尝试着装个L2tp服务器，发现问题多多，始终不能成功；正好这次放假看到了知乎这个&lt;a href="https://www.zhihu.com/question/21751217/answer/32851461"&gt;答案&lt;/a&gt;，所以就尝试着按照这个方式装一个OpenVPN服务器。&lt;/p&gt;
-
-&lt;p&gt;　　1、安装相应的软件：&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;opkg update
-opkg install openvpn&lt;span class="token operator"&gt;-&lt;/span&gt;polarssl
-opkg install openvpn&lt;span class="token operator"&gt;-&lt;/span&gt;easy&lt;span class="token operator"&gt;-&lt;/span&gt;rsa
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;　　原文说的KEY_CN就是被注解掉的，所以不用执行相应的sed。&lt;/p&gt;
-
-&lt;p&gt;　　2、修改/etc/easy-rsa/vars，把原文所说的&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;KEY_SIZE=2048
-export KEY_COUNTRY=CN
-export KEY_PROVINCE=Canton
-export KEY_CITY=city_name
-export KEY_ORG=org_name
-export KEY_EMAIL=email_address
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;都修改一下，然后执行&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;source &lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;easy&lt;span class="token operator"&gt;-&lt;/span&gt;rsa&lt;span class="token operator"&gt;/&lt;/span&gt;vars
-clean&lt;span class="token operator"&gt;-&lt;/span&gt;all
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;来做好生成证书的准备。&lt;/p&gt;
-
-&lt;p&gt;　　3、执行命令生成证书&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;pkitool –initca
-pkitool &lt;span class="token operator"&gt;--&lt;/span&gt;server 服务端名称
-pkitool 客户端名称&lt;span class="token number"&gt;0&lt;/span&gt;
-pkitool 客户端名称&lt;span class="token number"&gt;1&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;理论上有一个客户端就需要生成一套客户端的证书，当然，你也可以按照我的一会列出的参数，一套证书多个客户端使用。&lt;/p&gt;
-
-&lt;p&gt;　　4、执行&lt;code&gt;build-dh&lt;/code&gt;来生成Diffie Hellman参数&lt;/p&gt;
-
-&lt;p&gt;　　5、生成ta.key&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;openvpn &lt;span class="token operator"&gt;--&lt;/span&gt;genkey &lt;span class="token operator"&gt;--&lt;/span&gt;secret &lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;easy&lt;span class="token operator"&gt;-&lt;/span&gt;rsa&lt;span class="token operator"&gt;/&lt;/span&gt;keys&lt;span class="token operator"&gt;/&lt;/span&gt;ta&lt;span class="token punctuation"&gt;.&lt;/span&gt;key
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;　　6、编辑/etc/config/network，修改lan下的option ifname ，增加tun0&lt;/p&gt;
-
-&lt;p&gt;　　7、修改/etc/config/openvpn&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;config openvpn my&lt;span class="token operator"&gt;-&lt;/span&gt;server
-    option enabled &lt;span class="token number"&gt;1&lt;/span&gt;
-    option local &lt;span class="token number"&gt;0.0&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token number"&gt;0.0&lt;/span&gt;
-    option port &lt;span class="token number"&gt;1194&lt;/span&gt;
-    option proto tcp
-    option dev tun
-    option ca &lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;easy&lt;span class="token operator"&gt;-&lt;/span&gt;rsa&lt;span class="token operator"&gt;/&lt;/span&gt;keys&lt;span class="token operator"&gt;/&lt;/span&gt;ca&lt;span class="token punctuation"&gt;.&lt;/span&gt;crt
-    option cert &lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;easy&lt;span class="token operator"&gt;-&lt;/span&gt;rsa&lt;span class="token operator"&gt;/&lt;/span&gt;keys&lt;span class="token operator"&gt;/&lt;/span&gt;my&lt;span class="token operator"&gt;-&lt;/span&gt;server&lt;span class="token punctuation"&gt;.&lt;/span&gt;crt
-    option key &lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;easy&lt;span class="token operator"&gt;-&lt;/span&gt;rsa&lt;span class="token operator"&gt;/&lt;/span&gt;keys&lt;span class="token operator"&gt;/&lt;/span&gt;my&lt;span class="token operator"&gt;-&lt;/span&gt;server&lt;span class="token punctuation"&gt;.&lt;/span&gt;key
-    option dh &lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;easy&lt;span class="token operator"&gt;-&lt;/span&gt;rsa&lt;span class="token operator"&gt;/&lt;/span&gt;keys&lt;span class="token operator"&gt;/&lt;/span&gt;dh2048&lt;span class="token punctuation"&gt;.&lt;/span&gt;pem
-    option server &lt;span class="token string"&gt;"172.8.0.0 255.255.255.0"&lt;/span&gt;
-    list push &lt;span class="token string"&gt;"redirect-gateway def1"&lt;/span&gt;
-    list push &lt;span class="token string"&gt;"dhcp-option DNS 172.8.0.1"&lt;/span&gt;
-    list push &lt;span class="token string"&gt;"dhcp-option WINS 172.8.0.1"&lt;/span&gt;
-    option client_to_client &lt;span class="token number"&gt;1&lt;/span&gt;
-    option duplicate_cn &lt;span class="token number"&gt;1&lt;/span&gt; &lt;span class="token comment" spellcheck="true"&gt;#允许一个证书多个客户端使用
-&lt;/span&gt;    option keepalive &lt;span class="token string"&gt;"10 120"&lt;/span&gt;
-    option tls_auth &lt;span class="token string"&gt;"/etc/easy-rsa/keys/ta.key 0"&lt;/span&gt;
-    option tls_server &lt;span class="token number"&gt;1&lt;/span&gt;
-    option comp_lzo yes
-    option max_clients &lt;span class="token number"&gt;100&lt;/span&gt;
-    option persist_key &lt;span class="token number"&gt;1&lt;/span&gt;
-    option persist_tun &lt;span class="token number"&gt;1&lt;/span&gt;
-    option status &lt;span class="token operator"&gt;/&lt;/span&gt;tmp&lt;span class="token operator"&gt;/&lt;/span&gt;openvpn&lt;span class="token operator"&gt;-&lt;/span&gt;status&lt;span class="token punctuation"&gt;.&lt;/span&gt;log
-    option log         &lt;span class="token operator"&gt;/&lt;/span&gt;tmp&lt;span class="token operator"&gt;/&lt;/span&gt;openvpn&lt;span class="token punctuation"&gt;.&lt;/span&gt;log
-    option verb &lt;span class="token number"&gt;3&lt;/span&gt;
-    option mute &lt;span class="token number"&gt;20&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;　　8、添加路由做测试 &lt;code&gt;iptables -t nat -A POSTROUTING -s 172.8.0.0/24 -j MASQUERADE&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;　　9、添加路由，保证以后重启能正常使用&lt;code&gt;iptables -A FORWARD -s 172.8.0.0/24 -j ACCEPT&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;　　10、编辑&lt;code&gt;/etc/config/firewall&lt;/code&gt;，在wan开放1194端口&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;config rule
-option enabled &lt;span class="token string"&gt;'1'&lt;/span&gt;
-option target &lt;span class="token string"&gt;'ACCEPT'&lt;/span&gt;
-option src &lt;span class="token string"&gt;'wan'&lt;/span&gt;
-option name &lt;span class="token string"&gt;'Allow-WAN-OpenVPN-Input'&lt;/span&gt;
-option family &lt;span class="token string"&gt;'ipv4'&lt;/span&gt;
-option proto &lt;span class="token string"&gt;'tcp'&lt;/span&gt;
-option dest_port &lt;span class="token string"&gt;'1194'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;　　11、重启服务生效 &lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;init&lt;span class="token punctuation"&gt;.&lt;/span&gt;d&lt;span class="token operator"&gt;/&lt;/span&gt;openvpn enable
-reboot（or &lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;init&lt;span class="token punctuation"&gt;.&lt;/span&gt;d&lt;span class="token operator"&gt;/&lt;/span&gt;network restart&lt;span class="token punctuation"&gt;;&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;init&lt;span class="token punctuation"&gt;.&lt;/span&gt;d&lt;span class="token operator"&gt;/&lt;/span&gt;firewall restart&lt;span class="token punctuation"&gt;;&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;etc&lt;span class="token operator"&gt;/&lt;/span&gt;init&lt;span class="token punctuation"&gt;.&lt;/span&gt;d&lt;span class="token operator"&gt;/&lt;/span&gt;openvpn start&lt;span class="token punctuation"&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;客户端只要把相应的ca.crt,ta.key,客户端.crt，客户端.key下载下来，编辑文本文件vpn.ovpn，内容如下：&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;client
-proto tcp
-remote 服务器ip &lt;span class="token number"&gt;1194&lt;/span&gt;
-dev tun
-comp&lt;span class="token operator"&gt;-&lt;/span&gt;lzo
-nobind
-ca ca&lt;span class="token punctuation"&gt;.&lt;/span&gt;crt
-cert 客户端&lt;span class="token punctuation"&gt;.&lt;/span&gt;crt
-key 客户端&lt;span class="token punctuation"&gt;.&lt;/span&gt;key
-tls&lt;span class="token operator"&gt;-&lt;/span&gt;auth ta&lt;span class="token punctuation"&gt;.&lt;/span&gt;key &lt;span class="token number"&gt;1&lt;/span&gt;
-route&lt;span class="token operator"&gt;-&lt;/span&gt;delay &lt;span class="token number"&gt;2&lt;/span&gt;
-route&lt;span class="token operator"&gt;-&lt;/span&gt;method exe
-verb &lt;span class="token number"&gt;3&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果需要拨号后使用代理，只需要添加如下参数：&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;dhcp&lt;span class="token operator"&gt;-&lt;/span&gt;option PROXY_HTTP 代理ip 代理端口
-dhcp&lt;span class="token operator"&gt;-&lt;/span&gt;option PROXY_HTTPS 代理ip 代理端口
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果要使用自动代理，添加如下参数：&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;dhcp&lt;span class="token operator"&gt;-&lt;/span&gt;option PROXY_AUTO_CONFIG_URL http&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;example&lt;span class="token punctuation"&gt;.&lt;/span&gt;tld&lt;span class="token operator"&gt;/&lt;/span&gt;proxy&lt;span class="token punctuation"&gt;.&lt;/span&gt;pac
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;不过上述几个参数并非所有openVPN客户端支持。&lt;/p&gt;
-
-&lt;p&gt;update-2017-11-12:&lt;/p&gt;
-
-&lt;p&gt;经过升级到openwrt 15.05.1后，发现openvpn-polarssl出现了segment fault，在路由器上没法调试，改用openvpn-openssl后，发现没有问题，配置等无需修改，完全兼容。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Install-OpenVPN-on-OpenWRT.html</guid></item></channel>
+&lt;p&gt;之后在系统的网络设置中就能够添加自己的配置啦！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Install-pptp-and-gnome-pptp-client-on-centos7.html</guid></item></channel>
 </rss>

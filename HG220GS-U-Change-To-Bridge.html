@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+前两天联通宽带续费升级，原来的百兆猫要换成千兆猫，新猫型号是HG220GS-U.我自己有需要把光猫后的路由器映射到公网去,因此一般都会做dmz或者端口映射.联通原来的猫就有bug,dmz设置不生效,必须要挨个做端口映射;这个新猫更过分,dmz和端口映射均不生效.还好在网上搜到老周的一篇教程[烽火HG220G-U E00L2.03M2000光猫改桥接教程](http://guanggai.org/thread-459-1-1.html),解决了问题.
+
+原文里也有点小问题,telnet节点不必打开,后续操作也用不上telnet,而且telnet一旦打开,从外网也可以telnet到的,用户名admin,密码admin,只怕没几分钟就已经被攻陷了.其他操作均与原文相同.
+
+为了防止原链接失效,简单讲过程记在下边:
+
+1. 登录光猫管理页面[http://192.168.1.1/](http://192.168.1.1/),默认用户名user,密码在光猫背后.
+
+2.  登录后访问[http://192.168.1.1/backupsettings.conf](http://192.168.1.1/backupsettings.conf),将现有的配置文件保存并且备份,不管什么时候都能轻易恢复原有配置了
+
+3. 使用notepad++或者sublime编辑一个配置文件的副本,先找到&lt;Name>&lt;/Name>之间包括IPTV的那个配置,北京联通通常出现在&lt;WANConnectionDevice instance="4"&gt;下,可以看到该配置的X\_BROADCOM\_COM\_IfName的属性是epon0.4.
+
+4. 再找到上网的配置,也就是&lt;Name>&lt;/Name>之间包括INTERNET的那个配置,通常是&lt;WANConnectionDevice instance="2"&gt;
+
+5. 删除该配置节点内的删除&lt;IdleDisconnectTime>120&lt;/IdleDisconnectTime>一整行。
+
+6. 修改该配置节点内的ConnectionType属性,从IP\_Routed改为PPPoE\_Bridged.
+
+7. 该配置节点的名字从2\_INTERNET\_R\_VID\_3961改成2\_INTERNET\_B\_VID\_3961(也就是R改成了B),这个改动不知道是否必须
+
+8. 该配置节点的X\_BROADCOM\_COM\_IfName属性从ppp0.2改成epon0.2
+
+9. 在该配置节点X\_BROADCOM\_COM\_IfName后新增节点&lt;X\_CU\_IPMode>3&lt;/X\_CU\_IPMode>
+
+10. 保存文件
+
+11. 访问[http://192.168.1.1/updatesettings.html](http://192.168.1.1/updatesettings.html),选择上传配置,然后路由会自动重启,重启后就是桥接模式了,需要光猫后边的路由器或者电脑自己拨号才能上网了.
+
+PS:旧版的HG220GS是可以通过网址[http://192.168.1.1/logoffaccount.html](http://192.168.1.1/logoffaccount.html)打开隐藏账户的,然后就可以通过[http://192.168.1.1/cu.html](http://192.168.1.1/cu.html)登录管理员账户,用户名CUAdmin,密码123qweasdzxc.但是我的这个网页是不能访问的.隐藏账户登录后可以关闭端口扫描的防御来打开DMZ和端口映射功能.
+
+但是又有人说这种情况可以通过[http://192.168.1.1/logoffaccount.cmd?enableFactoryAccount=1](http://192.168.1.1/logoffaccount.cmd?enableFactoryAccount=1)访问来开启隐藏账户,这个我就没有尝试了,大家可以自行尝试.
+
+
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>前两天联通宽带续费升级，原来的百兆猫要换成千兆猫，新猫型号是HG220GS-U.我自己有需要把光猫后的路由器映射到公网去,因此一般都会做dmz或者端口映射.联通原来的猫就有bug,dmz设置不生效,必须要挨个做端口映射;这个新猫更过分,dmz和端口映射均不生效.还好在网上搜到老周的一篇教程<a href="http://guanggai.org/thread-459-1-1.html">烽火HG220G-U E00L2.03M2000光猫改桥接教程</a>,解决了问题.</p>
+
+<p>原文里也有点小问题,telnet节点不必打开,后续操作也用不上telnet,而且telnet一旦打开,从外网也可以telnet到的,用户名admin,密码admin,只怕没几分钟就已经被攻陷了.其他操作均与原文相同.</p>
+
+<p>为了防止原链接失效,简单讲过程记在下边:</p>
+
+<ol>
+<li><p>登录光猫管理页面<a href="http://192.168.1.1/">http://192.168.1.1/</a>,默认用户名user,密码在光猫背后.</p></li>
+<li><p>登录后访问<a href="http://192.168.1.1/backupsettings.conf">http://192.168.1.1/backupsettings.conf</a>,将现有的配置文件保存并且备份,不管什么时候都能轻易恢复原有配置了</p></li>
+<li><p>使用notepad++或者sublime编辑一个配置文件的副本,先找到&lt;Name&gt;&lt;/Name&gt;之间包括IPTV的那个配置,北京联通通常出现在&lt;WANConnectionDevice instance="4"&gt;下,可以看到该配置的X_BROADCOM_COM_IfName的属性是epon0.4.</p></li>
+<li><p>再找到上网的配置,也就是&lt;Name&gt;&lt;/Name&gt;之间包括INTERNET的那个配置,通常是&lt;WANConnectionDevice instance="2"&gt;</p></li>
+<li><p>删除该配置节点内的删除&lt;IdleDisconnectTime&gt;120&lt;/IdleDisconnectTime&gt;一整行。</p></li>
+<li><p>修改该配置节点内的ConnectionType属性,从IP_Routed改为PPPoE_Bridged.</p></li>
+<li><p>该配置节点的名字从2_INTERNET_R_VID_3961改成2_INTERNET_B_VID_3961(也就是R改成了B),这个改动不知道是否必须</p></li>
+<li><p>该配置节点的X_BROADCOM_COM_IfName属性从ppp0.2改成epon0.2</p></li>
+<li><p>在该配置节点X_BROADCOM_COM_IfName后新增节点&lt;X_CU_IPMode&gt;3&lt;/X_CU_IPMode&gt;</p></li>
+<li><p>保存文件</p></li>
+<li><p>访问<a href="http://192.168.1.1/updatesettings.html">http://192.168.1.1/updatesettings.html</a>,选择上传配置,然后路由会自动重启,重启后就是桥接模式了,需要光猫后边的路由器或者电脑自己拨号才能上网了.</p></li>
+</ol>
+
+<p>PS:旧版的HG220GS是可以通过网址<a href="http://192.168.1.1/logoffaccount.html">http://192.168.1.1/logoffaccount.html</a>打开隐藏账户的,然后就可以通过<a href="http://192.168.1.1/cu.html">http://192.168.1.1/cu.html</a>登录管理员账户,用户名CUAdmin,密码123qweasdzxc.但是我的这个网页是不能访问的.隐藏账户登录后可以关闭端口扫描的防御来打开DMZ和端口映射功能.</p>
+
+<p>但是又有人说这种情况可以通过<a href="http://192.168.1.1/logoffaccount.cmd?enableFactoryAccount=1">http://192.168.1.1/logoffaccount.cmd?enableFactoryAccount=1</a>访问来开启隐藏账户,这个我就没有尝试了,大家可以自行尝试.</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "HG220GS-U-Change-To-Bridge.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

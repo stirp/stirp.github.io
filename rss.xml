@@ -7,7 +7,48 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>程序员工作用什么操作系统？</title><link>http://blog.shrp.me//Which-OS-Do-Programers-Prefer-At-Work.html</link><pubdate>2018-03-10</pubdate><content:encoded>&lt;h1 id=""&gt;程序员工作用什么操作系统？&lt;/h1&gt;
+    <item><title>联通IPTV诺基亚贝尔机顶盒怎么安装第三方应用</title><link>http://blog.shrp.me//How-to-install-APK-in-Unicom-IPTV.html</link><pubdate>2018-04-06</pubdate><content:encoded>&lt;p&gt;由于旧的IPTV盒子坏了，今天抽空去联通换了个IPTV，是上海诺基亚贝尔的S-010W-AV2B机器。拿回来以后IPTV功能都正常，但是一个安卓机顶盒不装点其他应用，那多浪费啊。没想到U盘插上去，傻眼了：apk都不显示，这可咋安装啊？&lt;/p&gt;
+
+&lt;p&gt;一般来说这个方法应该有很多种，比如同一网络下用悟空遥控去推送，比如用USB线连到电脑上安装，比如连上键盘，按快捷键打开网页下载apk。可是一一试过以后发现都不能用，adb没有开，快捷键也被关闭了。&lt;/p&gt;
+
+&lt;p&gt;正手足无措的时候，发现系统点击官方的应用商城居然会下载一个apk安装。嗯？如果我劫持url，下载一个贝当市场，问题不就迎刃而解了吗？&lt;/p&gt;
+
+&lt;p&gt;具体步骤如下：
+1、找了个电脑，设置网络共享。我家的IPTV方案是机顶盒通过光猫的wifi上网的，那么我的网络共享就是电脑连光猫的wifi，把网络共享给自己的网线，通过网线连接到IPTV机顶盒。&lt;/p&gt;
+
+&lt;p&gt;2、装上wireshark抓包&lt;/p&gt;
+
+&lt;p&gt;3、在机顶盒点击联通自己的应用商城，成功在wireshark里抓到了http请求地址：http://210.13.0.175:7084/launcher/data/1522120317/CUTV_DSMClient_V4.5.apk&lt;/p&gt;
+
+&lt;p&gt;4、在自己电脑上架设一个网站（要监听所有的设备哦），在相应的地址，相同的文件名放一个贝当应用商店的apk。但是ip地址怎么办？别担心，我在电脑上添加了一个虚拟网卡，地址设置为静态的210.13.0.175，这样请求上来的时候自动就被路由到自己的这个网卡上了。如果你的自建站点按照我的提示监听了电脑所有的网卡，那么这个时候通过你电脑访问的下载请求都会被指向自己的假冒apk了。&lt;/p&gt;
+
+&lt;p&gt;5、把机顶盒的商店卸载掉，再点击安装，很快进度条就走完了，只不过99%的时候提示验证错误，大概是安装后有个验证流程，还需要劫持后修改下，不过不要紧，就算不修改，apk已经安装好了。&lt;/p&gt;
+
+&lt;p&gt;6、最后记得把自己的电脑的网络共享关掉，机顶盒连到正常的网络下下载你想要的apk吧。需要看IPTV的时候，把机顶盒连到光猫的IPTV的wifi下，就可以正常看IPTV了；需要看网络电视的时候，就连到普通wifi下看第三方apk的视频啦。&lt;/p&gt;
+
+&lt;p&gt;最后强调一下，每个人的机顶盒访问的地址不一定一样，因此你一定要自己抓个包，才可能有效。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//How-to-install-APK-in-Unicom-IPTV.html</guid></item><item><title>HG220GS-U改桥接模式</title><link>http://blog.shrp.me//HG220GS-U-Change-To-Bridge.html</link><pubdate>2018-04-05</pubdate><content:encoded>&lt;p&gt;前两天联通宽带续费升级，原来的百兆猫要换成千兆猫，新猫型号是HG220GS-U.我自己有需要把光猫后的路由器映射到公网去,因此一般都会做dmz或者端口映射.联通原来的猫就有bug,dmz设置不生效,必须要挨个做端口映射;这个新猫更过分,dmz和端口映射均不生效.还好在网上搜到老周的一篇教程&lt;a href="http://guanggai.org/thread-459-1-1.html"&gt;烽火HG220G-U E00L2.03M2000光猫改桥接教程&lt;/a&gt;,解决了问题.&lt;/p&gt;
+
+&lt;p&gt;原文里也有点小问题,telnet节点不必打开,后续操作也用不上telnet,而且telnet一旦打开,从外网也可以telnet到的,用户名admin,密码admin,只怕没几分钟就已经被攻陷了.其他操作均与原文相同.&lt;/p&gt;
+
+&lt;p&gt;为了防止原链接失效,简单讲过程记在下边:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;登录光猫管理页面&lt;a href="http://192.168.1.1/"&gt;http://192.168.1.1/&lt;/a&gt;,默认用户名user,密码在光猫背后.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;登录后访问&lt;a href="http://192.168.1.1/backupsettings.conf"&gt;http://192.168.1.1/backupsettings.conf&lt;/a&gt;,将现有的配置文件保存并且备份,不管什么时候都能轻易恢复原有配置了&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;使用notepad++或者sublime编辑一个配置文件的副本,先找到&amp;lt;Name&amp;gt;&amp;lt;/Name&amp;gt;之间包括IPTV的那个配置,北京联通通常出现在&amp;lt;WANConnectionDevice instance="4"&amp;gt;下,可以看到该配置的X_BROADCOM_COM_IfName的属性是epon0.4.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;再找到上网的配置,也就是&amp;lt;Name&amp;gt;&amp;lt;/Name&amp;gt;之间包括INTERNET的那个配置,通常是&amp;lt;WANConnectionDevice instance="2"&amp;gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;删除该配置节点内的删除&amp;lt;IdleDisconnectTime&amp;gt;120&amp;lt;/IdleDisconnectTime&amp;gt;一整行。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;修改该配置节点内的ConnectionType属性,从IP_Routed改为PPPoE_Bridged.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;该配置节点的名字从2_INTERNET_R_VID_3961改成2_INTERNET_B_VID_3961(也就是R改成了B),这个改动不知道是否必须&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;该配置节点的X_BROADCOM_COM_IfName属性从ppp0.2改成epon0.2&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;在该配置节点X_BROADCOM_COM_IfName后新增节点&amp;lt;X_CU_IPMode&amp;gt;3&amp;lt;/X_CU_IPMode&amp;gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;保存文件&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;访问&lt;a href="http://192.168.1.1/updatesettings.html"&gt;http://192.168.1.1/updatesettings.html&lt;/a&gt;,选择上传配置,然后路由会自动重启,重启后就是桥接模式了,需要光猫后边的路由器或者电脑自己拨号才能上网了.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;PS:旧版的HG220GS是可以通过网址&lt;a href="http://192.168.1.1/logoffaccount.html"&gt;http://192.168.1.1/logoffaccount.html&lt;/a&gt;打开隐藏账户的,然后就可以通过&lt;a href="http://192.168.1.1/cu.html"&gt;http://192.168.1.1/cu.html&lt;/a&gt;登录管理员账户,用户名CUAdmin,密码123qweasdzxc.但是我的这个网页是不能访问的.隐藏账户登录后可以关闭端口扫描的防御来打开DMZ和端口映射功能.&lt;/p&gt;
+
+&lt;p&gt;但是又有人说这种情况可以通过&lt;a href="http://192.168.1.1/logoffaccount.cmd?enableFactoryAccount=1"&gt;http://192.168.1.1/logoffaccount.cmd?enableFactoryAccount=1&lt;/a&gt;访问来开启隐藏账户,这个我就没有尝试了,大家可以自行尝试.&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//HG220GS-U-Change-To-Bridge.html</guid></item><item><title>程序员工作用什么操作系统？</title><link>http://blog.shrp.me//Which-OS-Do-Programers-Prefer-At-Work.html</link><pubdate>2018-03-10</pubdate><content:encoded>&lt;h1 id=""&gt;程序员工作用什么操作系统？&lt;/h1&gt;
 
 &lt;p&gt;　　今天偶然看到之前关注的 vpsee 网站一篇09年的文章(&lt;a href="https://www.vpsee.com/2009/06/why-programmers-love-mac/"&gt;为什么国外程序员爱用 Mac？ | vpsee.com&lt;/a&gt;)在讨论为什么程序员喜欢用 Mac，文章后洋洋洒洒数百个评论或激昂，或讽刺，或诅咒，或炫耀，好不热闹。恰好最近一个.Net 开发同事想用 Mac 开发 Java 程序，一个 Java 开发 同事想把自己的 Mac 换成 Windows，真是有意思。于是我也按耐不住，想要说点什么。&lt;/p&gt;
 
@@ -283,52 +324,5 @@
 
 &lt;p&gt;&lt;img src="http://stirp.github.io/img/WX20170401-183739.png" alt="" title=""&gt;&lt;/p&gt;
 
-&lt;p&gt;本文参考知乎文章&lt;a href="https://zhuanlan.zhihu.com/p/26134439"&gt;【Mac小技巧】一键format json&lt;/a&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//format-and-copy-json-on-mac.html</guid></item><item><title>Intellij 和 docker for Mac的兼容方案</title><link>http://blog.shrp.me//compatible-workaroud-about-Intellij-and-Dorkcer-for-Mac.html</link><pubdate>2017-02-22</pubdate><content:encoded>&lt;p&gt;　　今天在配置Intellij使用Docker for mac的时候发现需要使用api-url，但是Docker for mac并没有api-url。经过搜索发现&lt;a href="http://www.cnblogs.com/micrari/p/6169936.html"&gt;这里(http://www.cnblogs.com/micrari/p/6169936.html)&lt;/a&gt;有解决方案，简单来讲是使用socat将unix的socket文件转发到本地的tcp端口。鉴于互联网链接可能失效，附文如后：&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;笔者在自己的Mac上安装的是Docker for Mac，而不是Docker Toolbox。&lt;/p&gt;
-  
-  &lt;p&gt;这两者最主要的区别在于Docker for Mac用HyperKit作为虚拟化解决方案而不是VirtualBox,相比Docker Toolbox，Docker for Mac更加native些。
-  Docker for Mac 通过&lt;code&gt;/var/tmp/docker.sock&lt;/code&gt;暴露API。&lt;/p&gt;
-  
-  &lt;p&gt;JetBrains系IDE有一款叫&lt;a href="https://youtrack.jetbrains.com/issue/IDEA-153973#comment=27-1484220"&gt;Docker Integration&lt;/a&gt;的插件。&lt;/p&gt;
-  
-  &lt;p&gt;当笔者尝试配置此插件时，发现它对Docker for Mac用户不是太友好。而在笔者的另一台安装Docker Toolbox的Mac上却是相当容易的。&lt;/p&gt;
-  
-  &lt;p&gt;&lt;img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213143354058-100182548.png"&gt;&lt;/p&gt;
-  
-  &lt;p&gt;当打开配置页，默认的显示结果如图所示，API URL为https://192.168.99.100:2376。然而这并不起作用，没办法和Docker建立连接。&lt;/p&gt;
-  
-  &lt;p&gt;当我尝试在API URL中随便填入&lt;code&gt;unix:///var/run/docker.sock&lt;/code&gt;，IDE提示如下。
-  &lt;img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213144232917-1999769934.png"&gt;
-  点开More info，会进到这个&lt;a href="https://youtrack.jetbrains.com/issue/IDEA-153973#comment=27-1484220"&gt;issue&lt;/a&gt;
-  &lt;img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213143354058-100182548.png"&gt;
-  发现Docker Integration与Docker for Mac的兼容性问题有一个workaround&lt;/p&gt;
-  
-  &lt;p&gt;在命令行输入&lt;/p&gt;
-  
-  &lt;p&gt;&lt;code&gt;brew install socat&lt;/code&gt;&lt;/p&gt;
-  
-  &lt;p&gt;安装socat&lt;/p&gt;
-  
-  &lt;p&gt;再输入命令&lt;/p&gt;
-  
-  &lt;p&gt;&lt;code&gt;socat -d -d TCP-L:8099,fork UNIX:/var/run/docker.sock&lt;/code&gt;&lt;/p&gt;
-  
-  &lt;p&gt;再在IntelliJ中配置API URL为&lt;code&gt;tcp://localhost:8099&lt;/code&gt;
-  可以看到最终成功连接到docker，如下图所示。
-  &lt;img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213150704479-236755813.png"&gt;
-  &lt;img src="http://images2015.cnblogs.com/blog/584724/201612/584724-20161213150447120-1352983762.png"&gt;
-  笔者阅读了相关ISSUE，事实上，这个问题并没有真正的解决，只是目前有这么个workaround。&lt;/p&gt;
-&lt;/blockquote&gt;</content:encoded><guid>http://blog.shrp.me//compatible-workaroud-about-Intellij-and-Dorkcer-for-Mac.html</guid></item><item><title>在CentOS7安装PPTP client和Gnome的PPTP界面</title><link>http://blog.shrp.me//Install-pptp-and-gnome-pptp-client-on-centos7.html</link><pubdate>2017-02-06</pubdate><content:encoded>&lt;p&gt;不知道为什么，CentOS7默认的yum源里没有PPTP的GNOME客户端，设置很不方便。&lt;/p&gt;
-
-&lt;p&gt;那么简单的方式就是直接安装其他源的rpm,比如&lt;a href="http://li.nux.ro/download/nux/dextop/el7/x86_64/"&gt;http://li.nux.ro/download/nux/dextop/el7/x86_64/&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;也可以直接运行命令搞定：&lt;/p&gt;
-
-&lt;pre class=" language-bash"&gt;&lt;code class=" language-bash"&gt;sudo yum install http&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;li&lt;span class="token punctuation"&gt;.&lt;/span&gt;nux&lt;span class="token punctuation"&gt;.&lt;/span&gt;ro&lt;span class="token operator"&gt;/&lt;/span&gt;download&lt;span class="token operator"&gt;/&lt;/span&gt;nux&lt;span class="token operator"&gt;/&lt;/span&gt;dextop&lt;span class="token operator"&gt;/&lt;/span&gt;el7&lt;span class="token operator"&gt;/&lt;/span&gt;x86_64&lt;span class="token operator"&gt;/&lt;/span&gt;NetworkManager&lt;span class="token operator"&gt;-&lt;/span&gt;pptp&lt;span class="token number"&gt;-0.9&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token number"&gt;8.2&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&lt;span class="token number"&gt;4&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;el7&lt;span class="token punctuation"&gt;.&lt;/span&gt;nux&lt;span class="token punctuation"&gt;.&lt;/span&gt;x86_64&lt;span class="token punctuation"&gt;.&lt;/span&gt;rpm
-sudo yum install http&lt;span class="token punctuation"&gt;:&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;&lt;span class="token operator"&gt;/&lt;/span&gt;li&lt;span class="token punctuation"&gt;.&lt;/span&gt;nux&lt;span class="token punctuation"&gt;.&lt;/span&gt;ro&lt;span class="token operator"&gt;/&lt;/span&gt;download&lt;span class="token operator"&gt;/&lt;/span&gt;nux&lt;span class="token operator"&gt;/&lt;/span&gt;dextop&lt;span class="token operator"&gt;/&lt;/span&gt;el7&lt;span class="token operator"&gt;/&lt;/span&gt;x86_64&lt;span class="token operator"&gt;/&lt;/span&gt;NetworkManager&lt;span class="token operator"&gt;-&lt;/span&gt;pptp&lt;span class="token operator"&gt;-&lt;/span&gt;gnome&lt;span class="token number"&gt;-0.9&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;&lt;span class="token number"&gt;8.2&lt;/span&gt;&lt;span class="token operator"&gt;-&lt;/span&gt;&lt;span class="token number"&gt;4&lt;/span&gt;&lt;span class="token punctuation"&gt;.&lt;/span&gt;el7&lt;span class="token punctuation"&gt;.&lt;/span&gt;nux&lt;span class="token punctuation"&gt;.&lt;/span&gt;x86_64&lt;span class="token punctuation"&gt;.&lt;/span&gt;rpm
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;之后在系统的网络设置中就能够添加自己的配置啦！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Install-pptp-and-gnome-pptp-client-on-centos7.html</guid></item></channel>
+&lt;p&gt;本文参考知乎文章&lt;a href="https://zhuanlan.zhihu.com/p/26134439"&gt;【Mac小技巧】一键format json&lt;/a&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//format-and-copy-json-on-mac.html</guid></item></channel>
 </rss>

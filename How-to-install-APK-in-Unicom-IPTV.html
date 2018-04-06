@@ -1,0 +1,161 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+由于旧的IPTV盒子坏了，今天抽空去联通换了个IPTV，是上海诺基亚贝尔的S-010W-AV2B机器。拿回来以后IPTV功能都正常，但是一个安卓机顶盒不装点其他应用，那多浪费啊。没想到U盘插上去，傻眼了：apk都不显示，这可咋安装啊？
+
+一般来说这个方法应该有很多种，比如同一网络下用悟空遥控去推送，比如用USB线连到电脑上安装，比如连上键盘，按快捷键打开网页下载apk。可是一一试过以后发现都不能用，adb没有开，快捷键也被关闭了。
+
+正手足无措的时候，发现系统点击官方的应用商城居然会下载一个apk安装。嗯？如果我劫持url，下载一个贝当市场，问题不就迎刃而解了吗？
+
+具体步骤如下：
+1、找了个电脑，设置网络共享。我家的IPTV方案是机顶盒通过光猫的wifi上网的，那么我的网络共享就是电脑连光猫的wifi，把网络共享给自己的网线，通过网线连接到IPTV机顶盒。
+
+2、装上wireshark抓包
+
+3、在机顶盒点击联通自己的应用商城，成功在wireshark里抓到了http请求地址：http://210.13.0.175:7084/launcher/data/1522120317/CUTV\_DSMClient\_V4.5.apk
+
+4、在自己电脑上架设一个网站（要监听所有的设备哦），在相应的地址，相同的文件名放一个贝当应用商店的apk。但是ip地址怎么办？别担心，我在电脑上添加了一个虚拟网卡，地址设置为静态的210.13.0.175，这样请求上来的时候自动就被路由到自己的这个网卡上了。如果你的自建站点按照我的提示监听了电脑所有的网卡，那么这个时候通过你电脑访问的下载请求都会被指向自己的假冒apk了。
+
+5、把机顶盒的商店卸载掉，再点击安装，很快进度条就走完了，只不过99%的时候提示验证错误，大概是安装后有个验证流程，还需要劫持后修改下，不过不要紧，就算不修改，apk已经安装好了。
+
+6、最后记得把自己的电脑的网络共享关掉，机顶盒连到正常的网络下下载你想要的apk吧。需要看IPTV的时候，把机顶盒连到光猫的IPTV的wifi下，就可以正常看IPTV了；需要看网络电视的时候，就连到普通wifi下看第三方apk的视频啦。
+
+最后强调一下，每个人的机顶盒访问的地址不一定一样，因此你一定要自己抓个包，才可能有效。
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>由于旧的IPTV盒子坏了，今天抽空去联通换了个IPTV，是上海诺基亚贝尔的S-010W-AV2B机器。拿回来以后IPTV功能都正常，但是一个安卓机顶盒不装点其他应用，那多浪费啊。没想到U盘插上去，傻眼了：apk都不显示，这可咋安装啊？</p>
+
+<p>一般来说这个方法应该有很多种，比如同一网络下用悟空遥控去推送，比如用USB线连到电脑上安装，比如连上键盘，按快捷键打开网页下载apk。可是一一试过以后发现都不能用，adb没有开，快捷键也被关闭了。</p>
+
+<p>正手足无措的时候，发现系统点击官方的应用商城居然会下载一个apk安装。嗯？如果我劫持url，下载一个贝当市场，问题不就迎刃而解了吗？</p>
+
+<p>具体步骤如下：
+1、找了个电脑，设置网络共享。我家的IPTV方案是机顶盒通过光猫的wifi上网的，那么我的网络共享就是电脑连光猫的wifi，把网络共享给自己的网线，通过网线连接到IPTV机顶盒。</p>
+
+<p>2、装上wireshark抓包</p>
+
+<p>3、在机顶盒点击联通自己的应用商城，成功在wireshark里抓到了http请求地址：http://210.13.0.175:7084/launcher/data/1522120317/CUTV_DSMClient_V4.5.apk</p>
+
+<p>4、在自己电脑上架设一个网站（要监听所有的设备哦），在相应的地址，相同的文件名放一个贝当应用商店的apk。但是ip地址怎么办？别担心，我在电脑上添加了一个虚拟网卡，地址设置为静态的210.13.0.175，这样请求上来的时候自动就被路由到自己的这个网卡上了。如果你的自建站点按照我的提示监听了电脑所有的网卡，那么这个时候通过你电脑访问的下载请求都会被指向自己的假冒apk了。</p>
+
+<p>5、把机顶盒的商店卸载掉，再点击安装，很快进度条就走完了，只不过99%的时候提示验证错误，大概是安装后有个验证流程，还需要劫持后修改下，不过不要紧，就算不修改，apk已经安装好了。</p>
+
+<p>6、最后记得把自己的电脑的网络共享关掉，机顶盒连到正常的网络下下载你想要的apk吧。需要看IPTV的时候，把机顶盒连到光猫的IPTV的wifi下，就可以正常看IPTV了；需要看网络电视的时候，就连到普通wifi下看第三方apk的视频啦。</p>
+
+<p>最后强调一下，每个人的机顶盒访问的地址不一定一样，因此你一定要自己抓个包，才可能有效。</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "How-to-install-APK-in-Unicom-IPTV.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

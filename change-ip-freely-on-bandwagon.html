@@ -46,6 +46,9 @@
 
 然后点击 Test Main IP，如果检测到被封禁，就会出现 next 按钮，自然点击 next 按钮更换 IP 就好啦。
 
+不过由于 IP 变化了，需要运行以下命令更新 iptables 记录：
+```iptables -F; iptables -t nat -F; iptables-save > /etc/sysconfig/iptables```
+
 最后别忘记去域名管理把你服务器的域名 A 记录换掉哦！要不然域名还是无法访问的！
 <!-- markdown end -->
     </div>
@@ -58,6 +61,9 @@
 <p><img src="http://stirp.github.io/img/Xnip2018-06-26_12-01-04.jpg" alt="" title=""></p>
 
 <p>然后点击 Test Main IP，如果检测到被封禁，就会出现 next 按钮，自然点击 next 按钮更换 IP 就好啦。</p>
+
+<p>不过由于 IP 变化了，需要运行以下命令更新 iptables 记录：
+<code>iptables -F; iptables -t nat -F; iptables-save &gt; /etc/sysconfig/iptables</code></p>
 
 <p>最后别忘记去域名管理把你服务器的域名 A 记录换掉哦！要不然域名还是无法访问的！</p>
 <!-- content end -->

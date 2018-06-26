@@ -7,7 +7,25 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>联通IPTV诺基亚贝尔机顶盒怎么安装第三方应用</title><link>http://blog.shrp.me//How-to-install-APK-in-Unicom-IPTV.html</link><pubdate>2018-04-06</pubdate><content:encoded>&lt;p&gt;由于旧的IPTV盒子坏了，今天抽空去联通换了个IPTV，是上海诺基亚贝尔的S-010W-AV2B机器。拿回来以后IPTV功能都正常，但是一个安卓机顶盒不装点其他应用，那多浪费啊。没想到U盘插上去，傻眼了：apk都不显示，这可咋安装啊？&lt;/p&gt;
+    <item><title>搬瓦工免费换 ip</title><link>http://blog.shrp.me//change-ip-freely-on-bandwagon.html</link><pubdate>2018-06-26</pubdate><content:encoded>&lt;p&gt;前两天我的搬瓦工突然被封禁了，一大票技术网站无法访问，实在不方便。登录搬瓦工想找地方换 IP，发现这个基础款的产品自己不支持换 IP 换机房。正在想实在不行就得还供应商的时候，突然搜到搬瓦工针对此情况专门提供了免费更换 IP 的功能，每十周换一次，还是挺爽的。&lt;/p&gt;
+
+&lt;p&gt;这个功能就是当你确信你的机器被墙了，可以访问&lt;a href="https://kiwivm.64clouds.com/main-exec.php?mode=blacklistcheck"&gt;https://kiwivm.64clouds.com/main-exec.php?mode=blacklistcheck&lt;/a&gt;，此时会提示检测 ip，&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://stirp.github.io/img/Xnip2018-06-26_12-01-04.jpg" alt="" title=""&gt;&lt;/p&gt;
+
+&lt;p&gt;然后点击 Test Main IP，如果检测到被封禁，就会出现 next 按钮，自然点击 next 按钮更换 IP 就好啦。&lt;/p&gt;
+
+&lt;p&gt;最后别忘记去域名管理把你服务器的域名 A 记录换掉哦！要不然域名还是无法访问的！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//change-ip-freely-on-bandwagon.html</guid></item><item><title>一个USB-C的时代</title><link>http://blog.shrp.me//An-Era-of-USB-Type-C.html</link><pubdate>2018-06-15</pubdate><content:encoded>&lt;p&gt;最近为了配合在家用电脑的显示器需求，买了一台联想的ThinkVision显示器——&lt;a href="https://item.jd.com/4702716.html"&gt;联想（ThinkVision）T27h 27英寸窄边框 &lt;/a&gt;，用了几天，颇有些感想。&lt;/p&gt;
+
+&lt;p&gt;首先，这货有一个坏点。显然联想在显示器的品控并不太好，而且国家的政策里坏点是允许的，而且越大的屏幕坏点允许就越多。当然我可以按照京东7天无条件去退换，可是这款显示器推出快一年了，按照系统显示，它的库存不多了，按照二手东的情况，可能剩下的多少有点问题。这款是我唯一能够找到价格比较低，带有USB-Hub功能的USB-C可充电可旋转显示器了（其实还有一款三星的，但是为了老回，必须不买三星的）。还好的是一个坏点并不是太大的问题，如果你观察你自己的显示器，其实上边落满了灰尘，一个坏点的影响就像是一粒灰尘，并不太影响。事实上，当你打开游戏，打开电影的时候，这个坏点根本就看不到。所以这次为二手东接了盘，感觉也还可以接受。&lt;/p&gt;
+
+&lt;p&gt;虽然显示器有个坏点，但是功能上来说，它真的非常适合我的情况。我目前手里有三套设备，一个台式机，一个新版MacBook Pro，一台GPD pocket。台式机是没有USB-Type C的接口的，视频走HDMI接口；但是苹果本和pocket都是支持Type C接口的。我的电脑桌桌面空间很紧凑，键鼠当然只能有一套，如何用这一套键鼠控制三台电脑，关键只能是怎么利用显示器的USB-Hub功能了。&lt;/p&gt;
+
+&lt;p&gt;然而显示器的USB-Hub是Type-C接口是host，四个普通USB接口去接键鼠。这个原理就像是那些Type-C的转接器一样，只不过转接器的视频输出直接接入显示器的视频输入了而已。那么Pocket和苹果本天然就应该支持边充电边视频输出，并且接到显示器的键鼠也可以用。结果我试了一下，不论是用苹果还是绿联买的一根充电线，还是显示器自带的Type-C线，都只能让苹果本使用，Pocket只能充电，不能显示视频，也无法实现USB-Hub。不过我插上了一款&lt;a href="https://item.jd.com/10391831021.html"&gt;绿联的0.5米长的线&lt;/a&gt;时，奇迹发生了，Pocket也能边充电边显示视频，还能使用接入的键鼠了。Perfect！&lt;/p&gt;
+
+&lt;p&gt;不过还有一个麻烦，就是台式机怎么接入呢？台式机没有Type-C接口，没法直接使用。最简单的方法是电脑用一根Type-C的数据线（一头是Type-A的公头，另一头是Type-C的公头）我之前设想的是买一款Type-C的延长线（一公头一母头）接到显示器，一根USB Type-A公头转USB Type-C公头的普通数据线来连接。当用台式机的时候，就是&lt;code&gt;台式机--A转C数据线--延长线--显示器&lt;/code&gt;；当用苹果本的时候，就是&lt;code&gt;苹果本--C双公头的数据线--延长线--显示器&lt;/code&gt;。结果这个方案失败了：延长线是有逻辑的，公头是host，母头是client。但是在我的设计里，延长线的母头被用来连接host电脑了，公头插到显示器上，跟设计的方向是反的，现在只能充电显示，USB-HUB功能不能用，三个设备都不能。不过我又心生一计，电脑上用一个USB Type-A公头转USB-Type-C母头的转换器，再连到显示器，是不是就可以把显示器当成是USB-Hub了呢？这个情况下的连接是&lt;code&gt;电脑--公A转母C--C双公头的数据线--显示器&lt;/code&gt;，跟苹果本切换的时候只要把“双公头的数据线”连到公A转母C就可以了啊。这个方案理论上可行，赶紧去京东下单买转接头了，大概明天才能验证。&lt;/p&gt;
+
+&lt;p&gt;不过不管验证情况怎么说，Type-C开始在电脑和手机上引领的接口风暴，怕是会越来越激烈了。对于用户来说，一个统一的接口价值相当的重要。恐怕只有等无线连接到来的时候，Type-C才会被淘汰了吧。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//An-Era-of-USB-Type-C.html</guid></item><item><title>联通IPTV诺基亚贝尔机顶盒怎么安装第三方应用</title><link>http://blog.shrp.me//How-to-install-APK-in-Unicom-IPTV.html</link><pubdate>2018-04-06</pubdate><content:encoded>&lt;p&gt;由于旧的IPTV盒子坏了，今天抽空去联通换了个IPTV，是上海诺基亚贝尔的S-010W-AV2B机器。拿回来以后IPTV功能都正常，但是一个安卓机顶盒不装点其他应用，那多浪费啊。没想到U盘插上去，傻眼了：apk都不显示，这可咋安装啊？&lt;/p&gt;
 
 &lt;p&gt;一般来说这个方法应该有很多种，比如同一网络下用悟空遥控去推送，比如用USB线连到电脑上安装，比如连上键盘，按快捷键打开网页下载apk。可是一一试过以后发现都不能用，adb没有开，快捷键也被关闭了。&lt;/p&gt;
 
@@ -302,27 +320,5 @@
 
 &lt;p&gt;最终我买了NAS来做这个备份。我买的这个NAS是包含了备份软件的，备份会通过其他协议上传到服务器，并不是通过网络共享来写入的。如果使用网络共享，就有可能破坏已经进入共享的文件。而且它能够提供32个版本的文件历史，因此如果某天我本地被感染并且把加密后的文件上传，我也还是可以恢复出未感染的文件。&lt;/p&gt;
 
-&lt;p&gt;这样即便是有带有潜伏期的勒索者病毒，也无法破坏我已经备份的内容了。只是有一个缺点，硬盘还是得买够，NAS、本地都要有一份。要不然万一NAS被攻击了丢数据，可就追悔莫及啦。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//importance-of-backup.html</guid></item><item><title>EF BF BD 引发的血案</title><link>http://blog.shrp.me//EF-BF-BD-Caused-Bug.html</link><pubdate>2017-05-13</pubdate><content:encoded>&lt;p&gt;　　最近在公司遇到一件奇怪的事情，我司私有协议的业务服务器总是收到奇怪的请求，导致收到的包解包失败。&lt;/p&gt;
-
-&lt;p&gt;　　这个私有协议原理是先收到一个消息头，再收到一个长度，根据长度得到后边数据的长度，最后再把数据解析为相应的 Bytes 或者字符串，完成解包。&lt;/p&gt;
-
-&lt;p&gt;　　然而实际却总是收到跟声明情况不符合的数据，特点就是消息头声明了后边数据是一个字符串性质的内容，字节长度是x，但是实际发出的数据字节长度是超过x的，因此发现这个包在理应结束后还是没有遇到结束符号，解包出了问题，这条流已无法继续使用了，只能断开连接。&lt;/p&gt;
-
-&lt;p&gt;　　可是业务的流量来自于一个私有协议的请求分发服务，相当于网络入口，这个服务的编码程序也是久经使用的，经过内网发向业务服务器，是不会无故发出向下图这样不正确的包啊。（图中 ca 表示一个 String 类型的消息，9c 是长度。但是经过 9c 也解析不到任何有意义的数据）&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://stirp.github.io/img/Jietu20170513-232035.png" alt="" title=""&gt;&lt;/p&gt;
-
-&lt;p&gt;　　不过仔细观察图上的流，我发现字节流里有不寻常的出现了很多 EF BF BD 。这几个字节为什么会突然多这么多？一个字符串出现很多同样的字符是很可疑的。上网搜索，发现这个是 UTF-8 的无效字符，Java 在构造 String 的时候如果遇到了非法的 UTF-8 字符，就会使用 EF BF BD 替换。于是查看请求路由的源码，发现它是在应用层上解开了私有协议，对于收到用户发来的消息头，长度和内容，如果消息是 String 内容，就会使用 UTF-8 把消息内容构造成 String，转发的时候则使用了构造后 String 的 getBytes 写入到流内，而此时的长度跟之前写入的长度根本对不上。所以实际上消息分发服务就已经出了问题，只是这在 String 的构造器上并不抛出异常，因此消息分发服务对此一无所知。&lt;/p&gt;
-
-&lt;p&gt;　　其实知道问题怎么发生的是最难的，解决问题反而是简单的。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//EF-BF-BD-Caused-Bug.html</guid></item><item><title>在Mac终端格式化Json并自动复制到粘贴板</title><link>http://blog.shrp.me//format-and-copy-json-on-mac.html</link><pubdate>2017-04-01</pubdate><content:encoded>&lt;p&gt;　　现在的Restful接口非常多，我们开发会经常遇到调试json的地方。但是json一般都是compact过的，肉眼很难观察，但是打开页面、工具去解析又很麻烦。有什么好办法呢？这个在Mac上有个非常轻松的解决办法，那就是使用命令行工具&lt;a href="https://stedolan.github.io/jq/"&gt;jq&lt;/a&gt;。    &lt;/p&gt;
-
-&lt;p&gt;　　首先需要安装工具jq，Mac可以直接使用brew安装。&lt;/p&gt;
-
-&lt;p&gt;　　然后在你的终端里使用命令&lt;code&gt;pbpaste | jq "." | pbcopy; pbpaste | jq; echo -e "\033[0;32mjson copied to clipboard!"&lt;/code&gt;就可以一行命令把粘贴板里的json文本格式化，并重新复制到粘贴板。&lt;/p&gt;
-
-&lt;p&gt;　　当然这么做非常繁琐，所以你需要把它alias为bash命令。对于fish，我单独制作了一个function，你可以将我的脚本放到function目录内使用，地址&lt;a href="https://raw.githubusercontent.com/stirp/oh-my-fish/master/functions/jsonfmt.fish"&gt;https://raw.githubusercontent.com/stirp/oh-my-fish/master/functions/jsonfmt.fish&lt;/a&gt;。最终效果如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://stirp.github.io/img/WX20170401-183739.png" alt="" title=""&gt;&lt;/p&gt;
-
-&lt;p&gt;本文参考知乎文章&lt;a href="https://zhuanlan.zhihu.com/p/26134439"&gt;【Mac小技巧】一键format json&lt;/a&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//format-and-copy-json-on-mac.html</guid></item></channel>
+&lt;p&gt;这样即便是有带有潜伏期的勒索者病毒，也无法破坏我已经备份的内容了。只是有一个缺点，硬盘还是得买够，NAS、本地都要有一份。要不然万一NAS被攻击了丢数据，可就追悔莫及啦。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//importance-of-backup.html</guid></item></channel>
 </rss>

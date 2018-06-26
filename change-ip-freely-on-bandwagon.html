@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+前两天我的搬瓦工突然被封禁了，一大票技术网站无法访问，实在不方便。登录搬瓦工想找地方换 IP，发现这个基础款的产品自己不支持换 IP 换机房。正在想实在不行就得还供应商的时候，突然搜到搬瓦工针对此情况专门提供了免费更换 IP 的功能，每十周换一次，还是挺爽的。
+
+这个功能就是当你确信你的机器被墙了，可以访问[https://kiwivm.64clouds.com/main-exec.php?mode=blacklistcheck](https://kiwivm.64clouds.com/main-exec.php?mode=blacklistcheck)，此时会提示检测 ip，
+
+ ![](http://stirp.github.io/img/Xnip2018-06-26_12-01-04.jpg)
+
+然后点击 Test Main IP，如果检测到被封禁，就会出现 next 按钮，自然点击 next 按钮更换 IP 就好啦。
+
+最后别忘记去域名管理把你服务器的域名 A 记录换掉哦！要不然域名还是无法访问的！
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>前两天我的搬瓦工突然被封禁了，一大票技术网站无法访问，实在不方便。登录搬瓦工想找地方换 IP，发现这个基础款的产品自己不支持换 IP 换机房。正在想实在不行就得还供应商的时候，突然搜到搬瓦工针对此情况专门提供了免费更换 IP 的功能，每十周换一次，还是挺爽的。</p>
+
+<p>这个功能就是当你确信你的机器被墙了，可以访问<a href="https://kiwivm.64clouds.com/main-exec.php?mode=blacklistcheck">https://kiwivm.64clouds.com/main-exec.php?mode=blacklistcheck</a>，此时会提示检测 ip，</p>
+
+<p><img src="http://stirp.github.io/img/Xnip2018-06-26_12-01-04.jpg" alt="" title=""></p>
+
+<p>然后点击 Test Main IP，如果检测到被封禁，就会出现 next 按钮，自然点击 next 按钮更换 IP 就好啦。</p>
+
+<p>最后别忘记去域名管理把你服务器的域名 A 记录换掉哦！要不然域名还是无法访问的！</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "change-ip-freely-on-bandwagon.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+  最近在工作中跟同事讨论起了一个调用是否算是非阻塞、异步时，居然发现我们对同一段代码的定性是不一样的，于是就想写一篇文章把这个问题琢磨琢磨。由于这里涉及很多专有名词的含义，因此就先从字典开始研究。
+
+名词字典
+--------------------------
+1. 同步阻塞 IO——内核态阻塞 IO。这种 IO 模型的工作方式是这样的：用户空间的进程发起一个系统调用，这导致了用户空间的这个进程被阻塞，无法执行任何进程上的其它代码，直到系统调用返回。
+2. 同步非阻塞 IO——内核态非阻塞 IO。这种 IO 的工作方式是这样的：用户空间的进程发起一个系统调用，进程并不会被阻塞，而是回到用户空间继续执行，但是会时不时通过系统调用回到内核检查之前的调用是否结束。如果没有结束，则返回用户空间继续执行，并且很快再次通过系统调用去检查结果，直到结果被返回。
+3. 异步 IO——用户态 IO。这种 IO 的工作方式是这样的：用户空间的进程发起系统调用，进程不阻塞立刻回到用户空间继续执行，也不需要回到内核检查结果，而是内核在结果准备好后复制给用户进程，再通知进程数据已经准备好了。这样用户进程不需要到内核中进行 IO 操作，虽然真正的 IO 仍然是内核完成的。
+
+（如果对上述文字难以理解，可以参考[聊聊Linux 五种IO模型 - 简书](https://www.jianshu.com/p/486b0965c296)这篇文章）
+
+4. 同步请求——调用方主动获取被调方的结果
+5. 异步请求——调用方被动收到被调方的通知
+6. Java线程阻塞状态——blocked
+7. Java线程等待状态——waiting，timed waiting
+
+对于 Java 线程的状态，可以参考下图：
+
+![](http://stirp.github.io/img/n2U3N.png)
+
+我们到底在说的是哪个概念？
+--------------------------
+
+一般当我们在说同步异步，阻塞非阻塞的时候，我们说的到底是哪个概念呢？
+
+是系统内核 IO 类型吗？如果这样的话，根本是没有异步阻塞的说法的，因为 IO 只有异步模型，按照异步模型的行为，是不阻塞进程执行的。
+
+那么我们是在说字典里的4567这四条解释吗？看起来好像是的，当我们说同步请求的时候，确实是在等执行结束后才能得到结果，主动赋值给一个变量；异步请求的时候，通过 callback 或者 listener 调用回来修改数据 ；当我们说阻塞的时候，Java 线程的状态是……哎？Java 线程的状态可不是只有阻塞（blocked）一个这么简单，而是还有 Waiting、Timed Waiting 状态，表示线程没有继续执行，在等待条件成熟的手变成 Runable 或者 Blocked。难道这种情况算是非阻塞？
+
+原来，当我们说一个函数阻塞非阻塞的时候，并不是在按照上述的定义去解释的，而是按照线程执行的角度去解释的。也就是说，如果函数调用的时候线程在继续执行逻辑，就是非阻塞的；如果在等待调用结束不继续执行，就是阻塞的。也就是说，第六条和第七条都算是阻塞的。
+
+为什么我们要按照这个定义去理解？
+--------------------------
+有人可能觉得不服气，怎么就不能按照执行过程中的 IO 类型来划分？
+我是这么理解的：一个编程概念的提出，是有它的语境的。比如 IO 模型，很确定是发生在IO 时的事情，而我们讨论一个函数的同步异步，阻塞非阻塞，是为了研究这次函数调用对我的程序执行顺序的影响，而非其中的某次 IO，因为这次 IO 的类型不会影响我怎么写代码，这种类型差异在封装过程中就已经抹平了。在我看来，同步就是函数返回值，异步就是回调函数，阻塞就是不执行结束不继续执行后边的逻辑，非阻塞就是不等结果继续执行。这样的定义才能让使用函数的人不用看源码就能继续放心的开发下去。
+
+可以举个例子吗？
+-----------------------
+嗯，光是在理论逻辑上去论证是很枯燥又难以理解的，不如我们看点例子吧。
+
+首先看一个最简单的函数：
+
+```java
+import java.util.concurrent.*;
+
+public class Test {
+    public static class Result{
+        volatile boolean done = false;
+        volatile String text;
+    }
+    public static Result test() throws ExecutionException, InterruptedException {
+        final ExecutorService executorService = Executors.newFixedThreadPool(1);
+        final Result result = new Result();
+        final Future<String> submit = executorService.submit(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "test";
+        });
+        result.done = true;
+        result.text = submit.get();
+        executorService.shutdown();
+        return result;
+    }
+    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
+        final Result test = test();
+        System.out.println(test.text);
+    }
+}
+
+
+```
+
+test函数是同步还是异步，阻塞还是非阻塞呢？有朋友看到这里有线程池，执行的结果是交由另一个线程来处理的，所以理所当然的认为是异步的；由于执行过程会被 ```submit.get()```所阻塞，所以是阻塞的。可是在我看来，这个函数你会起名为 asyncTest 吗？不会的。虽然```executorService.submit```确实是异步执行，但是这个函数内还对 future 进行了 get 操作，使得整个函数结束后返回完整的应答，变成了同步的。因此这个函数可以说是同步阻塞的。
+
+再看一个的：
+```java
+import java.util.concurrent.*;
+
+public class Test {
+    public static class Result{
+        volatile boolean done = false;
+        volatile String text;
+    }
+    final static ExecutorService executorService = Executors.newFixedThreadPool(1);
+    public static Result test(){
+        final Result result = new Result();
+        executorService.execute(() ->{
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            result.done = true;
+            result.text = "test";
+        });
+        return result;
+    }
+    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
+        final Result test = test();
+        System.out.println("doing sth in main");
+        while (!test.done);
+        System.out.println(test.text);
+    }
+}
+```
+
+这个test 函数的声明看起来就是个普通函数，但是需要等 done 结束才能使用。这是同步的还是异步的呢？我认为这算是异步的，因为需要等待 done 被通知修改后才能完成整改逻辑。由于可以 doing sth in main，这个是异步非阻塞的。如果把 done 改成传入的一个回调函数，就更容易被确认为异步了；我认为这两个行为是没有差别的，因为远离都是提交出去的任务通过通知的方式给到了原有线程。
+
+啊，既然这么说来，如果想变成异步阻塞怎么办呢？就在 test 函数中阻塞一下，比如 join 提交的任务，这不就是传说中的异步阻塞了嘛。只是异步阻塞的编程大多数情况下没必要写，因为都已经阻塞了，异步跟同步对于原有线程的代码执行顺序都没有任何区别了，无非是主动发请求还是收通知。异步的写法比同步写法麻烦多了，也就不太需要异步阻塞了。我能想到一种异步阻塞的情况，就是提交的任务会周期性的执行，也就是不只一次通知原有线程，比如配置文件的 watch就是类似的情况，会写成```Config.watch(filename,listener)```,在程序初始化的过程中，必须先执行 listener，得到配置文件内容才能继续初始化；初始化后，如果有人改了配置文件，listener 会被再一次触发，从而改变程序的行为。
+
+再来看一个例子，来自ConcurrentLinkedQueue：
+```java
+public boolean offer(E e) {
+        checkNotNull(e);
+        final Node<E> newNode = new Node<E>(e);
+
+        for (Node<E> t = tail, p = t;;) {
+            Node<E> q = p.next;
+            if (q == null) {
+                // p is last node
+                if (p.casNext(null, newNode)) {
+                    // Successful CAS is the linearization point
+                    // for e to become an element of this queue,
+                    // and for newNode to become "live".
+                    if (p != t) // hop two nodes at a time
+                        casTail(t, newNode);  // Failure is OK.
+                    return true;
+                }
+                // Lost CAS race to another thread; re-read next
+            }
+            else if (p == q)
+                // We have fallen off list.  If tail is unchanged, it
+                // will also be off-list, in which case we need to
+                // jump to head, from which all live nodes are always
+                // reachable.  Else the new tail is a better bet.
+                p = (t != (t = tail)) ? t : head;
+            else
+                // Check for tail updates after two hops.
+                p = (p != t && t != (t = tail)) ? t : q;
+        }
+    }
+```
+这个函数在执行过程中的亮点在于 ```p.casNext(null, newNode)``` 和 ```casTail(t, newNode)```，两个 CAS 操作不阻塞，又完成了并发条件下的 offer 函数，整个函数是同步的，又没有阻塞，因此是同步非阻塞。
+
+总结
+——————————————————————————
+其实很多时候不同的看法是因为我们的定义不同。如果同步和异步是指通信方式，阻塞非阻塞是指线程执行与否，那么我们就可以顺利得到示例里的结论；如果指的是 Linux IO 模型，那么显然我示例都是与之无关的。
+
+但是不管怎样，只要你能够根据你使用的定义去理解程序的行为方式，并写出正确的调用代码，我想这才是最重要的。
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>最近在工作中跟同事讨论起了一个调用是否算是非阻塞、异步时，居然发现我们对同一段代码的定性是不一样的，于是就想写一篇文章把这个问题琢磨琢磨。由于这里涉及很多专有名词的含义，因此就先从字典开始研究。</p>
+
+<h2 id="">名词字典</h2>
+
+<ol>
+<li>同步阻塞 IO——内核态阻塞 IO。这种 IO 模型的工作方式是这样的：用户空间的进程发起一个系统调用，这导致了用户空间的这个进程被阻塞，无法执行任何进程上的其它代码，直到系统调用返回。</li>
+<li>同步非阻塞 IO——内核态非阻塞 IO。这种 IO 的工作方式是这样的：用户空间的进程发起一个系统调用，进程并不会被阻塞，而是回到用户空间继续执行，但是会时不时通过系统调用回到内核检查之前的调用是否结束。如果没有结束，则返回用户空间继续执行，并且很快再次通过系统调用去检查结果，直到结果被返回。</li>
+<li>异步 IO——用户态 IO。这种 IO 的工作方式是这样的：用户空间的进程发起系统调用，进程不阻塞立刻回到用户空间继续执行，也不需要回到内核检查结果，而是内核在结果准备好后复制给用户进程，再通知进程数据已经准备好了。这样用户进程不需要到内核中进行 IO 操作，虽然真正的 IO 仍然是内核完成的。</li>
+</ol>
+
+<p>（如果对上述文字难以理解，可以参考<a href="https://www.jianshu.com/p/486b0965c296">聊聊Linux 五种IO模型 - 简书</a>这篇文章）</p>
+
+<ol>
+<li>同步请求——调用方主动获取被调方的结果</li>
+<li>异步请求——调用方被动收到被调方的通知</li>
+<li>Java线程阻塞状态——blocked</li>
+<li>Java线程等待状态——waiting，timed waiting</li>
+</ol>
+
+<p>对于 Java 线程的状态，可以参考下图：</p>
+
+<p><img src="http://stirp.github.io/img/n2U3N.png" alt="" title=""></p>
+
+<h2 id="">我们到底在说的是哪个概念？</h2>
+
+<p>一般当我们在说同步异步，阻塞非阻塞的时候，我们说的到底是哪个概念呢？</p>
+
+<p>是系统内核 IO 类型吗？如果这样的话，根本是没有异步阻塞的说法的，因为 IO 只有异步模型，按照异步模型的行为，是不阻塞进程执行的。</p>
+
+<p>那么我们是在说字典里的4567这四条解释吗？看起来好像是的，当我们说同步请求的时候，确实是在等执行结束后才能得到结果，主动赋值给一个变量；异步请求的时候，通过 callback 或者 listener 调用回来修改数据 ；当我们说阻塞的时候，Java 线程的状态是……哎？Java 线程的状态可不是只有阻塞（blocked）一个这么简单，而是还有 Waiting、Timed Waiting 状态，表示线程没有继续执行，在等待条件成熟的手变成 Runable 或者 Blocked。难道这种情况算是非阻塞？</p>
+
+<p>原来，当我们说一个函数阻塞非阻塞的时候，并不是在按照上述的定义去解释的，而是按照线程执行的角度去解释的。也就是说，如果函数调用的时候线程在继续执行逻辑，就是非阻塞的；如果在等待调用结束不继续执行，就是阻塞的。也就是说，第六条和第七条都算是阻塞的。</p>
+
+<h2 id="">为什么我们要按照这个定义去理解？</h2>
+
+<p>有人可能觉得不服气，怎么就不能按照执行过程中的 IO 类型来划分？
+我是这么理解的：一个编程概念的提出，是有它的语境的。比如 IO 模型，很确定是发生在IO 时的事情，而我们讨论一个函数的同步异步，阻塞非阻塞，是为了研究这次函数调用对我的程序执行顺序的影响，而非其中的某次 IO，因为这次 IO 的类型不会影响我怎么写代码，这种类型差异在封装过程中就已经抹平了。在我看来，同步就是函数返回值，异步就是回调函数，阻塞就是不执行结束不继续执行后边的逻辑，非阻塞就是不等结果继续执行。这样的定义才能让使用函数的人不用看源码就能继续放心的开发下去。</p>
+
+<h2 id="">可以举个例子吗？</h2>
+
+<p>嗯，光是在理论逻辑上去论证是很枯燥又难以理解的，不如我们看点例子吧。</p>
+
+<p>首先看一个最简单的函数：</p>
+
+<pre><code class="java">import java.util.concurrent.*;
+
+public class Test {
+    public static class Result{
+        volatile boolean done = false;
+        volatile String text;
+    }
+    public static Result test() throws ExecutionException, InterruptedException {
+        final ExecutorService executorService = Executors.newFixedThreadPool(1);
+        final Result result = new Result();
+        final Future&lt;String&gt; submit = executorService.submit(() -&gt; {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "test";
+        });
+        result.done = true;
+        result.text = submit.get();
+        executorService.shutdown();
+        return result;
+    }
+    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
+        final Result test = test();
+        System.out.println(test.text);
+    }
+}
+</code></pre>
+
+<p>test函数是同步还是异步，阻塞还是非阻塞呢？有朋友看到这里有线程池，执行的结果是交由另一个线程来处理的，所以理所当然的认为是异步的；由于执行过程会被 <code>submit.get()</code>所阻塞，所以是阻塞的。可是在我看来，这个函数你会起名为 asyncTest 吗？不会的。虽然<code>executorService.submit</code>确实是异步执行，但是这个函数内还对 future 进行了 get 操作，使得整个函数结束后返回完整的应答，变成了同步的。因此这个函数可以说是同步阻塞的。</p>
+
+<p>再看一个的：</p>
+
+<pre><code class="java">import java.util.concurrent.*;
+
+public class Test {
+    public static class Result{
+        volatile boolean done = false;
+        volatile String text;
+    }
+    final static ExecutorService executorService = Executors.newFixedThreadPool(1);
+    public static Result test(){
+        final Result result = new Result();
+        executorService.execute(() -&gt;{
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            result.done = true;
+            result.text = "test";
+        });
+        return result;
+    }
+    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
+        final Result test = test();
+        System.out.println("doing sth in main");
+        while (!test.done);
+        System.out.println(test.text);
+    }
+}
+</code></pre>
+
+<p>这个test 函数的声明看起来就是个普通函数，但是需要等 done 结束才能使用。这是同步的还是异步的呢？我认为这算是异步的，因为需要等待 done 被通知修改后才能完成整改逻辑。由于可以 doing sth in main，这个是异步非阻塞的。如果把 done 改成传入的一个回调函数，就更容易被确认为异步了；我认为这两个行为是没有差别的，因为远离都是提交出去的任务通过通知的方式给到了原有线程。</p>
+
+<p>啊，既然这么说来，如果想变成异步阻塞怎么办呢？就在 test 函数中阻塞一下，比如 join 提交的任务，这不就是传说中的异步阻塞了嘛。只是异步阻塞的编程大多数情况下没必要写，因为都已经阻塞了，异步跟同步对于原有线程的代码执行顺序都没有任何区别了，无非是主动发请求还是收通知。异步的写法比同步写法麻烦多了，也就不太需要异步阻塞了。我能想到一种异步阻塞的情况，就是提交的任务会周期性的执行，也就是不只一次通知原有线程，比如配置文件的 watch就是类似的情况，会写成<code>Config.watch(filename,listener)</code>,在程序初始化的过程中，必须先执行 listener，得到配置文件内容才能继续初始化；初始化后，如果有人改了配置文件，listener 会被再一次触发，从而改变程序的行为。</p>
+
+<p>再来看一个例子，来自ConcurrentLinkedQueue：</p>
+
+<pre><code class="java">public boolean offer(E e) {
+        checkNotNull(e);
+        final Node&lt;E&gt; newNode = new Node&lt;E&gt;(e);
+
+        for (Node&lt;E&gt; t = tail, p = t;;) {
+            Node&lt;E&gt; q = p.next;
+            if (q == null) {
+                // p is last node
+                if (p.casNext(null, newNode)) {
+                    // Successful CAS is the linearization point
+                    // for e to become an element of this queue,
+                    // and for newNode to become "live".
+                    if (p != t) // hop two nodes at a time
+                        casTail(t, newNode);  // Failure is OK.
+                    return true;
+                }
+                // Lost CAS race to another thread; re-read next
+            }
+            else if (p == q)
+                // We have fallen off list.  If tail is unchanged, it
+                // will also be off-list, in which case we need to
+                // jump to head, from which all live nodes are always
+                // reachable.  Else the new tail is a better bet.
+                p = (t != (t = tail)) ? t : head;
+            else
+                // Check for tail updates after two hops.
+                p = (p != t &amp;&amp; t != (t = tail)) ? t : q;
+        }
+    }
+</code></pre>
+
+<p>这个函数在执行过程中的亮点在于 <code>p.casNext(null, newNode)</code> 和 <code>casTail(t, newNode)</code>，两个 CAS 操作不阻塞，又完成了并发条件下的 offer 函数，整个函数是同步的，又没有阻塞，因此是同步非阻塞。</p>
+
+<p>总结
+——————————————————————————
+其实很多时候不同的看法是因为我们的定义不同。如果同步和异步是指通信方式，阻塞非阻塞是指线程执行与否，那么我们就可以顺利得到示例里的结论；如果指的是 Linux IO 模型，那么显然我示例都是与之无关的。</p>
+
+<p>但是不管怎样，只要你能够根据你使用的定义去理解程序的行为方式，并写出正确的调用代码，我想这才是最重要的。</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "personal-understanding-of-async-and-blocking.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

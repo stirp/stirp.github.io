@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+这是我第一次编写每周分享。这个点子是受到阮一峰阮老师的每周分享启发，考虑到自己每周看了很多消息和工具，正好也能借助这个机会总结留下有价值的资讯。只要能帮助读者了解最新的研发消息，或者某天能用来总结查看，都算是没有白写每周分享。正常情况下我会在周五晚上发出这个系列的文章。（第一期就不正常……）
+
+我的每周分享会包括以下几点内容：本周内学会的一些Java最新的研发知识；发现的新工具；研发人员可能会关注的新闻。其中研发新闻是随缘项目，一方面我也不太关注没有生产力的新闻，一方面也没有太大的留存价值，只有特别关注到的新闻才会分享给大家。Warning：由于我的消息来源也包括阮老师，所以肯定有些内容是来自阮老师的网站，而且如果内容不带有阮老师的观点的话，来源会写真正的消息来源，而不是阮老师的网站；这主要是考虑读者不用多次跳转找出处，而非对阮老师的劳动不尊重，相信阮老师也会见谅的。
+
+下边是8月19日的每周分享：
+
+Java新姿势：
+
+1. [JDK源码阅读-ByteBuffer](http://imushan.com/2018/08/07/java/language/JDK%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-ByteBuffer/)
+    木衫大神对 ByteBuffer 的理解。讲真的，当你开始从 Java 业务深入到底层技术的时候，Java 的 IO 系统始终会是需要关注和优化的一个点。这篇文章就是理解 ByteBuffer 设计的绝佳讲解。
+
+2. [JAVA线程和 IO 的同步异步，阻塞非阻塞的个人理解](http://blog.shrp.me/personal-understanding-of-async-and-blocking.html) 由于之前跟同事对一段代码是否同步，是否阻塞的看法不一致，所以想深入了解一下同步异步，阻塞非阻塞究竟是什么。个人才疏学浅，也希望有大牛帮忙指正。
+
+3. [CR常见代码问题 - 琴水玉 - 博客园](https://www.cnblogs.com/lovesqcc/p/9271781.html) 很多人应该都对 CodeReview 不陌生，这是个非常好的提高能力的机会，也是代码拿出来让大家一起改进的好机会。但是有时候一次 CodeReview 包含的事情太多，没有重点，效果也不会太好。这篇文章就对 CodeReview 应该做什么进行了详细的说明。
+
+新奇工具：
+
+1. [gitea](https://github.com/go-gitea/gitea/) 有些人就是想自己搭建 git 服务器，但是又不想用 gitlab 这样重量级的产品。Gitea 就是这样一款产品，它的首要目标是创建一个极易安装，运行非常快速，安装和使用体验良好的自建 Git 服务。项目采用 Go 作为后端语言，只要生成一个可执行程序即可。并且它还支持跨平台，支持 Linux、 macOS 和 Windows 以及各种架构，除了x86、amd64，还包括 ARM 和 PowerPC 。
+
+2. [PowerShell Core](https://github.com/PowerShell/PowerShell/) PowerShell 对于 Windows 用户应该并不陌生，但是这款 Core ，知道的可能就少了，更何况它是开源并且跨平台的。它是微软开源的一个跨平台 (Windows, Linux 和 OS X) 自动化和配置工具（框架），可以和已有的工具友好集成，特别优化用于处理结构化数据 (如 JSON, CSV, XML 等), REST APIs 以及对象模型。它包含一个命令行 Shell、一个关联的脚本语言以及一个用于处理 cmdlets 的框架。
+
+3. [JVM 的 ASM 工具](http://www.importnew.com/29239.html) 在OpenJDK里有一个AsmTools项目，用来生成正确的或者不正确的java .class文件，主要用来测试和验证。可能对于普通开发人员来说这个工具没什么用，不过对于 JVM 语言开发来说可能很有价值。
+
+4. [kvn-wang/hp-reflect](https://gitee.com/kkk001/hp-reflect)  hp-reflect 是一个高性能的反射工具。它使用字节码技术动态生成 access class。通过不同的 access class，可以高效的获取字段的值，或者调用方法，或者生成实例。 在基础框架中非常实用。
+
+5. [苦叶子/AutoLink](https://gitee.com/lym51/AutoLink) AutoLink是一个开源Web IDE自动化测试集成解决方案,可以帮助你轻易的构建 Web 自动化测试脚本、HTTP 接口自动化测试脚本以及移动自动化测试脚本。
+
+6. [Jumpserver - 开源堡垒机 - 官网](http://www.jumpserver.org/)完全开源的堡垒机，使用 GNU GPL v2.0 开源协议，是符合 4A 的专业运维审计系统。
+7. [GitHub - snail007/goproxy](https://github.com/snail007/goproxy) goProxy是golang实现的高性能http,https,websocket,tcp,防污染DNS,socks5代理服务器,支持内网穿透,链式代理,通讯加密,智能HTTP,SOCKS5代理,域名黑白名单,跨平台,KCP协议支持,集成外部API。
+
+新闻资讯：
+
+1. 推荐一下我这周从阮老师那里看到的文章，[API 之下](http://www.ruanyifeng.com/blog/2018/08/api-below.html)。乍看之下似乎是讲软件的，但是其实是猜测未来 AI 普及后财富分配的一个可能的后果，非常有见解。
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>这是我第一次编写每周分享。这个点子是受到阮一峰阮老师的每周分享启发，考虑到自己每周看了很多消息和工具，正好也能借助这个机会总结留下有价值的资讯。只要能帮助读者了解最新的研发消息，或者某天能用来总结查看，都算是没有白写每周分享。正常情况下我会在周五晚上发出这个系列的文章。（第一期就不正常……）</p>
+
+<p>我的每周分享会包括以下几点内容：本周内学会的一些Java最新的研发知识；发现的新工具；研发人员可能会关注的新闻。其中研发新闻是随缘项目，一方面我也不太关注没有生产力的新闻，一方面也没有太大的留存价值，只有特别关注到的新闻才会分享给大家。Warning：由于我的消息来源也包括阮老师，所以肯定有些内容是来自阮老师的网站，而且如果内容不带有阮老师的观点的话，来源会写真正的消息来源，而不是阮老师的网站；这主要是考虑读者不用多次跳转找出处，而非对阮老师的劳动不尊重，相信阮老师也会见谅的。</p>
+
+<p>下边是8月19日的每周分享：</p>
+
+<p>Java新姿势：</p>
+
+<ol>
+<li><p><a href="http://imushan.com/2018/08/07/java/language/JDK%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-ByteBuffer/">JDK源码阅读-ByteBuffer</a>
+&nbsp;&nbsp;木衫大神对 ByteBuffer 的理解。讲真的，当你开始从 Java 业务深入到底层技术的时候，Java 的 IO 系统始终会是需要关注和优化的一个点。这篇文章就是理解 ByteBuffer 设计的绝佳讲解。</p></li>
+<li><p><a href="http://blog.shrp.me/personal-understanding-of-async-and-blocking.html">JAVA线程和 IO 的同步异步，阻塞非阻塞的个人理解</a> 由于之前跟同事对一段代码是否同步，是否阻塞的看法不一致，所以想深入了解一下同步异步，阻塞非阻塞究竟是什么。个人才疏学浅，也希望有大牛帮忙指正。</p></li>
+<li><p><a href="https://www.cnblogs.com/lovesqcc/p/9271781.html">CR常见代码问题 - 琴水玉 - 博客园</a> 很多人应该都对 CodeReview 不陌生，这是个非常好的提高能力的机会，也是代码拿出来让大家一起改进的好机会。但是有时候一次 CodeReview 包含的事情太多，没有重点，效果也不会太好。这篇文章就对 CodeReview 应该做什么进行了详细的说明。</p></li>
+</ol>
+
+<p>新奇工具：</p>
+
+<ol>
+<li><p><a href="https://github.com/go-gitea/gitea/">gitea</a> 有些人就是想自己搭建 git 服务器，但是又不想用 gitlab 这样重量级的产品。Gitea 就是这样一款产品，它的首要目标是创建一个极易安装，运行非常快速，安装和使用体验良好的自建 Git 服务。项目采用 Go 作为后端语言，只要生成一个可执行程序即可。并且它还支持跨平台，支持 Linux、 macOS 和 Windows 以及各种架构，除了x86、amd64，还包括 ARM 和 PowerPC 。</p></li>
+<li><p><a href="https://github.com/PowerShell/PowerShell/">PowerShell Core</a> PowerShell 对于 Windows 用户应该并不陌生，但是这款 Core ，知道的可能就少了，更何况它是开源并且跨平台的。它是微软开源的一个跨平台 (Windows, Linux 和 OS X) 自动化和配置工具（框架），可以和已有的工具友好集成，特别优化用于处理结构化数据 (如 JSON, CSV, XML 等), REST APIs 以及对象模型。它包含一个命令行 Shell、一个关联的脚本语言以及一个用于处理 cmdlets 的框架。</p></li>
+<li><p><a href="http://www.importnew.com/29239.html">JVM 的 ASM 工具</a> 在OpenJDK里有一个AsmTools项目，用来生成正确的或者不正确的java .class文件，主要用来测试和验证。可能对于普通开发人员来说这个工具没什么用，不过对于 JVM 语言开发来说可能很有价值。</p></li>
+<li><p><a href="https://gitee.com/kkk001/hp-reflect">kvn-wang/hp-reflect</a>  hp-reflect 是一个高性能的反射工具。它使用字节码技术动态生成 access class。通过不同的 access class，可以高效的获取字段的值，或者调用方法，或者生成实例。 在基础框架中非常实用。</p></li>
+<li><p><a href="https://gitee.com/lym51/AutoLink">苦叶子/AutoLink</a> AutoLink是一个开源Web IDE自动化测试集成解决方案,可以帮助你轻易的构建 Web 自动化测试脚本、HTTP 接口自动化测试脚本以及移动自动化测试脚本。</p></li>
+<li><p><a href="http://www.jumpserver.org/">Jumpserver - 开源堡垒机 - 官网</a>完全开源的堡垒机，使用 GNU GPL v2.0 开源协议，是符合 4A 的专业运维审计系统。</p></li>
+<li><a href="https://github.com/snail007/goproxy">GitHub - snail007/goproxy</a> goProxy是golang实现的高性能http,https,websocket,tcp,防污染DNS,socks5代理服务器,支持内网穿透,链式代理,通讯加密,智能HTTP,SOCKS5代理,域名黑白名单,跨平台,KCP协议支持,集成外部API。</li>
+</ol>
+
+<p>新闻资讯：</p>
+
+<ol>
+<li>推荐一下我这周从阮老师那里看到的文章，<a href="http://www.ruanyifeng.com/blog/2018/08/api-below.html">API 之下</a>。乍看之下似乎是讲软件的，但是其实是猜测未来 AI 普及后财富分配的一个可能的后果，非常有见解。</li>
+</ol>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "2018-08-19.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

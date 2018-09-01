@@ -7,7 +7,77 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>2018-08-24</title><link>http://blog.shrp.me//2018-08-24.html</link><pubdate>2018-08-24</pubdate><content:encoded>&lt;p&gt;下边是8月24日的每周分享：&lt;/p&gt;
+    <item><title>2018-09-01</title><link>http://blog.shrp.me//2018-09-01.html</link><pubdate>2018-09-01</pubdate><content:encoded>&lt;p&gt;下边是9月01日的每周分享：&lt;/p&gt;
+
+&lt;h2 id="java"&gt;Java新姿势：&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="http://imushan.com/2018/08/29/java/language/JDK%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-DirectByteBuffer/"&gt;JDK源码阅读-DirectByteBuffer | 木杉的博客&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;木杉大神的又一力作，让我们继续学习 JVM 里的内容。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://my.oschina.net/zijingshanke/blog/1930333"&gt;Uber 开源分布式追踪工具：JVM Profiler - RiboseYim‘s OpenSource Blog - 开源中国&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Uber 的这次开源非常受欢迎，这篇文章就是关于这款 Profiler 的详细介绍。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="http://www.importnew.com/29591.html"&gt;一次Java内存泄漏调试的有趣经历 - ImportNew&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;虽然是个老外，但是讲述的问题是个好问题——长时间 fullGC 导致的超时问题。虽然技术问题本身不复杂，但是解决起来并没有想象中那么容易。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://blog.codingnow.com/2018/08/lockstep.html"&gt;lockstep 网络游戏同步方案&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;云风大神的详细讲解对于我们这样行业外的人来说真是一篇上等的入门力作。在此之前我只能猜测即时游戏的互联方案，其实这个方案在其他需要协作的场景都可以使用。对于非游戏程序员力荐。&lt;/p&gt;
+
+&lt;h2 id=""&gt;新奇工具：&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://gitee.com/ld/J2Cache"&gt;红薯/J2Cache: Java 两级缓存框架，可以让应用支持两级缓存框架 ehcache(Caffeine) + redis 。避免完全使用独立缓存系统所带来的网络IO开销问题&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;J2Cache 是 OSChina 目前正在使用的两级缓存框架。第一级缓存使用 Ehcache，第二级缓存使用 Redis 。由于大量的缓存读取会导致 L2 的网络成为整个系统的瓶颈，因此 L1 的目标是降低对 L2 的读取次数。该缓存框架主要用于集群环境中。单机也可使用，用于避免应用重启导致的 Ehcache 缓存数据丢失。与其说是个 cache，不如说是个 cache 桥梁，用于解决多级缓存的过期和更新不错。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://github.com/uber-common/jvm-profiler"&gt;GitHub - uber-common/jvm-profiler: JVM Profiler Sending Metrics to Kafka, Console Output or Custom Reporter&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Uber 开源的 Profiler，上文有介绍，可以参考下。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://www.oschina.net/p/smart-doc"&gt;smart-doc首页、文档和下载 - Java Restful API 文档生成工具 - 开源中国社区&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;号称免注入文档生成工具，目标还是比较长远的。既然不涉及生产，用于自动维护文档是不错的，已经在跟同事准备使用起来了。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://jobob.gitee.io/mp3doc/"&gt;MyBatis-Plus&lt;/a&gt; &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;这个工具大概不是特别新奇了，我看已经有很多人在关注它的 github 源码了&lt;a href="https://github.com/baomidou/mybatis-plus"&gt;GitHub - baomidou/mybatis-plus: An enhanced toolkit of Mybatis to simplify development&lt;/a&gt;其使用会比直接使用 mybatis 简单很多，但是对于复杂业务来说还是需要写代码的。原理比较简单，本身性能无需担心。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://gitee.com/lsongiu/redis-shared-lock"&gt;qidianliusong/redis-shared-lock: 基于redis的分布式共享锁，使用注解的方式对方法加锁&lt;/a&gt; 一个基于 redis 的分布式共享锁，代码有点意思。由于开发历史不太久，最好不要直接用于生产。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=""&gt;新闻资讯：&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://www.oschina.net/news/99299/windows95-open-source-project"&gt;经典不灭，开源项目带你在各平台上重温 Windows 95 - 开源中国&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;大概很多人都没有用过 Windows95，有人用 Electron 制作了这款 Win95的虚拟机的前端界面，目测虚拟机是 bochs 下载地址：&lt;a href="https://github.com/felixrieseberg/windows95/releases"&gt;Releases · felixrieseberg/windows95 · GitHub&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://mp.weixin.qq.com/s/NamsJHwEOdF3GgGE5sM4gg"&gt;几个大型网站的Feeds(Timeline)设计简单对比&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;很抱歉，这个是我最近比较关注的话题，看起来也不是最新的文章了，但是多关注一下其他社区的设计对于我们自己的社区就会多一些思考。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//2018-09-01.html</guid></item><item><title>2018-08-24</title><link>http://blog.shrp.me//2018-08-24.html</link><pubdate>2018-08-24</pubdate><content:encoded>&lt;p&gt;下边是8月24日的每周分享：&lt;/p&gt;
 
 &lt;p&gt;Java新姿势：&lt;/p&gt;
 
@@ -323,168 +393,5 @@ public class Test {
 
 &lt;p&gt;　　但是在我的机器和其他同事的机器上却发现有人是 false，true，有人是 false，false，有人是 true，true。也就是说，JVM 根据某些信息提前进行了 intern，这种 intern 操作来自哪里，我暂时还不知道，有知道的同学可以帮忙在回复里解释一下。&lt;/p&gt;
 
-&lt;p&gt;　　BTW，调用 intern 却不是用其返回值作为对象，那么这次使用的对象不一定是在 Intern 里存储的那个对象，使用==的结果并不是确定的。这种类似 C 的未定义行为，不能作为 Java 特性的说明，也不能在生产代码里使用，原文的原理是正确的，但是代码却没有说服力了。这从另一个角度提醒我们写代码还是要大胆假设，小心求证。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//a-None-Strict-String-Intern-Test.html</guid></item><item><title>简单的Http客户端——OKHttp</title><link>http://blog.shrp.me//simple-http-client-okhttp.html</link><pubdate>2017-12-21</pubdate><content:encoded>&lt;p&gt;&lt;a href="https://github.com/square/okhttp"&gt;OKHttp&lt;/a&gt;支持以下功能：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;http/2支持，同一个host可以共享一个端口&lt;/li&gt;
-&lt;li&gt;如果http/2不支持，则使用连接池降低请求延迟&lt;/li&gt;
-&lt;li&gt;透明gzip请求的返回&lt;/li&gt;
-&lt;li&gt;可以针对重复的网络请求进行缓存&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;下文将分几个方向介绍OKHttp：&lt;/p&gt;
-
-&lt;p&gt;1.引用&lt;/p&gt;
-
-&lt;p&gt;当前最新版本是3.9.1，使用maven仓库引入即可，maven配置如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="xml"&gt;    &amp;lt;dependency&amp;gt;
-        &amp;lt;groupId&amp;gt;com.squareup.okhttp3&amp;lt;/groupId&amp;gt;
-        &amp;lt;artifactId&amp;gt;okhttp&amp;lt;/artifactId&amp;gt;
-        &amp;lt;version&amp;gt;3.9.1&amp;lt;/version&amp;gt;
-    &amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;gradle 配置如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="json"&gt;compile 'com.squareup.okhttp3:okhttp:3.9.1'
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;2.先引入一个函数来表示具体的请求，后边的执行大多会使用这个函数来发起具体的请求&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;private static Response executeRequest(final OkHttpClient okHttpClient, final Request build) {
-        try {
-            final Response response = okHttpClient.newCall(build).execute();
-            if (response.isSuccessful()) {
-                System.out.println(response.code() + " : " + response.body().string().length());
-            } else {
-                System.out.println(response.code());
-            }
-            return response;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;3.基本的get请求&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;final Request build = new Request.Builder().url("http://blog.shrp.me")
-                .header("PostId", "12345")
-                .addHeader("client-version", "3.9.1")
-                .build();
-        System.out.print("simple get: ");
-        executeRequest(okHttpClient, build);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;4.基本的post请求&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;final MediaType parse = MediaType.parse("application/json");
-        final RequestBody requestBody = RequestBody.create(parse, "{}");
-        final Request build = new Request.Builder().url("http://blog.shrp.me")
-                .post(requestBody)
-                .header("PostId", "12345")
-                .addHeader("client-version", "3.9.1")
-                .build();
-        System.out.print("simple post: ");
-        executeRequest(okHttpClient, build);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;5.multipart post请求&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;final MultipartBody form = new MultipartBody.Builder().addFormDataPart(
-                "test", "test"
-        ).build();
-        final Request build = new Request.Builder().url("http://blog.shrp.me")
-                .post(form)
-                .header("PostId", "12345")
-                .addHeader("client-version", "3.9.1")
-                .build();
-        System.out.print("multipart post: ");
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;6.带有缓存功能的get&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;final File cacheDir = Files.createTempDirectory("test").toFile();
-        final Cache cache = new Cache(cacheDir, MAX_SIZE);
-        final OkHttpClient okHttpClient = new OkHttpClient.Builder().cache(cache).build();
-        final Request build = new Request.Builder().url("http://blog.shrp.me")
-                .header("PostId", "12345")
-                .cacheControl(CacheControl.FORCE_NETWORK)
-                .addHeader("client-version", "3.9.1")
-                .build();
-        System.out.print("cached get: ");
-        final Response response = executeRequest(okHttpClient, build);
-        assert response.networkResponse() != null;
-        final Request request2 = new Request.Builder().url("http://blog.shrp.me")
-                .header("PostId", "12345")
-                .cacheControl(CacheControl.FORCE_CACHE)
-                .addHeader("client-version", "3.9.1")
-                .build();
-        final Response response2 = executeRequest(okHttpClient, request2);
-        assert response2.cacheResponse() != null;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;7.异步请求&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;final Request build = new Request.Builder().url("http://blog.shrp.me")
-                .header("PostId", "12345")
-                .addHeader("client-version", "3.9.1")
-                .build();
-        System.out.print("async get: ");
-        okHttpClient.newCall(build).enqueue(new Callback() {
-            @Override
-            public void onFailure(final Call call, final IOException e) {
-                System.out.println(call.request().url() + " is failed. " + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(final Call call, final Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    System.out.println(response.code() + " : " + response.body().string().length());
-                } else {
-                    System.out.println(response.code());
-                }
-            }
-        });
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;8.带有拦截器的请求&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt; final File cacheDir = Files.createTempDirectory("test").toFile();
-        final Cache cache = new Cache(cacheDir, MAX_SIZE);
-        final OkHttpClient okHttpClient = new OkHttpClient.Builder().cache(cache)
-                .addInterceptor(chain -&amp;gt; {
-//                    System.out.println("intercept 1.");
-                    final Response proceed = chain.proceed(chain.request());
-                    System.out.println("intercept 1 return.");
-                    return proceed;
-                })
-                .addInterceptor(chain -&amp;gt; {
-                    System.out.println("intercept 2.");
-                    final Response proceed = chain.proceed(chain.request());
-                    System.out.println("intercept 2 return.");
-                    return proceed;
-                })
-                .addNetworkInterceptor(chain -&amp;gt; {
-                    System.out.println("network intercept.");
-                    final Response proceed = chain.proceed(chain.request());
-                    System.out.println("network intercept return.");
-                    return proceed;
-                })
-                .build();
-        final Request build = new Request.Builder().url("http://blog.shrp.me")
-                .header("PostId", "12345")
-                .addHeader("client-version", "3.9.1")
-                .build();
-        System.out.print("intercept get: ");
-        executeRequest(okHttpClient, build);
-        System.out.print("intercept get from cache: ");
-        executeRequest(okHttpClient, build);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;9.还可以添加认证器，在异步调用后使用cancel取消等功能。&lt;/p&gt;
-
-&lt;p&gt;okhttp的api更易用，据说性能也不错。以后有机会可以进行性能的比较。本文代码可以在&lt;a href="https://github.com/stirp/MyTests"&gt;https://github.com/stirp/MyTests&lt;/a&gt;找到。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//simple-http-client-okhttp.html</guid></item></channel>
+&lt;p&gt;　　BTW，调用 intern 却不是用其返回值作为对象，那么这次使用的对象不一定是在 Intern 里存储的那个对象，使用==的结果并不是确定的。这种类似 C 的未定义行为，不能作为 Java 特性的说明，也不能在生产代码里使用，原文的原理是正确的，但是代码却没有说服力了。这从另一个角度提醒我们写代码还是要大胆假设，小心求证。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//a-None-Strict-String-Intern-Test.html</guid></item></channel>
 </rss>

@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+Java新姿势：
+-------------
+1. [如何才能写出好的软件设计文档？](http://www.infoq.com/cn/articles/how-to-write-a-good-software-design-document) 做了这么多年的 Java 开发，除了在恶补测试，我想最需要恶补的其实是设计。我们虽然没有设计也做了这么多年的系统，但是没有先行设计，总是缺乏对系统方向的把握。
+
+2. [哈希碰撞与生日攻击 - 阮一峰的网络日志](http://www.ruanyifeng.com/blog/2018/09/hash-collision-and-birthday-attack.html) 虽然不是 Java 语言，但是这个问题存在于任何语言的哈希算法之中，值得一看。
+
+3. [使用JITWatch查看JVM的JIT编译代码 | 刘正阳](https://liuzhengyang.github.io/2017/07/27/jitwatch/) 有时候我们对程序 JIT 优化后的情况不太了解，这个工具[GitHub - AdoptOpenJDK/jitwatch: Log analyser / visualiser for Java HotSpot JIT compiler. Inspect inlining decisions, hot methods, bytecode, and assembly. View results in the JavaFX user interface.](https://github.com/AdoptOpenJDK/jitwatch)正合适。
+
+新奇工具：
+--------------
+1. [WonderPen | 妙笔 - momothink](https://www.momothink.com/wonderpen/)妙笔，一个新的文档编辑工具，支持多级目录，存储自动增加版本可以支持回退，可以增加笔记备份，有导出功能，作者的用户画像是勤于写作的作家，实际上需要整理笔记的程序员也很适合。缺点是还不支持 sequence 或者 graph 语法。
+
+2. [Commons Weaver – Download Apache Commons Weaver](https://commons.apache.org/proper/commons-weaver/download_weaver.cgi) 通过在类中生成（"weaving"）字节码，提供一种简单的方法来增强已编译的 Java 类。
+
+3. [GitHub - snail007/shadowtunnel: secure tunnel which help you protecting your tcp traffic between your machine and your service on remote.](https://github.com/snail007/shadowtunnel) goproxy 作者的又一力作，为已有代理增加一个加密的链路。
+
+4. [GitHub - redisson/redisson: Redisson - distributed Java objects and services (Set, Multimap, SortedSet, Map, List, Queue, BlockingQueue, Deque, BlockingDeque, Semaphore, Lock, AtomicLong, Map Reduce, Publish / Subscribe, Bloom filter, Spring Cache, Executor service, Tomcat Session Manager, Scheduler service, JCache API) on top of Redis server. State of the Art Redis client](https://github.com/redisson/redisson) Redisson是架设在Redis基础上的一个Java驻内存数据网格（In-Memory Data Grid）。【Redis官方推荐】Redisson在基于NIO的Netty框架上，充分的利用了Redis键值数据库提供的一系列优势，在Java实用工具包中常用接口的基础上，为使用者提供了一系列具有分布式特性的常用工具类。使得原本作为协调单机多线程并发程序的工具包获得了协调分布式多机多线程并发系统的能力，大大降低了设计和研发大规模分布式系统的难度。同时结合各富特色的分布式服务，更进一步简化了分布式环境中程序相互之间的协作。
+
+新闻资讯：
+-------------
+
+1. [GitHub - rwv/chinese-dos-games: 🎮 Chinese DOS games in browser.](https://github.com/rwv/chinese-dos-games) 游戏大概有版权问题，但是技术是之前就很火的 WebAssembly 技术。不过这个目前最大的问题是存储没法保留，关闭浏览器存档就丢了。
+
+2. [PhpStorm troubleshooting – ideaVim stops working – William Turrell](https://blog.wturrell.co.uk/phpstorm-ideavim-not-working/) 这个也是我最近遇到的一个情况，idea 使用的 vim 插件突然就不工作了，编辑器回到了原始的状态，但是看插件是安装的，没有任何问题。原来是插件有个工作开关，默认开关还有快捷键，而且这个快捷键跟 Mac 的粘贴非常接近，囧。
+
+3. [研究发现：不靠 cookie，网站也能通过 TLS 协议追踪你 - 开源中国](https://www.oschina.net/news/99768/tracking-users-across-the-web-via-tls-session-resumption) 这个新闻有点恐怖，居然可以不用 cookie 而是通过 TLS 协议进行客户端的识别——这个功能对正常的业务来说没什么帮助，客户说关闭浏览器就关闭了；但是对于广告功能来说，完全可以用来短期跟踪客户，甚至对于手机的浏览器来说，完全可以替代 cookie 的作用了。
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<h2 id="java">Java新姿势：</h2>
+
+<ol>
+<li><p><a href="http://www.infoq.com/cn/articles/how-to-write-a-good-software-design-document">如何才能写出好的软件设计文档？</a> 做了这么多年的 Java 开发，除了在恶补测试，我想最需要恶补的其实是设计。我们虽然没有设计也做了这么多年的系统，但是没有先行设计，总是缺乏对系统方向的把握。</p></li>
+<li><p><a href="http://www.ruanyifeng.com/blog/2018/09/hash-collision-and-birthday-attack.html">哈希碰撞与生日攻击 - 阮一峰的网络日志</a> 虽然不是 Java 语言，但是这个问题存在于任何语言的哈希算法之中，值得一看。</p></li>
+<li><p><a href="https://liuzhengyang.github.io/2017/07/27/jitwatch/">使用JITWatch查看JVM的JIT编译代码 | 刘正阳</a> 有时候我们对程序 JIT 优化后的情况不太了解，这个工具<a href="https://github.com/AdoptOpenJDK/jitwatch">GitHub - AdoptOpenJDK/jitwatch: Log analyser / visualiser for Java HotSpot JIT compiler. Inspect inlining decisions, hot methods, bytecode, and assembly. View results in the JavaFX user interface.</a>正合适。</p></li>
+</ol>
+
+<h2 id="">新奇工具：</h2>
+
+<ol>
+<li><p><a href="https://www.momothink.com/wonderpen/">WonderPen | 妙笔 - momothink</a>妙笔，一个新的文档编辑工具，支持多级目录，存储自动增加版本可以支持回退，可以增加笔记备份，有导出功能，作者的用户画像是勤于写作的作家，实际上需要整理笔记的程序员也很适合。缺点是还不支持 sequence 或者 graph 语法。</p></li>
+<li><p><a href="https://commons.apache.org/proper/commons-weaver/download_weaver.cgi">Commons Weaver – Download Apache Commons Weaver</a> 通过在类中生成（"weaving"）字节码，提供一种简单的方法来增强已编译的 Java 类。</p></li>
+<li><p><a href="https://github.com/snail007/shadowtunnel">GitHub - snail007/shadowtunnel: secure tunnel which help you protecting your tcp traffic between your machine and your service on remote.</a> goproxy 作者的又一力作，为已有代理增加一个加密的链路。</p></li>
+<li><p><a href="https://github.com/redisson/redisson">GitHub - redisson/redisson: Redisson - distributed Java objects and services (Set, Multimap, SortedSet, Map, List, Queue, BlockingQueue, Deque, BlockingDeque, Semaphore, Lock, AtomicLong, Map Reduce, Publish / Subscribe, Bloom filter, Spring Cache, Executor service, Tomcat Session Manager, Scheduler service, JCache API) on top of Redis server. State of the Art Redis client</a> Redisson是架设在Redis基础上的一个Java驻内存数据网格（In-Memory Data Grid）。【Redis官方推荐】Redisson在基于NIO的Netty框架上，充分的利用了Redis键值数据库提供的一系列优势，在Java实用工具包中常用接口的基础上，为使用者提供了一系列具有分布式特性的常用工具类。使得原本作为协调单机多线程并发程序的工具包获得了协调分布式多机多线程并发系统的能力，大大降低了设计和研发大规模分布式系统的难度。同时结合各富特色的分布式服务，更进一步简化了分布式环境中程序相互之间的协作。</p></li>
+</ol>
+
+<h2 id="">新闻资讯：</h2>
+
+<ol>
+<li><p><a href="https://github.com/rwv/chinese-dos-games">GitHub - rwv/chinese-dos-games: 🎮 Chinese DOS games in browser.</a> 游戏大概有版权问题，但是技术是之前就很火的 WebAssembly 技术。不过这个目前最大的问题是存储没法保留，关闭浏览器存档就丢了。</p></li>
+<li><p><a href="https://blog.wturrell.co.uk/phpstorm-ideavim-not-working/">PhpStorm troubleshooting – ideaVim stops working – William Turrell</a> 这个也是我最近遇到的一个情况，idea 使用的 vim 插件突然就不工作了，编辑器回到了原始的状态，但是看插件是安装的，没有任何问题。原来是插件有个工作开关，默认开关还有快捷键，而且这个快捷键跟 Mac 的粘贴非常接近，囧。</p></li>
+<li><p><a href="https://www.oschina.net/news/99768/tracking-users-across-the-web-via-tls-session-resumption">研究发现：不靠 cookie，网站也能通过 TLS 协议追踪你 - 开源中国</a> 这个新闻有点恐怖，居然可以不用 cookie 而是通过 TLS 协议进行客户端的识别——这个功能对正常的业务来说没什么帮助，客户说关闭浏览器就关闭了；但是对于广告功能来说，完全可以用来短期跟踪客户，甚至对于手机的浏览器来说，完全可以替代 cookie 的作用了。</p></li>
+</ol>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "2018-09-09.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

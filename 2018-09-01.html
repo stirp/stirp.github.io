@@ -42,51 +42,31 @@
 
 Java新姿势：
 -------------
-1. [JDK源码阅读-DirectByteBuffer | 木杉的博客](http://imushan.com/2018/08/29/java/language/JDK%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-DirectByteBuffer/)
+1. [JDK源码阅读-DirectByteBuffer | 木杉的博客](http://imushan.com/2018/08/29/java/language/JDK%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-DirectByteBuffer/) 木杉大神的又一力作，让我们继续学习 JVM 里的内容。
 
-木杉大神的又一力作，让我们继续学习 JVM 里的内容。
+2. [Uber 开源分布式追踪工具：JVM Profiler - RiboseYim‘s OpenSource Blog - 开源中国](https://my.oschina.net/zijingshanke/blog/1930333) Uber 的这次开源非常受欢迎，这篇文章就是关于这款 Profiler 的详细介绍。
 
-2. [Uber 开源分布式追踪工具：JVM Profiler - RiboseYim‘s OpenSource Blog - 开源中国](https://my.oschina.net/zijingshanke/blog/1930333)
+3. [一次Java内存泄漏调试的有趣经历 - ImportNew](http://www.importnew.com/29591.html) 虽然是个老外，但是讲述的问题是个好问题——长时间 fullGC 导致的超时问题。虽然技术问题本身不复杂，但是解决起来并没有想象中那么容易。
 
-Uber 的这次开源非常受欢迎，这篇文章就是关于这款 Profiler 的详细介绍。
-
-3. [一次Java内存泄漏调试的有趣经历 - ImportNew](http://www.importnew.com/29591.html)
-
-虽然是个老外，但是讲述的问题是个好问题——长时间 fullGC 导致的超时问题。虽然技术问题本身不复杂，但是解决起来并没有想象中那么容易。
-
-4. [lockstep 网络游戏同步方案](https://blog.codingnow.com/2018/08/lockstep.html)
-
-云风大神的详细讲解对于我们这样行业外的人来说真是一篇上等的入门力作。在此之前我只能猜测即时游戏的互联方案，其实这个方案在其他需要协作的场景都可以使用。对于非游戏程序员力荐。
+4. [lockstep 网络游戏同步方案](https://blog.codingnow.com/2018/08/lockstep.html) 云风大神的详细讲解对于我们这样行业外的人来说真是一篇上等的入门力作。在此之前我只能猜测即时游戏的互联方案，其实这个方案在其他需要协作的场景都可以使用。对于非游戏程序员力荐。
 
 新奇工具：
 -------------
-1. [红薯/J2Cache: Java 两级缓存框架，可以让应用支持两级缓存框架 ehcache(Caffeine) + redis 。避免完全使用独立缓存系统所带来的网络IO开销问题](https://gitee.com/ld/J2Cache)
+1. [红薯/J2Cache: Java 两级缓存框架，可以让应用支持两级缓存框架 ehcache(Caffeine) + redis 。避免完全使用独立缓存系统所带来的网络IO开销问题](https://gitee.com/ld/J2Cache) J2Cache 是 OSChina 目前正在使用的两级缓存框架。第一级缓存使用 Ehcache，第二级缓存使用 Redis 。由于大量的缓存读取会导致 L2 的网络成为整个系统的瓶颈，因此 L1 的目标是降低对 L2 的读取次数。该缓存框架主要用于集群环境中。单机也可使用，用于避免应用重启导致的 Ehcache 缓存数据丢失。与其说是个 cache，不如说是个 cache 桥梁，用于解决多级缓存的过期和更新不错。
 
-J2Cache 是 OSChina 目前正在使用的两级缓存框架。第一级缓存使用 Ehcache，第二级缓存使用 Redis 。由于大量的缓存读取会导致 L2 的网络成为整个系统的瓶颈，因此 L1 的目标是降低对 L2 的读取次数。该缓存框架主要用于集群环境中。单机也可使用，用于避免应用重启导致的 Ehcache 缓存数据丢失。与其说是个 cache，不如说是个 cache 桥梁，用于解决多级缓存的过期和更新不错。
+2. [GitHub - uber-common/jvm-profiler: JVM Profiler Sending Metrics to Kafka, Console Output or Custom Reporter](https://github.com/uber-common/jvm-profiler) Uber 开源的 Profiler，上文有介绍，可以参考下。
 
-2. [GitHub - uber-common/jvm-profiler: JVM Profiler Sending Metrics to Kafka, Console Output or Custom Reporter](https://github.com/uber-common/jvm-profiler)
+3. [smart-doc首页、文档和下载 - Java Restful API 文档生成工具 - 开源中国社区](https://www.oschina.net/p/smart-doc) 号称免注入文档生成工具，目标还是比较长远的。既然不涉及生产，用于自动维护文档是不错的，已经在跟同事准备使用起来了。
 
-Uber 开源的 Profiler，上文有介绍，可以参考下。
-
-3. [smart-doc首页、文档和下载 - Java Restful API 文档生成工具 - 开源中国社区](https://www.oschina.net/p/smart-doc)
-
-号称免注入文档生成工具，目标还是比较长远的。既然不涉及生产，用于自动维护文档是不错的，已经在跟同事准备使用起来了。
-
-4. [MyBatis-Plus](https://jobob.gitee.io/mp3doc/) 
-
-这个工具大概不是特别新奇了，我看已经有很多人在关注它的 github 源码了[GitHub - baomidou/mybatis-plus: An enhanced toolkit of Mybatis to simplify development](https://github.com/baomidou/mybatis-plus)其使用会比直接使用 mybatis 简单很多，但是对于复杂业务来说还是需要写代码的。原理比较简单，本身性能无需担心。
+4. [MyBatis-Plus](https://jobob.gitee.io/mp3doc/) 这个工具大概不是特别新奇了，我看已经有很多人在关注它的 github 源码了[GitHub - baomidou/mybatis-plus: An enhanced toolkit of Mybatis to simplify development](https://github.com/baomidou/mybatis-plus)其使用会比直接使用 mybatis 简单很多，但是对于复杂业务来说还是需要写代码的。原理比较简单，本身性能无需担心。
 
 5. [qidianliusong/redis-shared-lock: 基于redis的分布式共享锁，使用注解的方式对方法加锁](https://gitee.com/lsongiu/redis-shared-lock) 一个基于 redis 的分布式共享锁，代码有点意思。由于开发历史不太久，最好不要直接用于生产。
 
 新闻资讯：
 -------------
-1. [经典不灭，开源项目带你在各平台上重温 Windows 95 - 开源中国](https://www.oschina.net/news/99299/windows95-open-source-project)
+1. [经典不灭，开源项目带你在各平台上重温 Windows 95 - 开源中国](https://www.oschina.net/news/99299/windows95-open-source-project) 大概很多人都没有用过 Windows95，有人用 Electron 制作了这款 Win95的虚拟机的前端界面，目测虚拟机是 bochs 下载地址：[Releases · felixrieseberg/windows95 · GitHub](https://github.com/felixrieseberg/windows95/releases)
 
-大概很多人都没有用过 Windows95，有人用 Electron 制作了这款 Win95的虚拟机的前端界面，目测虚拟机是 bochs 下载地址：[Releases · felixrieseberg/windows95 · GitHub](https://github.com/felixrieseberg/windows95/releases)
-
-2. [几个大型网站的Feeds(Timeline)设计简单对比](https://mp.weixin.qq.com/s/NamsJHwEOdF3GgGE5sM4gg)
-
-很抱歉，这个是我最近比较关注的话题，看起来也不是最新的文章了，但是多关注一下其他社区的设计对于我们自己的社区就会多一些思考。
+2. [几个大型网站的Feeds(Timeline)设计简单对比](https://mp.weixin.qq.com/s/NamsJHwEOdF3GgGE5sM4gg) 很抱歉，这个是我最近比较关注的话题，看起来也不是最新的文章了，但是多关注一下其他社区的设计对于我们自己的社区就会多一些思考。
 <!-- markdown end -->
     </div>
     <div class="entry" id="main">
@@ -96,72 +76,28 @@ Uber 开源的 Profiler，上文有介绍，可以参考下。
 <h2 id="java">Java新姿势：</h2>
 
 <ol>
-<li><a href="http://imushan.com/2018/08/29/java/language/JDK%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-DirectByteBuffer/">JDK源码阅读-DirectByteBuffer | 木杉的博客</a></li>
+<li><p><a href="http://imushan.com/2018/08/29/java/language/JDK%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-DirectByteBuffer/">JDK源码阅读-DirectByteBuffer | 木杉的博客</a> 木杉大神的又一力作，让我们继续学习 JVM 里的内容。</p></li>
+<li><p><a href="https://my.oschina.net/zijingshanke/blog/1930333">Uber 开源分布式追踪工具：JVM Profiler - RiboseYim‘s OpenSource Blog - 开源中国</a> Uber 的这次开源非常受欢迎，这篇文章就是关于这款 Profiler 的详细介绍。</p></li>
+<li><p><a href="http://www.importnew.com/29591.html">一次Java内存泄漏调试的有趣经历 - ImportNew</a> 虽然是个老外，但是讲述的问题是个好问题——长时间 fullGC 导致的超时问题。虽然技术问题本身不复杂，但是解决起来并没有想象中那么容易。</p></li>
+<li><p><a href="https://blog.codingnow.com/2018/08/lockstep.html">lockstep 网络游戏同步方案</a> 云风大神的详细讲解对于我们这样行业外的人来说真是一篇上等的入门力作。在此之前我只能猜测即时游戏的互联方案，其实这个方案在其他需要协作的场景都可以使用。对于非游戏程序员力荐。</p></li>
 </ol>
-
-<p>木杉大神的又一力作，让我们继续学习 JVM 里的内容。</p>
-
-<ol>
-<li><a href="https://my.oschina.net/zijingshanke/blog/1930333">Uber 开源分布式追踪工具：JVM Profiler - RiboseYim‘s OpenSource Blog - 开源中国</a></li>
-</ol>
-
-<p>Uber 的这次开源非常受欢迎，这篇文章就是关于这款 Profiler 的详细介绍。</p>
-
-<ol>
-<li><a href="http://www.importnew.com/29591.html">一次Java内存泄漏调试的有趣经历 - ImportNew</a></li>
-</ol>
-
-<p>虽然是个老外，但是讲述的问题是个好问题——长时间 fullGC 导致的超时问题。虽然技术问题本身不复杂，但是解决起来并没有想象中那么容易。</p>
-
-<ol>
-<li><a href="https://blog.codingnow.com/2018/08/lockstep.html">lockstep 网络游戏同步方案</a></li>
-</ol>
-
-<p>云风大神的详细讲解对于我们这样行业外的人来说真是一篇上等的入门力作。在此之前我只能猜测即时游戏的互联方案，其实这个方案在其他需要协作的场景都可以使用。对于非游戏程序员力荐。</p>
 
 <h2 id="">新奇工具：</h2>
 
 <ol>
-<li><a href="https://gitee.com/ld/J2Cache">红薯/J2Cache: Java 两级缓存框架，可以让应用支持两级缓存框架 ehcache(Caffeine) + redis 。避免完全使用独立缓存系统所带来的网络IO开销问题</a></li>
-</ol>
-
-<p>J2Cache 是 OSChina 目前正在使用的两级缓存框架。第一级缓存使用 Ehcache，第二级缓存使用 Redis 。由于大量的缓存读取会导致 L2 的网络成为整个系统的瓶颈，因此 L1 的目标是降低对 L2 的读取次数。该缓存框架主要用于集群环境中。单机也可使用，用于避免应用重启导致的 Ehcache 缓存数据丢失。与其说是个 cache，不如说是个 cache 桥梁，用于解决多级缓存的过期和更新不错。</p>
-
-<ol>
-<li><a href="https://github.com/uber-common/jvm-profiler">GitHub - uber-common/jvm-profiler: JVM Profiler Sending Metrics to Kafka, Console Output or Custom Reporter</a></li>
-</ol>
-
-<p>Uber 开源的 Profiler，上文有介绍，可以参考下。</p>
-
-<ol>
-<li><a href="https://www.oschina.net/p/smart-doc">smart-doc首页、文档和下载 - Java Restful API 文档生成工具 - 开源中国社区</a></li>
-</ol>
-
-<p>号称免注入文档生成工具，目标还是比较长远的。既然不涉及生产，用于自动维护文档是不错的，已经在跟同事准备使用起来了。</p>
-
-<ol>
-<li><a href="https://jobob.gitee.io/mp3doc/">MyBatis-Plus</a> </li>
-</ol>
-
-<p>这个工具大概不是特别新奇了，我看已经有很多人在关注它的 github 源码了<a href="https://github.com/baomidou/mybatis-plus">GitHub - baomidou/mybatis-plus: An enhanced toolkit of Mybatis to simplify development</a>其使用会比直接使用 mybatis 简单很多，但是对于复杂业务来说还是需要写代码的。原理比较简单，本身性能无需担心。</p>
-
-<ol>
-<li><a href="https://gitee.com/lsongiu/redis-shared-lock">qidianliusong/redis-shared-lock: 基于redis的分布式共享锁，使用注解的方式对方法加锁</a> 一个基于 redis 的分布式共享锁，代码有点意思。由于开发历史不太久，最好不要直接用于生产。</li>
+<li><p><a href="https://gitee.com/ld/J2Cache">红薯/J2Cache: Java 两级缓存框架，可以让应用支持两级缓存框架 ehcache(Caffeine) + redis 。避免完全使用独立缓存系统所带来的网络IO开销问题</a> J2Cache 是 OSChina 目前正在使用的两级缓存框架。第一级缓存使用 Ehcache，第二级缓存使用 Redis 。由于大量的缓存读取会导致 L2 的网络成为整个系统的瓶颈，因此 L1 的目标是降低对 L2 的读取次数。该缓存框架主要用于集群环境中。单机也可使用，用于避免应用重启导致的 Ehcache 缓存数据丢失。与其说是个 cache，不如说是个 cache 桥梁，用于解决多级缓存的过期和更新不错。</p></li>
+<li><p><a href="https://github.com/uber-common/jvm-profiler">GitHub - uber-common/jvm-profiler: JVM Profiler Sending Metrics to Kafka, Console Output or Custom Reporter</a> Uber 开源的 Profiler，上文有介绍，可以参考下。</p></li>
+<li><p><a href="https://www.oschina.net/p/smart-doc">smart-doc首页、文档和下载 - Java Restful API 文档生成工具 - 开源中国社区</a> 号称免注入文档生成工具，目标还是比较长远的。既然不涉及生产，用于自动维护文档是不错的，已经在跟同事准备使用起来了。</p></li>
+<li><p><a href="https://jobob.gitee.io/mp3doc/">MyBatis-Plus</a> 这个工具大概不是特别新奇了，我看已经有很多人在关注它的 github 源码了<a href="https://github.com/baomidou/mybatis-plus">GitHub - baomidou/mybatis-plus: An enhanced toolkit of Mybatis to simplify development</a>其使用会比直接使用 mybatis 简单很多，但是对于复杂业务来说还是需要写代码的。原理比较简单，本身性能无需担心。</p></li>
+<li><p><a href="https://gitee.com/lsongiu/redis-shared-lock">qidianliusong/redis-shared-lock: 基于redis的分布式共享锁，使用注解的方式对方法加锁</a> 一个基于 redis 的分布式共享锁，代码有点意思。由于开发历史不太久，最好不要直接用于生产。</p></li>
 </ol>
 
 <h2 id="">新闻资讯：</h2>
 
 <ol>
-<li><a href="https://www.oschina.net/news/99299/windows95-open-source-project">经典不灭，开源项目带你在各平台上重温 Windows 95 - 开源中国</a></li>
+<li><p><a href="https://www.oschina.net/news/99299/windows95-open-source-project">经典不灭，开源项目带你在各平台上重温 Windows 95 - 开源中国</a> 大概很多人都没有用过 Windows95，有人用 Electron 制作了这款 Win95的虚拟机的前端界面，目测虚拟机是 bochs 下载地址：<a href="https://github.com/felixrieseberg/windows95/releases">Releases · felixrieseberg/windows95 · GitHub</a></p></li>
+<li><p><a href="https://mp.weixin.qq.com/s/NamsJHwEOdF3GgGE5sM4gg">几个大型网站的Feeds(Timeline)设计简单对比</a> 很抱歉，这个是我最近比较关注的话题，看起来也不是最新的文章了，但是多关注一下其他社区的设计对于我们自己的社区就会多一些思考。</p></li>
 </ol>
-
-<p>大概很多人都没有用过 Windows95，有人用 Electron 制作了这款 Win95的虚拟机的前端界面，目测虚拟机是 bochs 下载地址：<a href="https://github.com/felixrieseberg/windows95/releases">Releases · felixrieseberg/windows95 · GitHub</a></p>
-
-<ol>
-<li><a href="https://mp.weixin.qq.com/s/NamsJHwEOdF3GgGE5sM4gg">几个大型网站的Feeds(Timeline)设计简单对比</a></li>
-</ol>
-
-<p>很抱歉，这个是我最近比较关注的话题，看起来也不是最新的文章了，但是多关注一下其他社区的设计对于我们自己的社区就会多一些思考。</p>
 <!-- content end -->
     </div>
     <br>

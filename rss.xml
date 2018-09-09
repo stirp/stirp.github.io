@@ -7,7 +7,30 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>2018-09-01</title><link>http://blog.shrp.me//2018-09-01.html</link><pubdate>2018-09-01</pubdate><content:encoded>&lt;p&gt;下边是9月01日的每周分享：&lt;/p&gt;
+    <item><title>2018-09-09</title><link>http://blog.shrp.me//2018-09-09.html</link><pubdate>2018-09-10</pubdate><content:encoded>&lt;h2 id="java"&gt;Java新姿势：&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="http://www.infoq.com/cn/articles/how-to-write-a-good-software-design-document"&gt;如何才能写出好的软件设计文档？&lt;/a&gt; 做了这么多年的 Java 开发，除了在恶补测试，我想最需要恶补的其实是设计。我们虽然没有设计也做了这么多年的系统，但是没有先行设计，总是缺乏对系统方向的把握。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="http://www.ruanyifeng.com/blog/2018/09/hash-collision-and-birthday-attack.html"&gt;哈希碰撞与生日攻击 - 阮一峰的网络日志&lt;/a&gt; 虽然不是 Java 语言，但是这个问题存在于任何语言的哈希算法之中，值得一看。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://liuzhengyang.github.io/2017/07/27/jitwatch/"&gt;使用JITWatch查看JVM的JIT编译代码 | 刘正阳&lt;/a&gt; 有时候我们对程序 JIT 优化后的情况不太了解，这个工具&lt;a href="https://github.com/AdoptOpenJDK/jitwatch"&gt;GitHub - AdoptOpenJDK/jitwatch: Log analyser / visualiser for Java HotSpot JIT compiler. Inspect inlining decisions, hot methods, bytecode, and assembly. View results in the JavaFX user interface.&lt;/a&gt;正合适。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=""&gt;新奇工具：&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://www.momothink.com/wonderpen/"&gt;WonderPen | 妙笔 - momothink&lt;/a&gt;妙笔，一个新的文档编辑工具，支持多级目录，存储自动增加版本可以支持回退，可以增加笔记备份，有导出功能，作者的用户画像是勤于写作的作家，实际上需要整理笔记的程序员也很适合。缺点是还不支持 sequence 或者 graph 语法。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://commons.apache.org/proper/commons-weaver/download_weaver.cgi"&gt;Commons Weaver – Download Apache Commons Weaver&lt;/a&gt; 通过在类中生成（"weaving"）字节码，提供一种简单的方法来增强已编译的 Java 类。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://github.com/snail007/shadowtunnel"&gt;GitHub - snail007/shadowtunnel: secure tunnel which help you protecting your tcp traffic between your machine and your service on remote.&lt;/a&gt; goproxy 作者的又一力作，为已有代理增加一个加密的链路。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://github.com/redisson/redisson"&gt;GitHub - redisson/redisson: Redisson - distributed Java objects and services (Set, Multimap, SortedSet, Map, List, Queue, BlockingQueue, Deque, BlockingDeque, Semaphore, Lock, AtomicLong, Map Reduce, Publish / Subscribe, Bloom filter, Spring Cache, Executor service, Tomcat Session Manager, Scheduler service, JCache API) on top of Redis server. State of the Art Redis client&lt;/a&gt; Redisson是架设在Redis基础上的一个Java驻内存数据网格（In-Memory Data Grid）。【Redis官方推荐】Redisson在基于NIO的Netty框架上，充分的利用了Redis键值数据库提供的一系列优势，在Java实用工具包中常用接口的基础上，为使用者提供了一系列具有分布式特性的常用工具类。使得原本作为协调单机多线程并发程序的工具包获得了协调分布式多机多线程并发系统的能力，大大降低了设计和研发大规模分布式系统的难度。同时结合各富特色的分布式服务，更进一步简化了分布式环境中程序相互之间的协作。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=""&gt;新闻资讯：&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://github.com/rwv/chinese-dos-games"&gt;GitHub - rwv/chinese-dos-games: 🎮 Chinese DOS games in browser.&lt;/a&gt; 游戏大概有版权问题，但是技术是之前就很火的 WebAssembly 技术。不过这个目前最大的问题是存储没法保留，关闭浏览器存档就丢了。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://blog.wturrell.co.uk/phpstorm-ideavim-not-working/"&gt;PhpStorm troubleshooting – ideaVim stops working – William Turrell&lt;/a&gt; 这个也是我最近遇到的一个情况，idea 使用的 vim 插件突然就不工作了，编辑器回到了原始的状态，但是看插件是安装的，没有任何问题。原来是插件有个工作开关，默认开关还有快捷键，而且这个快捷键跟 Mac 的粘贴非常接近，囧。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://www.oschina.net/news/99768/tracking-users-across-the-web-via-tls-session-resumption"&gt;研究发现：不靠 cookie，网站也能通过 TLS 协议追踪你 - 开源中国&lt;/a&gt; 这个新闻有点恐怖，居然可以不用 cookie 而是通过 TLS 协议进行客户端的识别——这个功能对正常的业务来说没什么帮助，客户说关闭浏览器就关闭了；但是对于广告功能来说，完全可以用来短期跟踪客户，甚至对于手机的浏览器来说，完全可以替代 cookie 的作用了。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;</content:encoded><guid>http://blog.shrp.me//2018-09-09.html</guid></item><item><title>2018-09-01</title><link>http://blog.shrp.me//2018-09-01.html</link><pubdate>2018-09-01</pubdate><content:encoded>&lt;p&gt;下边是9月01日的每周分享：&lt;/p&gt;
 
 &lt;h2 id="java"&gt;Java新姿势：&lt;/h2&gt;
 
@@ -356,42 +379,5 @@ public class Test {
 
 &lt;p&gt;　　至于 Mac 么，真的是我用过最省心的操作系统了。插上移动硬盘就自动备份，不管是换电脑，还是出问题重装系统，都可以在一个小时左右恢复搞定，而且恢复以后打开浏览器，上次没关闭的窗口还热乎着呢。目录符合 unix 风格，程序跑起来没什么毛病。工具链也有，很多脚本都是可以直接用的。用 Mac 开发，既可以不断享受升级，又不会太折腾，可以把精力集中在代码本身。不过 Mac 也不是完全没有问题。就我自己遇到的就有这么几种情况：每次升级都有可能一些安全性的提升导致某些软件用不了；1024以下的端口默认不可以被用户程序占用；命令其实是 BSD 版本的，参数跟 Linux 上的并不一致；默认文件系统不是大小写敏感的，甚至很多软件都不支持在大小写敏感的分区上使用（没想到吧）；并不太可能做到完全不用鼠标，不过用鼠标的次数还是可以比较少的。&lt;/p&gt;
 
-&lt;p&gt;　　在我看来，其实并没有一个最合适的电脑。如果想省心省力，能够集中精力去开发的，也就是 Mac 了，这也是大多数中年程序员的首选，每天除了工作还要肩负养家糊口的重担，没有太多时间去折腾设备，用一款 Mac 可以帮助他们做到这点。如果是刚刚开始工作的程序员，有大把时间去折腾，那选择一款 Linux 长时间使用就比较合适，能够更熟悉自己软件部署的环境，写出的代码就更容易减少出 bug 的可能，如果剩下的软件也能维护好升级和依赖的关系，配置的足够好，免鼠标什么的没问题，开发效率也可以得到提升。至于剩下的程序员，或者要开发 Windows 程序，或者 Windows 非常熟悉，或者对系统差异足够熟悉的，用 Windows 开发并不会给他们带来不便。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Which-OS-Do-Programers-Prefer-At-Work.html</guid></item><item><title>一个不严谨的 String Intern 测试</title><link>http://blog.shrp.me//a-None-Strict-String-Intern-Test.html</link><pubdate>2018-01-15</pubdate><content:encoded>&lt;p&gt;　　今天在 Reeder 上看到一个关于 String Intern 的&lt;a href="http://www.importnew.com/27694.html"&gt;文章&lt;/a&gt;，自己测试了一下，发现有些地方并不严谨。&lt;/p&gt;
-
-&lt;p&gt;　　原文用了一段如下代码：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;public static void main(String[] args) {
-    String s = new String("1");
-    s.intern();
-    String s2 = "1";
-    System.out.println(s == s2);
-    String s3 = new String("1") + new String("1");
-    s3.intern();
-    String s4 = "11";
-    System.out.println(s3 == s4);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;　　目的很明确，希望通过==判断 intern 能否为下一次赋值从 intern 的池里提供。然而这段代码做了一个假设：在 main 函数之前，没有任何字符串被 intern。&lt;/p&gt;
-
-&lt;p&gt;　　然而我在Java8以上测试，却发现了有意思的情况。考虑以下代码：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;    public static void main(String[] args) {
-        String s =  String.valueOf(1) + String.valueOf(1);
-        s.intern();
-        String s2 = "11";
-        System.out.println(s == s2);
-
-        String s3 = String.valueOf(1) + String.valueOf(2);
-        s3.intern();
-        String s4 = "12";
-        System.out.println(s3 == s4);
-    }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;　　按照原文作者的假设，结果应该都是 true 才对，第一次 intern 的时候该对象保存进入常量，第二次赋值的时候取出，因此==的两个结果是 true。&lt;/p&gt;
-
-&lt;p&gt;　　但是在我的机器和其他同事的机器上却发现有人是 false，true，有人是 false，false，有人是 true，true。也就是说，JVM 根据某些信息提前进行了 intern，这种 intern 操作来自哪里，我暂时还不知道，有知道的同学可以帮忙在回复里解释一下。&lt;/p&gt;
-
-&lt;p&gt;　　BTW，调用 intern 却不是用其返回值作为对象，那么这次使用的对象不一定是在 Intern 里存储的那个对象，使用==的结果并不是确定的。这种类似 C 的未定义行为，不能作为 Java 特性的说明，也不能在生产代码里使用，原文的原理是正确的，但是代码却没有说服力了。这从另一个角度提醒我们写代码还是要大胆假设，小心求证。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//a-None-Strict-String-Intern-Test.html</guid></item></channel>
+&lt;p&gt;　　在我看来，其实并没有一个最合适的电脑。如果想省心省力，能够集中精力去开发的，也就是 Mac 了，这也是大多数中年程序员的首选，每天除了工作还要肩负养家糊口的重担，没有太多时间去折腾设备，用一款 Mac 可以帮助他们做到这点。如果是刚刚开始工作的程序员，有大把时间去折腾，那选择一款 Linux 长时间使用就比较合适，能够更熟悉自己软件部署的环境，写出的代码就更容易减少出 bug 的可能，如果剩下的软件也能维护好升级和依赖的关系，配置的足够好，免鼠标什么的没问题，开发效率也可以得到提升。至于剩下的程序员，或者要开发 Windows 程序，或者 Windows 非常熟悉，或者对系统差异足够熟悉的，用 Windows 开发并不会给他们带来不便。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Which-OS-Do-Programers-Prefer-At-Work.html</guid></item></channel>
 </rss>

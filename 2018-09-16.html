@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+下边是09月16日的每周分享：
+
+Java新姿势：
+
+1. [线程中断以及线程中断引发的那些问题 - 一个程序员的成长的个人空间 - 开源中国](https://my.oschina.net/u/3178270/blog/2045625) 我们在使用可中断的函数时，通常是没有判断线程是否中断的。这篇文章指出如果线程经中断，但是代码还要执行 sleep 的时候，就会直接报 InterruptedException 。
+2. [Spring事务事件监控 - 爱宝贝丶的个人空间 - 开源中国](https://my.oschina.net/zhangxufeng/blog/1976076) spring 事务的一个源码讲解，正好自己最近在用事务。
+
+新奇工具：
+
+1. [GitHub - gejun123456/intellij-generateAllSetMethod: Intellij plugin to generate call to setter method value for class](https://github.com/gejun123456/intellij-generateAllSetMethod)
+2. [GitHub - alipay/sofa-ark: SOFAArk is a light-weight，java based classloader isolation framework.](https://github.com/alipay/sofa-ark) 这是蚂蚁金服开源的一款 classloader 隔离框架，看名字就知道是用于 SOFA 的。现在 SOFA 很火，大有取代 dubbo 的架势，可以看看源码，了解下实现的技术。
+3. [GitHub - alibaba/arthas: Alibaba Java诊断利器Arthas](https://github.com/alibaba/arthas)阿里现在开源的技术真多，这款线上观察和调试 JVM 的利器在特殊的时候一定能派上用场。
+4. [GitHub - QNJR-GROUP/EasyTransaction: A distribute transaction solution（分布式事务） unified the usage of TCC , SAGA , reliable message, compensate and so on;](https://github.com/QNJR-GROUP/EasyTransaction) dubbo rpc 上架构的一套分布式事务框架。国人出品，厉害了！
+
+新闻资讯：
+
+1. [TCP ACK 延迟40ms](https://mp.weixin.qq.com/s/TNSYpcqamfC3Sn6IMxti5Q) 有时候生产的故障并不是 Java 开发的问题，但是 Java 开发如果不懂怎么找到问题，这个问题很可能是无法解决的。本文就找到了一个 tcp 应答包的响应问题
+2. [WinWorld: Welcome](https://winworldpc.com/home) 一个专门提供旧操作系统及其相关软件的网站，我已经通过它安装了 Mac 9 虚拟器，还是有点意思。此外还有 OS2 这样的神奇系统，已经消失的莲花办公套件
+3. [archive.org](https://archive.org) 这个是一个更专业的收藏站点，任何没有版权问题的都可以收藏，更是提供了网页运行 dos 程序的能力，真是很厉害。
+4. [Windows 2000](https://bellard.org/jslinux/vm.html?url=https://bellard.org/jslinux/win2k.cfg&mem=192&graphic=1&w=1024&h=768)继win95之后，又一个可以在浏览器运行的微软操作系统。
+5. [基于consul实现微服务的服务发现和负载均衡 | Tony Bai](https://tonybai.com/2018/09/10/setup-service-discovery-and-load-balance-based-on-consul/) 一个老程序员，老架构师对微服务的服务发现和负载的一个实现方案，可以借鉴。
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>下边是09月16日的每周分享：</p>
+
+<p>Java新姿势：</p>
+
+<ol>
+<li><a href="https://my.oschina.net/u/3178270/blog/2045625">线程中断以及线程中断引发的那些问题 - 一个程序员的成长的个人空间 - 开源中国</a> 我们在使用可中断的函数时，通常是没有判断线程是否中断的。这篇文章指出如果线程经中断，但是代码还要执行 sleep 的时候，就会直接报 InterruptedException 。</li>
+<li><a href="https://my.oschina.net/zhangxufeng/blog/1976076">Spring事务事件监控 - 爱宝贝丶的个人空间 - 开源中国</a> spring 事务的一个源码讲解，正好自己最近在用事务。</li>
+</ol>
+
+<p>新奇工具：</p>
+
+<ol>
+<li><a href="https://github.com/gejun123456/intellij-generateAllSetMethod">GitHub - gejun123456/intellij-generateAllSetMethod: Intellij plugin to generate call to setter method value for class</a></li>
+<li><a href="https://github.com/alipay/sofa-ark">GitHub - alipay/sofa-ark: SOFAArk is a light-weight，java based classloader isolation framework.</a> 这是蚂蚁金服开源的一款 classloader 隔离框架，看名字就知道是用于 SOFA 的。现在 SOFA 很火，大有取代 dubbo 的架势，可以看看源码，了解下实现的技术。</li>
+<li><a href="https://github.com/alibaba/arthas">GitHub - alibaba/arthas: Alibaba Java诊断利器Arthas</a>阿里现在开源的技术真多，这款线上观察和调试 JVM 的利器在特殊的时候一定能派上用场。</li>
+<li><a href="https://github.com/QNJR-GROUP/EasyTransaction">GitHub - QNJR-GROUP/EasyTransaction: A distribute transaction solution（分布式事务） unified the usage of TCC , SAGA , reliable message, compensate and so on;</a> dubbo rpc 上架构的一套分布式事务框架。国人出品，厉害了！</li>
+</ol>
+
+<p>新闻资讯：</p>
+
+<ol>
+<li><a href="https://mp.weixin.qq.com/s/TNSYpcqamfC3Sn6IMxti5Q">TCP ACK 延迟40ms</a> 有时候生产的故障并不是 Java 开发的问题，但是 Java 开发如果不懂怎么找到问题，这个问题很可能是无法解决的。本文就找到了一个 tcp 应答包的响应问题</li>
+<li><a href="https://winworldpc.com/home">WinWorld: Welcome</a> 一个专门提供旧操作系统及其相关软件的网站，我已经通过它安装了 Mac 9 虚拟器，还是有点意思。此外还有 OS2 这样的神奇系统，已经消失的莲花办公套件</li>
+<li><a href="https://archive.org">archive.org</a> 这个是一个更专业的收藏站点，任何没有版权问题的都可以收藏，更是提供了网页运行 dos 程序的能力，真是很厉害。</li>
+<li><a href="https://bellard.org/jslinux/vm.html?url=https://bellard.org/jslinux/win2k.cfg&amp;mem=192&amp;graphic=1&amp;w=1024&amp;h=768">Windows 2000</a>继win95之后，又一个可以在浏览器运行的微软操作系统。</li>
+<li><a href="https://tonybai.com/2018/09/10/setup-service-discovery-and-load-balance-based-on-consul/">基于consul实现微服务的服务发现和负载均衡 | Tony Bai</a> 一个老程序员，老架构师对微服务的服务发现和负载的一个实现方案，可以借鉴。</li>
+</ol>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "2018-09-16.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

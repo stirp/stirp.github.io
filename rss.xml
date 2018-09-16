@@ -7,7 +7,33 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>2018-09-09</title><link>http://blog.shrp.me//2018-09-09.html</link><pubdate>2018-09-10</pubdate><content:encoded>&lt;h2 id="java"&gt;Java新姿势：&lt;/h2&gt;
+    <item><title>2018-09-16</title><link>http://blog.shrp.me//2018-09-16.html</link><pubdate>2018-09-16</pubdate><content:encoded>&lt;p&gt;下边是09月16日的每周分享：&lt;/p&gt;
+
+&lt;p&gt;Java新姿势：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://my.oschina.net/u/3178270/blog/2045625"&gt;线程中断以及线程中断引发的那些问题 - 一个程序员的成长的个人空间 - 开源中国&lt;/a&gt; 我们在使用可中断的函数时，通常是没有判断线程是否中断的。这篇文章指出如果线程经中断，但是代码还要执行 sleep 的时候，就会直接报 InterruptedException 。&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://my.oschina.net/zhangxufeng/blog/1976076"&gt;Spring事务事件监控 - 爱宝贝丶的个人空间 - 开源中国&lt;/a&gt; spring 事务的一个源码讲解，正好自己最近在用事务。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;新奇工具：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://github.com/gejun123456/intellij-generateAllSetMethod"&gt;GitHub - gejun123456/intellij-generateAllSetMethod: Intellij plugin to generate call to setter method value for class&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/alipay/sofa-ark"&gt;GitHub - alipay/sofa-ark: SOFAArk is a light-weight，java based classloader isolation framework.&lt;/a&gt; 这是蚂蚁金服开源的一款 classloader 隔离框架，看名字就知道是用于 SOFA 的。现在 SOFA 很火，大有取代 dubbo 的架势，可以看看源码，了解下实现的技术。&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/alibaba/arthas"&gt;GitHub - alibaba/arthas: Alibaba Java诊断利器Arthas&lt;/a&gt;阿里现在开源的技术真多，这款线上观察和调试 JVM 的利器在特殊的时候一定能派上用场。&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/QNJR-GROUP/EasyTransaction"&gt;GitHub - QNJR-GROUP/EasyTransaction: A distribute transaction solution（分布式事务） unified the usage of TCC , SAGA , reliable message, compensate and so on;&lt;/a&gt; dubbo rpc 上架构的一套分布式事务框架。国人出品，厉害了！&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;新闻资讯：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://mp.weixin.qq.com/s/TNSYpcqamfC3Sn6IMxti5Q"&gt;TCP ACK 延迟40ms&lt;/a&gt; 有时候生产的故障并不是 Java 开发的问题，但是 Java 开发如果不懂怎么找到问题，这个问题很可能是无法解决的。本文就找到了一个 tcp 应答包的响应问题&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://winworldpc.com/home"&gt;WinWorld: Welcome&lt;/a&gt; 一个专门提供旧操作系统及其相关软件的网站，我已经通过它安装了 Mac 9 虚拟器，还是有点意思。此外还有 OS2 这样的神奇系统，已经消失的莲花办公套件&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://archive.org"&gt;archive.org&lt;/a&gt; 这个是一个更专业的收藏站点，任何没有版权问题的都可以收藏，更是提供了网页运行 dos 程序的能力，真是很厉害。&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://bellard.org/jslinux/vm.html?url=https://bellard.org/jslinux/win2k.cfg&amp;amp;mem=192&amp;amp;graphic=1&amp;amp;w=1024&amp;amp;h=768"&gt;Windows 2000&lt;/a&gt;继win95之后，又一个可以在浏览器运行的微软操作系统。&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://tonybai.com/2018/09/10/setup-service-discovery-and-load-balance-based-on-consul/"&gt;基于consul实现微服务的服务发现和负载均衡 | Tony Bai&lt;/a&gt; 一个老程序员，老架构师对微服务的服务发现和负载的一个实现方案，可以借鉴。&lt;/li&gt;
+&lt;/ol&gt;</content:encoded><guid>http://blog.shrp.me//2018-09-16.html</guid></item><item><title>2018-09-09</title><link>http://blog.shrp.me//2018-09-09.html</link><pubdate>2018-09-10</pubdate><content:encoded>&lt;h2 id="java"&gt;Java新姿势：&lt;/h2&gt;
 
 &lt;ol&gt;
 &lt;li&gt;&lt;p&gt;&lt;a href="http://www.infoq.com/cn/articles/how-to-write-a-good-software-design-document"&gt;如何才能写出好的软件设计文档？&lt;/a&gt; 做了这么多年的 Java 开发，除了在恶补测试，我想最需要恶补的其实是设计。我们虽然没有设计也做了这么多年的系统，但是没有先行设计，总是缺乏对系统方向的把握。&lt;/p&gt;&lt;/li&gt;
@@ -35,80 +61,34 @@
 &lt;h2 id="java"&gt;Java新姿势：&lt;/h2&gt;
 
 &lt;ol&gt;
-&lt;li&gt;&lt;a href="http://imushan.com/2018/08/29/java/language/JDK%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-DirectByteBuffer/"&gt;JDK源码阅读-DirectByteBuffer | 木杉的博客&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="http://imushan.com/2018/08/29/java/language/JDK%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-DirectByteBuffer/"&gt;JDK源码阅读-DirectByteBuffer | 木杉的博客&lt;/a&gt; 木杉大神的又一力作，让我们继续学习 JVM 里的内容。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://my.oschina.net/zijingshanke/blog/1930333"&gt;Uber 开源分布式追踪工具：JVM Profiler - RiboseYim‘s OpenSource Blog - 开源中国&lt;/a&gt; Uber 的这次开源非常受欢迎，这篇文章就是关于这款 Profiler 的详细介绍。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="http://www.importnew.com/29591.html"&gt;一次Java内存泄漏调试的有趣经历 - ImportNew&lt;/a&gt; 虽然是个老外，但是讲述的问题是个好问题——长时间 fullGC 导致的超时问题。虽然技术问题本身不复杂，但是解决起来并没有想象中那么容易。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://blog.codingnow.com/2018/08/lockstep.html"&gt;lockstep 网络游戏同步方案&lt;/a&gt; 云风大神的详细讲解对于我们这样行业外的人来说真是一篇上等的入门力作。在此之前我只能猜测即时游戏的互联方案，其实这个方案在其他需要协作的场景都可以使用。对于非游戏程序员力荐。&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
-
-&lt;p&gt;木杉大神的又一力作，让我们继续学习 JVM 里的内容。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href="https://my.oschina.net/zijingshanke/blog/1930333"&gt;Uber 开源分布式追踪工具：JVM Profiler - RiboseYim‘s OpenSource Blog - 开源中国&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Uber 的这次开源非常受欢迎，这篇文章就是关于这款 Profiler 的详细介绍。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href="http://www.importnew.com/29591.html"&gt;一次Java内存泄漏调试的有趣经历 - ImportNew&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;虽然是个老外，但是讲述的问题是个好问题——长时间 fullGC 导致的超时问题。虽然技术问题本身不复杂，但是解决起来并没有想象中那么容易。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href="https://blog.codingnow.com/2018/08/lockstep.html"&gt;lockstep 网络游戏同步方案&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;云风大神的详细讲解对于我们这样行业外的人来说真是一篇上等的入门力作。在此之前我只能猜测即时游戏的互联方案，其实这个方案在其他需要协作的场景都可以使用。对于非游戏程序员力荐。&lt;/p&gt;
 
 &lt;h2 id=""&gt;新奇工具：&lt;/h2&gt;
 
 &lt;ol&gt;
-&lt;li&gt;&lt;a href="https://gitee.com/ld/J2Cache"&gt;红薯/J2Cache: Java 两级缓存框架，可以让应用支持两级缓存框架 ehcache(Caffeine) + redis 。避免完全使用独立缓存系统所带来的网络IO开销问题&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;J2Cache 是 OSChina 目前正在使用的两级缓存框架。第一级缓存使用 Ehcache，第二级缓存使用 Redis 。由于大量的缓存读取会导致 L2 的网络成为整个系统的瓶颈，因此 L1 的目标是降低对 L2 的读取次数。该缓存框架主要用于集群环境中。单机也可使用，用于避免应用重启导致的 Ehcache 缓存数据丢失。与其说是个 cache，不如说是个 cache 桥梁，用于解决多级缓存的过期和更新不错。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href="https://github.com/uber-common/jvm-profiler"&gt;GitHub - uber-common/jvm-profiler: JVM Profiler Sending Metrics to Kafka, Console Output or Custom Reporter&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Uber 开源的 Profiler，上文有介绍，可以参考下。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href="https://www.oschina.net/p/smart-doc"&gt;smart-doc首页、文档和下载 - Java Restful API 文档生成工具 - 开源中国社区&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;号称免注入文档生成工具，目标还是比较长远的。既然不涉及生产，用于自动维护文档是不错的，已经在跟同事准备使用起来了。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href="https://jobob.gitee.io/mp3doc/"&gt;MyBatis-Plus&lt;/a&gt; &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;这个工具大概不是特别新奇了，我看已经有很多人在关注它的 github 源码了&lt;a href="https://github.com/baomidou/mybatis-plus"&gt;GitHub - baomidou/mybatis-plus: An enhanced toolkit of Mybatis to simplify development&lt;/a&gt;其使用会比直接使用 mybatis 简单很多，但是对于复杂业务来说还是需要写代码的。原理比较简单，本身性能无需担心。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href="https://gitee.com/lsongiu/redis-shared-lock"&gt;qidianliusong/redis-shared-lock: 基于redis的分布式共享锁，使用注解的方式对方法加锁&lt;/a&gt; 一个基于 redis 的分布式共享锁，代码有点意思。由于开发历史不太久，最好不要直接用于生产。&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://gitee.com/ld/J2Cache"&gt;红薯/J2Cache: Java 两级缓存框架，可以让应用支持两级缓存框架 ehcache(Caffeine) + redis 。避免完全使用独立缓存系统所带来的网络IO开销问题&lt;/a&gt; J2Cache 是 OSChina 目前正在使用的两级缓存框架。第一级缓存使用 Ehcache，第二级缓存使用 Redis 。由于大量的缓存读取会导致 L2 的网络成为整个系统的瓶颈，因此 L1 的目标是降低对 L2 的读取次数。该缓存框架主要用于集群环境中。单机也可使用，用于避免应用重启导致的 Ehcache 缓存数据丢失。与其说是个 cache，不如说是个 cache 桥梁，用于解决多级缓存的过期和更新不错。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://github.com/uber-common/jvm-profiler"&gt;GitHub - uber-common/jvm-profiler: JVM Profiler Sending Metrics to Kafka, Console Output or Custom Reporter&lt;/a&gt; Uber 开源的 Profiler，上文有介绍，可以参考下。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://www.oschina.net/p/smart-doc"&gt;smart-doc首页、文档和下载 - Java Restful API 文档生成工具 - 开源中国社区&lt;/a&gt; 号称免注入文档生成工具，目标还是比较长远的。既然不涉及生产，用于自动维护文档是不错的，已经在跟同事准备使用起来了。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://jobob.gitee.io/mp3doc/"&gt;MyBatis-Plus&lt;/a&gt; 这个工具大概不是特别新奇了，我看已经有很多人在关注它的 github 源码了&lt;a href="https://github.com/baomidou/mybatis-plus"&gt;GitHub - baomidou/mybatis-plus: An enhanced toolkit of Mybatis to simplify development&lt;/a&gt;其使用会比直接使用 mybatis 简单很多，但是对于复杂业务来说还是需要写代码的。原理比较简单，本身性能无需担心。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://gitee.com/lsongiu/redis-shared-lock"&gt;qidianliusong/redis-shared-lock: 基于redis的分布式共享锁，使用注解的方式对方法加锁&lt;/a&gt; 一个基于 redis 的分布式共享锁，代码有点意思。由于开发历史不太久，最好不要直接用于生产。&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h2 id=""&gt;新闻资讯：&lt;/h2&gt;
 
 &lt;ol&gt;
-&lt;li&gt;&lt;a href="https://www.oschina.net/news/99299/windows95-open-source-project"&gt;经典不灭，开源项目带你在各平台上重温 Windows 95 - 开源中国&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;大概很多人都没有用过 Windows95，有人用 Electron 制作了这款 Win95的虚拟机的前端界面，目测虚拟机是 bochs 下载地址：&lt;a href="https://github.com/felixrieseberg/windows95/releases"&gt;Releases · felixrieseberg/windows95 · GitHub&lt;/a&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href="https://mp.weixin.qq.com/s/NamsJHwEOdF3GgGE5sM4gg"&gt;几个大型网站的Feeds(Timeline)设计简单对比&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;很抱歉，这个是我最近比较关注的话题，看起来也不是最新的文章了，但是多关注一下其他社区的设计对于我们自己的社区就会多一些思考。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//2018-09-01.html</guid></item><item><title>2018-08-24</title><link>http://blog.shrp.me//2018-08-24.html</link><pubdate>2018-08-24</pubdate><content:encoded>&lt;p&gt;下边是8月24日的每周分享：&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://www.oschina.net/news/99299/windows95-open-source-project"&gt;经典不灭，开源项目带你在各平台上重温 Windows 95 - 开源中国&lt;/a&gt; 大概很多人都没有用过 Windows95，有人用 Electron 制作了这款 Win95的虚拟机的前端界面，目测虚拟机是 bochs 下载地址：&lt;a href="https://github.com/felixrieseberg/windows95/releases"&gt;Releases · felixrieseberg/windows95 · GitHub&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://mp.weixin.qq.com/s/NamsJHwEOdF3GgGE5sM4gg"&gt;几个大型网站的Feeds(Timeline)设计简单对比&lt;/a&gt; 很抱歉，这个是我最近比较关注的话题，看起来也不是最新的文章了，但是多关注一下其他社区的设计对于我们自己的社区就会多一些思考。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;</content:encoded><guid>http://blog.shrp.me//2018-09-01.html</guid></item><item><title>2018-08-24</title><link>http://blog.shrp.me//2018-08-24.html</link><pubdate>2018-08-24</pubdate><content:encoded>&lt;p&gt;下边是8月24日的每周分享：&lt;/p&gt;
 
 &lt;p&gt;Java新姿势：&lt;/p&gt;
 
 &lt;ol&gt;
 &lt;li&gt;&lt;p&gt;&lt;a href="http://hengyunabc.github.io/jvm-heap-dump-find-fd/"&gt;从JVM heap dump里查找没有关闭文件的引用&lt;/a&gt; 如果程序发布后长期持有一个本应该关闭的文件引用，一定是发生了引用的泄露，这种事情一般查起来是很费劲的，还得在代码里跟踪引用的传递。文章里的方法也可以用来找任意你怀疑泄露的资源，不过需要学会 OQL。&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;&lt;a href="https://blog.csdn.net/u013096088/article/details/81161084"&gt;Java与单例模式 - CSDN博客&lt;/a&gt; 单例模式大家都见得多了，什么美国的枚举单利，在代码里谈笑风生。不过为什么不能改进原有代码，使得反序列化不会破坏单例呢？本文通过阅读Java源码，给出了一个可行的方案：readresolve。不过面对一些速度著称的json库时，不见得可以像Java库函数那么标准，枚举依然是最安全的选择。&lt;/p&gt;&lt;/li&gt;
-
-3. 
 &lt;/ol&gt;
 
 &lt;p&gt;新奇工具：&lt;/p&gt;
@@ -367,17 +347,5 @@ public class Test {
 
 &lt;p&gt;PS:旧版的HG220GS是可以通过网址&lt;a href="http://192.168.1.1/logoffaccount.html"&gt;http://192.168.1.1/logoffaccount.html&lt;/a&gt;打开隐藏账户的,然后就可以通过&lt;a href="http://192.168.1.1/cu.html"&gt;http://192.168.1.1/cu.html&lt;/a&gt;登录管理员账户,用户名CUAdmin,密码123qweasdzxc.但是我的这个网页是不能访问的.隐藏账户登录后可以关闭端口扫描的防御来打开DMZ和端口映射功能.&lt;/p&gt;
 
-&lt;p&gt;但是又有人说这种情况可以通过&lt;a href="http://192.168.1.1/logoffaccount.cmd?enableFactoryAccount=1"&gt;http://192.168.1.1/logoffaccount.cmd?enableFactoryAccount=1&lt;/a&gt;访问来开启隐藏账户,这个我就没有尝试了,大家可以自行尝试.&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//HG220GS-U-Change-To-Bridge.html</guid></item><item><title>程序员工作用什么操作系统？</title><link>http://blog.shrp.me//Which-OS-Do-Programers-Prefer-At-Work.html</link><pubdate>2018-03-10</pubdate><content:encoded>&lt;h1 id=""&gt;程序员工作用什么操作系统？&lt;/h1&gt;
-
-&lt;p&gt;　　今天偶然看到之前关注的 vpsee 网站一篇09年的文章(&lt;a href="https://www.vpsee.com/2009/06/why-programmers-love-mac/"&gt;为什么国外程序员爱用 Mac？ | vpsee.com&lt;/a&gt;)在讨论为什么程序员喜欢用 Mac，文章后洋洋洒洒数百个评论或激昂，或讽刺，或诅咒，或炫耀，好不热闹。恰好最近一个.Net 开发同事想用 Mac 开发 Java 程序，一个 Java 开发 同事想把自己的 Mac 换成 Windows，真是有意思。于是我也按耐不住，想要说点什么。&lt;/p&gt;
-
-&lt;p&gt;　　开始前我想先声明一下，如果说有人说这个话题没有偏颇，我真不太相信。每个人连颜色都有自己的偏好，操作系统这么复杂而又常用的东西如果没有喜好那也太大条了。我当然也不例外。就目前而言，我作为一个开发，是用 Mac 多一些，也喜欢用 Mac；但是我并不觉得每个程序员都用，或者每个程序员都喜欢用 Mac 是正常的，正相反，我觉得最多只有一半喜欢或者应该用 Mac来从事开发工作。&lt;/p&gt;
-
-&lt;p&gt;　　先说 Windwos。Windows 借中国早先盗版的问题最先在群众中普及，我也不例外，从98年家里的第一台电脑开始就在用 Windows。这个系统我们用得多了，也就耳熟能详怎么去把玩到极致：从 DOS 时代在启动文件里调整虚拟内存，到9x 的简繁转换，再到 NT 内核系统的服务优化，再到 Windows10 的免费升级。应用怎么查杀，注册表的大体结构，游戏使用的 direct 技术和安装方法，不论是写代码，玩游戏，还是看电影听音乐，基本是无所不能。更不要说.NET 程序员了，目前来说只在 Windows 工作。甚至包括怎么分区，多久备份一次，怎么快速备份恢复，一个老 Windows 程序员估计都有自己的方案，以免在升级失败，电脑蓝屏时还不用耽误太久工作。尽管这些技能都跟程序开发没有直接关系，却能帮助我们尽快解决手头的问题，把精力集中在开发上。然而并不是程序员都是.NET 程序员，Windows 也不是100%契合所有开发人员的需求，有些问题会一而再再而三的坑害开发，比如说中文版 Windows 默认的字符编码是 GB2312，而大多数部署到 Linux 的软件都得处理 UTF-8。那么开发在部署的时候经常要注意自己的代码里处理字符集转换，一些文字要提前处理成 UTF-8。而且即便是在 Windows 保存为 UTF-8文件，还会面临另一个问题：BOM 头。在 Windows 上 BOM 一般不会惹什么麻烦，但是当部署到 Linux 服务器的时候，结果就不好说了；ImportNews 网站的 RSS 甚至就带有 BOM 头，而带有 BOM 头的 RSS 是不符合 XML 规范的。一个 Java 专业社区的组件都有这样的 bug，还能指望 Windwos 开发对于 Linux 开发有多友好呢？再比如说 Windows 的目录是分磁盘的，C:\，D:\等等，而且目录的分割用\而不是/。这对一些预计部署在 Linux 的服务的开发带来了负面的影响。再有就是孱弱的命令行环境了，自带的命令稀缺，Linux 的工具链工具几乎不支持，这对于工作面对 Linux 服务器的程序员来说都不是什么好事情。&lt;/p&gt;
-
-&lt;p&gt;　　再说 Linux。我刚开始用 Linux 还是高三的时候，是很经典的小红帽 Red Hat，好像一共6张 CD 光盘。当时就是尝个鲜，装好了以后主要在窗口界面里乱用。后来工作后才真正开始学习怎么去用 Linux，看《鸟哥的 Linux 私房菜》，把服务部署到 Linux 服务器上，但是当时开发还是 Windows。在进行了1年的 跨平台开发后，被字符集坑惨的我开始用最流行的 Ubuntu 来开发程序，当时使用的是 Ubuntu10 LTS。 Ubuntu确实简单易上手，互联网上也充斥着大量使用 Ubuntu 的经验，基本上遇到什么问题都能用搜索引擎得到质量比较高的回答。Linux 跟生产的环境是相当契合的，不太容易出现环境部署的问题。但是 Ubuntu 最大的问题就是官方仓库东西还是不够，必须添加私有源；可是私有源到了后期却或多或少带有的陈旧核心组件，都可能存在不同乃至冲突。有时候甚至为了看 flash，装个 vpn 而安装的某个源带入的依赖跟系统最新的根本不搭，导致后续的更新都不能应用了。解决问题一定是有方法的，但是却需要开发者投入不少的精力去跟踪操作系统里发生了什么冲突，怎么去解决。此后我还用过 cent OS，Mint，Arch，然而大同小异，总是因为系统里安装的什么东西不兼容，从而系统没法完整升级。这种情况一开始可能只是几个包，但是后来不满足依赖的升级越来越多，而且有时候为了某个特定的需要，比如 docker，还不得不升级。这些冲突解决起来痛苦而且耗费时间，因此Linux最适合还是放在服务器里，不出事情几年都想不起升个级的。&lt;/p&gt;
-
-&lt;p&gt;　　至于 Mac 么，真的是我用过最省心的操作系统了。插上移动硬盘就自动备份，不管是换电脑，还是出问题重装系统，都可以在一个小时左右恢复搞定，而且恢复以后打开浏览器，上次没关闭的窗口还热乎着呢。目录符合 unix 风格，程序跑起来没什么毛病。工具链也有，很多脚本都是可以直接用的。用 Mac 开发，既可以不断享受升级，又不会太折腾，可以把精力集中在代码本身。不过 Mac 也不是完全没有问题。就我自己遇到的就有这么几种情况：每次升级都有可能一些安全性的提升导致某些软件用不了；1024以下的端口默认不可以被用户程序占用；命令其实是 BSD 版本的，参数跟 Linux 上的并不一致；默认文件系统不是大小写敏感的，甚至很多软件都不支持在大小写敏感的分区上使用（没想到吧）；并不太可能做到完全不用鼠标，不过用鼠标的次数还是可以比较少的。&lt;/p&gt;
-
-&lt;p&gt;　　在我看来，其实并没有一个最合适的电脑。如果想省心省力，能够集中精力去开发的，也就是 Mac 了，这也是大多数中年程序员的首选，每天除了工作还要肩负养家糊口的重担，没有太多时间去折腾设备，用一款 Mac 可以帮助他们做到这点。如果是刚刚开始工作的程序员，有大把时间去折腾，那选择一款 Linux 长时间使用就比较合适，能够更熟悉自己软件部署的环境，写出的代码就更容易减少出 bug 的可能，如果剩下的软件也能维护好升级和依赖的关系，配置的足够好，免鼠标什么的没问题，开发效率也可以得到提升。至于剩下的程序员，或者要开发 Windows 程序，或者 Windows 非常熟悉，或者对系统差异足够熟悉的，用 Windows 开发并不会给他们带来不便。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Which-OS-Do-Programers-Prefer-At-Work.html</guid></item></channel>
+&lt;p&gt;但是又有人说这种情况可以通过&lt;a href="http://192.168.1.1/logoffaccount.cmd?enableFactoryAccount=1"&gt;http://192.168.1.1/logoffaccount.cmd?enableFactoryAccount=1&lt;/a&gt;访问来开启隐藏账户,这个我就没有尝试了,大家可以自行尝试.&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//HG220GS-U-Change-To-Bridge.html</guid></item></channel>
 </rss>

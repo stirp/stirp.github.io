@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+今天在我的Windows上调试一些程序，其中一些命令在Windows的终端里十分难受，最后采用安装Windows的Linux子系统来使用这些命令，并且安装了Cmder作为terminal。现在的Cmder也同样支持配置为guake一样的行为，只是高度和宽度有些问题，只好全屏控制；但是终于可以在Windows上用 快捷键呼出Linux命令行了。然后愉快的跑到项目目录里，执行mvn命令，结果出人意料失败了:找不到Java，也没设置有效的Java_Home。
+
+嗯？不对啊，我的Java就安装在C盘默认目录啊，怎么找不到。哦，对了，这是Linux嘛，环境Path变量跟Windows的不一样了，得重新配置。于是找到JDK安装目录，设置JAVA_HOME指向，一气呵成。这回总该对了吧，原来用CygWin都可以的。结果一执行mvn命令，居然又失败了。
+
+难道变量设置失败了？echo一下，没问题啊。百思不得其解的时候执行了一下java，嗯？找不到？
+啊，原来Windows的Java安装目录里都是java.exe这样带有exe后缀的，在Linux子系统里并不是java命令。虽然可以使用java.exe执行，但是mvn里指向的却是没有exe后缀的java。对于Linux子系统来说，java命令和java.exe是两个命令，也就无怪乎认为Java没有安装了。
+
+于是用apt-get在Linux子系统里安装openjdk，再设置目录，再次执行mvn命令，终于成功了。
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>今天在我的Windows上调试一些程序，其中一些命令在Windows的终端里十分难受，最后采用安装Windows的Linux子系统来使用这些命令，并且安装了Cmder作为terminal。现在的Cmder也同样支持配置为guake一样的行为，只是高度和宽度有些问题，只好全屏控制；但是终于可以在Windows上用 快捷键呼出Linux命令行了。然后愉快的跑到项目目录里，执行mvn命令，结果出人意料失败了:找不到Java，也没设置有效的Java_Home。</p>
+
+<p>嗯？不对啊，我的Java就安装在C盘默认目录啊，怎么找不到。哦，对了，这是Linux嘛，环境Path变量跟Windows的不一样了，得重新配置。于是找到JDK安装目录，设置JAVA_HOME指向，一气呵成。这回总该对了吧，原来用CygWin都可以的。结果一执行mvn命令，居然又失败了。</p>
+
+<p>难道变量设置失败了？echo一下，没问题啊。百思不得其解的时候执行了一下java，嗯？找不到？
+啊，原来Windows的Java安装目录里都是java.exe这样带有exe后缀的，在Linux子系统里并不是java命令。虽然可以使用java.exe执行，但是mvn里指向的却是没有exe后缀的java。对于Linux子系统来说，java命令和java.exe是两个命令，也就无怪乎认为Java没有安装了。</p>
+
+<p>于是用apt-get在Linux子系统里安装openjdk，再设置目录，再次执行mvn命令，终于成功了。</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "Using-Java-in-Windows-subsystem.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

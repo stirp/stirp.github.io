@@ -7,7 +7,118 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>TLS 详解</title><link>http://blog.shrp.me//TLS-explanation.html</link><pubdate>2018-10-13</pubdate><content:encoded>&lt;p&gt;今天看到一个网站，用来了解 TLS 连接相当不错，地址是&lt;a href="https://tls.ulfheim.net/"&gt;The Illustrated TLS Connection&lt;/a&gt;，相关代码在 GitHub 上&lt;a href="https://github.com/syncsynchalt/illustrated-tls"&gt;The Illustrated TLS Connection: Every byte explained&lt;/a&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//TLS-explanation.html</guid></item><item><title>在Windows的Linux子系统使用Java</title><link>http://blog.shrp.me//Using-Java-in-Windows-subsystem.html</link><pubdate>2018-10-10</pubdate><content:encoded>&lt;p&gt;今天在我的Windows上调试一些程序，其中一些命令在Windows的终端里十分难受，最后采用安装Windows的Linux子系统来使用这些命令，并且安装了Cmder作为terminal。现在的Cmder也同样支持配置为guake一样的行为，只是高度和宽度有些问题，只好全屏控制；但是终于可以在Windows上用 快捷键呼出Linux命令行了。然后愉快的跑到项目目录里，执行mvn命令，结果出人意料失败了:找不到Java，也没设置有效的Java_Home。&lt;/p&gt;
+    <item><title>赞同了回答: 被家暴的女人都有什么共同点？ 张佳玮的知乎动态</title><link>http://blog.shrp.me//Commons-of-Women-Been-domestic-violence.html</link><pubdate>2018-10-14</pubdate><content:encoded>&lt;p&gt;还好几日前使用了赞助的 RssHub 关注了&lt;a href="https://www.zhihu.com/people/zhang-jia-wei"&gt;张佳玮&lt;/a&gt;，看到了他赞的一篇极好的文章，没想到打开后已经被删除。如果不是 Rss，这段文字只能留在极少数人的脑海中。为了留下这篇文章，转载到这里，但是我看不到作者是谁，知乎账号也不能使用，实在无法联系作者授权，只能无奈的说，请作者看到后联系我，非常惭愧。&lt;/p&gt;
+
+&lt;p&gt;以下是原文：
+等了好多年，终于等到了这个适合我回答的问题！我在妇联工作过，我同时也是志愿者，我见到过太多被家暴妇女了，都是多次被家暴。&lt;/p&gt;
+
+&lt;p&gt;我的回答只是描述我接待过的妇女，家暴发生，绝对是施暴者的错。家暴的原因是这个丈夫太暴虐，而不是因为这个妻子如何如何。任何问题都不该用武力解决，我个人认为家暴家人的男人，不配拥有妻儿。&lt;/p&gt;
+
+&lt;p&gt;我不能概括所有被家暴妇女的特征，她们也许仅仅就是太倒霉了。但是我特别了解被家暴并来到妇联求助的妇女，她们都有很显著的共同特征。&lt;/p&gt;
+
+&lt;p&gt;1、她们有多次婚史；2、她们没有工作。&lt;/p&gt;
+
+&lt;p&gt;我接待过的几十余名被家暴妇女，百分之九十五以上具有这两个特征。只有一个妇女有工作，她开了一家缝补店，她最后还是把婚离了。&lt;/p&gt;
+
+&lt;p&gt;其他共同特征：年龄大概是三十四岁的比较多，学历都是高中及以下。&lt;/p&gt;
+
+&lt;p&gt;然而我从来没有遇到过初婚被家暴的妇女，我猜测可能是女性年轻的时候，如果不想继续婚姻，离婚再婚都比较容易。年纪大了之后，考虑到自己的年龄大了，再次离婚不好再找，以及自己和孩子的经济来源等问题，洒脱离婚很难。&lt;/p&gt;
+
+&lt;p&gt;我想，被家暴但是没有来妇联求助的妇女，大概分三种：一种是被打一次就离婚的，所以我基本没见过二十几岁的被家暴妇女。一种是默默忍受了一辈子的，所以我很少见到五六十岁往上的被家暴妇女。还有一种先忍耐，受不了就直接把丈夫杀了的，她们在女子监狱，那是另一本沉痛的书。&lt;/p&gt;
+
+&lt;p&gt;来到妇联的妇女，如果伤痕严重，我们会建议她马上就医，留下就诊证明。马上报警，在派出所留下备案记录。起诉的时候都是有力证据。&lt;/p&gt;
+
+&lt;p&gt;但是她们需要的帮助，我们真的很难做到，她们想要的结果就是——希望老公不再打她们，希望老公继续养她们。&lt;/p&gt;
+
+&lt;p&gt;我们会让她们把老公的联系方式给我们，给她老公打电话，一般在我们表明身份时，她们的老公会很不礼貌的挂掉电话。&lt;/p&gt;
+
+&lt;p&gt;接下来我会对妇女说：“大姐，你看，你的老公我们根本无法和他进行交流，根据我们多年的工作经验，以及妇联多年被家暴案例来看，家暴这个事情，只有零次和无数次，家暴的男人是一定要离开的，我们还是建议你勇敢离婚。我们有免费法律咨询服务的，如果你需要了解的法律知识，我可以马上打电话给律师，让律师为您解答。”&lt;/p&gt;
+
+&lt;p&gt;妇女回答：“我不能离婚啊，我没有收入。”&lt;/p&gt;
+
+&lt;p&gt;我说：“没有收入就找工作啊，你看你不是健健康康的吗。”&lt;/p&gt;
+
+&lt;p&gt;妇女：“我找不到工作我什么都不会。”&lt;/p&gt;
+
+&lt;p&gt;我说：“不是这样的大姐，你看西街那几家盲人按摩院，盲人不是能养活自己吗。河心街的修鞋店你知道嘛，老板是残疾人没有双腿，照样靠修鞋养家糊口。你看你不是好手好脚的嘛，我们可以把你推荐到妇联一直联系的制衣厂和家政公司，他们会给你安排一份足以让你自食其力的工作。去制衣厂绝对没问题的，这是我们市最好的制衣厂，生产的衣服要出口到外国的，老板是个非常好的大姐，我们推荐了几个残疾妇女过去，活路一下就上手了，月收入都很不错。家政公司是我们市最大的那个家政公司，他们提供免费培训，学好了之后他们还推荐工作，家政行业其实有点辛苦，但是收入很可观的。”&lt;/p&gt;
+
+&lt;p&gt;我说了这一番很长的话，遗憾的是，这番话最长也最没用。因为说了就像没说一样，她们不接腔，会开始哭或者抱怨，为什么命苦为什么又嫁错了人，一般来说她们都是二婚三婚的。&lt;/p&gt;
+
+&lt;p&gt;有很强的无力感和无能感。&lt;/p&gt;
+
+&lt;p&gt;印象比较深的是一个妇女，她的初中女儿陪她来的。我也是这般劝她，她说我什么都不会找不到工作啊。&lt;/p&gt;
+
+&lt;p&gt;她的女儿突然略带恼怒地说：“不会就学啊！”&lt;/p&gt;
+
+&lt;p&gt;我当时觉得这么多年的劝解，这次总算不再是像以前一样一拳打到棉花上。&lt;/p&gt;
+
+&lt;p&gt;我连连点头：“对啊大姐，你看你女儿都懂你还不懂！”&lt;/p&gt;
+
+&lt;p&gt;我希望新一代的女孩，都能像这个女孩一样，让我看到希望！&lt;/p&gt;
+
+&lt;p&gt;希望她们拥有这四种精神：自尊自强自立自爱。&lt;/p&gt;
+
+&lt;p&gt;这就是妇联一直倡导的“四自精神”。&lt;/p&gt;
+
+&lt;p&gt;哀其不幸怒其不争，我见过那么多来妇联被家暴妇女，她们有相同的哀怨、相同的无助、相同的软弱、相同的懒惰、相同的不自信和依赖心。&lt;/p&gt;
+
+&lt;p&gt;所以我一直对我女儿有一个期望，长大了一定要经济独立，经济独立和精神独立是一体的。其余的，结不结婚、生不生孩子、爱同性或者异性，无所谓的。&lt;/p&gt;
+
+&lt;p&gt;因为命运非常的无常，你是否会遇到虐待你的父母、家暴你的伴侣、欺负你的邻居、有时候是不可控的。&lt;/p&gt;
+
+&lt;p&gt;如果一个人说爱你，却又打你，那他一定是不爱你或者不够爱你。那么这时候只有自己才能救自己，怎么救，三条路：相信法律、经济独立、学习知识。&lt;/p&gt;
+
+&lt;p&gt;软弱、忍受、顺从、是最最无用的。&lt;/p&gt;
+
+&lt;p&gt;如果一个人打你，你忍受，他就会怜惜你而不打你了吗？不可能，他只会打得更顺手更频繁。只有坚硬、爆发、反抗，才能救自己，才能让他知道软柿子没那么好捏。&lt;/p&gt;
+
+&lt;p&gt;记得那些扬言如果妻子报警就弄死妻子的家暴男，在见到妇联人员和警察时，怂得像什么似的。纸老虎而已！可是妻子在他们日复一日的威胁里，已经战战兢兢。&lt;/p&gt;
+
+&lt;p&gt;被家暴这个事情，我也经历过的，我其实不想提的，我的父母在很我很小就离婚了，我和父亲、继母、以及他们两的孩子一起生活，我是挨过很多打的，有一次父亲一个巴掌过来我嘴角就流血了，几岁的时候继母用铁衣架打我，两条大腿流血了。&lt;/p&gt;
+
+&lt;p&gt;亲人们都说我小时候性格非常非常倔强，打我我也不认错，我就是不服软，打死我吧，我眼睛里面有寒光，我说：“打小孩犯法，等我长大了，就和你们断绝关系，我会记住的，等我长大了你老了，我也不会忘记我挨的打。”&lt;/p&gt;
+
+&lt;p&gt;十三岁时，父亲说：洗碗！我可能那天被骂了，或许是我就不想洗，那是一个对我没有爱的家，我为什么要温顺。我说：我不洗。父亲：不洗就滚出去。&lt;/p&gt;
+
+&lt;p&gt;然后我打开门出去了，我不敢上街，晚上了我也怕坏人，我到楼顶的鸡笼旁边坐着，面对黑夜思考我这一生的悲伤。&lt;/p&gt;
+
+&lt;p&gt;这次虽然没挨打，但印象很深刻，因为这个晚上之后，我患上了多年不愈的荨麻疹。&lt;/p&gt;
+
+&lt;p&gt;我从小就明白只有自己才能救自己，忍耐和软弱帮不了我。怎样才能救自己，是十几年以后才明白的，就是那三条路：相信法律、经济独立、学习知识。&lt;/p&gt;
+
+&lt;p&gt;相信法律，不管是儿童还是成人，只要去妇联和派出所求救，就一定能得到帮助的，即便这个帮助不像你想象中一样可以旧貌换新颜，也足以大大改善你的困境。&lt;/p&gt;
+
+&lt;p&gt;经济独立，我长大之后亲人们都说我性格现在很和顺，和小时候完全不一样。因为我经济独立了，生活不用依靠父母，我远离了父母。没有了要反抗和愤怒的东西，自然不用再倔强。如果一直伸手向别人要钱，别人会觉得你活着都要靠我，自然想打你就打你。&lt;/p&gt;
+
+&lt;p&gt;学习知识，学习知识才能明辨是非，被性侵的孩子才能明白错的不是自己，是性侵者；被校园霸凌的人才会明白，如果老师对你说“他为什么不打别人就打你”，那么这个老师不配为师；女性才会明白“我负责貌美如花，你负责赚钱养家”这句话会害人。&lt;/p&gt;
+
+&lt;p&gt;我常常思考：家庭暴力、校园霸凌、性侵…到底要怎样才能杜绝？答案是不能杜绝，一个孩子没办法决定自己生在一个不会虐待自己的家庭，人群中总有一定比例的恋童癖，社会中总有人无法抑制自己欺负弱小的本性。&lt;/p&gt;
+
+&lt;p&gt;后来我年岁渐长，再读了一个法律学位，渐渐想明白，法律和教育就是让社会文明的两个基础。法治社会建设得越好，人们受教育程度越高，暴力和侵犯才会越少。受教育程度高的男人，爱动手打人的可能性更低。受教育程度高的女人，经济独立的可能性更大。受教育程度高的人类，遛狗拴绳的几率更高，在电梯里面抽烟的几率更低。&lt;/p&gt;
+
+&lt;p&gt;我也渐渐变成了一个看起来很计较的人。生活中遇到侵犯我权益的一定要投诉。工作中认为同事执行工作或处理问题不合理的时候，就是吵架也要说清楚讲明白。小区里有人遛狗不拴，我也要直接走过去说麻烦拴一下行不行。&lt;/p&gt;
+
+&lt;p&gt;我不怕吵架、不怕投诉、不怕报警和起诉。因为我希望大家都守规矩，讲道理。忍了算了，不能改善现状。&lt;/p&gt;
+
+&lt;p&gt;我一个人去外地，被酒店欺负的时候，我冷静地对他们说：你们已经侵犯了消费者权益，我再给你们十分钟时间解决问题，否则我会采取法律手段。&lt;/p&gt;
+
+&lt;p&gt;有时候奸商会给我说：“给你赔偿金，不要投诉我们了行不行。”&lt;/p&gt;
+
+&lt;p&gt;不好意思，不要钱。&lt;/p&gt;
+
+&lt;p&gt;朋友问我：“你就拿钱多好。”&lt;/p&gt;
+
+&lt;p&gt;我不想啊，我就是要投诉，就是要给奸商好看，似乎这样做，这个世界就能更文明一点，我希望将来子孙后代生活的世界，大家都遵守法律法规，文明礼貌互相尊重。我拿了钱而不投诉，就像在纵容奸商似的，我的钱包里多了钱，可是世界没有变得更好。&lt;/p&gt;
+
+&lt;p&gt;我好不容易走过残酷的童年，我不再是弱小，我还能帮助弱小，所以活得特别用力。&lt;/p&gt;
+
+&lt;p&gt;我长大了，并且有知识懂法律不容易被欺负，我自己或者自己一家过得好，这个世界没有变得更好，是长久之计吗？我不受欺负，并不能保证我的孩子，或者孩子的孩子将来也能如我一般。只有这个世界变得更好，他们才能活得更好。&lt;/p&gt;
+
+&lt;p&gt;某些既得利益者们有没有想过，你靠着见不得光的方法敛了财，得了势，你的世世代代也能在不公平的社会竞争中占上风吗？如果规则都是潜规则，那么人人都会有无力感，既不知道自己是怎么输的，也不知道该怎样去赢。&lt;/p&gt;
+
+&lt;p&gt;只有法律、法规、公平、正义、光明，才能让这个世界变得更好。&lt;/p&gt;
+
+&lt;p&gt;我不要世界改变我，我要改变这个世界，一点点也行。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Commons-of-Women-Been-domestic-violence.html</guid></item><item><title>TLS 详解</title><link>http://blog.shrp.me//TLS-explanation.html</link><pubdate>2018-10-13</pubdate><content:encoded>&lt;p&gt;今天看到一个网站，用来了解 TLS 连接相当不错，地址是&lt;a href="https://tls.ulfheim.net/"&gt;The Illustrated TLS Connection&lt;/a&gt;，相关代码在 GitHub 上&lt;a href="https://github.com/syncsynchalt/illustrated-tls"&gt;The Illustrated TLS Connection: Every byte explained&lt;/a&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//TLS-explanation.html</guid></item><item><title>在Windows的Linux子系统使用Java</title><link>http://blog.shrp.me//Using-Java-in-Windows-subsystem.html</link><pubdate>2018-10-10</pubdate><content:encoded>&lt;p&gt;今天在我的Windows上调试一些程序，其中一些命令在Windows的终端里十分难受，最后采用安装Windows的Linux子系统来使用这些命令，并且安装了Cmder作为terminal。现在的Cmder也同样支持配置为guake一样的行为，只是高度和宽度有些问题，只好全屏控制；但是终于可以在Windows上用 快捷键呼出Linux命令行了。然后愉快的跑到项目目录里，执行mvn命令，结果出人意料失败了:找不到Java，也没设置有效的Java_Home。&lt;/p&gt;
 
 &lt;p&gt;嗯？不对啊，我的Java就安装在C盘默认目录啊，怎么找不到。哦，对了，这是Linux嘛，环境Path变量跟Windows的不一样了，得重新配置。于是找到JDK安装目录，设置JAVA_HOME指向，一气呵成。这回总该对了吧，原来用CygWin都可以的。结果一执行mvn命令，居然又失败了。&lt;/p&gt;
 
@@ -151,156 +262,5 @@
 
 &lt;ol&gt;
 &lt;li&gt;推荐一下我这周从阮老师那里看到的文章，&lt;a href="http://www.ruanyifeng.com/blog/2018/08/api-below.html"&gt;API 之下&lt;/a&gt;。乍看之下似乎是讲软件的，但是其实是猜测未来 AI 普及后财富分配的一个可能的后果，非常有见解。&lt;/li&gt;
-&lt;/ol&gt;</content:encoded><guid>http://blog.shrp.me//2018-08-19.html</guid></item><item><title>JAVA线程和 IO 的同步异步，阻塞非阻塞的个人理解</title><link>http://blog.shrp.me//personal-understanding-of-async-and-blocking.html</link><pubdate>2018-08-19</pubdate><content:encoded>&lt;p&gt;最近在工作中跟同事讨论起了一个调用是否算是非阻塞、异步时，居然发现我们对同一段代码的定性是不一样的，于是就想写一篇文章把这个问题琢磨琢磨。由于这里涉及很多专有名词的含义，因此就先从字典开始研究。&lt;/p&gt;
-
-&lt;h2 id=""&gt;名词字典&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;同步阻塞 IO——内核态阻塞 IO。这种 IO 模型的工作方式是这样的：用户空间的进程发起一个系统调用，这导致了用户空间的这个进程被阻塞，无法执行任何进程上的其它代码，直到系统调用返回。&lt;/li&gt;
-&lt;li&gt;同步非阻塞 IO——内核态非阻塞 IO。这种 IO 的工作方式是这样的：用户空间的进程发起一个系统调用，进程并不会被阻塞，而是回到用户空间继续执行，但是会时不时通过系统调用回到内核检查之前的调用是否结束。如果没有结束，则返回用户空间继续执行，并且很快再次通过系统调用去检查结果，直到结果被返回。&lt;/li&gt;
-&lt;li&gt;异步 IO——用户态 IO。这种 IO 的工作方式是这样的：用户空间的进程发起系统调用，进程不阻塞立刻回到用户空间继续执行，也不需要回到内核检查结果，而是内核在结果准备好后复制给用户进程，再通知进程数据已经准备好了。这样用户进程不需要到内核中进行 IO 操作，虽然真正的 IO 仍然是内核完成的。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;（如果对上述文字难以理解，可以参考&lt;a href="https://www.jianshu.com/p/486b0965c296"&gt;聊聊Linux 五种IO模型 - 简书&lt;/a&gt;这篇文章）&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;同步请求——调用方主动获取被调方的结果&lt;/li&gt;
-&lt;li&gt;异步请求——调用方被动收到被调方的通知&lt;/li&gt;
-&lt;li&gt;Java线程阻塞状态——blocked&lt;/li&gt;
-&lt;li&gt;Java线程等待状态——waiting，timed waiting&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;对于 Java 线程的状态，可以参考下图：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://stirp.github.io/img/n2U3N.png" alt="" title=""&gt;&lt;/p&gt;
-
-&lt;h2 id=""&gt;我们到底在说的是哪个概念？&lt;/h2&gt;
-
-&lt;p&gt;一般当我们在说同步异步，阻塞非阻塞的时候，我们说的到底是哪个概念呢？&lt;/p&gt;
-
-&lt;p&gt;是系统内核 IO 类型吗？如果这样的话，根本是没有异步阻塞的说法的，因为 IO 只有异步模型，按照异步模型的行为，是不阻塞进程执行的。&lt;/p&gt;
-
-&lt;p&gt;那么我们是在说字典里的4567这四条解释吗？看起来好像是的，当我们说同步请求的时候，确实是在等执行结束后才能得到结果，主动赋值给一个变量；异步请求的时候，通过 callback 或者 listener 调用回来修改数据 ；当我们说阻塞的时候，Java 线程的状态是……哎？Java 线程的状态可不是只有阻塞（blocked）一个这么简单，而是还有 Waiting、Timed Waiting 状态，表示线程没有继续执行，在等待条件成熟的手变成 Runable 或者 Blocked。难道这种情况算是非阻塞？&lt;/p&gt;
-
-&lt;p&gt;原来，当我们说一个函数阻塞非阻塞的时候，并不是在按照上述的定义去解释的，而是按照线程执行的角度去解释的。也就是说，如果函数调用的时候线程在继续执行逻辑，就是非阻塞的；如果在等待调用结束不继续执行，就是阻塞的。也就是说，第六条和第七条都算是阻塞的。&lt;/p&gt;
-
-&lt;h2 id=""&gt;为什么我们要按照这个定义去理解？&lt;/h2&gt;
-
-&lt;p&gt;有人可能觉得不服气，怎么就不能按照执行过程中的 IO 类型来划分？
-我是这么理解的：一个编程概念的提出，是有它的语境的。比如 IO 模型，很确定是发生在IO 时的事情，而我们讨论一个函数的同步异步，阻塞非阻塞，是为了研究这次函数调用对我的程序执行顺序的影响，而非其中的某次 IO，因为这次 IO 的类型不会影响我怎么写代码，这种类型差异在封装过程中就已经抹平了。在我看来，同步就是函数返回值，异步就是回调函数，阻塞就是不执行结束不继续执行后边的逻辑，非阻塞就是不等结果继续执行。这样的定义才能让使用函数的人不用看源码就能继续放心的开发下去。&lt;/p&gt;
-
-&lt;h2 id=""&gt;可以举个例子吗？&lt;/h2&gt;
-
-&lt;p&gt;嗯，光是在理论逻辑上去论证是很枯燥又难以理解的，不如我们看点例子吧。&lt;/p&gt;
-
-&lt;p&gt;首先看一个最简单的函数：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;import java.util.concurrent.*;
-
-public class Test {
-    public static class Result{
-        volatile boolean done = false;
-        volatile String text;
-    }
-    public static Result test() throws ExecutionException, InterruptedException {
-        final ExecutorService executorService = Executors.newFixedThreadPool(1);
-        final Result result = new Result();
-        final Future&amp;lt;String&amp;gt; submit = executorService.submit(() -&amp;gt; {
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return "test";
-        });
-        result.done = true;
-        result.text = submit.get();
-        executorService.shutdown();
-        return result;
-    }
-    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
-        final Result test = test();
-        System.out.println(test.text);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;test函数是同步还是异步，阻塞还是非阻塞呢？有朋友看到这里有线程池，执行的结果是交由另一个线程来处理的，所以理所当然的认为是异步的；由于执行过程会被 &lt;code&gt;submit.get()&lt;/code&gt;所阻塞，所以是阻塞的。可是在我看来，这个函数你会起名为 asyncTest 吗？不会的。虽然&lt;code&gt;executorService.submit&lt;/code&gt;确实是异步执行，但是这个函数内还对 future 进行了 get 操作，使得整个函数结束后返回完整的应答，变成了同步的。因此这个函数可以说是同步阻塞的。&lt;/p&gt;
-
-&lt;p&gt;再看一个的：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;import java.util.concurrent.*;
-
-public class Test {
-    public static class Result{
-        volatile boolean done = false;
-        volatile String text;
-    }
-    final static ExecutorService executorService = Executors.newFixedThreadPool(1);
-    public static Result test(){
-        final Result result = new Result();
-        executorService.execute(() -&amp;gt;{
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            result.done = true;
-            result.text = "test";
-        });
-        return result;
-    }
-    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
-        final Result test = test();
-        System.out.println("doing sth in main");
-        while (!test.done);
-        System.out.println(test.text);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这个test 函数的声明看起来就是个普通函数，但是需要等 done 结束才能使用。这是同步的还是异步的呢？我认为这算是异步的，因为需要等待 done 被通知修改后才能完成整改逻辑。由于可以 doing sth in main，这个是异步非阻塞的。如果把 done 改成传入的一个回调函数，就更容易被确认为异步了；我认为这两个行为是没有差别的，因为远离都是提交出去的任务通过通知的方式给到了原有线程。&lt;/p&gt;
-
-&lt;p&gt;啊，既然这么说来，如果想变成异步阻塞怎么办呢？就在 test 函数中阻塞一下，比如 join 提交的任务，这不就是传说中的异步阻塞了嘛。只是异步阻塞的编程大多数情况下没必要写，因为都已经阻塞了，异步跟同步对于原有线程的代码执行顺序都没有任何区别了，无非是主动发请求还是收通知。异步的写法比同步写法麻烦多了，也就不太需要异步阻塞了。我能想到一种异步阻塞的情况，就是提交的任务会周期性的执行，也就是不只一次通知原有线程，比如配置文件的 watch就是类似的情况，会写成&lt;code&gt;Config.watch(filename,listener)&lt;/code&gt;,在程序初始化的过程中，必须先执行 listener，得到配置文件内容才能继续初始化；初始化后，如果有人改了配置文件，listener 会被再一次触发，从而改变程序的行为。&lt;/p&gt;
-
-&lt;p&gt;再来看一个例子，来自ConcurrentLinkedQueue：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;public boolean offer(E e) {
-        checkNotNull(e);
-        final Node&amp;lt;E&amp;gt; newNode = new Node&amp;lt;E&amp;gt;(e);
-
-        for (Node&amp;lt;E&amp;gt; t = tail, p = t;;) {
-            Node&amp;lt;E&amp;gt; q = p.next;
-            if (q == null) {
-                // p is last node
-                if (p.casNext(null, newNode)) {
-                    // Successful CAS is the linearization point
-                    // for e to become an element of this queue,
-                    // and for newNode to become "live".
-                    if (p != t) // hop two nodes at a time
-                        casTail(t, newNode);  // Failure is OK.
-                    return true;
-                }
-                // Lost CAS race to another thread; re-read next
-            }
-            else if (p == q)
-                // We have fallen off list.  If tail is unchanged, it
-                // will also be off-list, in which case we need to
-                // jump to head, from which all live nodes are always
-                // reachable.  Else the new tail is a better bet.
-                p = (t != (t = tail)) ? t : head;
-            else
-                // Check for tail updates after two hops.
-                p = (p != t &amp;amp;&amp;amp; t != (t = tail)) ? t : q;
-        }
-    }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这个函数在执行过程中的亮点在于 &lt;code&gt;p.casNext(null, newNode)&lt;/code&gt; 和 &lt;code&gt;casTail(t, newNode)&lt;/code&gt;，两个 CAS 操作不阻塞，又完成了并发条件下的 offer 函数，整个函数是同步的，又没有阻塞，因此是同步非阻塞。&lt;/p&gt;
-
-&lt;h2 id=""&gt;总结&lt;/h2&gt;
-
-&lt;p&gt;其实很多时候不同的看法是因为我们的定义不同。如果同步和异步是指通信方式，阻塞非阻塞是指线程执行与否，那么我们就可以顺利得到示例里的结论；如果指的是 Linux IO 模型，那么显然我示例都是与之无关的。&lt;/p&gt;
-
-&lt;p&gt;但是不管怎样，只要你能够根据你使用的定义去理解程序的行为方式，并写出正确的调用代码，我想这才是最重要的。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//personal-understanding-of-async-and-blocking.html</guid></item></channel>
+&lt;/ol&gt;</content:encoded><guid>http://blog.shrp.me//2018-08-19.html</guid></item></channel>
 </rss>

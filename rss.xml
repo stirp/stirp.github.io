@@ -7,7 +7,7 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>在Windows的Linux子系统使用Java</title><link>http://blog.shrp.me//Using-Java-in-Windows-subsystem.html</link><pubdate>2018-10-10</pubdate><content:encoded>&lt;p&gt;今天在我的Windows上调试一些程序，其中一些命令在Windows的终端里十分难受，最后采用安装Windows的Linux子系统来使用这些命令，并且安装了Cmder作为terminal。现在的Cmder也同样支持配置为guake一样的行为，只是高度和宽度有些问题，只好全屏控制；但是终于可以在Windows上用 快捷键呼出Linux命令行了。然后愉快的跑到项目目录里，执行mvn命令，结果出人意料失败了:找不到Java，也没设置有效的Java_Home。&lt;/p&gt;
+    <item><title>TLS 详解</title><link>http://blog.shrp.me//TLS-explanation.html</link><pubdate>2018-10-13</pubdate><content:encoded>&lt;p&gt;今天看到一个网站，用来了解 TLS 连接相当不错，地址是&lt;a href="https://tls.ulfheim.net/"&gt;The Illustrated TLS Connection&lt;/a&gt;，相关代码在 GitHub 上&lt;a href="https://github.com/syncsynchalt/illustrated-tls"&gt;The Illustrated TLS Connection: Every byte explained&lt;/a&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//TLS-explanation.html</guid></item><item><title>在Windows的Linux子系统使用Java</title><link>http://blog.shrp.me//Using-Java-in-Windows-subsystem.html</link><pubdate>2018-10-10</pubdate><content:encoded>&lt;p&gt;今天在我的Windows上调试一些程序，其中一些命令在Windows的终端里十分难受，最后采用安装Windows的Linux子系统来使用这些命令，并且安装了Cmder作为terminal。现在的Cmder也同样支持配置为guake一样的行为，只是高度和宽度有些问题，只好全屏控制；但是终于可以在Windows上用 快捷键呼出Linux命令行了。然后愉快的跑到项目目录里，执行mvn命令，结果出人意料失败了:找不到Java，也没设置有效的Java_Home。&lt;/p&gt;
 
 &lt;p&gt;嗯？不对啊，我的Java就安装在C盘默认目录啊，怎么找不到。哦，对了，这是Linux嘛，环境Path变量跟Windows的不一样了，得重新配置。于是找到JDK安装目录，设置JAVA_HOME指向，一气呵成。这回总该对了吧，原来用CygWin都可以的。结果一执行mvn命令，居然又失败了。&lt;/p&gt;
 
@@ -302,16 +302,5 @@ public class Test {
 
 &lt;p&gt;其实很多时候不同的看法是因为我们的定义不同。如果同步和异步是指通信方式，阻塞非阻塞是指线程执行与否，那么我们就可以顺利得到示例里的结论；如果指的是 Linux IO 模型，那么显然我示例都是与之无关的。&lt;/p&gt;
 
-&lt;p&gt;但是不管怎样，只要你能够根据你使用的定义去理解程序的行为方式，并写出正确的调用代码，我想这才是最重要的。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//personal-understanding-of-async-and-blocking.html</guid></item><item><title>搬瓦工免费换 ip</title><link>http://blog.shrp.me//change-ip-freely-on-bandwagon.html</link><pubdate>2018-06-26</pubdate><content:encoded>&lt;p&gt;前两天我的搬瓦工突然被封禁了，一大票技术网站无法访问，实在不方便。登录搬瓦工想找地方换 IP，发现这个基础款的产品自己不支持换 IP 换机房。正在想实在不行就得还供应商的时候，突然搜到搬瓦工针对此情况专门提供了免费更换 IP 的功能，每十周换一次，还是挺爽的。&lt;/p&gt;
-
-&lt;p&gt;这个功能就是当你确信你的机器被墙了，可以访问&lt;a href="https://kiwivm.64clouds.com/main-exec.php?mode=blacklistcheck"&gt;https://kiwivm.64clouds.com/main-exec.php?mode=blacklistcheck&lt;/a&gt;，此时会提示检测 ip，&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://stirp.github.io/img/Xnip2018-06-26_12-01-04.jpg" alt="" title=""&gt;&lt;/p&gt;
-
-&lt;p&gt;然后点击 Test Main IP，如果检测到被封禁，就会出现 next 按钮，自然点击 next 按钮更换 IP 就好啦。&lt;/p&gt;
-
-&lt;p&gt;不过由于 IP 变化了，需要运行以下命令更新 iptables 记录：
-&lt;code&gt;iptables -F; iptables -t nat -F; iptables-save &amp;gt; /etc/sysconfig/iptables&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;最后别忘记去域名管理把你服务器的域名 A 记录换掉哦！要不然域名还是无法访问的！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//change-ip-freely-on-bandwagon.html</guid></item></channel>
+&lt;p&gt;但是不管怎样，只要你能够根据你使用的定义去理解程序的行为方式，并写出正确的调用代码，我想这才是最重要的。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//personal-understanding-of-async-and-blocking.html</guid></item></channel>
 </rss>

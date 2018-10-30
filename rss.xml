@@ -7,7 +7,17 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>NBA2k9怎么在Win10运行?</title><link>http://blog.shrp.me//How-to-run-NBA-2k9-on-Win10.html</link><pubdate>2018-10-24</pubdate><content:encoded>&lt;p&gt;如果现在新电脑要装Windows，那基本上都是Win10了。然而对于一些有意思的老游戏，比如像拥有巅峰姚明和火箭的NBA2k9，Win10并不能直接玩，使用兼容设置也依然如此。到谷歌上搜索，也基本没有什么有效信息。&lt;/p&gt;
+    <item><title>Intellij VM 参数优化</title><link>http://blog.shrp.me//Intellij-VM-optiomazation.html</link><pubdate>2018-10-30</pubdate><content:encoded>&lt;p&gt;今天看了&lt;a href="https://mp.weixin.qq.com/s/DMzz717E2oZ3XwcIsM8Dgw"&gt;《IntelliJ IDEA 内存优化最佳实践》&lt;/a&gt;一文，正好之前自己也做了自己机器的 Intellij 的内存优化，原来文章里的最优方案跟我自用的是一样的，都是增加内存。&lt;/p&gt;
+
+&lt;p&gt;我的配置如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;-Xms2g
+-Xmx4g
+-XX:MaxPermSize=2g
+-XX:ReservedCodeCacheSize=2g
+-XX:+UseCompressedOops
+-Dide.no.platform.update=true
+&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//Intellij-VM-optiomazation.html</guid></item><item><title>NBA2k9怎么在Win10运行?</title><link>http://blog.shrp.me//How-to-run-NBA-2k9-on-Win10.html</link><pubdate>2018-10-24</pubdate><content:encoded>&lt;p&gt;如果现在新电脑要装Windows，那基本上都是Win10了。然而对于一些有意思的老游戏，比如像拥有巅峰姚明和火箭的NBA2k9，Win10并不能直接玩，使用兼容设置也依然如此。到谷歌上搜索，也基本没有什么有效信息。&lt;/p&gt;
 
 &lt;p&gt;然而我还是不死心，安装虚拟机总可以了吧 ？用了免费的VirtualBox，嗯……对显卡的虚拟化基本没有，3D加速能力相当于无，就算是装了工具，在1060上也没法看全特效。还好瞄了一眼VMware，嗯？非商业用途的VMware Player可以免费下载？多年前了解这个是免费的，但是只能运行虚拟机，不能创建。下载下来打开一看，现在的VMware Player原来也支持创建虚拟机了。不但如此，其网络支持pptp拨号，支持显卡虚拟化，上G的显存都有用武之地，这都是VirtualBox所没有的。&lt;/p&gt;
 
@@ -217,26 +227,5 @@
 &lt;ol&gt;
 &lt;li&gt;&lt;p&gt;&lt;a href="https://www.oschina.net/news/99299/windows95-open-source-project"&gt;经典不灭，开源项目带你在各平台上重温 Windows 95 - 开源中国&lt;/a&gt; 大概很多人都没有用过 Windows95，有人用 Electron 制作了这款 Win95的虚拟机的前端界面，目测虚拟机是 bochs 下载地址：&lt;a href="https://github.com/felixrieseberg/windows95/releases"&gt;Releases · felixrieseberg/windows95 · GitHub&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;&lt;a href="https://mp.weixin.qq.com/s/NamsJHwEOdF3GgGE5sM4gg"&gt;几个大型网站的Feeds(Timeline)设计简单对比&lt;/a&gt; 很抱歉，这个是我最近比较关注的话题，看起来也不是最新的文章了，但是多关注一下其他社区的设计对于我们自己的社区就会多一些思考。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;</content:encoded><guid>http://blog.shrp.me//2018-09-01.html</guid></item><item><title>2018-08-24</title><link>http://blog.shrp.me//2018-08-24.html</link><pubdate>2018-08-24</pubdate><content:encoded>&lt;p&gt;下边是8月24日的每周分享：&lt;/p&gt;
-
-&lt;p&gt;Java新姿势：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="http://hengyunabc.github.io/jvm-heap-dump-find-fd/"&gt;从JVM heap dump里查找没有关闭文件的引用&lt;/a&gt; 如果程序发布后长期持有一个本应该关闭的文件引用，一定是发生了引用的泄露，这种事情一般查起来是很费劲的，还得在代码里跟踪引用的传递。文章里的方法也可以用来找任意你怀疑泄露的资源，不过需要学会 OQL。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://blog.csdn.net/u013096088/article/details/81161084"&gt;Java与单例模式 - CSDN博客&lt;/a&gt; 单例模式大家都见得多了，什么美国的枚举单利，在代码里谈笑风生。不过为什么不能改进原有代码，使得反序列化不会破坏单例呢？本文通过阅读Java源码，给出了一个可行的方案：readresolve。不过面对一些速度著称的json库时，不见得可以像Java库函数那么标准，枚举依然是最安全的选择。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;新奇工具：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://redkale.org/"&gt;redkale&lt;/a&gt;     Redkale(中文名: 红菜苔，湖北特产蔬菜)是基于Java 8全新的微服务开源框架， 包含HTTP、WebSocket、TCP/UDP、数据序列化、数据缓存、依赖注入等功能。 本框架致力于简化集中式和微服务架构的开发，在增强开发敏捷性的同时保持高性能。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="http://oblac.github.io/jodd/"&gt;Jodd&lt;/a&gt; Jodd是个轻量的Java组件包，有基础工具，有mvc，有依赖注入，有web扩展。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://github.com/lifei6671/mindoc"&gt;MinDoc&lt;/a&gt; Golang实现的基于beego框架的接口在线文档管理系统。一个好用的wiki系统真的是太重要了，不仅仅对于那些不差钱的大企业来说。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;新闻资讯：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href="https://lujun9972.github.io/blog/2018/08/18/%E8%AF%AF%E5%88%A0%E9%99%A4dev%E4%B8%8B%E7%89%B9%E6%AE%8A%E6%96%87%E4%BB%B6%E6%80%8E%E4%B9%88%E5%8A%9E/"&gt;误删除dev下的文件怎么办&lt;/a&gt; 如果不小心删除了/dev/下的文件，也就意味着你电脑上的一些组件无法使用了。本文介绍了你如何可以恢复它们。&lt;/li&gt;
-&lt;/ol&gt;</content:encoded><guid>http://blog.shrp.me//2018-08-24.html</guid></item></channel>
+&lt;/ol&gt;</content:encoded><guid>http://blog.shrp.me//2018-09-01.html</guid></item></channel>
 </rss>

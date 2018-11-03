@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+今天在微博看到一条关于公交撞桥坠河的[观点](https://weibo.com/5173399462/H0OWQ3x46?type=comment#_rnd1541263764030)，其观点跟我的看法高度相似，所以就粘贴到这里来：
+ ![](http://stirp.github.io/img/005E73wOgy1fwtu7vma6rj30mi1tu19y.jpg) 
+
+一开始我想司机是不是想借小车的撞击力减速，从而撞桥停住，但是看撞击的位置，一个老司机肯定不会犯这样的错误；而且最后撞到桥上的时候不减速不打方向盘，说明撞下河是其预期内的。
+
+但是我猜他一定看了很多车从桥上冲下河去逃生的故事，他很有可能想撞下去可以生还的。这个猜测得看最后车到河里前的视频是否有逃生的动作才知道，可是这段视频都没有流传，无从判断。
+
+如果司机并没有逃生的动作，说明司机其实是由轻生念头的——这个问题本质上是我国底层劳动人民的地位和收入问题，也是财富观价值观的问题，短期内不见好转趋势，民众间的相互攻击恐怕会持续很久一阵子了。
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>今天在微博看到一条关于公交撞桥坠河的<a href="https://weibo.com/5173399462/H0OWQ3x46?type=comment#_rnd1541263764030">观点</a>，其观点跟我的看法高度相似，所以就粘贴到这里来：
+ <img src="http://stirp.github.io/img/005E73wOgy1fwtu7vma6rj30mi1tu19y.jpg" alt="" title=""> </p>
+
+<p>一开始我想司机是不是想借小车的撞击力减速，从而撞桥停住，但是看撞击的位置，一个老司机肯定不会犯这样的错误；而且最后撞到桥上的时候不减速不打方向盘，说明撞下河是其预期内的。</p>
+
+<p>但是我猜他一定看了很多车从桥上冲下河去逃生的故事，他很有可能想撞下去可以生还的。这个猜测得看最后车到河里前的视频是否有逃生的动作才知道，可是这段视频都没有流传，无从判断。</p>
+
+<p>如果司机并没有逃生的动作，说明司机其实是由轻生念头的——这个问题本质上是我国底层劳动人民的地位和收入问题，也是财富观价值观的问题，短期内不见好转趋势，民众间的相互攻击恐怕会持续很久一阵子了。</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "The-best-opinion-of-bus-crash-into-the-river.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

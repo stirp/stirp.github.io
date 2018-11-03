@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+最近在开发一个系统，里面经常在一个请求里处理一系列的任务，其中一些任务是不需要阻塞请求结束的应答的，因此最简单的办法就是异步去执行这些任务。然而如果程序关闭导致任务被丢失，那是最不可接受的情况，因此这种情况下要把任务提交到 MQ 里，利用 MQ 的失败重试来保证非程序性任务失败（毕竟程序性问题最好解决，而非程序性丢失通常不容易恢复）。
+
+但是一般来说在系统里做这么一个事情是非常复杂而又繁琐的，要初始化 MQ 的生产者和消费者，然后定义传输的 DTO，然后在异步任务处写一个很出神的任务提交，来把任务提交给 MQ。怎么才能简化这个过程呢？
+
+我想出并实现了一个模块来解决这个问题。如果原来的代码是
+
+```Java
+dbmapper.create(po);
+```
+
+那么在我的模块写起来就是
+
+```Java
+dbmapper.task().create(po);
+```
+
+是不是看起来很简单，又一目了然？
+
+其实原理很简单，task()函数一定是得到了一个代理，通过这个代理截断了 create 函数，将其函数名称，函数所在的接口名称，函数实参，通过 mq 传递给消费者；而消费者注册了相同的 mapper，因此通过反射获得了参数，从而在消费者实现了实际的数据库操作。
+
+原理是很简单的，写起来的方法也有很多种，由于是工作需要，代码和具体设计并不能提供出来，但是有了这个原理，相信大家都能自己做到。
+
+对于我来说，这个模块编写过程中有一个容易出错的地方一开始写错了，原因是我在代理中获取到的 method 去获取其所在的 interface 的名称时，一开始用了getDeclaringClass后又对其获取 interfaces，但是其实getDeclaringClass这个函数本来就是返回这个 method 所在的 interface的，继续获取 interface 只能是把函数本来所在的接口跳过，因此消费者最后拿到的接口名称和函数是不对应的。
+
+此外还有一个地方需要留意，就是实参发给消费者的时候要对每个参数分别序列化后得到一个 String 数组，消费者先按照接口名称和函数名称得到型参的类型，然后才能对 String 数组按顺序反序列化成实参，这点其实无需多言，诸位实践的时候自然会想得到。（直接反序列化 Object[] 可行吗？我没有试过，大家可以自己试一下，哈哈）
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>最近在开发一个系统，里面经常在一个请求里处理一系列的任务，其中一些任务是不需要阻塞请求结束的应答的，因此最简单的办法就是异步去执行这些任务。然而如果程序关闭导致任务被丢失，那是最不可接受的情况，因此这种情况下要把任务提交到 MQ 里，利用 MQ 的失败重试来保证非程序性任务失败（毕竟程序性问题最好解决，而非程序性丢失通常不容易恢复）。</p>
+
+<p>但是一般来说在系统里做这么一个事情是非常复杂而又繁琐的，要初始化 MQ 的生产者和消费者，然后定义传输的 DTO，然后在异步任务处写一个很出神的任务提交，来把任务提交给 MQ。怎么才能简化这个过程呢？</p>
+
+<p>我想出并实现了一个模块来解决这个问题。如果原来的代码是</p>
+
+<pre><code class="Java">dbmapper.create(po);
+</code></pre>
+
+<p>那么在我的模块写起来就是</p>
+
+<pre><code class="Java">dbmapper.task().create(po);
+</code></pre>
+
+<p>是不是看起来很简单，又一目了然？</p>
+
+<p>其实原理很简单，task()函数一定是得到了一个代理，通过这个代理截断了 create 函数，将其函数名称，函数所在的接口名称，函数实参，通过 mq 传递给消费者；而消费者注册了相同的 mapper，因此通过反射获得了参数，从而在消费者实现了实际的数据库操作。</p>
+
+<p>原理是很简单的，写起来的方法也有很多种，由于是工作需要，代码和具体设计并不能提供出来，但是有了这个原理，相信大家都能自己做到。</p>
+
+<p>对于我来说，这个模块编写过程中有一个容易出错的地方一开始写错了，原因是我在代理中获取到的 method 去获取其所在的 interface 的名称时，一开始用了getDeclaringClass后又对其获取 interfaces，但是其实getDeclaringClass这个函数本来就是返回这个 method 所在的 interface的，继续获取 interface 只能是把函数本来所在的接口跳过，因此消费者最后拿到的接口名称和函数是不对应的。</p>
+
+<p>此外还有一个地方需要留意，就是实参发给消费者的时候要对每个参数分别序列化后得到一个 String 数组，消费者先按照接口名称和函数名称得到型参的类型，然后才能对 String 数组按顺序反序列化成实参，这点其实无需多言，诸位实践的时候自然会想得到。（直接反序列化 Object[] 可行吗？我没有试过，大家可以自己试一下，哈哈）</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "add-sync-task-for-Java.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

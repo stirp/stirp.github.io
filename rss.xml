@@ -7,7 +7,36 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>Intellij VM 参数优化</title><link>http://blog.shrp.me//Intellij-VM-optiomazation.html</link><pubdate>2018-10-30</pubdate><content:encoded>&lt;p&gt;今天看了&lt;a href="https://mp.weixin.qq.com/s/DMzz717E2oZ3XwcIsM8Dgw"&gt;《IntelliJ IDEA 内存优化最佳实践》&lt;/a&gt;一文，正好之前自己也做了自己机器的 Intellij 的内存优化，原来文章里的最优方案跟我自用的是一样的，都是增加内存。&lt;/p&gt;
+    <item><title>为 Java 程序增加一个异步任务功能</title><link>http://blog.shrp.me//add-sync-task-for-Java.html</link><pubdate>2018-11-04</pubdate><content:encoded>&lt;p&gt;最近在开发一个系统，里面经常在一个请求里处理一系列的任务，其中一些任务是不需要阻塞请求结束的应答的，因此最简单的办法就是异步去执行这些任务。然而如果程序关闭导致任务被丢失，那是最不可接受的情况，因此这种情况下要把任务提交到 MQ 里，利用 MQ 的失败重试来保证非程序性任务失败（毕竟程序性问题最好解决，而非程序性丢失通常不容易恢复）。&lt;/p&gt;
+
+&lt;p&gt;但是一般来说在系统里做这么一个事情是非常复杂而又繁琐的，要初始化 MQ 的生产者和消费者，然后定义传输的 DTO，然后在异步任务处写一个破坏阅读的任务提交，来把任务提交给 MQ。怎么才能简化这个过程呢？&lt;/p&gt;
+
+&lt;p&gt;我想出并实现了一个模块来解决这个问题。如果原来的代码是&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="Java"&gt;dbmapper.create(po);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;那么在我的模块写起来就是&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="Java"&gt;dbmapper.task().create(po);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;是不是看起来很简单，又一目了然？&lt;/p&gt;
+
+&lt;p&gt;其实原理很简单，task()函数一定是得到了一个代理，通过这个代理拦截了 create 函数，将其函数名称、函数所在的接口名称和函数实参，通过 mq 传递给消费者；而消费者注册了相同的 mapper，因此通过反射获得了上述参数，从而在消费者实现了实际的数据库操作。怎么能让不同的 db 接口上都有 task 函数？当然就是让他们实现 task 接口啦，Java8 提供了default 函数，正好可以拿来提供 task 函数的默认实现，每个 dbmapper 直接声明 implements 接口，但是不需要再写 task 函数。在 task 函数里，每个 dbmapper 的代理可以在获取的时候懒创建。&lt;/p&gt;
+
+&lt;p&gt;原理是很简单的，写起来的方法也有很多种，由于是工作需要，代码和具体设计并不能提供出来，但是有了这个原理，相信大家都能自己做到。&lt;/p&gt;
+
+&lt;p&gt;对于我来说，这个模块编写过程中有一个容易出错的地方，原因是我在代理中获取到的 method 去获取其所在的 interface 的名称时，一开始用了getDeclaringClass 后又对其获取 interfaces，但是其实getDeclaringClass这个函数本来就是返回这个 method 所在的 interface 的，继续获取 interface 只能是把函数本来所在的接口跳过，最终消费者最后拿到的接口名称和函数是不对应的。只要 getDeclaringClass 的 name 就是 interface 的名称了。&lt;/p&gt;
+
+&lt;p&gt;此外还有一个地方需要留意，就是实参发给消费者的时候要对每个参数分别序列化后得到一个 String 数组，消费者先按照接口名称和函数名称得到形参的类型，然后才能对 String 数组按顺序反序列化成实参，这点其实无需多言，诸位实践的时候自然会想得到。（直接反序列化成 Object[] 可行吗？我没有试过，大家可以自己试一下，哈哈）&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//add-sync-task-for-Java.html</guid></item><item><title>公交撞桥坠河的最好观点</title><link>http://blog.shrp.me//The-best-opinion-of-bus-crash-into-the-river.html</link><pubdate>2018-11-04</pubdate><content:encoded>&lt;p&gt;今天在微博看到一条关于公交撞桥坠河的&lt;a href="https://weibo.com/5173399462/H0OWQ3x46?type=comment#_rnd1541263764030"&gt;观点&lt;/a&gt;，其观点跟我的看法高度相似，所以就粘贴到这里来：
+ &lt;img src="http://stirp.github.io/img/005E73wOgy1fwtu7vma6rj30mi1tu19y.jpg" alt="" title=""&gt; &lt;/p&gt;
+
+&lt;p&gt;一开始我想司机是不是想借小车的撞击力减速，从而撞桥停住，但是看撞击的位置，一个老司机肯定不会犯这样的错误；而且最后撞到桥上的时候不减速不打方向盘，说明撞下河是其预期内的。&lt;/p&gt;
+
+&lt;p&gt;但是我猜他一定看了很多车从桥上冲下河去逃生的故事，他很有可能想撞下去可以生还的。这个猜测得看最后车到河里前的视频是否有逃生的动作才知道，可是这段视频都没有流传，无从判断。&lt;/p&gt;
+
+&lt;p&gt;如果司机并没有逃生的动作，说明司机其实是由轻生念头的——这个问题本质上是我国底层劳动人民的地位和收入问题，也是财富观价值观的问题，短期内不见好转趋势，民众间的相互攻击恐怕会持续很久一阵子了。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//The-best-opinion-of-bus-crash-into-the-river.html</guid></item><item><title>Intellij VM 参数优化</title><link>http://blog.shrp.me//Intellij-VM-optiomazation.html</link><pubdate>2018-10-30</pubdate><content:encoded>&lt;p&gt;今天看了&lt;a href="https://mp.weixin.qq.com/s/DMzz717E2oZ3XwcIsM8Dgw"&gt;《IntelliJ IDEA 内存优化最佳实践》&lt;/a&gt;一文，正好之前自己也做了自己机器的 Intellij 的内存优化，原来文章里的最优方案跟我自用的是一样的，都是增加内存。&lt;/p&gt;
 
 &lt;p&gt;我的配置如下：&lt;/p&gt;
 
@@ -178,54 +207,5 @@
 &lt;li&gt;&lt;a href="https://archive.org"&gt;archive.org&lt;/a&gt; 这个是一个更专业的收藏站点，任何没有版权问题的都可以收藏，更是提供了网页运行 dos 程序的能力，真是很厉害。&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://bellard.org/jslinux/vm.html?url=https://bellard.org/jslinux/win2k.cfg&amp;amp;mem=192&amp;amp;graphic=1&amp;amp;w=1024&amp;amp;h=768"&gt;Windows 2000&lt;/a&gt;继win95之后，又一个可以在浏览器运行的微软操作系统。&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://tonybai.com/2018/09/10/setup-service-discovery-and-load-balance-based-on-consul/"&gt;基于consul实现微服务的服务发现和负载均衡 | Tony Bai&lt;/a&gt; 一个老程序员，老架构师对微服务的服务发现和负载的一个实现方案，可以借鉴。&lt;/li&gt;
-&lt;/ol&gt;</content:encoded><guid>http://blog.shrp.me//2018-09-16.html</guid></item><item><title>2018-09-09</title><link>http://blog.shrp.me//2018-09-09.html</link><pubdate>2018-09-10</pubdate><content:encoded>&lt;h2 id="java"&gt;Java新姿势：&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="http://www.infoq.com/cn/articles/how-to-write-a-good-software-design-document"&gt;如何才能写出好的软件设计文档？&lt;/a&gt; 做了这么多年的 Java 开发，除了在恶补测试，我想最需要恶补的其实是设计。我们虽然没有设计也做了这么多年的系统，但是没有先行设计，总是缺乏对系统方向的把握。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="http://www.ruanyifeng.com/blog/2018/09/hash-collision-and-birthday-attack.html"&gt;哈希碰撞与生日攻击 - 阮一峰的网络日志&lt;/a&gt; 虽然不是 Java 语言，但是这个问题存在于任何语言的哈希算法之中，值得一看。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://liuzhengyang.github.io/2017/07/27/jitwatch/"&gt;使用JITWatch查看JVM的JIT编译代码 | 刘正阳&lt;/a&gt; 有时候我们对程序 JIT 优化后的情况不太了解，这个工具&lt;a href="https://github.com/AdoptOpenJDK/jitwatch"&gt;GitHub - AdoptOpenJDK/jitwatch: Log analyser / visualiser for Java HotSpot JIT compiler. Inspect inlining decisions, hot methods, bytecode, and assembly. View results in the JavaFX user interface.&lt;/a&gt;正合适。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=""&gt;新奇工具：&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://www.momothink.com/wonderpen/"&gt;WonderPen | 妙笔 - momothink&lt;/a&gt;妙笔，一个新的文档编辑工具，支持多级目录，存储自动增加版本可以支持回退，可以增加笔记备份，有导出功能，作者的用户画像是勤于写作的作家，实际上需要整理笔记的程序员也很适合。缺点是还不支持 sequence 或者 graph 语法。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://commons.apache.org/proper/commons-weaver/download_weaver.cgi"&gt;Commons Weaver – Download Apache Commons Weaver&lt;/a&gt; 通过在类中生成（"weaving"）字节码，提供一种简单的方法来增强已编译的 Java 类。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://github.com/snail007/shadowtunnel"&gt;GitHub - snail007/shadowtunnel: secure tunnel which help you protecting your tcp traffic between your machine and your service on remote.&lt;/a&gt; goproxy 作者的又一力作，为已有代理增加一个加密的链路。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://github.com/redisson/redisson"&gt;GitHub - redisson/redisson: Redisson - distributed Java objects and services (Set, Multimap, SortedSet, Map, List, Queue, BlockingQueue, Deque, BlockingDeque, Semaphore, Lock, AtomicLong, Map Reduce, Publish / Subscribe, Bloom filter, Spring Cache, Executor service, Tomcat Session Manager, Scheduler service, JCache API) on top of Redis server. State of the Art Redis client&lt;/a&gt; Redisson是架设在Redis基础上的一个Java驻内存数据网格（In-Memory Data Grid）。【Redis官方推荐】Redisson在基于NIO的Netty框架上，充分的利用了Redis键值数据库提供的一系列优势，在Java实用工具包中常用接口的基础上，为使用者提供了一系列具有分布式特性的常用工具类。使得原本作为协调单机多线程并发程序的工具包获得了协调分布式多机多线程并发系统的能力，大大降低了设计和研发大规模分布式系统的难度。同时结合各富特色的分布式服务，更进一步简化了分布式环境中程序相互之间的协作。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=""&gt;新闻资讯：&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://github.com/rwv/chinese-dos-games"&gt;GitHub - rwv/chinese-dos-games: 🎮 Chinese DOS games in browser.&lt;/a&gt; 游戏大概有版权问题，但是技术是之前就很火的 WebAssembly 技术。不过这个目前最大的问题是存储没法保留，关闭浏览器存档就丢了。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://blog.wturrell.co.uk/phpstorm-ideavim-not-working/"&gt;PhpStorm troubleshooting – ideaVim stops working – William Turrell&lt;/a&gt; 这个也是我最近遇到的一个情况，idea 使用的 vim 插件突然就不工作了，编辑器回到了原始的状态，但是看插件是安装的，没有任何问题。原来是插件有个工作开关，默认开关还有快捷键，而且这个快捷键跟 Mac 的粘贴非常接近，囧。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://www.oschina.net/news/99768/tracking-users-across-the-web-via-tls-session-resumption"&gt;研究发现：不靠 cookie，网站也能通过 TLS 协议追踪你 - 开源中国&lt;/a&gt; 这个新闻有点恐怖，居然可以不用 cookie 而是通过 TLS 协议进行客户端的识别——这个功能对正常的业务来说没什么帮助，客户说关闭浏览器就关闭了；但是对于广告功能来说，完全可以用来短期跟踪客户，甚至对于手机的浏览器来说，完全可以替代 cookie 的作用了。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;</content:encoded><guid>http://blog.shrp.me//2018-09-09.html</guid></item><item><title>2018-09-01</title><link>http://blog.shrp.me//2018-09-01.html</link><pubdate>2018-09-01</pubdate><content:encoded>&lt;p&gt;下边是9月01日的每周分享：&lt;/p&gt;
-
-&lt;h2 id="java"&gt;Java新姿势：&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="http://imushan.com/2018/08/29/java/language/JDK%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-DirectByteBuffer/"&gt;JDK源码阅读-DirectByteBuffer | 木杉的博客&lt;/a&gt; 木杉大神的又一力作，让我们继续学习 JVM 里的内容。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://my.oschina.net/zijingshanke/blog/1930333"&gt;Uber 开源分布式追踪工具：JVM Profiler - RiboseYim‘s OpenSource Blog - 开源中国&lt;/a&gt; Uber 的这次开源非常受欢迎，这篇文章就是关于这款 Profiler 的详细介绍。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="http://www.importnew.com/29591.html"&gt;一次Java内存泄漏调试的有趣经历 - ImportNew&lt;/a&gt; 虽然是个老外，但是讲述的问题是个好问题——长时间 fullGC 导致的超时问题。虽然技术问题本身不复杂，但是解决起来并没有想象中那么容易。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://blog.codingnow.com/2018/08/lockstep.html"&gt;lockstep 网络游戏同步方案&lt;/a&gt; 云风大神的详细讲解对于我们这样行业外的人来说真是一篇上等的入门力作。在此之前我只能猜测即时游戏的互联方案，其实这个方案在其他需要协作的场景都可以使用。对于非游戏程序员力荐。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=""&gt;新奇工具：&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://gitee.com/ld/J2Cache"&gt;红薯/J2Cache: Java 两级缓存框架，可以让应用支持两级缓存框架 ehcache(Caffeine) + redis 。避免完全使用独立缓存系统所带来的网络IO开销问题&lt;/a&gt; J2Cache 是 OSChina 目前正在使用的两级缓存框架。第一级缓存使用 Ehcache，第二级缓存使用 Redis 。由于大量的缓存读取会导致 L2 的网络成为整个系统的瓶颈，因此 L1 的目标是降低对 L2 的读取次数。该缓存框架主要用于集群环境中。单机也可使用，用于避免应用重启导致的 Ehcache 缓存数据丢失。与其说是个 cache，不如说是个 cache 桥梁，用于解决多级缓存的过期和更新不错。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://github.com/uber-common/jvm-profiler"&gt;GitHub - uber-common/jvm-profiler: JVM Profiler Sending Metrics to Kafka, Console Output or Custom Reporter&lt;/a&gt; Uber 开源的 Profiler，上文有介绍，可以参考下。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://www.oschina.net/p/smart-doc"&gt;smart-doc首页、文档和下载 - Java Restful API 文档生成工具 - 开源中国社区&lt;/a&gt; 号称免注入文档生成工具，目标还是比较长远的。既然不涉及生产，用于自动维护文档是不错的，已经在跟同事准备使用起来了。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://jobob.gitee.io/mp3doc/"&gt;MyBatis-Plus&lt;/a&gt; 这个工具大概不是特别新奇了，我看已经有很多人在关注它的 github 源码了&lt;a href="https://github.com/baomidou/mybatis-plus"&gt;GitHub - baomidou/mybatis-plus: An enhanced toolkit of Mybatis to simplify development&lt;/a&gt;其使用会比直接使用 mybatis 简单很多，但是对于复杂业务来说还是需要写代码的。原理比较简单，本身性能无需担心。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://gitee.com/lsongiu/redis-shared-lock"&gt;qidianliusong/redis-shared-lock: 基于redis的分布式共享锁，使用注解的方式对方法加锁&lt;/a&gt; 一个基于 redis 的分布式共享锁，代码有点意思。由于开发历史不太久，最好不要直接用于生产。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=""&gt;新闻资讯：&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://www.oschina.net/news/99299/windows95-open-source-project"&gt;经典不灭，开源项目带你在各平台上重温 Windows 95 - 开源中国&lt;/a&gt; 大概很多人都没有用过 Windows95，有人用 Electron 制作了这款 Win95的虚拟机的前端界面，目测虚拟机是 bochs 下载地址：&lt;a href="https://github.com/felixrieseberg/windows95/releases"&gt;Releases · felixrieseberg/windows95 · GitHub&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href="https://mp.weixin.qq.com/s/NamsJHwEOdF3GgGE5sM4gg"&gt;几个大型网站的Feeds(Timeline)设计简单对比&lt;/a&gt; 很抱歉，这个是我最近比较关注的话题，看起来也不是最新的文章了，但是多关注一下其他社区的设计对于我们自己的社区就会多一些思考。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;</content:encoded><guid>http://blog.shrp.me//2018-09-01.html</guid></item></channel>
+&lt;/ol&gt;</content:encoded><guid>http://blog.shrp.me//2018-09-16.html</guid></item></channel>
 </rss>

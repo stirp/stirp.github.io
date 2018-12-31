@@ -7,7 +7,77 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>为 Java 程序增加一个异步任务功能</title><link>http://blog.shrp.me//add-sync-task-for-Java.html</link><pubdate>2018-11-04</pubdate><content:encoded>&lt;p&gt;最近在开发一个系统，里面经常在一个请求里处理一系列的任务，其中一些任务是不需要阻塞请求结束的应答的，因此最简单的办法就是异步去执行这些任务。然而如果程序关闭导致任务被丢失，那是最不可接受的情况，因此这种情况下要把任务提交到 MQ 里，利用 MQ 的失败重试来保证非程序性任务失败（毕竟程序性问题最好解决，而非程序性丢失通常不容易恢复）。&lt;/p&gt;
+    <item><title>怎么把脚本变为 Mac 的 App</title><link>http://blog.shrp.me//How-To-Convert-Shell-Script-Into-Mac-App.html</link><pubdate>2019-01-01</pubdate><content:encoded>&lt;p&gt;有时候我们需要把一些有意义的脚本变成程序，发布出来；或者对一些已有的程序增加一点定制，比如我下载的这款 OpenProj，好用是好用，但是默认的 app 已经不能直接打开，编辑 plist 什么的也不太好用。还好 Mac 操作系统这些操作都很简单。&lt;/p&gt;
+
+&lt;p&gt;首先我们找到原来这个程序应该怎么去执行的。通过分析原来的 App 目录下的 Info.plist 文件，我发现原来的程序是通过&lt;code&gt;java -Xms128m -Xmx768m -classpath ./Resources/Java/openproj.jar:./Resources/Java/lib/  com.projity.main.Main&lt;/code&gt;命令来执行的。这不就是简单的 Java 命令嘛！打开 Mac 自带的 Automator，选择新建应用程序，在工作区中添加运行 shell 脚本，把上述命令粘贴进去不就行了嘛。可是点击右上角的运行，哎，不行啊，原来命令的目录是.，也就是相对路径，现在用 automator 工具执行是不行的。导出为 app 以后呢？试了一下，结果仍然不行。在 shell 命令里加一些调试的输出后发现，执行过程中相对路径是用户的 home，不是当前 app 的目录，也没有参数指向 app 的目录，这可真麻烦了。当然我们可以简单假设用户一定不会修改我 App 的名称，也一定会放到/Applications目录下，这样我们写成绝对路径是可以执行的。不过这样是合理的方案吗？当然不是了。怎么办呢？&lt;/p&gt;
+
+&lt;p&gt;还好难不倒我，通过在 shell 脚本前执行一段 AppleScript 脚本来获取当前应用的位置不就好了嘛！这段脚本如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;on run {input, parameters}
+        set p to POSIX path of (path to me)
+        return {p}
+end run
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后再下边 shell 脚本的右上方选择“传递输入：作为自变量”，于是现在程序执行的地址就被当做第一个参数被传进来了。同样更新一下 shell 脚本来使用这段路径：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;java -Xms128m -Xmx768m -classpath "$1Contents/Resources/Java/openproj.jar":"$1Contents/Resources/Java/lib/" com.projity.main.Main
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;执行一下，嗯，不错！不过……为啥界面是英文的？刚刚我从命令行启动的好像是中文的呀？不用想，肯定是 app 里的 shell肯定是有定制化的成分，并没有直接获取系统的语言。还好这对 Java 程序来说非常简单，增加启动参数&lt;code&gt;-Duser.language=zh -Duser.region=CN&lt;/code&gt;就行了嘛。&lt;/p&gt;
+
+&lt;p&gt;再试了一下，嗯，这回都对了！不过……能不能直接打开保存的文件，而不用每次都打开程序后在菜单里选择打开啊？太麻烦了！&lt;/p&gt;
+
+&lt;p&gt;嘛，这个倒也不是不能做，只是有些麻烦。首先是启动时的 AppleScript 要接收被打开的文件参数，然后传给 shell 脚本，然后 shell 脚本将其附加在最后作为程序的第一个参数给到 Java 就可以了。
+修改如下:&lt;/p&gt;
+
+&lt;p&gt;AppleScript:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;on run {input, parameters}
+    set inputCount to count of input
+    if inputCount is greater than or equal to 1 then
+        set fileName to item 1 of input
+        set p to {(POSIX path of (path to me) as string), (POSIX path of (fileName) as string)}
+        return p
+    else
+        set p to POSIX path of (path to me) as string
+        return {p}
+    end if
+end run
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过判断输入参数的个数来决定给 shell 的参数有几个。这里只选取第一个打开的文件作为参数传递给 Java。&lt;/p&gt;
+
+&lt;p&gt;shell：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if [ -f $2 ];then 
+    java -Xms128m -Xmx768m -Duser.language=zh -Duser.region=CN -classpath "$1Contents/Resources/Java/openproj.jar":"$1Contents/Resources/Java/lib/" com.projity.main.Main "$2"
+else 
+    java -Xms128m -Xmx768m -Duser.language=zh -Duser.region=CN -classpath "$1Contents/Resources/Java/openproj.jar":"$1Contents/Resources/Java/lib/" com.projity.main.Main
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;操作界面镇楼！&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://stirp.github.io/img/1.jpg" alt="" title=""&gt;&lt;/p&gt;
+
+&lt;p&gt;这样再一保存，完美~通过系统选择以后打开的程序，果然能够直接打开了。&lt;/p&gt;
+
+&lt;p&gt;不过……这个程序的图标也太丑了吧？还好 Mac 可以这么简单的修改图标：在应用点击右键，显示简介，先去找个合适的 icns 文件，复制，然后选择简介左上角的图标，然后粘贴，图标就被替换啦！&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://stirp.github.io/img/2.jpg" alt="" title=""&gt;&lt;/p&gt;
+
+&lt;p&gt;有了这个方法，你自己的 shell 程序或者 Java 程序也能非常简单的变成 Mac 的 App 了。我自己的项目已经放到 &lt;a href="https://github.com/stirp/repackOpenProj"&gt;GitHub - stirp/repackOpenProj: OpenProj是一个微软 Project 的开源替代方案，但是最后的维护时间已经是十年前了。在最新的 Mac 操作系统上没法直接使用，于是我重新封装为一个 App，需要系统拥有 java 命令。&lt;/a&gt;，欢迎 follow。&lt;/p&gt;
+
+&lt;p&gt;PS：如果你要按照我的文章去操作，请注意我没有把程序的本体，也就是上文中出现的 Java 目录及 icns 文件放上来，大家可以自行到&lt;a href="https://sourceforge.net/projects/openproj/"&gt;OpenProj - Project Management download \| SourceForge.net&lt;/a&gt;下载。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//How-To-Convert-Shell-Script-Into-Mac-App.html</guid></item><item><title>我是中国人，谷歌的蜻蜓项目必须继续</title><link>http://blog.shrp.me//i-am-chinese-the-dragonfly-must-go-on.html</link><pubdate>2018-12-02</pubdate><content:encoded>&lt;p&gt;有两个省，甲省有B企业生产粮食，但是日常在里面掺屎，群众虽然心知肚明，可是敢怒不敢言，时不时吃了一嘴屎；乙省规定健全，乙省的G企业虽然不像自己口头上说的那样不作恶，但也没像乙省的Y企业那么恶劣：Y企业曾主动把符合乙省规定，但是违背甲省规定的记者吃的食物发给甲省，好让甲省的警察抓住这名记者。&lt;/p&gt;
+
+&lt;p&gt;不过自打G企业从甲省逐出后，B企业越发肆无忌惮，粮食里的屎越来越多了，大家都从黑市上买G企业的粮食。G企业想想，与其让大家去黑市买，不如我把我的陈年旧米卖给他们，好让他们少吃点屎，我也赚点钱。其实G企业也想卖新米，但是甲省不让卖，G企业的领导也没法子呀。&lt;/p&gt;
+
+&lt;p&gt;可是实在没想到，这么一件好事，甲省那在黑市买卖的人居然还不领情：我们吃了这么多年的屎了，懂的自然就不吃了，剩下的人必然都爱吃屎！你们来卖陈年大米，我们黑市怎么卖高价呢！黑市赚不到钱，自然卖的人少了，我怎么吃新米呢！&lt;/p&gt;
+
+&lt;p&gt;G企业的员工和乙省的人民也纷纷表示不赞同：我们自己都不吃的陈年大米为什么要卖给他们吃？这不符合我们的人权价值观！你这是作恶！什么，Y企业做的更过分？我不管Y企业，G企业就是不行！&lt;/p&gt;
+
+&lt;p&gt;最后甲省人民只好继续吃屎，G企业员工和乙省人民也满意的回家了。回家打开手机一看，正巧乙省媒体新闻曰：你看甲省人民在吃屎，而且，他们吃得好开心啊！乙省人民想起家里刚买的G企业的米绝对不会是陈米，在日记本上写道：“啊，这是多么有意义的一天啊！”&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//i-am-chinese-the-dragonfly-must-go-on.html</guid></item><item><title>为 Java 程序增加一个异步任务功能</title><link>http://blog.shrp.me//add-sync-task-for-Java.html</link><pubdate>2018-11-04</pubdate><content:encoded>&lt;p&gt;最近在开发一个系统，里面经常在一个请求里处理一系列的任务，其中一些任务是不需要阻塞请求结束的应答的，因此最简单的办法就是异步去执行这些任务。然而如果程序关闭导致任务被丢失，那是最不可接受的情况，因此这种情况下要把任务提交到 MQ 里，利用 MQ 的失败重试来保证非程序性任务失败（毕竟程序性问题最好解决，而非程序性丢失通常不容易恢复）。&lt;/p&gt;
 
 &lt;p&gt;但是一般来说在系统里做这么一个事情是非常复杂而又繁琐的，要初始化 MQ 的生产者和消费者，然后定义传输的 DTO，然后在异步任务处写一个破坏阅读的任务提交，来把任务提交给 MQ。怎么才能简化这个过程呢？&lt;/p&gt;
 
@@ -175,37 +245,5 @@
 
 &lt;p&gt;重绘的图链接&lt;a href="https://www.processon.com/view/link/5bb8d537e4b0bd4db9569543"&gt;TCP 状态流转图 | ProcessOn免费在线作图,在线流程图,在线思维导图 |&lt;/a&gt;,图片如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src="http://blog.shrp.me/img/TCP%20%E7%8A%B6%E6%80%81%E6%B5%81%E8%BD%AC%E5%9B%BE.jpg" alt="" title=""&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//TCP-State-Transition.html</guid></item><item><title>每周分享的完结</title><link>http://blog.shrp.me//end-of-weekly-share.html</link><pubdate>2018-10-06</pubdate><content:encoded>&lt;p&gt;之前一直觉得自己不太会分享，看了不少有意思的东西，发到群里又没有多少人看，就想放在网站上，也算是对自己每周看过的东西做个总结。&lt;/p&gt;
-
-&lt;p&gt;只是经过这一个多月的实践，发现一个阅读都没有；而阅读量比较高的，是&lt;a href="http://blog.shrp.me/EF-BF-BD-Caused-Bug.html"&gt;EF BF BD 引发的血案&lt;/a&gt;这样容易说清楚因果的文章。&lt;/p&gt;
-
-&lt;p&gt;这说明我现在并不适合像阮老师那样去作分享，更何况每次看到他分享都是周五上午，应该是干活的时候发出的，显然不像是一个技术人才会做的事情，应该是赞助商帮忙所为。&lt;/p&gt;
-
-&lt;p&gt;综上，每周分享停更，看到好玩的，有趣的技术和产品随时发文。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//end-of-weekly-share.html</guid></item><item><title>2018-09-16</title><link>http://blog.shrp.me//2018-09-16.html</link><pubdate>2018-09-16</pubdate><content:encoded>&lt;p&gt;下边是09月16日的每周分享：&lt;/p&gt;
-
-&lt;p&gt;Java新姿势：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href="https://my.oschina.net/u/3178270/blog/2045625"&gt;线程中断以及线程中断引发的那些问题 - 一个程序员的成长的个人空间 - 开源中国&lt;/a&gt; 我们在使用可中断的函数时，通常是没有判断线程是否中断的。这篇文章指出如果线程经中断，但是代码还要执行 sleep 的时候，就会直接报 InterruptedException 。&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://my.oschina.net/zhangxufeng/blog/1976076"&gt;Spring事务事件监控 - 爱宝贝丶的个人空间 - 开源中国&lt;/a&gt; spring 事务的一个源码讲解，正好自己最近在用事务。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;新奇工具：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href="https://github.com/gejun123456/intellij-generateAllSetMethod"&gt;GitHub - gejun123456/intellij-generateAllSetMethod: Intellij plugin to generate call to setter method value for class&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/alipay/sofa-ark"&gt;GitHub - alipay/sofa-ark: SOFAArk is a light-weight，java based classloader isolation framework.&lt;/a&gt; 这是蚂蚁金服开源的一款 classloader 隔离框架，看名字就知道是用于 SOFA 的。现在 SOFA 很火，大有取代 dubbo 的架势，可以看看源码，了解下实现的技术。&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/alibaba/arthas"&gt;GitHub - alibaba/arthas: Alibaba Java诊断利器Arthas&lt;/a&gt;阿里现在开源的技术真多，这款线上观察和调试 JVM 的利器在特殊的时候一定能派上用场。&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/QNJR-GROUP/EasyTransaction"&gt;GitHub - QNJR-GROUP/EasyTransaction: A distribute transaction solution（分布式事务） unified the usage of TCC , SAGA , reliable message, compensate and so on;&lt;/a&gt; dubbo rpc 上架构的一套分布式事务框架。国人出品，厉害了！&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;新闻资讯：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href="https://mp.weixin.qq.com/s/TNSYpcqamfC3Sn6IMxti5Q"&gt;TCP ACK 延迟40ms&lt;/a&gt; 有时候生产的故障并不是 Java 开发的问题，但是 Java 开发如果不懂怎么找到问题，这个问题很可能是无法解决的。本文就找到了一个 tcp 应答包的响应问题&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://winworldpc.com/home"&gt;WinWorld: Welcome&lt;/a&gt; 一个专门提供旧操作系统及其相关软件的网站，我已经通过它安装了 Mac 9 虚拟器，还是有点意思。此外还有 OS2 这样的神奇系统，已经消失的莲花办公套件&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://archive.org"&gt;archive.org&lt;/a&gt; 这个是一个更专业的收藏站点，任何没有版权问题的都可以收藏，更是提供了网页运行 dos 程序的能力，真是很厉害。&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://bellard.org/jslinux/vm.html?url=https://bellard.org/jslinux/win2k.cfg&amp;amp;mem=192&amp;amp;graphic=1&amp;amp;w=1024&amp;amp;h=768"&gt;Windows 2000&lt;/a&gt;继win95之后，又一个可以在浏览器运行的微软操作系统。&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://tonybai.com/2018/09/10/setup-service-discovery-and-load-balance-based-on-consul/"&gt;基于consul实现微服务的服务发现和负载均衡 | Tony Bai&lt;/a&gt; 一个老程序员，老架构师对微服务的服务发现和负载的一个实现方案，可以借鉴。&lt;/li&gt;
-&lt;/ol&gt;</content:encoded><guid>http://blog.shrp.me//2018-09-16.html</guid></item></channel>
+&lt;p&gt;&lt;img src="http://blog.shrp.me/img/TCP%20%E7%8A%B6%E6%80%81%E6%B5%81%E8%BD%AC%E5%9B%BE.jpg" alt="" title=""&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//TCP-State-Transition.html</guid></item></channel>
 </rss>

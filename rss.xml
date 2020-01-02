@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<?xml version="1.0" encoding="utf-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
     <channel>
         <title>尚弟的小笔记</title>
         <atom:link href="http://blog.shrp.me//rss.xml" rel="self" type="application/rss+xml"/>
@@ -7,7 +6,356 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>怎么把脚本变为 Mac 的 App</title><link>http://blog.shrp.me//How-To-Convert-Shell-Script-Into-Mac-App.html</link><pubdate>2019-01-01</pubdate><content:encoded>&lt;p&gt;有时候我们需要把一些有意义的脚本变成程序，发布出来；或者对一些已有的程序增加一点定制，比如我下载的这款 OpenProj，好用是好用，但是默认的 app 已经不能直接打开，编辑 plist 什么的也不太好用。还好 Mac 操作系统这些操作都很简单。&lt;/p&gt;
+    <item><title>【分享】一个 Java 线程池 bug 引发的 GC 机制思考</title><link>http://blog.shrp.me//BAMG55WHQt1iYrNSBRRh.html</link><pubdate>2020-01-02</pubdate><content:encoded>&lt;p&gt;原文地址：&lt;a href="https://www.infoq.cn/article/BAMG55WHQt1iYrNSBRRh?utm_source=rss&amp;amp;utm_medium=article"&gt;一个 Java 线程池 bug 引发的 GC 机制思考&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=""&gt;问题描述&lt;/h2&gt;
+
+&lt;p&gt;前几天，在帮同事排查一个线上偶发的线程池错误&lt;/p&gt;
+
+&lt;p&gt;逻辑很简单，线程池执行了一个带结果的异步任务。但是最近有偶发的报错：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;java.util.concurrent.RejectedExecutionException:
+ Task java.util.concurrent.FutureTask@a5acd19
+ rejected from java.util.concurrent.ThreadPoolExecutor@30890a38
+[Terminated, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;本文中的模拟代码已经问题都是在 HotSpot java8 (1.8.0_221) 版本下模拟 &amp;amp; 出现的&lt;/p&gt;
+
+&lt;p&gt;下面是模拟代码，通过 Executors.newSingleThreadExecutor 创建一个单线程的线程池，然后在调用方获取 Future 的结果&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="java "&gt;public class ThreadPoolTest {
+
+    public static void main(String[] args) {
+        final ThreadPoolTest threadPoolTest = new ThreadPoolTest();
+        for (int i = 0; i &amp;lt; 8; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (true) {
+
+                        Future&amp;lt;String&amp;gt; future = threadPoolTest.submit();
+                        try {
+                            String s = future.get();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (Error e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }).start();
+        }
+
+        // 子线程不停 gc，模拟偶发的 gc
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    System.gc();
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * 异步执行任务
+     * @return
+     */
+    public Future&amp;lt;String&amp;gt; submit() {
+        // 关键点，通过 Executors.newSingleThreadExecutor 创建一个单线程的线程池
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        FutureTask&amp;lt;String&amp;gt; futureTask = new FutureTask(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                Thread.sleep(50);
+                return System.currentTimeMillis() + "";
+            }
+        });
+        executorService.execute(futureTask);
+        return futureTask;
+    }
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=""&gt;分析 &amp;amp; 疑问&lt;/h2&gt;
+
+&lt;p&gt;第一个思考的问题是：线程池为什么关闭了，代码中并没有手动关闭的地方。看一下&amp;nbsp;&lt;code&gt;Executors.newSingleThreadExecotor&lt;/code&gt;的源码实现：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="java"&gt;public static ExecutorService newSingleThreadExecutor() {
+    return new FinalizableDelegatedExecutorService
+            (new ThreadPoolExecutor(1, 1,
+                    0L, TimeUnit.MILLISECONDS,
+                    new LinkedBlockingQueue&amp;lt;Runnable&amp;gt;()));
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里创建的实际上是一个&amp;nbsp;&lt;code&gt;FinalizableDelegatedExecutorService&lt;/code&gt;，这个包装类重写了&amp;nbsp;&lt;code&gt;finalize&lt;/code&gt;函数，也就是说这个类会在被 GC 回收之前，先执行线程池的 shutdown 方法。&lt;/p&gt;
+
+&lt;p&gt;问题来了，&lt;strong&gt;GC 只会回收不可达（unreachable）的对象&lt;/strong&gt;，在&amp;nbsp;&lt;code&gt;submit&lt;/code&gt;函数的栈帧未执行完出栈之前，&amp;nbsp;&lt;code&gt;executorService&lt;/code&gt;应该是可达的才对。&lt;/p&gt;
+
+&lt;p&gt;对于此问题，先抛出结论：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;当对象仍存在于作用域（stack frame）时，&amp;nbsp;&lt;code&gt;finalize&lt;/code&gt;也可能会被执行&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;oracle jdk 文档中有一段关于 finalize 的介绍：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://docs.oracle.com/javas"&gt;https://docs.oracle.com/javas&amp;nbsp;&lt;/a&gt;…&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A reachable object is any object that can be accessed in any potential continuing computation from any live thread.
+  Optimizing transformations of a program can be designed that reduce the number of objects that are reachable to be less than those which would naively be considered reachable. For example, a Java compiler or code generator may choose to set a variable or parameter that will no longer be used to null to cause the storage for such an object to be potentially reclaimable sooner.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;大概意思是：可达对象 (reachable object) 是可以从任何活动线程的任何潜在的持续访问中的任何对象；java 编译器或代码生成器可能会对不再访问的对象提前置为 null，使得对象可以被提前回收&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;也就是说，在 jvm 的优化下，可能会出现对象不可达之后被提前置空并回收的情况&lt;/p&gt;
+
+&lt;p&gt;举个例子来验证一下（摘自&lt;a href="https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope"&gt;&amp;nbsp;https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope&amp;nbsp;&lt;/a&gt;）：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="java"&gt;class A {
+    @Override protected void finalize() {
+        System.out.println(this + " was finalized!");
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        A a = new A();
+        System.out.println("Created " + a);
+        for (int i = 0; i &amp;lt; 1_000_000_000; i++) {
+            if (i % 1_000_00 == 0)
+                System.gc();
+        }
+        System.out.println("done.");
+    }
+}
+
+// 打印结果
+Created A@1be6f5c3
+A@1be6f5c3 was finalized!//finalize 方法输出
+done.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;从例子中可以看到，如果 a 在循环完成后已经不再使用了，则会出现先执行 finalize 的情况；虽然从对象作用域来说，方法没有执行完，栈帧并没有出栈，但是还是会被提前执行。&lt;/p&gt;
+
+&lt;p&gt;现在来增加一行代码，在最后一行打印对象 a，让编译器 / 代码生成器认为后面有对象 a 的引用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="java"&gt;...
+System.out.println(a);
+
+// 打印结果
+Created A@1be6f5c3
+done.
+A@1be6f5c3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;从结果上看，finalize 方法都没有执行（因为 main 方法执行完成后进程直接结束了），更不会出现提前 finalize 的问题了&lt;/p&gt;
+
+&lt;p&gt;基于上面的测试结果，再测试一种情况，在循环之前先将对象 a 置为 null，并且在最后打印保持对象 a 的引用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="java"&gt;A a = new A();
+System.out.println("Created " + a);
+a = null;// 手动置 null
+for (int i = 0; i &amp;lt; 1_000_000_000; i++) {
+    if (i % 1_000_00 == 0)
+        System.gc();
+}
+System.out.println("done.");
+System.out.println(a);
+
+// 打印结果
+Created A@1be6f5c3
+A@1be6f5c3 was finalized!
+done.
+null
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;从结果上看，手动置 null 的话也会导致对象被提前回收，虽然在最后还有引用，但此时引用的也是 null 了&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;现在再回到上面的线程池问题，根据上面介绍的机制，在分析没有引用之后，对象会被提前 finalize&lt;/p&gt;
+
+&lt;p&gt;可在上述代码中，return 之前明明是有引用的&amp;nbsp;&lt;code&gt;executorService.execute(futureTask)&lt;/code&gt;，为什么也会提前 finalize 呢？&lt;/p&gt;
+
+&lt;p&gt;猜测可能是由于在 execute 方法中，会调用 threadPoolExecutor，会创建并启动一个新线程，这时会发生一次主动的线程切换，导致在活动线程中对象不可达&lt;/p&gt;
+
+&lt;p&gt;结合上面 Oracle Jdk 文档中的描述“可达对象 (reachable object) 是可以从任何活动线程的任何潜在的持续访问中的任何对象”，可以认为可能是因为一次显示的线程切换，对象被认为不可达了，导致线程池被提前 finalize 了&lt;/p&gt;
+
+&lt;p&gt;下面来验证一下猜想：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="java"&gt;// 入口函数
+public class FinalizedTest {
+    public static void main(String[] args) {
+        final FinalizedTest finalizedTest = new FinalizedTest();
+        for (int i = 0; i &amp;lt; 8; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (true) {
+                        TFutureTask future = finalizedTest.submit();
+                    }
+                }
+            }).start();
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    System.gc();
+                }
+            }
+        }).start();
+    }
+    public TFutureTask submit(){
+        TExecutorService TExecutorService = Executors.create();
+        TExecutorService.execute();
+        return null;
+    }
+}
+
+//Executors.java，模拟 juc 的 Executors
+public class Executors {
+    /**
+     * 模拟 Executors.createSingleExecutor
+     * @return
+     */
+    public static TExecutorService create(){
+        return new FinalizableDelegatedTExecutorService(new TThreadPoolExecutor());
+    }
+
+    static class FinalizableDelegatedTExecutorService extends DelegatedTExecutorService {
+
+        FinalizableDelegatedTExecutorService(TExecutorService executor) {
+            super(executor);
+        }
+
+        /**
+         * 析构函数中执行 shutdown，修改线程池状态
+         * @throws Throwable
+         */
+        @Override
+        protected void finalize() throws Throwable {
+            super.shutdown();
+        }
+    }
+
+    static class DelegatedTExecutorService extends TExecutorService {
+
+        protected TExecutorService e;
+
+        public DelegatedTExecutorService(TExecutorService executor) {
+            this.e = executor;
+        }
+
+        @Override
+        public void execute() {
+            e.execute();
+        }
+
+        @Override
+        public void shutdown() {
+            e.shutdown();
+        }
+    }
+}
+
+//TThreadPoolExecutor.java，模拟 juc 的 ThreadPoolExecutor
+public class TThreadPoolExecutor extends TExecutorService {
+
+    /**
+     * 线程池状态，false：未关闭，true 已关闭
+     */
+    private AtomicBoolean ctl = new AtomicBoolean();
+
+    @Override
+    public void execute() {
+        // 启动一个新线程，模拟 ThreadPoolExecutor.execute
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }).start();
+        // 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
+        // 如果线程池被提前 shutdown，则抛出异常
+        for (int i = 0; i &amp;lt; 1_000_000; i++) {
+            if(ctl.get()){
+                throw new RuntimeException("reject!!!["+ctl.get()+"]");
+            }
+        }
+    }
+
+    @Override
+    public void shutdown() {
+        ctl.compareAndSet(false,true);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;执行若干时间后报错：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="java"&gt;Exception in thread "Thread-1" java.lang.RuntimeException: reject!!![true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;从错误上来看，“线程池”同样被提前 shutdown 了，那么一定是由于新建线程导致的吗？&lt;/p&gt;
+
+&lt;p&gt;下面将新建线程修改为&amp;nbsp;&lt;code&gt;Thread.sleep&lt;/code&gt;测试一下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="java"&gt;//TThreadPoolExecutor.java，修改后的 execute 方法
+public void execute() {
+    try {
+        // 显式的 sleep 1 ns，主动切换线程
+        TimeUnit.NANOSECONDS.sleep(1);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+    // 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
+    // 如果线程池被提前 shutdown，则抛出异常
+    for (int i = 0; i &amp;lt; 1_000_000; i++) {
+        if(ctl.get()){
+            throw new RuntimeException("reject!!!["+ctl.get()+"]");
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;执行结果一样是报错&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="java"&gt;Exception in thread "Thread-3" java.lang.RuntimeException: reject!!![true]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;由此可得，如果在执行的过程中，发生一次显式的线程切换，则会让编译器 / 代码生成器认为外层包装对象不可达&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=""&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;虽然 GC 只会回收不可达 GC ROOT 的对象，但是在编译器（没有明确指出，也可能是 JIT）/ 代码生成器的优化下，可能会出现对象提前置 null，或者线程切换导致的“提前对象不可达”的情况。&lt;/p&gt;
+
+&lt;p&gt;所以如果想在 finalize 方法里做些事情的话，一定在最后显示的引用一下对象（toString/hashcode 都可以），保持对象的可达性（reachable）&lt;/p&gt;
+
+&lt;p&gt;上面关于线程切换导致的对象不可达，没有官方文献的支持，只是个人一个测试结果，如有问题欢迎指出&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;综上所述，这种回收机制并不是 JDK 的 bug，而算是一个优化策略，提前回收而已。但&amp;nbsp;&lt;code&gt;Executors.newSingleThreadExecutor&lt;/code&gt;的实现里通过 finalize 来自动关闭线程池的做法是有 Bug 的，在经过优化后可能会导致线程池的提前 shutdown，从而导致异常。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;线程池的这个问题，在 JDK 的论坛里也是一个公开但未解决状态的问题&lt;a href="https://bugs.openjdk.java.net/browse/JDK-8145304"&gt;&amp;nbsp;https://bugs.openjdk.java.net/browse/JDK-8145304&amp;nbsp;&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;不过在 JDK11 下，该问题已经被修复：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="java"&gt;JUC  Executors.FinalizableDelegatedExecutorService
+public void execute(Runnable command) {
+    try {
+        e.execute(command);
+    } finally { reachabilityFence(this); }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;本文转载自公众号玉刚说（ID：YugangTalk）。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;原文链接&lt;/strong&gt;：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href="https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw"&gt;https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//BAMG55WHQt1iYrNSBRRh.html</guid></item><item><title>怎么把脚本变为 Mac 的 App</title><link>http://blog.shrp.me//How-To-Convert-Shell-Script-Into-Mac-App.html</link><pubdate>2019-01-01</pubdate><content:encoded>&lt;p&gt;有时候我们需要把一些有意义的脚本变成程序，发布出来；或者对一些已有的程序增加一点定制，比如我下载的这款 OpenProj，好用是好用，但是默认的 app 已经不能直接打开，编辑 plist 什么的也不太好用。还好 Mac 操作系统这些操作都很简单。&lt;/p&gt;
 
 &lt;p&gt;首先我们找到原来这个程序应该怎么去执行的。通过分析原来的 App 目录下的 Info.plist 文件，我发现原来的程序是通过&lt;code&gt;java -Xms128m -Xmx768m -classpath ./Resources/Java/openproj.jar:./Resources/Java/lib/  com.projity.main.Main&lt;/code&gt;命令来执行的。这不就是简单的 Java 命令嘛！打开 Mac 自带的 Automator，选择新建应用程序，在工作区中添加运行 shell 脚本，把上述命令粘贴进去不就行了嘛。可是点击右上角的运行，哎，不行啊，原来命令的目录是.，也就是相对路径，现在用 automator 工具执行是不行的。导出为 app 以后呢？试了一下，结果仍然不行。在 shell 命令里加一些调试的输出后发现，执行过程中相对路径是用户的 home，不是当前 app 的目录，也没有参数指向 app 的目录，这可真麻烦了。当然我们可以简单假设用户一定不会修改我 App 的名称，也一定会放到/Applications目录下，这样我们写成绝对路径是可以执行的。不过这样是合理的方案吗？当然不是了。怎么办呢？&lt;/p&gt;
 
@@ -241,9 +589,5 @@ fi
 &lt;p&gt;难道变量设置失败了？echo一下，没问题啊。百思不得其解的时候执行了一下java，嗯？找不到？
 啊，原来Windows的Java安装目录里都是java.exe这样带有exe后缀的，在Linux子系统里并不是java命令。虽然可以使用java.exe执行，但是mvn里指向的却是没有exe后缀的java。对于Linux子系统来说，java命令和java.exe是两个命令，也就无怪乎认为Java没有安装了。&lt;/p&gt;
 
-&lt;p&gt;于是用apt-get在Linux子系统里安装openjdk，再设置目录，再次执行mvn命令，终于成功了。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Using-Java-in-Windows-subsystem.html</guid></item><item><title>TCP 状态流转流程图</title><link>http://blog.shrp.me//TCP-State-Transition.html</link><pubdate>2018-10-06</pubdate><content:encoded>&lt;p&gt;受到 &lt;a href="http://www.hoohack.me/2018/09/27/webser-zero-to-hero-tcp-status?hmsr=toutiao.io&amp;amp;utm_medium=toutiao.io&amp;amp;utm_source=toutiao.io"&gt;［从0到1编写服务器］TCP连接建立与断开状态变化&lt;/a&gt; 启发，重新绘制了其中的网络接口状态流转图，以后服务器遇到连接未释放，就可以按图索骥了，知道到底是哪个信令没有发。&lt;/p&gt;
-
-&lt;p&gt;重绘的图链接&lt;a href="https://www.processon.com/view/link/5bb8d537e4b0bd4db9569543"&gt;TCP 状态流转图 | ProcessOn免费在线作图,在线流程图,在线思维导图 |&lt;/a&gt;,图片如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://blog.shrp.me/img/TCP%20%E7%8A%B6%E6%80%81%E6%B5%81%E8%BD%AC%E5%9B%BE.jpg" alt="" title=""&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//TCP-State-Transition.html</guid></item></channel>
+&lt;p&gt;于是用apt-get在Linux子系统里安装openjdk，再设置目录，再次执行mvn命令，终于成功了。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Using-Java-in-Windows-subsystem.html</guid></item></channel>
 </rss>

@@ -1,0 +1,825 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+原文地址：[一个 Java 线程池 bug 引发的 GC 机制思考](https://www.infoq.cn/article/BAMG55WHQt1iYrNSBRRh?utm_source=rss&utm_medium=article)
+
+## 问题描述
+
+前几天，在帮同事排查一个线上偶发的线程池错误
+
+逻辑很简单，线程池执行了一个带结果的异步任务。但是最近有偶发的报错：
+
+```
+java.util.concurrent.RejectedExecutionException:
+ Task java.util.concurrent.FutureTask@a5acd19
+ rejected from java.util.concurrent.ThreadPoolExecutor@30890a38
+[Terminated, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0]
+```
+
+本文中的模拟代码已经问题都是在 HotSpot java8 (1.8.0_221) 版本下模拟 & 出现的
+
+下面是模拟代码，通过 Executors.newSingleThreadExecutor 创建一个单线程的线程池，然后在调用方获取 Future 的结果
+
+```java 
+public class ThreadPoolTest {
+
+    public static void main(String[] args) {
+        final ThreadPoolTest threadPoolTest = new ThreadPoolTest();
+        for (int i = 0; i < 8; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (true) {
+
+                        Future<String> future = threadPoolTest.submit();
+                        try {
+                            String s = future.get();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (Error e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }).start();
+        }
+
+        // 子线程不停 gc，模拟偶发的 gc
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    System.gc();
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * 异步执行任务
+     * @return
+     */
+    public Future<String> submit() {
+        // 关键点，通过 Executors.newSingleThreadExecutor 创建一个单线程的线程池
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        FutureTask<String> futureTask = new FutureTask(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                Thread.sleep(50);
+                return System.currentTimeMillis() + "";
+            }
+        });
+        executorService.execute(futureTask);
+        return futureTask;
+    }
+
+}
+```
+
+## 分析 & 疑问
+
+第一个思考的问题是：线程池为什么关闭了，代码中并没有手动关闭的地方。看一下 `Executors.newSingleThreadExecotor`的源码实现：
+```java
+public static ExecutorService newSingleThreadExecutor() {
+    return new FinalizableDelegatedExecutorService
+            (new ThreadPoolExecutor(1, 1,
+                    0L, TimeUnit.MILLISECONDS,
+                    new LinkedBlockingQueue<Runnable>()));
+}
+```
+
+这里创建的实际上是一个 `FinalizableDelegatedExecutorService`，这个包装类重写了 `finalize`函数，也就是说这个类会在被 GC 回收之前，先执行线程池的 shutdown 方法。
+
+问题来了，**GC 只会回收不可达（unreachable）的对象**，在 `submit`函数的栈帧未执行完出栈之前， `executorService`应该是可达的才对。
+
+对于此问题，先抛出结论：
+
+**当对象仍存在于作用域（stack frame）时， `finalize`也可能会被执行**
+
+oracle jdk 文档中有一段关于 finalize 的介绍：
+
+[https://docs.oracle.com/javas ](https://docs.oracle.com/javas)…
+
+> A reachable object is any object that can be accessed in any potential continuing computation from any live thread.
+> Optimizing transformations of a program can be designed that reduce the number of objects that are reachable to be less than those which would naively be considered reachable. For example, a Java compiler or code generator may choose to set a variable or parameter that will no longer be used to null to cause the storage for such an object to be potentially reclaimable sooner.
+
+**大概意思是：可达对象 (reachable object) 是可以从任何活动线程的任何潜在的持续访问中的任何对象；java 编译器或代码生成器可能会对不再访问的对象提前置为 null，使得对象可以被提前回收**
+
+也就是说，在 jvm 的优化下，可能会出现对象不可达之后被提前置空并回收的情况
+
+举个例子来验证一下（摘自[ https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope ](https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope)）：
+
+```java
+class A {
+    @Override protected void finalize() {
+        System.out.println(this + " was finalized!");
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        A a = new A();
+        System.out.println("Created " + a);
+        for (int i = 0; i < 1_000_000_000; i++) {
+            if (i % 1_000_00 == 0)
+                System.gc();
+        }
+        System.out.println("done.");
+    }
+}
+
+// 打印结果
+Created A@1be6f5c3
+A@1be6f5c3 was finalized!//finalize 方法输出
+done.
+```
+
+从例子中可以看到，如果 a 在循环完成后已经不再使用了，则会出现先执行 finalize 的情况；虽然从对象作用域来说，方法没有执行完，栈帧并没有出栈，但是还是会被提前执行。
+
+现在来增加一行代码，在最后一行打印对象 a，让编译器 / 代码生成器认为后面有对象 a 的引用
+```java
+...
+System.out.println(a);
+
+// 打印结果
+Created A@1be6f5c3
+done.
+A@1be6f5c3
+```
+
+从结果上看，finalize 方法都没有执行（因为 main 方法执行完成后进程直接结束了），更不会出现提前 finalize 的问题了
+
+基于上面的测试结果，再测试一种情况，在循环之前先将对象 a 置为 null，并且在最后打印保持对象 a 的引用
+```java
+A a = new A();
+System.out.println("Created " + a);
+a = null;// 手动置 null
+for (int i = 0; i < 1_000_000_000; i++) {
+    if (i % 1_000_00 == 0)
+        System.gc();
+}
+System.out.println("done.");
+System.out.println(a);
+
+// 打印结果
+Created A@1be6f5c3
+A@1be6f5c3 was finalized!
+done.
+null
+
+```
+
+从结果上看，手动置 null 的话也会导致对象被提前回收，虽然在最后还有引用，但此时引用的也是 null 了
+
+* * *
+
+现在再回到上面的线程池问题，根据上面介绍的机制，在分析没有引用之后，对象会被提前 finalize
+
+可在上述代码中，return 之前明明是有引用的 `executorService.execute(futureTask)`，为什么也会提前 finalize 呢？
+
+猜测可能是由于在 execute 方法中，会调用 threadPoolExecutor，会创建并启动一个新线程，这时会发生一次主动的线程切换，导致在活动线程中对象不可达
+
+结合上面 Oracle Jdk 文档中的描述“可达对象 (reachable object) 是可以从任何活动线程的任何潜在的持续访问中的任何对象”，可以认为可能是因为一次显示的线程切换，对象被认为不可达了，导致线程池被提前 finalize 了
+
+下面来验证一下猜想：
+
+```java
+// 入口函数
+public class FinalizedTest {
+    public static void main(String[] args) {
+        final FinalizedTest finalizedTest = new FinalizedTest();
+        for (int i = 0; i < 8; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (true) {
+                        TFutureTask future = finalizedTest.submit();
+                    }
+                }
+            }).start();
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    System.gc();
+                }
+            }
+        }).start();
+    }
+    public TFutureTask submit(){
+        TExecutorService TExecutorService = Executors.create();
+        TExecutorService.execute();
+        return null;
+    }
+}
+
+//Executors.java，模拟 juc 的 Executors
+public class Executors {
+    /**
+     * 模拟 Executors.createSingleExecutor
+     * @return
+     */
+    public static TExecutorService create(){
+        return new FinalizableDelegatedTExecutorService(new TThreadPoolExecutor());
+    }
+
+    static class FinalizableDelegatedTExecutorService extends DelegatedTExecutorService {
+
+        FinalizableDelegatedTExecutorService(TExecutorService executor) {
+            super(executor);
+        }
+
+        /**
+         * 析构函数中执行 shutdown，修改线程池状态
+         * @throws Throwable
+         */
+        @Override
+        protected void finalize() throws Throwable {
+            super.shutdown();
+        }
+    }
+
+    static class DelegatedTExecutorService extends TExecutorService {
+
+        protected TExecutorService e;
+
+        public DelegatedTExecutorService(TExecutorService executor) {
+            this.e = executor;
+        }
+
+        @Override
+        public void execute() {
+            e.execute();
+        }
+
+        @Override
+        public void shutdown() {
+            e.shutdown();
+        }
+    }
+}
+
+//TThreadPoolExecutor.java，模拟 juc 的 ThreadPoolExecutor
+public class TThreadPoolExecutor extends TExecutorService {
+
+    /**
+     * 线程池状态，false：未关闭，true 已关闭
+     */
+    private AtomicBoolean ctl = new AtomicBoolean();
+
+    @Override
+    public void execute() {
+        // 启动一个新线程，模拟 ThreadPoolExecutor.execute
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }).start();
+        // 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
+        // 如果线程池被提前 shutdown，则抛出异常
+        for (int i = 0; i < 1_000_000; i++) {
+            if(ctl.get()){
+                throw new RuntimeException("reject!!!["+ctl.get()+"]");
+            }
+        }
+    }
+
+    @Override
+    public void shutdown() {
+        ctl.compareAndSet(false,true);
+    }
+}
+```
+
+执行若干时间后报错：
+
+```java
+Exception in thread "Thread-1" java.lang.RuntimeException: reject!!![true
+```
+
+从错误上来看，“线程池”同样被提前 shutdown 了，那么一定是由于新建线程导致的吗？
+
+下面将新建线程修改为 `Thread.sleep`测试一下：
+```java
+//TThreadPoolExecutor.java，修改后的 execute 方法
+public void execute() {
+    try {
+        // 显式的 sleep 1 ns，主动切换线程
+        TimeUnit.NANOSECONDS.sleep(1);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+    // 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
+    // 如果线程池被提前 shutdown，则抛出异常
+    for (int i = 0; i < 1_000_000; i++) {
+        if(ctl.get()){
+            throw new RuntimeException("reject!!!["+ctl.get()+"]");
+        }
+    }
+}
+```
+执行结果一样是报错
+
+```java
+Exception in thread "Thread-3" java.lang.RuntimeException: reject!!![true]
+```
+
+**由此可得，如果在执行的过程中，发生一次显式的线程切换，则会让编译器 / 代码生成器认为外层包装对象不可达**
+
+## 总结
+
+虽然 GC 只会回收不可达 GC ROOT 的对象，但是在编译器（没有明确指出，也可能是 JIT）/ 代码生成器的优化下，可能会出现对象提前置 null，或者线程切换导致的“提前对象不可达”的情况。
+
+所以如果想在 finalize 方法里做些事情的话，一定在最后显示的引用一下对象（toString/hashcode 都可以），保持对象的可达性（reachable）
+
+上面关于线程切换导致的对象不可达，没有官方文献的支持，只是个人一个测试结果，如有问题欢迎指出
+
+**综上所述，这种回收机制并不是 JDK 的 bug，而算是一个优化策略，提前回收而已。但 `Executors.newSingleThreadExecutor`的实现里通过 finalize 来自动关闭线程池的做法是有 Bug 的，在经过优化后可能会导致线程池的提前 shutdown，从而导致异常。**
+
+线程池的这个问题，在 JDK 的论坛里也是一个公开但未解决状态的问题[ https://bugs.openjdk.java.net/browse/JDK-8145304 ](https://bugs.openjdk.java.net/browse/JDK-8145304)。
+
+不过在 JDK11 下，该问题已经被修复：
+```java
+JUC  Executors.FinalizableDelegatedExecutorService
+public void execute(Runnable command) {
+    try {
+        e.execute(command);
+    } finally { reachabilityFence(this); }
+}
+```
+
+**本文转载自公众号玉刚说（ID：YugangTalk）。**
+
+**原文链接**：
+
+**[https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw](https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw)**
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>原文地址：<a href="https://www.infoq.cn/article/BAMG55WHQt1iYrNSBRRh?utm_source=rss&amp;utm_medium=article">一个 Java 线程池 bug 引发的 GC 机制思考</a></p>
+
+<h2 id="">问题描述</h2>
+
+<p>前几天，在帮同事排查一个线上偶发的线程池错误</p>
+
+<p>逻辑很简单，线程池执行了一个带结果的异步任务。但是最近有偶发的报错：</p>
+
+<pre><code>java.util.concurrent.RejectedExecutionException:
+ Task java.util.concurrent.FutureTask@a5acd19
+ rejected from java.util.concurrent.ThreadPoolExecutor@30890a38
+[Terminated, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0]
+</code></pre>
+
+<p>本文中的模拟代码已经问题都是在 HotSpot java8 (1.8.0_221) 版本下模拟 &amp; 出现的</p>
+
+<p>下面是模拟代码，通过 Executors.newSingleThreadExecutor 创建一个单线程的线程池，然后在调用方获取 Future 的结果</p>
+
+<pre><code class="java ">public class ThreadPoolTest {
+
+    public static void main(String[] args) {
+        final ThreadPoolTest threadPoolTest = new ThreadPoolTest();
+        for (int i = 0; i &lt; 8; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (true) {
+
+                        Future&lt;String&gt; future = threadPoolTest.submit();
+                        try {
+                            String s = future.get();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (Error e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }).start();
+        }
+
+        // 子线程不停 gc，模拟偶发的 gc
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    System.gc();
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * 异步执行任务
+     * @return
+     */
+    public Future&lt;String&gt; submit() {
+        // 关键点，通过 Executors.newSingleThreadExecutor 创建一个单线程的线程池
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        FutureTask&lt;String&gt; futureTask = new FutureTask(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                Thread.sleep(50);
+                return System.currentTimeMillis() + "";
+            }
+        });
+        executorService.execute(futureTask);
+        return futureTask;
+    }
+
+}
+</code></pre>
+
+<h2 id="">分析 &amp; 疑问</h2>
+
+<p>第一个思考的问题是：线程池为什么关闭了，代码中并没有手动关闭的地方。看一下&nbsp;<code>Executors.newSingleThreadExecotor</code>的源码实现：</p>
+
+<pre><code class="java">public static ExecutorService newSingleThreadExecutor() {
+    return new FinalizableDelegatedExecutorService
+            (new ThreadPoolExecutor(1, 1,
+                    0L, TimeUnit.MILLISECONDS,
+                    new LinkedBlockingQueue&lt;Runnable&gt;()));
+}
+</code></pre>
+
+<p>这里创建的实际上是一个&nbsp;<code>FinalizableDelegatedExecutorService</code>，这个包装类重写了&nbsp;<code>finalize</code>函数，也就是说这个类会在被 GC 回收之前，先执行线程池的 shutdown 方法。</p>
+
+<p>问题来了，<strong>GC 只会回收不可达（unreachable）的对象</strong>，在&nbsp;<code>submit</code>函数的栈帧未执行完出栈之前，&nbsp;<code>executorService</code>应该是可达的才对。</p>
+
+<p>对于此问题，先抛出结论：</p>
+
+<p><strong>当对象仍存在于作用域（stack frame）时，&nbsp;<code>finalize</code>也可能会被执行</strong></p>
+
+<p>oracle jdk 文档中有一段关于 finalize 的介绍：</p>
+
+<p><a href="https://docs.oracle.com/javas">https://docs.oracle.com/javas&nbsp;</a>…</p>
+
+<blockquote>
+  <p>A reachable object is any object that can be accessed in any potential continuing computation from any live thread.
+  Optimizing transformations of a program can be designed that reduce the number of objects that are reachable to be less than those which would naively be considered reachable. For example, a Java compiler or code generator may choose to set a variable or parameter that will no longer be used to null to cause the storage for such an object to be potentially reclaimable sooner.</p>
+</blockquote>
+
+<p><strong>大概意思是：可达对象 (reachable object) 是可以从任何活动线程的任何潜在的持续访问中的任何对象；java 编译器或代码生成器可能会对不再访问的对象提前置为 null，使得对象可以被提前回收</strong></p>
+
+<p>也就是说，在 jvm 的优化下，可能会出现对象不可达之后被提前置空并回收的情况</p>
+
+<p>举个例子来验证一下（摘自<a href="https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope">&nbsp;https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope&nbsp;</a>）：</p>
+
+<pre><code class="java">class A {
+    @Override protected void finalize() {
+        System.out.println(this + " was finalized!");
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        A a = new A();
+        System.out.println("Created " + a);
+        for (int i = 0; i &lt; 1_000_000_000; i++) {
+            if (i % 1_000_00 == 0)
+                System.gc();
+        }
+        System.out.println("done.");
+    }
+}
+
+// 打印结果
+Created A@1be6f5c3
+A@1be6f5c3 was finalized!//finalize 方法输出
+done.
+</code></pre>
+
+<p>从例子中可以看到，如果 a 在循环完成后已经不再使用了，则会出现先执行 finalize 的情况；虽然从对象作用域来说，方法没有执行完，栈帧并没有出栈，但是还是会被提前执行。</p>
+
+<p>现在来增加一行代码，在最后一行打印对象 a，让编译器 / 代码生成器认为后面有对象 a 的引用</p>
+
+<pre><code class="java">...
+System.out.println(a);
+
+// 打印结果
+Created A@1be6f5c3
+done.
+A@1be6f5c3
+</code></pre>
+
+<p>从结果上看，finalize 方法都没有执行（因为 main 方法执行完成后进程直接结束了），更不会出现提前 finalize 的问题了</p>
+
+<p>基于上面的测试结果，再测试一种情况，在循环之前先将对象 a 置为 null，并且在最后打印保持对象 a 的引用</p>
+
+<pre><code class="java">A a = new A();
+System.out.println("Created " + a);
+a = null;// 手动置 null
+for (int i = 0; i &lt; 1_000_000_000; i++) {
+    if (i % 1_000_00 == 0)
+        System.gc();
+}
+System.out.println("done.");
+System.out.println(a);
+
+// 打印结果
+Created A@1be6f5c3
+A@1be6f5c3 was finalized!
+done.
+null
+</code></pre>
+
+<p>从结果上看，手动置 null 的话也会导致对象被提前回收，虽然在最后还有引用，但此时引用的也是 null 了</p>
+
+<hr>
+
+<p>现在再回到上面的线程池问题，根据上面介绍的机制，在分析没有引用之后，对象会被提前 finalize</p>
+
+<p>可在上述代码中，return 之前明明是有引用的&nbsp;<code>executorService.execute(futureTask)</code>，为什么也会提前 finalize 呢？</p>
+
+<p>猜测可能是由于在 execute 方法中，会调用 threadPoolExecutor，会创建并启动一个新线程，这时会发生一次主动的线程切换，导致在活动线程中对象不可达</p>
+
+<p>结合上面 Oracle Jdk 文档中的描述“可达对象 (reachable object) 是可以从任何活动线程的任何潜在的持续访问中的任何对象”，可以认为可能是因为一次显示的线程切换，对象被认为不可达了，导致线程池被提前 finalize 了</p>
+
+<p>下面来验证一下猜想：</p>
+
+<pre><code class="java">// 入口函数
+public class FinalizedTest {
+    public static void main(String[] args) {
+        final FinalizedTest finalizedTest = new FinalizedTest();
+        for (int i = 0; i &lt; 8; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (true) {
+                        TFutureTask future = finalizedTest.submit();
+                    }
+                }
+            }).start();
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    System.gc();
+                }
+            }
+        }).start();
+    }
+    public TFutureTask submit(){
+        TExecutorService TExecutorService = Executors.create();
+        TExecutorService.execute();
+        return null;
+    }
+}
+
+//Executors.java，模拟 juc 的 Executors
+public class Executors {
+    /**
+     * 模拟 Executors.createSingleExecutor
+     * @return
+     */
+    public static TExecutorService create(){
+        return new FinalizableDelegatedTExecutorService(new TThreadPoolExecutor());
+    }
+
+    static class FinalizableDelegatedTExecutorService extends DelegatedTExecutorService {
+
+        FinalizableDelegatedTExecutorService(TExecutorService executor) {
+            super(executor);
+        }
+
+        /**
+         * 析构函数中执行 shutdown，修改线程池状态
+         * @throws Throwable
+         */
+        @Override
+        protected void finalize() throws Throwable {
+            super.shutdown();
+        }
+    }
+
+    static class DelegatedTExecutorService extends TExecutorService {
+
+        protected TExecutorService e;
+
+        public DelegatedTExecutorService(TExecutorService executor) {
+            this.e = executor;
+        }
+
+        @Override
+        public void execute() {
+            e.execute();
+        }
+
+        @Override
+        public void shutdown() {
+            e.shutdown();
+        }
+    }
+}
+
+//TThreadPoolExecutor.java，模拟 juc 的 ThreadPoolExecutor
+public class TThreadPoolExecutor extends TExecutorService {
+
+    /**
+     * 线程池状态，false：未关闭，true 已关闭
+     */
+    private AtomicBoolean ctl = new AtomicBoolean();
+
+    @Override
+    public void execute() {
+        // 启动一个新线程，模拟 ThreadPoolExecutor.execute
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }).start();
+        // 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
+        // 如果线程池被提前 shutdown，则抛出异常
+        for (int i = 0; i &lt; 1_000_000; i++) {
+            if(ctl.get()){
+                throw new RuntimeException("reject!!!["+ctl.get()+"]");
+            }
+        }
+    }
+
+    @Override
+    public void shutdown() {
+        ctl.compareAndSet(false,true);
+    }
+}
+</code></pre>
+
+<p>执行若干时间后报错：</p>
+
+<pre><code class="java">Exception in thread "Thread-1" java.lang.RuntimeException: reject!!![true
+</code></pre>
+
+<p>从错误上来看，“线程池”同样被提前 shutdown 了，那么一定是由于新建线程导致的吗？</p>
+
+<p>下面将新建线程修改为&nbsp;<code>Thread.sleep</code>测试一下：</p>
+
+<pre><code class="java">//TThreadPoolExecutor.java，修改后的 execute 方法
+public void execute() {
+    try {
+        // 显式的 sleep 1 ns，主动切换线程
+        TimeUnit.NANOSECONDS.sleep(1);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+    // 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
+    // 如果线程池被提前 shutdown，则抛出异常
+    for (int i = 0; i &lt; 1_000_000; i++) {
+        if(ctl.get()){
+            throw new RuntimeException("reject!!!["+ctl.get()+"]");
+        }
+    }
+}
+</code></pre>
+
+<p>执行结果一样是报错</p>
+
+<pre><code class="java">Exception in thread "Thread-3" java.lang.RuntimeException: reject!!![true]
+</code></pre>
+
+<p><strong>由此可得，如果在执行的过程中，发生一次显式的线程切换，则会让编译器 / 代码生成器认为外层包装对象不可达</strong></p>
+
+<h2 id="">总结</h2>
+
+<p>虽然 GC 只会回收不可达 GC ROOT 的对象，但是在编译器（没有明确指出，也可能是 JIT）/ 代码生成器的优化下，可能会出现对象提前置 null，或者线程切换导致的“提前对象不可达”的情况。</p>
+
+<p>所以如果想在 finalize 方法里做些事情的话，一定在最后显示的引用一下对象（toString/hashcode 都可以），保持对象的可达性（reachable）</p>
+
+<p>上面关于线程切换导致的对象不可达，没有官方文献的支持，只是个人一个测试结果，如有问题欢迎指出</p>
+
+<p><strong>综上所述，这种回收机制并不是 JDK 的 bug，而算是一个优化策略，提前回收而已。但&nbsp;<code>Executors.newSingleThreadExecutor</code>的实现里通过 finalize 来自动关闭线程池的做法是有 Bug 的，在经过优化后可能会导致线程池的提前 shutdown，从而导致异常。</strong></p>
+
+<p>线程池的这个问题，在 JDK 的论坛里也是一个公开但未解决状态的问题<a href="https://bugs.openjdk.java.net/browse/JDK-8145304">&nbsp;https://bugs.openjdk.java.net/browse/JDK-8145304&nbsp;</a>。</p>
+
+<p>不过在 JDK11 下，该问题已经被修复：</p>
+
+<pre><code class="java">JUC  Executors.FinalizableDelegatedExecutorService
+public void execute(Runnable command) {
+    try {
+        e.execute(command);
+    } finally { reachabilityFence(this); }
+}
+</code></pre>
+
+<p><strong>本文转载自公众号玉刚说（ID：YugangTalk）。</strong></p>
+
+<p><strong>原文链接</strong>：</p>
+
+<p><strong><a href="https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw">https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw</a></strong></p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "BAMG55WHQt1iYrNSBRRh.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

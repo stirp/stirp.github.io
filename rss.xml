@@ -6,7 +6,155 @@
         <dc:language>zh-cn</dc:language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>拨公司 VPN 后，指定了外网 dns，却无法访问内网域名的解决办法</title><link>http://blog.shrp.me//Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html</link><pubdate>2020-02-02</pubdate><content:encoded>&lt;p&gt;今天我遇到一个情况，就是使用公司 VPN 后再指定家里的 DNS 后，公司的内网域名反而无法访问的问题。&lt;/p&gt;
+    <item><title>tomcat7-maven-plugin指定 tomcat 版本</title><link>http://blog.shrp.me//adjust-embedded-tomcat-version.html</link><pubdate>2020-02-18</pubdate><content:encoded>&lt;p&gt;最近用 Maven tomcat 插件启动的时候，突然发现很多关于 tomcat 扫描注解时发现一些 jar 包内 meta-info.class 的注解无效的信息，一般提示是Invalid byte tag in constant pool: 19。&lt;/p&gt;
+
+&lt;p&gt;这是为啥呢？原来 meta-info.class 是为了 Java9 的模块化产生的一个文件，本身在 Java8 里也用不上。所以 tomcat 扫描虽然报错了，但是却不影响启动和服务。&lt;/p&gt;
+
+&lt;p&gt;但是每次启动，屏幕显示一大片 ERROR，也不好排查真正的问题啊。搜索了一下，&lt;a href="https://stackoverflow.com/questions/53063324/severe-unable-to-process-jar-entry-module-info-class-in-tomcat-7-java-8"&gt;原来 tomcat 早已升级支持了&lt;/a&gt;，只要指定足够高的 tomcat 版本就能避免报错了。&lt;/p&gt;
+
+&lt;p&gt;具体版本号如下：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+  &lt;li&gt;trunk for 9.0.0.M18 onwards&lt;/li&gt;
+  &lt;li&gt;8.5.x for 8.5.12 onwards&lt;/li&gt;
+  &lt;li&gt;8.0.x for 8.0.42 onwards&lt;/li&gt;
+  &lt;li&gt;7.0.x for 7.0.76 onwards&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;那么怎么指定 tomcat7-maven-plugin 的 tomcat 版本呢？tomcat &lt;a href="https://tomcat.apache.org/maven-plugin-trunk/tomcat7-maven-plugin/adjust-embedded-tomcat-version.html"&gt;官网&lt;/a&gt;当然有说明啦，照猫画虎如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="xml"&gt;&amp;lt;project&amp;gt;
+   [...]
+  &amp;lt;properties&amp;gt;
+   &amp;lt;tomcat.version&amp;gt;7.0.76&amp;lt;/tomcat.version&amp;gt;
+   [...]
+  &amp;lt;/properties&amp;gt;
+   [...]
+  &amp;lt;build&amp;gt;
+    &amp;lt;pluginManagement&amp;gt;
+      &amp;lt;plugins&amp;gt;
+        &amp;lt;plugin&amp;gt;
+          &amp;lt;groupId&amp;gt;org.apache.tomcat.maven&amp;lt;/groupId&amp;gt;
+          &amp;lt;artifactId&amp;gt;tomcat7-maven-plugin&amp;lt;/artifactId&amp;gt;
+          &amp;lt;version&amp;gt;2.3-SNAPSHOT&amp;lt;/version&amp;gt;
+          &amp;lt;dependencies&amp;gt;
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat.embed&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-embed-core&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-util&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-coyote&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-api&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-jdbc&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-dbcp&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-servlet-api&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-jsp-api&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-jasper&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-jasper-el&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-el-api&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-catalina&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-tribes&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-catalina-ha&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-annotations-api&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-juli&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat.embed&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-embed-logging-juli&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+          &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.tomcat.embed&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;tomcat-embed-logging-log4j&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
+          &amp;lt;/dependency&amp;gt;
+          &amp;lt;/dependencies&amp;gt;
+        &amp;lt;/plugin&amp;gt;
+        [...]
+      &amp;lt;/plugins&amp;gt;
+    &amp;lt;/pluginManagement&amp;gt;
+    [...]
+  &amp;lt;/build&amp;gt;
+  [...]
+&amp;lt;/project&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;再启动，是不是顿时世界都清爽了呢？&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//adjust-embedded-tomcat-version.html</guid></item><item><title>拨公司 VPN 后，指定了外网 dns，却无法访问内网域名的解决办法</title><link>http://blog.shrp.me//Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html</link><pubdate>2020-02-02</pubdate><content:encoded>&lt;p&gt;今天我遇到一个情况，就是使用公司 VPN 后再指定家里的 DNS 后，公司的内网域名反而无法访问的问题。&lt;/p&gt;
 
 &lt;p&gt;这是因为我家路由器上的 DNSMASQ 配置了rebind_protection，这个选项是指当上级 DNS 返回了内网地址时，会将结果吞掉，并返回 NOERROR。这个选项是为了防止有些无良 ISP 的 DNS 劫持用的，有些路由可能就叫做“防止 DNS 劫持”的功能。&lt;/p&gt;
 
@@ -588,5 +736,5 @@ fi
   &lt;p&gt;只有法律、法规、公平、正义、光明，才能让这个世界变得更好。&lt;/p&gt;
   
   &lt;p&gt;我不要世界改变我，我要改变这个世界，一点点也行。&lt;/p&gt;
-&lt;/blockquote&gt;</content:encoded><guid>http://blog.shrp.me//Commons-of-Women-Been-domestic-violence.html</guid></item><item><title>TLS 详解</title><link>http://blog.shrp.me//TLS-explanation.html</link><pubdate>2018-10-13</pubdate><content:encoded>&lt;p&gt;今天看到一个网站，用来了解 TLS 连接相当不错，地址是&lt;a href="https://tls.ulfheim.net/"&gt;The Illustrated TLS Connection&lt;/a&gt;，相关代码在 GitHub 上&lt;a href="https://github.com/syncsynchalt/illustrated-tls"&gt;The Illustrated TLS Connection: Every byte explained&lt;/a&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//TLS-explanation.html</guid></item></channel>
+&lt;/blockquote&gt;</content:encoded><guid>http://blog.shrp.me//Commons-of-Women-Been-domestic-violence.html</guid></item></channel>
 </rss>

@@ -1,0 +1,415 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="author" content="尚弟" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="Content-Language" content="zh-cn" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="尚弟 博客 笔记"/>
+    <meta name="Description" content="尚弟 博客 笔记"/>
+    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
+    <title>尚弟的小笔记</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <ul id="pages">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/#/tags">标签</a>
+            </li>
+            <li>
+                <a href="/#/archive">归档</a>
+            </li>
+            <li>
+                <a href="/rss.xml" target="_blank">RSS</a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap-header">
+        <h1>
+            <a href="/" id="title"></a>
+        </h1>
+    </div>
+    <div id="md" style="display: none;">
+<!-- markdown -->
+最近用 Maven tomcat 插件启动的时候，突然发现很多关于 tomcat 扫描注解时发现一些 jar 包内 meta-info.class 的注解无效的信息，一般提示是Invalid byte tag in constant pool: 19。
+
+这是为啥呢？原来 meta-info.class 是为了 Java9 的模块化产生的一个文件，本身在 Java8 里也用不上。所以 tomcat 扫描虽然报错了，但是却不影响启动和服务。
+
+但是每次启动，屏幕显示一大片 ERROR，也不好排查真正的问题啊。搜索了一下，[原来 tomcat 早已升级支持了](https://stackoverflow.com/questions/53063324/severe-unable-to-process-jar-entry-module-info-class-in-tomcat-7-java-8)，只要指定足够高的 tomcat 版本就能避免报错了。
+
+具体版本号如下：
+>- trunk for 9.0.0.M18 onwards
+- 8.5.x for 8.5.12 onwards
+- 8.0.x for 8.0.42 onwards
+- 7.0.x for 7.0.76 onwards
+
+那么怎么指定 tomcat7-maven-plugin 的 tomcat 版本呢？tomcat [官网](https://tomcat.apache.org/maven-plugin-trunk/tomcat7-maven-plugin/adjust-embedded-tomcat-version.html)当然有说明啦，照猫画虎如下：
+
+```xml
+<project>
+   [...]
+  <properties>
+   <tomcat.version>7.0.76</tomcat.version>
+   [...]
+  </properties>
+   [...]
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>2.3-SNAPSHOT</version>
+          <dependencies>
+          <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-util</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-coyote</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-api</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-dbcp</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-servlet-api</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jsp-api</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jasper</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jasper-el</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-el-api</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-catalina</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-tribes</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-catalina-ha</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-annotations-api</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-juli</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-logging-juli</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-logging-log4j</artifactId>
+            <version>${tomcat.version}</version>
+          </dependency>
+          </dependencies>
+        </plugin>
+        [...]
+      </plugins>
+    </pluginManagement>
+    [...]
+  </build>
+  [...]
+</project>
+```
+
+再启动，是不是顿时世界都清爽了呢？
+<!-- markdown end -->
+    </div>
+    <div class="entry" id="main">
+<!-- content -->
+<p>最近用 Maven tomcat 插件启动的时候，突然发现很多关于 tomcat 扫描注解时发现一些 jar 包内 meta-info.class 的注解无效的信息，一般提示是Invalid byte tag in constant pool: 19。</p>
+
+<p>这是为啥呢？原来 meta-info.class 是为了 Java9 的模块化产生的一个文件，本身在 Java8 里也用不上。所以 tomcat 扫描虽然报错了，但是却不影响启动和服务。</p>
+
+<p>但是每次启动，屏幕显示一大片 ERROR，也不好排查真正的问题啊。搜索了一下，<a href="https://stackoverflow.com/questions/53063324/severe-unable-to-process-jar-entry-module-info-class-in-tomcat-7-java-8">原来 tomcat 早已升级支持了</a>，只要指定足够高的 tomcat 版本就能避免报错了。</p>
+
+<p>具体版本号如下：</p>
+
+<blockquote>
+  <ul>
+  <li>trunk for 9.0.0.M18 onwards</li>
+  <li>8.5.x for 8.5.12 onwards</li>
+  <li>8.0.x for 8.0.42 onwards</li>
+  <li>7.0.x for 7.0.76 onwards</li>
+  </ul>
+</blockquote>
+
+<p>那么怎么指定 tomcat7-maven-plugin 的 tomcat 版本呢？tomcat <a href="https://tomcat.apache.org/maven-plugin-trunk/tomcat7-maven-plugin/adjust-embedded-tomcat-version.html">官网</a>当然有说明啦，照猫画虎如下：</p>
+
+<pre><code class="xml">&lt;project&gt;
+   [...]
+  &lt;properties&gt;
+   &lt;tomcat.version&gt;7.0.76&lt;/tomcat.version&gt;
+   [...]
+  &lt;/properties&gt;
+   [...]
+  &lt;build&gt;
+    &lt;pluginManagement&gt;
+      &lt;plugins&gt;
+        &lt;plugin&gt;
+          &lt;groupId&gt;org.apache.tomcat.maven&lt;/groupId&gt;
+          &lt;artifactId&gt;tomcat7-maven-plugin&lt;/artifactId&gt;
+          &lt;version&gt;2.3-SNAPSHOT&lt;/version&gt;
+          &lt;dependencies&gt;
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-embed-core&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-util&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-coyote&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-api&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-jdbc&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-dbcp&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-jsp-api&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-jasper&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-jasper-el&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-el-api&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-catalina&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-tribes&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-catalina-ha&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-annotations-api&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-juli&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-embed-logging-juli&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+          &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-embed-logging-log4j&lt;/artifactId&gt;
+            &lt;version&gt;${tomcat.version}&lt;/version&gt;
+          &lt;/dependency&gt;
+          &lt;/dependencies&gt;
+        &lt;/plugin&gt;
+        [...]
+      &lt;/plugins&gt;
+    &lt;/pluginManagement&gt;
+    [...]
+  &lt;/build&gt;
+  [...]
+&lt;/project&gt;
+</code></pre>
+
+<p>再启动，是不是顿时世界都清爽了呢？</p>
+<!-- content end -->
+    </div>
+    <br>
+    <br>
+
+    <div id="disqus_thread"></div>
+    <div class="footer">
+        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
+    </div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "main.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#title").html(data.name);
+                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+                var pagesHtml = pagesTemplate.render({"pages": data.pages});
+                $("#pages").append(pagesHtml);
+                //path
+                var path = "adjust-embedded-tomcat-version.html";
+                //path end
+                var now = 0;
+                for (var i = 0; i < data.posts.length; ++i)
+                    if (path == data.posts[i].path)
+                        now = i;
+                var post = data.posts[now];
+                var tmp = post.tags.split(" ");
+                var tags = [];
+                for (var i = 0; i < tmp.length; ++i)
+                    if (tmp[i].length > 0)
+                        tags.push({"name": tmp[i]});
+                var contentTemplate = Hogan.compile($("#content").html());
+                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+                $("#main").prepend(contentHtml);
+                if (data.disqus_shortname.length > 0) {
+                    var disqus_shortname = data.disqus_shortname;
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                }
+            }
+        });
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+
+</script>
+</body>
+</html>

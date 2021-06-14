@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>尚弟的小笔记</title>
-    <link>http://blog.shrp.me/</link>
+    <link>https://blog.shrp.me/</link>
     <description>Recent content on 尚弟的小笔记</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>shrp</copyright>
-    <lastBuildDate>Mon, 05 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://blog.shrp.me/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 05 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>从Simple迁移到Hugo</title>
-      <link>http://blog.shrp.me/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html</link>
+      <link>https://blog.shrp.me/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html</link>
       <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html</guid>
+      <guid>https://blog.shrp.me/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html</guid>
       <description>&lt;h2 id=&#34;为什么不继续用simple&#34;&gt;为什么不继续用Simple&lt;/h2&gt;
 &lt;p&gt;　　Simple是一个非常简单又纯粹的博客托管方案,然而它严重依赖 github 的API登录方案&amp;ndash;而这个方案已经在去年关闭掉了,现在没有自己的服务器,应该是无法完成github的授权的.因此我必须要换掉Simple了.&lt;/p&gt;
 &lt;h2 id=&#34;为什么是hugo&#34;&gt;为什么是Hugo&lt;/h2&gt;
@@ -332,10 +332,10 @@ git push origin master
     
     <item>
       <title>tomcat7-maven-plugin指定 tomcat 版本</title>
-      <link>http://blog.shrp.me/adjust-embedded-tomcat-version.html</link>
+      <link>https://blog.shrp.me/adjust-embedded-tomcat-version.html</link>
       <pubDate>Tue, 18 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/adjust-embedded-tomcat-version.html</guid>
+      <guid>https://blog.shrp.me/adjust-embedded-tomcat-version.html</guid>
       <description>&lt;p&gt;最近用 Maven tomcat 插件启动的时候，突然发现很多关于 tomcat 扫描注解时发现一些 jar 包内 meta-info.class 的注解无效的信息，一般提示是Invalid byte tag in constant pool: 19。&lt;/p&gt;
 &lt;p&gt;这是为啥呢？原来 meta-info.class 是为了 Java9 的模块化产生的一个文件，本身在 Java8 里也用不上。所以 tomcat 扫描虽然报错了，但是却不影响启动和服务。&lt;/p&gt;
 &lt;p&gt;但是每次启动，屏幕显示一大片 ERROR，也不好排查真正的问题啊。搜索了一下，&lt;a href=&#34;https://stackoverflow.com/questions/53063324/severe-unable-to-process-jar-entry-module-info-class-in-tomcat-7-java-8&#34;&gt;原来 tomcat 早已升级支持了&lt;/a&gt;，只要指定足够高的 tomcat 版本就能避免报错了。&lt;/p&gt;
@@ -617,10 +617,10 @@ git push origin master
     
     <item>
       <title>拨公司 VPN 后，指定了外网 dns，却无法访问内网域名的解决办法</title>
-      <link>http://blog.shrp.me/Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html</link>
+      <link>https://blog.shrp.me/Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html</link>
       <pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html</guid>
+      <guid>https://blog.shrp.me/Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html</guid>
       <description>&lt;p&gt;今天我遇到一个情况，就是使用公司 VPN 后再指定家里的 DNS 后，公司的内网域名反而无法访问的问题。&lt;/p&gt;
 &lt;p&gt;这是因为我家路由器上的 DNSMASQ 配置了rebind_protection，这个选项是指当上级 DNS 返回了内网地址时，会将结果吞掉，并返回 NOERROR。这个选项是为了防止有些无良 ISP 的 DNS 劫持用的，有些路由可能就叫做“防止 DNS 劫持”的功能。&lt;/p&gt;
 &lt;p&gt;但是公司内网的地址解析肯定不是公网的，但是这个解析又配置在外网环境，导致内网域名也被外网 DNS 解析并返回，导致 DNSMASQ 当成了劫持，返回了 NOERROR。而 NOERROR 对于操作系统来说，就算是这个 DNS 解析到了，不会再询问第二第三 DNS 了，导致第二第三 DNS 就是配置公司的 DNS 也无济于事。&lt;/p&gt;
@@ -630,10 +630,10 @@ git push origin master
     
     <item>
       <title>【分享】一个 Java 线程池 bug 引发的 GC 机制思考</title>
-      <link>http://blog.shrp.me/BAMG55WHQt1iYrNSBRRh.html</link>
+      <link>https://blog.shrp.me/BAMG55WHQt1iYrNSBRRh.html</link>
       <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/BAMG55WHQt1iYrNSBRRh.html</guid>
+      <guid>https://blog.shrp.me/BAMG55WHQt1iYrNSBRRh.html</guid>
       <description>&lt;p&gt;原文地址：&lt;a href=&#34;https://www.infoq.cn/article/BAMG55WHQt1iYrNSBRRh?utm_source=rss&amp;amp;utm_medium=article&#34;&gt;一个 Java 线程池 bug 引发的 GC 机制思考&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;问题描述&#34;&gt;问题描述&lt;/h2&gt;
 &lt;p&gt;前几天，在帮同事排查一个线上偶发的线程池错误&lt;/p&gt;
@@ -1230,10 +1230,10 @@ Optimizing transformations of a program can be designed that reduce the number o
     
     <item>
       <title>怎么把脚本变为 Mac 的 App</title>
-      <link>http://blog.shrp.me/How-To-Convert-Shell-Script-Into-Mac-App.html</link>
+      <link>https://blog.shrp.me/How-To-Convert-Shell-Script-Into-Mac-App.html</link>
       <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/How-To-Convert-Shell-Script-Into-Mac-App.html</guid>
+      <guid>https://blog.shrp.me/How-To-Convert-Shell-Script-Into-Mac-App.html</guid>
       <description>&lt;p&gt;有时候我们需要把一些有意义的脚本变成程序，发布出来；或者对一些已有的程序增加一点定制，比如我下载的这款 OpenProj，好用是好用，但是默认的 app 已经不能直接打开，编辑 plist 什么的也不太好用。还好 Mac 操作系统这些操作都很简单。&lt;/p&gt;
 &lt;p&gt;首先我们找到原来这个程序应该怎么去执行的。通过分析原来的 App 目录下的 Info.plist 文件，我发现原来的程序是通过&lt;code&gt;java -Xms128m -Xmx768m -classpath ./Resources/Java/openproj.jar:./Resources/Java/lib/  com.projity.main.Main&lt;/code&gt;命令来执行的。这不就是简单的 Java 命令嘛！打开 Mac 自带的 Automator，选择新建应用程序，在工作区中添加运行 shell 脚本，把上述命令粘贴进去不就行了嘛。可是点击右上角的运行，哎，不行啊，原来命令的目录是.，也就是相对路径，现在用 automator 工具执行是不行的。导出为 app 以后呢？试了一下，结果仍然不行。在 shell 命令里加一些调试的输出后发现，执行过程中相对路径是用户的 home，不是当前 app 的目录，也没有参数指向 app 的目录，这可真麻烦了。当然我们可以简单假设用户一定不会修改我 App 的名称，也一定会放到/Applications目录下，这样我们写成绝对路径是可以执行的。不过这样是合理的方案吗？当然不是了。怎么办呢？&lt;/p&gt;
 &lt;p&gt;还好难不倒我，通过在 shell 脚本前执行一段 AppleScript 脚本来获取当前应用的位置不就好了嘛！这段脚本如下：&lt;/p&gt;
@@ -1323,10 +1323,10 @@ fi
     
     <item>
       <title>我是中国人，谷歌的蜻蜓项目必须继续</title>
-      <link>http://blog.shrp.me/i-am-chinese-the-dragonfly-must-go-on.html</link>
+      <link>https://blog.shrp.me/i-am-chinese-the-dragonfly-must-go-on.html</link>
       <pubDate>Sun, 02 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/i-am-chinese-the-dragonfly-must-go-on.html</guid>
+      <guid>https://blog.shrp.me/i-am-chinese-the-dragonfly-must-go-on.html</guid>
       <description>&lt;p&gt;有两个省，甲省有B企业生产粮食，但是日常在里面掺屎，群众虽然心知肚明，可是敢怒不敢言，时不时吃了一嘴屎；乙省规定健全，乙省的G企业虽然不像自己口头上说的那样不作恶，但也没像乙省的Y企业那么恶劣：Y企业曾主动把符合乙省规定，但是违背甲省规定的记者吃的食物发给甲省，好让甲省的警察抓住这名记者。&lt;/p&gt;
 &lt;p&gt;不过自打G企业从甲省逐出后，B企业越发肆无忌惮，粮食里的屎越来越多了，大家都从黑市上买G企业的粮食。G企业想想，与其让大家去黑市买，不如我把我的陈年旧米卖给他们，好让他们少吃点屎，我也赚点钱。其实G企业也想卖新米，但是甲省不让卖，G企业的领导也没法子呀。&lt;/p&gt;
 &lt;p&gt;可是实在没想到，这么一件好事，甲省那在黑市买卖的人居然还不领情：我们吃了这么多年的屎了，懂的自然就不吃了，剩下的人必然都爱吃屎！你们来卖陈年大米，我们黑市怎么卖高价呢！黑市赚不到钱，自然卖的人少了，我怎么吃新米呢！&lt;/p&gt;
@@ -1337,10 +1337,10 @@ fi
     
     <item>
       <title>为 Java 程序增加一个异步任务功能</title>
-      <link>http://blog.shrp.me/add-sync-task-for-Java.html</link>
+      <link>https://blog.shrp.me/add-sync-task-for-Java.html</link>
       <pubDate>Sun, 04 Nov 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/add-sync-task-for-Java.html</guid>
+      <guid>https://blog.shrp.me/add-sync-task-for-Java.html</guid>
       <description>&lt;p&gt;最近在开发一个系统，里面经常在一个请求里处理一系列的任务，其中一些任务是不需要阻塞请求结束的应答的，因此最简单的办法就是异步去执行这些任务。然而如果程序关闭导致任务被丢失，那是最不可接受的情况，因此这种情况下要把任务提交到 MQ 里，利用 MQ 的失败重试来保证非程序性任务失败（毕竟程序性问题最好解决，而非程序性丢失通常不容易恢复）。&lt;/p&gt;
 &lt;p&gt;但是一般来说在系统里做这么一个事情是非常复杂而又繁琐的，要初始化 MQ 的生产者和消费者，然后定义传输的 DTO，然后在异步任务处写一个破坏阅读的任务提交，来把任务提交给 MQ。怎么才能简化这个过程呢？&lt;/p&gt;
 &lt;p&gt;我想出并实现了一个模块来解决这个问题。如果原来的代码是&lt;/p&gt;
@@ -1371,10 +1371,10 @@ fi
     
     <item>
       <title>公交撞桥坠河的最好观点</title>
-      <link>http://blog.shrp.me/The-best-opinion-of-bus-crash-into-the-river.html</link>
+      <link>https://blog.shrp.me/The-best-opinion-of-bus-crash-into-the-river.html</link>
       <pubDate>Sun, 04 Nov 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/The-best-opinion-of-bus-crash-into-the-river.html</guid>
+      <guid>https://blog.shrp.me/The-best-opinion-of-bus-crash-into-the-river.html</guid>
       <description>&lt;p&gt;今天在微博看到一条关于公交撞桥坠河的&lt;a href=&#34;https://weibo.com/5173399462/H0OWQ3x46?type=comment#_rnd1541263764030&#34;&gt;观点&lt;/a&gt;，其观点跟我的看法高度相似，所以就粘贴到这里来：
 &lt;img src=&#34;http://stirp.github.io/img/005E73wOgy1fwtu7vma6rj30mi1tu19y.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;一开始我想司机是不是想借小车的撞击力减速，从而撞桥停住，但是看撞击的位置，一个老司机肯定不会犯这样的错误；而且最后撞到桥上的时候不减速不打方向盘，说明撞下河是其预期内的。&lt;/p&gt;
@@ -1385,10 +1385,10 @@ fi
     
     <item>
       <title>Intellij VM 参数优化</title>
-      <link>http://blog.shrp.me/Intellij-VM-optiomazation.html</link>
+      <link>https://blog.shrp.me/Intellij-VM-optiomazation.html</link>
       <pubDate>Tue, 30 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/Intellij-VM-optiomazation.html</guid>
+      <guid>https://blog.shrp.me/Intellij-VM-optiomazation.html</guid>
       <description>&lt;p&gt;今天看了&lt;a href=&#34;https://mp.weixin.qq.com/s/DMzz717E2oZ3XwcIsM8Dgw&#34;&gt;《IntelliJ IDEA 内存优化最佳实践》&lt;/a&gt;一文，正好之前自己也做了自己机器的 Intellij 的内存优化，原来文章里的最优方案跟我自用的是一样的，都是增加内存。&lt;/p&gt;
 &lt;p&gt;我的配置如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -1414,10 +1414,10 @@ fi
     
     <item>
       <title>NBA2k9怎么在Win10运行?</title>
-      <link>http://blog.shrp.me/How-to-run-NBA-2k9-on-Win10.html</link>
+      <link>https://blog.shrp.me/How-to-run-NBA-2k9-on-Win10.html</link>
       <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/How-to-run-NBA-2k9-on-Win10.html</guid>
+      <guid>https://blog.shrp.me/How-to-run-NBA-2k9-on-Win10.html</guid>
       <description>&lt;p&gt;如果现在新电脑要装Windows，那基本上都是Win10了。然而对于一些有意思的老游戏，比如像拥有巅峰姚明和火箭的NBA2k9，Win10并不能直接玩，使用兼容设置也依然如此。到谷歌上搜索，也基本没有什么有效信息。&lt;/p&gt;
 &lt;p&gt;然而我还是不死心，安装虚拟机总可以了吧 ？用了免费的VirtualBox，嗯……对显卡的虚拟化基本没有，3D加速能力相当于无，就算是装了工具，在1060上也没法看全特效。还好瞄了一眼VMware，嗯？非商业用途的VMware Player可以免费下载？多年前了解这个是免费的，但是只能运行虚拟机，不能创建。下载下来打开一看，现在的VMware Player原来也支持创建虚拟机了。不但如此，其网络支持pptp拨号，支持显卡虚拟化，上G的显存都有用武之地，这都是VirtualBox所没有的。&lt;/p&gt;
 &lt;p&gt;以前一直用开源的VirtualBox，没想到商业虚拟机软件在娱乐领域有独特的优势。玩了两把游戏，嗯，真香！&lt;/p&gt;

@@ -2,99 +2,99 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on 尚弟的小笔记</title>
-    <link>http://blog.shrp.me/post.html</link>
+    <link>https://blog.shrp.me/post.html</link>
     <description>Recent content in Posts on 尚弟的小笔记</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>shrp</copyright>
-    <lastBuildDate>Mon, 05 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://blog.shrp.me/post/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 05 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/post/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>从Simple迁移到Hugo</title>
-      <link>http://blog.shrp.me/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html</link>
+      <link>https://blog.shrp.me/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html</link>
       <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html</guid>
+      <guid>https://blog.shrp.me/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html</guid>
       <description>为什么不继续用Simple Simple是一个非常简单又纯粹的博客托管方案,然而它严重依赖 github 的API登录方案&amp;ndash;而这个方案已经在去年</description>
     </item>
     
     <item>
       <title>tomcat7-maven-plugin指定 tomcat 版本</title>
-      <link>http://blog.shrp.me/adjust-embedded-tomcat-version.html</link>
+      <link>https://blog.shrp.me/adjust-embedded-tomcat-version.html</link>
       <pubDate>Tue, 18 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/adjust-embedded-tomcat-version.html</guid>
+      <guid>https://blog.shrp.me/adjust-embedded-tomcat-version.html</guid>
       <description>最近用 Maven tomcat 插件启动的时候，突然发现很多关于 tomcat 扫描注解时发现一些 jar 包内 meta-info.class 的注解无效的信息，一般提示是Invalid byte tag in constant pool: 19。 这是为啥呢？</description>
     </item>
     
     <item>
       <title>拨公司 VPN 后，指定了外网 dns，却无法访问内网域名的解决办法</title>
-      <link>http://blog.shrp.me/Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html</link>
+      <link>https://blog.shrp.me/Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html</link>
       <pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html</guid>
+      <guid>https://blog.shrp.me/Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html</guid>
       <description>今天我遇到一个情况，就是使用公司 VPN 后再指定家里的 DNS 后，公司的内网域名反而无法访问的问题。 这是因为我家路由器上的 DNSMASQ 配置了rebind_prot</description>
     </item>
     
     <item>
       <title>【分享】一个 Java 线程池 bug 引发的 GC 机制思考</title>
-      <link>http://blog.shrp.me/BAMG55WHQt1iYrNSBRRh.html</link>
+      <link>https://blog.shrp.me/BAMG55WHQt1iYrNSBRRh.html</link>
       <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/BAMG55WHQt1iYrNSBRRh.html</guid>
+      <guid>https://blog.shrp.me/BAMG55WHQt1iYrNSBRRh.html</guid>
       <description>原文地址：一个 Java 线程池 bug 引发的 GC 机制思考 问题描述 前几天，在帮同事排查一个线上偶发的线程池错误 逻辑很简单，线程池执行了一个带结果的异步任务。但</description>
     </item>
     
     <item>
       <title>怎么把脚本变为 Mac 的 App</title>
-      <link>http://blog.shrp.me/How-To-Convert-Shell-Script-Into-Mac-App.html</link>
+      <link>https://blog.shrp.me/How-To-Convert-Shell-Script-Into-Mac-App.html</link>
       <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/How-To-Convert-Shell-Script-Into-Mac-App.html</guid>
+      <guid>https://blog.shrp.me/How-To-Convert-Shell-Script-Into-Mac-App.html</guid>
       <description>有时候我们需要把一些有意义的脚本变成程序，发布出来；或者对一些已有的程序增加一点定制，比如我下载的这款 OpenProj，好用是好用，但是默认</description>
     </item>
     
     <item>
       <title>我是中国人，谷歌的蜻蜓项目必须继续</title>
-      <link>http://blog.shrp.me/i-am-chinese-the-dragonfly-must-go-on.html</link>
+      <link>https://blog.shrp.me/i-am-chinese-the-dragonfly-must-go-on.html</link>
       <pubDate>Sun, 02 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/i-am-chinese-the-dragonfly-must-go-on.html</guid>
+      <guid>https://blog.shrp.me/i-am-chinese-the-dragonfly-must-go-on.html</guid>
       <description>有两个省，甲省有B企业生产粮食，但是日常在里面掺屎，群众虽然心知肚明，可是敢怒不敢言，时不时吃了一嘴屎；乙省规定健全，乙省的G企业虽然不像自</description>
     </item>
     
     <item>
       <title>为 Java 程序增加一个异步任务功能</title>
-      <link>http://blog.shrp.me/add-sync-task-for-Java.html</link>
+      <link>https://blog.shrp.me/add-sync-task-for-Java.html</link>
       <pubDate>Sun, 04 Nov 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/add-sync-task-for-Java.html</guid>
+      <guid>https://blog.shrp.me/add-sync-task-for-Java.html</guid>
       <description>最近在开发一个系统，里面经常在一个请求里处理一系列的任务，其中一些任务是不需要阻塞请求结束的应答的，因此最简单的办法就是异步去执行这些任务。</description>
     </item>
     
     <item>
       <title>公交撞桥坠河的最好观点</title>
-      <link>http://blog.shrp.me/The-best-opinion-of-bus-crash-into-the-river.html</link>
+      <link>https://blog.shrp.me/The-best-opinion-of-bus-crash-into-the-river.html</link>
       <pubDate>Sun, 04 Nov 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/The-best-opinion-of-bus-crash-into-the-river.html</guid>
+      <guid>https://blog.shrp.me/The-best-opinion-of-bus-crash-into-the-river.html</guid>
       <description>今天在微博看到一条关于公交撞桥坠河的观点，其观点跟我的看法高度相似，所以就粘贴到这里来： 一开始我想司机是不是想借小车的撞击力减速，从而撞桥停</description>
     </item>
     
     <item>
       <title>Intellij VM 参数优化</title>
-      <link>http://blog.shrp.me/Intellij-VM-optiomazation.html</link>
+      <link>https://blog.shrp.me/Intellij-VM-optiomazation.html</link>
       <pubDate>Tue, 30 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/Intellij-VM-optiomazation.html</guid>
+      <guid>https://blog.shrp.me/Intellij-VM-optiomazation.html</guid>
       <description>今天看了《IntelliJ IDEA 内存优化最佳实践》一文，正好之前自己也做了自己机器的 Intellij 的内存优化，原来文章里的最优方案跟我自用的是一样的，都是增</description>
     </item>
     
     <item>
       <title>NBA2k9怎么在Win10运行?</title>
-      <link>http://blog.shrp.me/How-to-run-NBA-2k9-on-Win10.html</link>
+      <link>https://blog.shrp.me/How-to-run-NBA-2k9-on-Win10.html</link>
       <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.shrp.me/How-to-run-NBA-2k9-on-Win10.html</guid>
+      <guid>https://blog.shrp.me/How-to-run-NBA-2k9-on-Win10.html</guid>
       <description>如果现在新电脑要装Windows，那基本上都是Win10了。然而对于一些有意思的老游戏，比如像拥有巅峰姚明和火箭的NBA2k9，Win10并</description>
     </item>
     

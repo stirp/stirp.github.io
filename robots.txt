@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: http://blog.shrp.me/sitemap.xml
+Sitemap: https://blog.shrp.me/sitemap.xml

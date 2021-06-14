@@ -1,740 +1,1428 @@
-<?xml version="1.0" encoding="utf-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
-    <channel>
-        <title>尚弟的小笔记</title>
-        <atom:link href="http://blog.shrp.me//rss.xml" rel="self" type="application/rss+xml"/>
-        <link>http://blog.shrp.me/</link>
-        <dc:language>zh-cn</dc:language>
-        <sy:updatePeriod>hourly</sy:updatePeriod>
-        <sy:updateFrequency>1</sy:updateFrequency>
-    <item><title>tomcat7-maven-plugin指定 tomcat 版本</title><link>http://blog.shrp.me//adjust-embedded-tomcat-version.html</link><pubdate>2020-02-18</pubdate><content:encoded>&lt;p&gt;最近用 Maven tomcat 插件启动的时候，突然发现很多关于 tomcat 扫描注解时发现一些 jar 包内 meta-info.class 的注解无效的信息，一般提示是Invalid byte tag in constant pool: 19。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>尚弟的小笔记</title>
+    <link>http://blog.shrp.me/</link>
+    <description>Recent content on 尚弟的小笔记</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>shrp</copyright>
+    <lastBuildDate>Mon, 05 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://blog.shrp.me/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>从Simple迁移到Hugo</title>
+      <link>http://blog.shrp.me/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.shrp.me/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html</guid>
+      <description>&lt;h2 id=&#34;为什么不继续用simple&#34;&gt;为什么不继续用Simple&lt;/h2&gt;
+&lt;p&gt;　　Simple是一个非常简单又纯粹的博客托管方案,然而它严重依赖 github 的API登录方案&amp;ndash;而这个方案已经在去年关闭掉了,现在没有自己的服务器,应该是无法完成github的授权的.因此我必须要换掉Simple了.&lt;/p&gt;
+&lt;h2 id=&#34;为什么是hugo&#34;&gt;为什么是Hugo&lt;/h2&gt;
+&lt;p&gt;　　其实我也想过类似hexo之类的方案.但是它们有个很麻烦的问题:编译过程需要nodejs的支持.nodejs当然不是不好,但是相关的安装文件体积会很大,依赖关系也会比较复杂.而我希望我的博客编写可以差不多随时随地&amp;ndash;比起Simple的一个网页走天下,现在的方案可能会复杂的多.还好我有VS code的server版,随时随地写markdown并不是问题;但是想随地编译网站,这个成本就有点高了.经过一番调查,hugo的依赖相对简单,采用docker的方式来使用,成本也不高,相对来说还是可以接受的.&lt;/p&gt;
+&lt;h2 id=&#34;导出simple&#34;&gt;导出Simple&lt;/h2&gt;
+&lt;p&gt;　　不论如何, 导出原有的文章是必须的.Simple作为基于GitHub API的静态博客，它自己是没有数据库来存储文章的，而是将markdown作为注释放在正文里的。我们恰好可以借助这一特性，将相应的md文件提取出来：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;cat fileName.html &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;/&amp;lt;!-- markdown --&amp;gt;/,/&amp;lt;!-- markdown end --&amp;gt;/&amp;#39;&lt;/span&gt; &amp;gt; exports/fileName.md
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;　　怎么遍历文件名就不赘述了，bash脚本跑循环就好。&lt;/p&gt;
+&lt;p&gt;　　不过这样导出的文件里还有markdown的注解,可以使用如下命令来清除:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;sed -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;s/&amp;lt;!-- markdown --&amp;gt;//g&amp;#34;&lt;/span&gt; *.md
+sed -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;s/&amp;lt;!-- markdown end --&amp;gt;//g&amp;#34;&lt;/span&gt; *.md
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;　　那么当我之前的博客都备份好了，怎么导入到Hugo里呢？&lt;/p&gt;
+&lt;h2 id=&#34;导入hugo&#34;&gt;导入Hugo&lt;/h2&gt;
+&lt;p&gt;　　先不说Hugo的站点结构如何，这个问题各位观众那都可以慢慢调整；最重要的是Hugo的md文件是有格式的，你得遵照一定的格式导入，也就是每篇文章开头的元数据，至少包含title，date。此外我希望导入以后，&lt;strong&gt;网页的URL还能按照原先的URL存在&lt;/strong&gt;，避免死链.那怎么办呢？&lt;/p&gt;
+&lt;p&gt;　　原来Simple有一个main.json是专门存储元数据的，我们可以从它解析到相应的参数，填入目标文档。经过一番探究，我写了如下的脚本生成相应的目标文档：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;---&amp;#34;&lt;/span&gt; &amp;gt;hugo/content/imported/&lt;span class=&#34;nv&#34;&gt;$filename&lt;/span&gt;.md &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;title: \&amp;#34;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;jq -r &lt;span class=&#34;s1&#34;&gt;&amp;#39;.posts|map(select(.path == &amp;#34;&amp;#39;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$filename&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;.html&amp;#34;).title)[0]&amp;#39;&lt;/span&gt; main.json&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;\&amp;#34;&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; hugo/content/imported/&lt;span class=&#34;nv&#34;&gt;$filename&lt;/span&gt;.md &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;date: \&amp;#34;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;jq -r &lt;span class=&#34;s1&#34;&gt;&amp;#39;.posts|map(select(.path == &amp;#34;&amp;#39;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$filename&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;.html&amp;#34;).date)[0]&amp;#39;&lt;/span&gt; main.json&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;T00:00:00Z\&amp;#34;&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; hugo/content/imported/&lt;span class=&#34;nv&#34;&gt;$filename&lt;/span&gt;.md &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;draft: false&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; hugo/content/imported/&lt;span class=&#34;nv&#34;&gt;$filename&lt;/span&gt;.md &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;tags: [\&amp;#34;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;jq -r &lt;span class=&#34;s1&#34;&gt;&amp;#39;.posts|map(select(.path == &amp;#34;&amp;#39;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$filename&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;.html&amp;#34;).tags)[0]|split(&amp;#34; &amp;#34;)|join(&amp;#34;\&amp;#34;,\&amp;#34;&amp;#34;)&amp;#39;&lt;/span&gt; main.json&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;\&amp;#34;]&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; hugo/content/imported/&lt;span class=&#34;nv&#34;&gt;$filename&lt;/span&gt;.md &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;url: &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$filename&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;.html&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; hugo/content/imported/&lt;span class=&#34;nv&#34;&gt;$filename&lt;/span&gt;.md &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;---&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; hugo/content/imported/&lt;span class=&#34;nv&#34;&gt;$filename&lt;/span&gt;.md &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; cat exports/&lt;span class=&#34;nv&#34;&gt;$filename&lt;/span&gt;.md &amp;gt;&amp;gt; hugo/content/imported/&lt;span class=&#34;nv&#34;&gt;$filename&lt;/span&gt;.md
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;　　通过上述脚本指定的url, 我们导入的文章在imported目录下,而url仍然在根目录下,不会受到影响,这样的url就跟原来的simple的url一致，保证迁移后搜索引擎的链接仍然有效。&lt;/p&gt;
+&lt;h2 id=&#34;使用even&#34;&gt;使用Even&lt;/h2&gt;
+&lt;p&gt;　　据我观察, Hugo 使用 Even 主题的博客很多,简单了解了一下,这个主题已经比较完善了.但是我刚刚开始使用它,咦,目录空了,囧. 谷歌一下,发现它必须使用post目录,而不是默认的posts目录,更不支持imported目录了.最简单的办法就是把imported目录放到post目录下,以后新建的文章就放到post目录下就好啦.&lt;/p&gt;
+&lt;p&gt;　　但是随后就发现生成的rss文章包括了关于我这样的页面,这个问题还是比较严重的.不过默认hugo生成的rss是包含区域rss的,因此直接使用post/rss.xml就可以只生成post目录下的rss文件了.还可以在编译后将rss.xml拷贝到根目录下,这样原有url的rss也是正确的了.&lt;/p&gt;
+&lt;h2 id=&#34;修复tag的url&#34;&gt;修复Tag的URL&lt;/h2&gt;
+&lt;p&gt;默认的tag是baseurl/tags/MyTag.html,但是tag页面的url是baseurl/tags/MyTag/.怎么修复呢?原来Hugo本身有一个Tag的uglyUrl的&lt;a href=&#34;https://discourse.gohugo.io/t/html-links-for-tags-and-categories/3567&#34;&gt;bug&lt;/a&gt;,在生成tag的时候读不到config里的uglyUrl的变量.这个能力在Even里已经解决了,但是不是非常的优雅:就是在config里的params再增加一个uglyURLs的变量,供even使用.记得它跟config的uglyURLs变量保持一致即可.&lt;/p&gt;
+&lt;h2 id=&#34;rss全文化&#34;&gt;RSS全文化&lt;/h2&gt;
+&lt;p&gt;　　RSS默认只输出部分,这种体验对于我们这种不求访问量的网站的订阅者来说,是非常不友好的.因此需要调整为全文输出.按照网友的经验,在layouts目录下新建index.rss.xml就可以解决这个问题:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;{{- $pctx := . -}}
+{{- if .IsHome -}}{{ $pctx = .Site }}{{- end -}}
+{{- $pages := slice -}}
+{{- if or $.IsHome $.IsSection -}}
+{{- $pages = $pctx.RegularPages -}}
+{{- else -}}
+{{- $pages = $pctx.Pages -}}
+{{- end -}}
+{{- $limit := .Site.Config.Services.RSS.Limit -}}
+{{- if ge $limit 1 -}}
+{{- $pages = $pages | first $limit -}}
+{{- end -}}
+{{- printf &amp;#34;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?xml version=\&amp;#34;1.0\&amp;#34; encoding=\&amp;#34;utf-8\&amp;#34; standalone=\&amp;#34;yes\&amp;#34;?&amp;gt;&lt;/span&gt;&amp;#34; | safeHTML }}
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;rss&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;version=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;2.0&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;xmlns:atom=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;http://www.w3.org/2005/Atom&amp;#34;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;channel&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;{{ if eq  .Title  .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{.}} on {{ end }}{{ .Site.Title }}{{ end }}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;link&amp;gt;&lt;/span&gt;{{ .Permalink }}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/link&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;description&amp;gt;&lt;/span&gt;Recent content {{ if ne  .Title  .Site.Title }}{{ with .Title }}in {{.}} {{ end }}{{ end }}on {{ .Site.Title }}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/description&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;generator&amp;gt;&lt;/span&gt;Hugo -- gohugo.io&lt;span class=&#34;nt&#34;&gt;&amp;lt;/generator&amp;gt;&lt;/span&gt;{{ with .Site.LanguageCode }}
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;language&amp;gt;&lt;/span&gt;{{.}}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/language&amp;gt;&lt;/span&gt;{{end}}{{ with .Site.Author.email }}
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;managingEditor&amp;gt;&lt;/span&gt;{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/managingEditor&amp;gt;&lt;/span&gt;{{end}}{{ with .Site.Author.email }}
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;webMaster&amp;gt;&lt;/span&gt;{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/webMaster&amp;gt;&lt;/span&gt;{{end}}{{ with .Site.Copyright }}
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;copyright&amp;gt;&lt;/span&gt;{{.}}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/copyright&amp;gt;&lt;/span&gt;{{end}}{{ if not .Date.IsZero }}
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;lastBuildDate&amp;gt;&lt;/span&gt;{{ .Date.Format &amp;#34;Mon, 02 Jan 2006 15:04:05 -0700&amp;#34; | safeHTML }}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/lastBuildDate&amp;gt;&lt;/span&gt;{{ end }}
+    {{- with .OutputFormats.Get &amp;#34;RSS&amp;#34; -}}
+    {{ printf &amp;#34;&lt;span class=&#34;nt&#34;&gt;&amp;lt;atom:link&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;href=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;%q&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;rel=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;\&amp;#34;self\&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;type=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;%q&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;/&amp;gt;&lt;/span&gt;&amp;#34; .Permalink .MediaType | safeHTML }}
+    {{- end -}}
+    {{ range $pages }}
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;item&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;{{ .Title }}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;link&amp;gt;&lt;/span&gt;{{ .Permalink }}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/link&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;pubDate&amp;gt;&lt;/span&gt;{{ .Date.Format &amp;#34;Mon, 02 Jan 2006 15:04:05 -0700&amp;#34; | safeHTML }}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/pubDate&amp;gt;&lt;/span&gt;
+      {{ with .Site.Author.email }}&lt;span class=&#34;nt&#34;&gt;&amp;lt;author&amp;gt;&lt;/span&gt;{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/author&amp;gt;&lt;/span&gt;{{end}}
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;guid&amp;gt;&lt;/span&gt;{{ .Permalink }}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/guid&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;description&amp;gt;&lt;/span&gt;{{ .Content | html }}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/description&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/item&amp;gt;&lt;/span&gt;
+    {{ end }}
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/channel&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/rss&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;但是我们发现有个问题,about之类的静态页面也被当成博文输出到RSS里了,这个体验可有点奇怪.正常的解决方案是如何将这些非正常的页面不被识别为RegularPages,不过我找了半天,并没有找到怎么处理.好在这个问题已经有人&lt;a href=&#34;https://benjamincongdon.me/blog/2020/01/14/Tips-for-Customizing-Hugo-RSS-Feeds/&#34;&gt;解决&lt;/a&gt;过了,将28行的代码改成&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-toml&#34; data-lang=&#34;toml&#34;&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;range&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;where&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Pages&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;.Section&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;post&amp;#34;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;但是这个方案并不完美,因为开头的代码刚刚处理了limit问题,这里一改,一夜回到解放前lol.&lt;/p&gt;
+&lt;p&gt;那我们把这个条件换到开头的if里即可.而且使用的section就是post,因为我们说过了,even这个主题只支持post目录下的文章,自然我们只要输出post目录就行了.&lt;/p&gt;
+&lt;p&gt;但是这还有个问题,因为hugo会生成每个section的landing page,名为posts.html,title是Posts,输出的RSS里总有这个文件. 这个可能跟我们刚刚改的方案有关系,少了regularpages的判断,那么条件可以改成&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-toml&#34; data-lang=&#34;toml&#34;&gt;&lt;span class=&#34;err&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;where&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pctx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;RegularPages&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;.Section&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;post&amp;#34;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;那自然是大功告成了,最终的模板如下:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-toml&#34; data-lang=&#34;toml&#34;&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pctx&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;IsHome&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}{{&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pctx&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pages&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;slice&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;IsHome&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pages&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;where&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pctx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;RegularPages&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;.Section&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;post&amp;#34;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;IsSection&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pages&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pctx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;RegularPages&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pages&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pctx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Pages&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;limit&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Config&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Services&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;RSS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Limit&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ge&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;limit&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pages&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pages&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;first&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;limit&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;printf&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;lt;?xml version=\&amp;#34;1.0\&amp;#34; encoding=\&amp;#34;utf-8\&amp;#34; standalone=\&amp;#34;yes\&amp;#34;?&amp;gt;&amp;#34;&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;safeHTML&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;rss&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;version&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;2.0&amp;#34;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;xmlns&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;atom&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;http://www.w3.org/2005/Atom&amp;#34;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;channel&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;eq&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Title&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Title&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}{{&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Title&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Title&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}{{.}}&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;on&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}{{&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Title&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;link&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Permalink&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;link&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;description&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Recent&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;content&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ne&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Title&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Title&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Title&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{{.}}&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;on&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Title&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;description&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;generator&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Hugo&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;--&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;gohugo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;io&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;generator&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;LanguageCode&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+    &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;language&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{.}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;language&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Author&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;email&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+    &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;managingEditor&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{.}}{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Author&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;name&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{.}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;managingEditor&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Author&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;email&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+    &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;webMaster&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{.}}{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Author&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;name&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{.}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;webMaster&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Copyright&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+    &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;copyright&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{.}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;copyright&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;IsZero&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+    &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;lastBuildDate&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Format&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Mon, 02 Jan 2006 15:04:05 -0700&amp;#34;&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;safeHTML&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;lastBuildDate&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;OutputFormats&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Get&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;RSS&amp;#34;&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;printf&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;lt;atom:link href=%q rel=\&amp;#34;self\&amp;#34; type=%q /&amp;gt;&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Permalink&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;MediaType&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;safeHTML&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;range&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pages&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+    &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;item&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Title&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;link&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Permalink&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;link&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pubDate&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Format&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Mon, 02 Jan 2006 15:04:05 -0700&amp;#34;&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;safeHTML&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pubDate&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Author&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;email&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;author&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{.}}{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Site&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Author&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;name&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{.}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;author&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+      &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;guid&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Permalink&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;guid&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;description&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Content&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;html&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;description&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;item&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+  &lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;channel&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;err&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;rss&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;部署&#34;&gt;部署&lt;/h2&gt;
+&lt;p&gt;我的博客放在github上,部署的话非常简单,只要把生成的public目录推送到github即可. 可以借助刘家财的&lt;a href=&#34;https://github.com/jiacai2050/jiacai2050.github.io/blob/hugo/deploy.sh&#34;&gt;部署脚本&lt;/a&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#!/usr/bin/env bash
+&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# If a command fails then the deploy stops&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; -e
 
+&lt;span class=&#34;nb&#34;&gt;printf&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;\033[0;32mDeploying updates to GitHub...\033[0m\n&amp;#34;&lt;/span&gt;
+
+rm -rf public/*
+
+&lt;span class=&#34;c1&#34;&gt;# Build the project.&lt;/span&gt;
+hugo &lt;span class=&#34;c1&#34;&gt;# if using a theme, replace with `hugo -t &amp;lt;YOURTHEME&amp;gt;`&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# Go To Public folder&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; public
+
+&lt;span class=&#34;c1&#34;&gt;# Add changes to git.&lt;/span&gt;
+git add -A .
+
+&lt;span class=&#34;c1&#34;&gt;# Commit changes.&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;msg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;rebuilding site &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;date&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; -n &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$*&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;then&lt;/span&gt;
+	&lt;span class=&#34;nv&#34;&gt;msg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$*&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;
+git commit -m &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$msg&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# Push source and build repos.&lt;/span&gt;
+git push origin master
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>tomcat7-maven-plugin指定 tomcat 版本</title>
+      <link>http://blog.shrp.me/adjust-embedded-tomcat-version.html</link>
+      <pubDate>Tue, 18 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.shrp.me/adjust-embedded-tomcat-version.html</guid>
+      <description>&lt;p&gt;最近用 Maven tomcat 插件启动的时候，突然发现很多关于 tomcat 扫描注解时发现一些 jar 包内 meta-info.class 的注解无效的信息，一般提示是Invalid byte tag in constant pool: 19。&lt;/p&gt;
 &lt;p&gt;这是为啥呢？原来 meta-info.class 是为了 Java9 的模块化产生的一个文件，本身在 Java8 里也用不上。所以 tomcat 扫描虽然报错了，但是却不影响启动和服务。&lt;/p&gt;
-
-&lt;p&gt;但是每次启动，屏幕显示一大片 ERROR，也不好排查真正的问题啊。搜索了一下，&lt;a href="https://stackoverflow.com/questions/53063324/severe-unable-to-process-jar-entry-module-info-class-in-tomcat-7-java-8"&gt;原来 tomcat 早已升级支持了&lt;/a&gt;，只要指定足够高的 tomcat 版本就能避免报错了。&lt;/p&gt;
-
+&lt;p&gt;但是每次启动，屏幕显示一大片 ERROR，也不好排查真正的问题啊。搜索了一下，&lt;a href=&#34;https://stackoverflow.com/questions/53063324/severe-unable-to-process-jar-entry-module-info-class-in-tomcat-7-java-8&#34;&gt;原来 tomcat 早已升级支持了&lt;/a&gt;，只要指定足够高的 tomcat 版本就能避免报错了。&lt;/p&gt;
 &lt;p&gt;具体版本号如下：&lt;/p&gt;
-
 &lt;blockquote&gt;
-  &lt;ul&gt;
-  &lt;li&gt;trunk for 9.0.0.M18 onwards&lt;/li&gt;
-  &lt;li&gt;8.5.x for 8.5.12 onwards&lt;/li&gt;
-  &lt;li&gt;8.0.x for 8.0.42 onwards&lt;/li&gt;
-  &lt;li&gt;7.0.x for 7.0.76 onwards&lt;/li&gt;
-  &lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;trunk for 9.0.0.M18 onwards&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/blockquote&gt;
-
-&lt;p&gt;那么怎么指定 tomcat7-maven-plugin 的 tomcat 版本呢？tomcat &lt;a href="https://tomcat.apache.org/maven-plugin-trunk/tomcat7-maven-plugin/adjust-embedded-tomcat-version.html"&gt;官网&lt;/a&gt;当然有说明啦，照猫画虎如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="xml"&gt;&amp;lt;project&amp;gt;
+&lt;ul&gt;
+&lt;li&gt;8.5.x for 8.5.12 onwards&lt;/li&gt;
+&lt;li&gt;8.0.x for 8.0.42 onwards&lt;/li&gt;
+&lt;li&gt;7.0.x for 7.0.76 onwards&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;那么怎么指定 tomcat7-maven-plugin 的 tomcat 版本呢？tomcat &lt;a href=&#34;https://tomcat.apache.org/maven-plugin-trunk/tomcat7-maven-plugin/adjust-embedded-tomcat-version.html&#34;&gt;官网&lt;/a&gt;当然有说明啦，照猫画虎如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;  1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 49
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 50
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 51
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 52
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 53
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 54
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 55
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 56
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 57
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 58
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 59
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 60
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 61
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 62
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 63
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 64
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 65
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 66
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 67
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 68
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 69
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 70
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 71
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 72
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 73
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 74
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 75
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 76
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 77
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 78
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 79
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 80
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 81
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 82
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 83
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 84
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 85
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 86
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 87
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 88
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 89
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 90
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 91
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 92
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 93
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 94
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 95
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 96
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 97
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 98
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 99
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;100
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;101
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;102
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;103
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;104
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;105
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;106
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;107
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;108
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;109
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;110
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;111
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;112
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;113
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;114
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;115
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;116
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;117
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;118
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;119
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;120
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;121
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;122
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;123
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;124
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;125
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;126
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;127
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;project&amp;gt;&lt;/span&gt;
    [...]
-  &amp;lt;properties&amp;gt;
-   &amp;lt;tomcat.version&amp;gt;7.0.76&amp;lt;/tomcat.version&amp;gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;properties&amp;gt;&lt;/span&gt;
+   &lt;span class=&#34;nt&#34;&gt;&amp;lt;tomcat.version&amp;gt;&lt;/span&gt;7.0.76&lt;span class=&#34;nt&#34;&gt;&amp;lt;/tomcat.version&amp;gt;&lt;/span&gt;
    [...]
-  &amp;lt;/properties&amp;gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/properties&amp;gt;&lt;/span&gt;
    [...]
-  &amp;lt;build&amp;gt;
-    &amp;lt;pluginManagement&amp;gt;
-      &amp;lt;plugins&amp;gt;
-        &amp;lt;plugin&amp;gt;
-          &amp;lt;groupId&amp;gt;org.apache.tomcat.maven&amp;lt;/groupId&amp;gt;
-          &amp;lt;artifactId&amp;gt;tomcat7-maven-plugin&amp;lt;/artifactId&amp;gt;
-          &amp;lt;version&amp;gt;2.3-SNAPSHOT&amp;lt;/version&amp;gt;
-          &amp;lt;dependencies&amp;gt;
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat.embed&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-embed-core&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-util&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-coyote&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-api&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;build&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;pluginManagement&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugins&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat.maven&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat7-maven-plugin&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.3-SNAPSHOT&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependencies&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat.embed&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-embed-core&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-util&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-coyote&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-api&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
 
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-jdbc&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-jdbc&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
 
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-dbcp&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-dbcp&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
 
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-servlet-api&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-servlet-api&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
 
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-jsp-api&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-jsp-api&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
 
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-jasper&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-jasper&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
 
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-jasper-el&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-jasper-el&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
 
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-el-api&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-el-api&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
 
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-catalina&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-catalina&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
 
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-tribes&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-tribes&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
 
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-catalina-ha&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-catalina-ha&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
 
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-annotations-api&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-annotations-api&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
 
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-juli&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-juli&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
 
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat.embed&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-embed-logging-juli&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
-          &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.tomcat.embed&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;tomcat-embed-logging-log4j&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;${tomcat.version}&amp;lt;/version&amp;gt;
-          &amp;lt;/dependency&amp;gt;
-          &amp;lt;/dependencies&amp;gt;
-        &amp;lt;/plugin&amp;gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat.embed&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-embed-logging-juli&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat.embed&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-embed-logging-log4j&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependencies&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
         [...]
-      &amp;lt;/plugins&amp;gt;
-    &amp;lt;/pluginManagement&amp;gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/pluginManagement&amp;gt;&lt;/span&gt;
     [...]
-  &amp;lt;/build&amp;gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
   [...]
-&amp;lt;/project&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;再启动，是不是顿时世界都清爽了呢？&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//adjust-embedded-tomcat-version.html</guid></item><item><title>拨公司 VPN 后，指定了外网 dns，却无法访问内网域名的解决办法</title><link>http://blog.shrp.me//Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html</link><pubdate>2020-02-02</pubdate><content:encoded>&lt;p&gt;今天我遇到一个情况，就是使用公司 VPN 后再指定家里的 DNS 后，公司的内网域名反而无法访问的问题。&lt;/p&gt;
-
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;再启动，是不是顿时世界都清爽了呢？&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>拨公司 VPN 后，指定了外网 dns，却无法访问内网域名的解决办法</title>
+      <link>http://blog.shrp.me/Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html</link>
+      <pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.shrp.me/Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html</guid>
+      <description>&lt;p&gt;今天我遇到一个情况，就是使用公司 VPN 后再指定家里的 DNS 后，公司的内网域名反而无法访问的问题。&lt;/p&gt;
 &lt;p&gt;这是因为我家路由器上的 DNSMASQ 配置了rebind_protection，这个选项是指当上级 DNS 返回了内网地址时，会将结果吞掉，并返回 NOERROR。这个选项是为了防止有些无良 ISP 的 DNS 劫持用的，有些路由可能就叫做“防止 DNS 劫持”的功能。&lt;/p&gt;
-
 &lt;p&gt;但是公司内网的地址解析肯定不是公网的，但是这个解析又配置在外网环境，导致内网域名也被外网 DNS 解析并返回，导致 DNSMASQ 当成了劫持，返回了 NOERROR。而 NOERROR 对于操作系统来说，就算是这个 DNS 解析到了，不会再询问第二第三 DNS 了，导致第二第三 DNS 就是配置公司的 DNS 也无济于事。&lt;/p&gt;
-
-&lt;p&gt;解决方法就是在路由器上关闭此功能，或者在 VPN 的 DNS 里调整一下顺序，将公司的 DNS 放在优先位置。公司的 DNS 会将外网域名解析为 NXDOMAIN，这样就会顺序使用第二第三 DNS 来访问外网了。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html</guid></item><item><title>【分享】一个 Java 线程池 bug 引发的 GC 机制思考</title><link>http://blog.shrp.me//BAMG55WHQt1iYrNSBRRh.html</link><pubdate>2020-01-02</pubdate><content:encoded>&lt;p&gt;原文地址：&lt;a href="https://www.infoq.cn/article/BAMG55WHQt1iYrNSBRRh?utm_source=rss&amp;amp;utm_medium=article"&gt;一个 Java 线程池 bug 引发的 GC 机制思考&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=""&gt;问题描述&lt;/h2&gt;
-
+&lt;p&gt;解决方法就是在路由器上关闭此功能，或者在 VPN 的 DNS 里调整一下顺序，将公司的 DNS 放在优先位置。公司的 DNS 会将外网域名解析为 NXDOMAIN，这样就会顺序使用第二第三 DNS 来访问外网了。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【分享】一个 Java 线程池 bug 引发的 GC 机制思考</title>
+      <link>http://blog.shrp.me/BAMG55WHQt1iYrNSBRRh.html</link>
+      <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.shrp.me/BAMG55WHQt1iYrNSBRRh.html</guid>
+      <description>&lt;p&gt;原文地址：&lt;a href=&#34;https://www.infoq.cn/article/BAMG55WHQt1iYrNSBRRh?utm_source=rss&amp;amp;utm_medium=article&#34;&gt;一个 Java 线程池 bug 引发的 GC 机制思考&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;问题描述&#34;&gt;问题描述&lt;/h2&gt;
 &lt;p&gt;前几天，在帮同事排查一个线上偶发的线程池错误&lt;/p&gt;
-
 &lt;p&gt;逻辑很简单，线程池执行了一个带结果的异步任务。但是最近有偶发的报错：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;java.util.concurrent.RejectedExecutionException:
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;java.util.concurrent.RejectedExecutionException:
  Task java.util.concurrent.FutureTask@a5acd19
  rejected from java.util.concurrent.ThreadPoolExecutor@30890a38
 [Terminated, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;本文中的模拟代码已经问题都是在 HotSpot java8 (1.8.0_221) 版本下模拟 &amp;amp; 出现的&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;本文中的模拟代码已经问题都是在 HotSpot java8 (1.8.0_221) 版本下模拟 &amp;amp; 出现的&lt;/p&gt;
 &lt;p&gt;下面是模拟代码，通过 Executors.newSingleThreadExecutor 创建一个单线程的线程池，然后在调用方获取 Future 的结果&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;49
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;50
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;51
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;52
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;53
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;54
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;55
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;ThreadPoolTest&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class="java "&gt;public class ThreadPoolTest {
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;args&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;kd&#34;&gt;final&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ThreadPoolTest&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;threadPoolTest&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ThreadPoolTest&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Thread&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Runnable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                &lt;span class=&#34;nd&#34;&gt;@Override&lt;/span&gt;
+                &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                    &lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
 
-    public static void main(String[] args) {
-        final ThreadPoolTest threadPoolTest = new ThreadPoolTest();
-        for (int i = 0; i &amp;lt; 8; i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
+                        &lt;span class=&#34;n&#34;&gt;Future&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;future&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;threadPoolTest&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;submit&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+                        &lt;span class=&#34;k&#34;&gt;try&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                            &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;future&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+                        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;catch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;InterruptedException&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                            &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;printStackTrace&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+                        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;catch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ExecutionException&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                            &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;printStackTrace&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+                        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;catch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Error&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                            &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;printStackTrace&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+                        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+                    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+                &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+            &lt;span class=&#34;o&#34;&gt;}).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;start&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-                        Future&amp;lt;String&amp;gt; future = threadPoolTest.submit();
-                        try {
-                            String s = future.get();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        } catch (Error e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }).start();
-        }
+        &lt;span class=&#34;c1&#34;&gt;// 子线程不停 gc，模拟偶发的 gc
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Thread&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Runnable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;nd&#34;&gt;@Override&lt;/span&gt;
+            &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                &lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                    &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;gc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+                &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+            &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;start&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-        // 子线程不停 gc，模拟偶发的 gc
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    System.gc();
-                }
-            }
-        }).start();
-    }
+    &lt;span class=&#34;cm&#34;&gt;/**
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;     * 异步执行任务
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;     * @return
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;     */&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Future&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;submit&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// 关键点，通过 Executors.newSingleThreadExecutor 创建一个单线程的线程池
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;ExecutorService&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;executorService&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Executors&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;newSingleThreadExecutor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;FutureTask&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;futureTask&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FutureTask&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Callable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;nd&#34;&gt;@Override&lt;/span&gt;
+            &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Object&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;call&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;throws&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Exception&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                &lt;span class=&#34;n&#34;&gt;Thread&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;sleep&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;50&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+                &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;currentTimeMillis&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+            &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;});&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;executorService&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;futureTask&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;futureTask&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-    /**
-     * 异步执行任务
-     * @return
-     */
-    public Future&amp;lt;String&amp;gt; submit() {
-        // 关键点，通过 Executors.newSingleThreadExecutor 创建一个单线程的线程池
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        FutureTask&amp;lt;String&amp;gt; futureTask = new FutureTask(new Callable() {
-            @Override
-            public Object call() throws Exception {
-                Thread.sleep(50);
-                return System.currentTimeMillis() + "";
-            }
-        });
-        executorService.execute(futureTask);
-        return futureTask;
-    }
-
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=""&gt;分析 &amp;amp; 疑问&lt;/h2&gt;
-
-&lt;p&gt;第一个思考的问题是：线程池为什么关闭了，代码中并没有手动关闭的地方。看一下&amp;nbsp;&lt;code&gt;Executors.newSingleThreadExecotor&lt;/code&gt;的源码实现：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;public static ExecutorService newSingleThreadExecutor() {
-    return new FinalizableDelegatedExecutorService
-            (new ThreadPoolExecutor(1, 1,
-                    0L, TimeUnit.MILLISECONDS,
-                    new LinkedBlockingQueue&amp;lt;Runnable&amp;gt;()));
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里创建的实际上是一个&amp;nbsp;&lt;code&gt;FinalizableDelegatedExecutorService&lt;/code&gt;，这个包装类重写了&amp;nbsp;&lt;code&gt;finalize&lt;/code&gt;函数，也就是说这个类会在被 GC 回收之前，先执行线程池的 shutdown 方法。&lt;/p&gt;
-
-&lt;p&gt;问题来了，&lt;strong&gt;GC 只会回收不可达（unreachable）的对象&lt;/strong&gt;，在&amp;nbsp;&lt;code&gt;submit&lt;/code&gt;函数的栈帧未执行完出栈之前，&amp;nbsp;&lt;code&gt;executorService&lt;/code&gt;应该是可达的才对。&lt;/p&gt;
-
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;分析--疑问&#34;&gt;分析 &amp;amp; 疑问&lt;/h2&gt;
+&lt;p&gt;第一个思考的问题是：线程池为什么关闭了，代码中并没有手动关闭的地方。看一下 &lt;code&gt;Executors.newSingleThreadExecotor&lt;/code&gt;的源码实现：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ExecutorService&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;newSingleThreadExecutor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FinalizableDelegatedExecutorService&lt;/span&gt;
+            &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ThreadPoolExecutor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;
+                    &lt;span class=&#34;n&#34;&gt;0L&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;TimeUnit&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;MILLISECONDS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;
+                    &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LinkedBlockingQueue&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Runnable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;()));&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这里创建的实际上是一个 &lt;code&gt;FinalizableDelegatedExecutorService&lt;/code&gt;，这个包装类重写了 &lt;code&gt;finalize&lt;/code&gt;函数，也就是说这个类会在被 GC 回收之前，先执行线程池的 shutdown 方法。&lt;/p&gt;
+&lt;p&gt;问题来了，&lt;strong&gt;GC 只会回收不可达（unreachable）的对象&lt;/strong&gt;，在 &lt;code&gt;submit&lt;/code&gt;函数的栈帧未执行完出栈之前， &lt;code&gt;executorService&lt;/code&gt;应该是可达的才对。&lt;/p&gt;
 &lt;p&gt;对于此问题，先抛出结论：&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;当对象仍存在于作用域（stack frame）时，&amp;nbsp;&lt;code&gt;finalize&lt;/code&gt;也可能会被执行&lt;/strong&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;strong&gt;当对象仍存在于作用域（stack frame）时， &lt;code&gt;finalize&lt;/code&gt;也可能会被执行&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;oracle jdk 文档中有一段关于 finalize 的介绍：&lt;/p&gt;
-
-&lt;p&gt;&lt;a href="https://docs.oracle.com/javas"&gt;https://docs.oracle.com/javas&amp;nbsp;&lt;/a&gt;…&lt;/p&gt;
-
+&lt;p&gt;&lt;a href=&#34;https://docs.oracle.com/javas&#34;&gt;https://docs.oracle.com/javas &lt;/a&gt;…&lt;/p&gt;
 &lt;blockquote&gt;
-  &lt;p&gt;A reachable object is any object that can be accessed in any potential continuing computation from any live thread.
-  Optimizing transformations of a program can be designed that reduce the number of objects that are reachable to be less than those which would naively be considered reachable. For example, a Java compiler or code generator may choose to set a variable or parameter that will no longer be used to null to cause the storage for such an object to be potentially reclaimable sooner.&lt;/p&gt;
+&lt;p&gt;A reachable object is any object that can be accessed in any potential continuing computation from any live thread.
+Optimizing transformations of a program can be designed that reduce the number of objects that are reachable to be less than those which would naively be considered reachable. For example, a Java compiler or code generator may choose to set a variable or parameter that will no longer be used to null to cause the storage for such an object to be potentially reclaimable sooner.&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;&lt;strong&gt;大概意思是：可达对象 (reachable object) 是可以从任何活动线程的任何潜在的持续访问中的任何对象；java 编译器或代码生成器可能会对不再访问的对象提前置为 null，使得对象可以被提前回收&lt;/strong&gt;&lt;/p&gt;
-
 &lt;p&gt;也就是说，在 jvm 的优化下，可能会出现对象不可达之后被提前置空并回收的情况&lt;/p&gt;
+&lt;p&gt;举个例子来验证一下（摘自&lt;a href=&#34;https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope&#34;&gt; https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope &lt;/a&gt;）：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;A&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;nd&#34;&gt;@Override&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;protected&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;finalize&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34; was finalized!&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-&lt;p&gt;举个例子来验证一下（摘自&lt;a href="https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope"&gt;&amp;nbsp;https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope&amp;nbsp;&lt;/a&gt;）：&lt;/p&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;args&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;throws&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;InterruptedException&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;Created &amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;1_000_000_000&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;1_000_00&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+                &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;gc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;done.&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class="java"&gt;class A {
-    @Override protected void finalize() {
-        System.out.println(this + " was finalized!");
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        A a = new A();
-        System.out.println("Created " + a);
-        for (int i = 0; i &amp;lt; 1_000_000_000; i++) {
-            if (i % 1_000_00 == 0)
-                System.gc();
-        }
-        System.out.println("done.");
-    }
-}
-
-// 打印结果
-Created A@1be6f5c3
-A@1be6f5c3 was finalized!//finalize 方法输出
-done.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;从例子中可以看到，如果 a 在循环完成后已经不再使用了，则会出现先执行 finalize 的情况；虽然从对象作用域来说，方法没有执行完，栈帧并没有出栈，但是还是会被提前执行。&lt;/p&gt;
-
+&lt;span class=&#34;c1&#34;&gt;// 打印结果
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Created&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;nd&#34;&gt;@1be6f5c3&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;nd&#34;&gt;@1be6f5c3&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;was&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;finalized&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//finalize 方法输出
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;done&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;从例子中可以看到，如果 a 在循环完成后已经不再使用了，则会出现先执行 finalize 的情况；虽然从对象作用域来说，方法没有执行完，栈帧并没有出栈，但是还是会被提前执行。&lt;/p&gt;
 &lt;p&gt;现在来增加一行代码，在最后一行打印对象 a，让编译器 / 代码生成器认为后面有对象 a 的引用&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class="java"&gt;...
-System.out.println(a);
-
-// 打印结果
-Created A@1be6f5c3
-done.
-A@1be6f5c3
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;从结果上看，finalize 方法都没有执行（因为 main 方法执行完成后进程直接结束了），更不会出现提前 finalize 的问题了&lt;/p&gt;
-
+&lt;span class=&#34;c1&#34;&gt;// 打印结果
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Created&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;nd&#34;&gt;@1be6f5c3&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;done&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;nd&#34;&gt;@1be6f5c3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;从结果上看，finalize 方法都没有执行（因为 main 方法执行完成后进程直接结束了），更不会出现提前 finalize 的问题了&lt;/p&gt;
 &lt;p&gt;基于上面的测试结果，再测试一种情况，在循环之前先将对象 a 置为 null，并且在最后打印保持对象 a 的引用&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;n&#34;&gt;A&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;Created &amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 手动置 null
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;1_000_000_000&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;1_000_00&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;gc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;done.&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class="java"&gt;A a = new A();
-System.out.println("Created " + a);
-a = null;// 手动置 null
-for (int i = 0; i &amp;lt; 1_000_000_000; i++) {
-    if (i % 1_000_00 == 0)
-        System.gc();
-}
-System.out.println("done.");
-System.out.println(a);
+&lt;span class=&#34;c1&#34;&gt;// 打印结果
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Created&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;nd&#34;&gt;@1be6f5c3&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;nd&#34;&gt;@1be6f5c3&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;was&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;finalized&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;done&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;
 
-// 打印结果
-Created A@1be6f5c3
-A@1be6f5c3 was finalized!
-done.
-null
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;从结果上看，手动置 null 的话也会导致对象被提前回收，虽然在最后还有引用，但此时引用的也是 null 了&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;从结果上看，手动置 null 的话也会导致对象被提前回收，虽然在最后还有引用，但此时引用的也是 null 了&lt;/p&gt;
 &lt;hr&gt;
-
 &lt;p&gt;现在再回到上面的线程池问题，根据上面介绍的机制，在分析没有引用之后，对象会被提前 finalize&lt;/p&gt;
-
-&lt;p&gt;可在上述代码中，return 之前明明是有引用的&amp;nbsp;&lt;code&gt;executorService.execute(futureTask)&lt;/code&gt;，为什么也会提前 finalize 呢？&lt;/p&gt;
-
+&lt;p&gt;可在上述代码中，return 之前明明是有引用的 &lt;code&gt;executorService.execute(futureTask)&lt;/code&gt;，为什么也会提前 finalize 呢？&lt;/p&gt;
 &lt;p&gt;猜测可能是由于在 execute 方法中，会调用 threadPoolExecutor，会创建并启动一个新线程，这时会发生一次主动的线程切换，导致在活动线程中对象不可达&lt;/p&gt;
-
 &lt;p&gt;结合上面 Oracle Jdk 文档中的描述“可达对象 (reachable object) 是可以从任何活动线程的任何潜在的持续访问中的任何对象”，可以认为可能是因为一次显示的线程切换，对象被认为不可达了，导致线程池被提前 finalize 了&lt;/p&gt;
-
 &lt;p&gt;下面来验证一下猜想：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;  1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 49
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 50
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 51
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 52
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 53
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 54
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 55
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 56
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 57
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 58
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 59
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 60
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 61
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 62
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 63
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 64
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 65
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 66
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 67
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 68
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 69
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 70
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 71
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 72
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 73
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 74
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 75
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 76
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 77
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 78
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 79
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 80
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 81
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 82
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 83
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 84
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 85
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 86
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 87
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 88
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 89
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 90
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 91
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 92
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 93
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 94
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 95
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 96
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 97
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 98
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 99
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;100
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;101
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;102
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;103
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;104
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;105
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;106
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;107
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 入口函数
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;FinalizedTest&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;args&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;kd&#34;&gt;final&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FinalizedTest&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;finalizedTest&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FinalizedTest&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Thread&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Runnable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                &lt;span class=&#34;nd&#34;&gt;@Override&lt;/span&gt;
+                &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                    &lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                        &lt;span class=&#34;n&#34;&gt;TFutureTask&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;future&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;finalizedTest&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;submit&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+                    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+                &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+            &lt;span class=&#34;o&#34;&gt;}).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;start&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Thread&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Runnable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;nd&#34;&gt;@Override&lt;/span&gt;
+            &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                &lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                    &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;gc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+                &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+            &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;start&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;TFutureTask&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;submit&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(){&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;TExecutorService&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;TExecutorService&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Executors&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;create&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;TExecutorService&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class="java"&gt;// 入口函数
-public class FinalizedTest {
-    public static void main(String[] args) {
-        final FinalizedTest finalizedTest = new FinalizedTest();
-        for (int i = 0; i &amp;lt; 8; i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        TFutureTask future = finalizedTest.submit();
-                    }
-                }
-            }).start();
-        }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    System.gc();
-                }
-            }
-        }).start();
-    }
-    public TFutureTask submit(){
-        TExecutorService TExecutorService = Executors.create();
-        TExecutorService.execute();
-        return null;
-    }
-}
+&lt;span class=&#34;c1&#34;&gt;//Executors.java，模拟 juc 的 Executors
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;Executors&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;cm&#34;&gt;/**
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;     * 模拟 Executors.createSingleExecutor
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;     * @return
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;     */&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;TExecutorService&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;create&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(){&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FinalizableDelegatedTExecutorService&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;TThreadPoolExecutor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-//Executors.java，模拟 juc 的 Executors
-public class Executors {
-    /**
-     * 模拟 Executors.createSingleExecutor
-     * @return
-     */
-    public static TExecutorService create(){
-        return new FinalizableDelegatedTExecutorService(new TThreadPoolExecutor());
-    }
+    &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;FinalizableDelegatedTExecutorService&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;extends&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;DelegatedTExecutorService&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
 
-    static class FinalizableDelegatedTExecutorService extends DelegatedTExecutorService {
+        &lt;span class=&#34;n&#34;&gt;FinalizableDelegatedTExecutorService&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;TExecutorService&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;executor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;kd&#34;&gt;super&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;executor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-        FinalizableDelegatedTExecutorService(TExecutorService executor) {
-            super(executor);
-        }
+        &lt;span class=&#34;cm&#34;&gt;/**
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;         * 析构函数中执行 shutdown，修改线程池状态
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;         * @throws Throwable
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;         */&lt;/span&gt;
+        &lt;span class=&#34;nd&#34;&gt;@Override&lt;/span&gt;
+        &lt;span class=&#34;kd&#34;&gt;protected&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;finalize&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;throws&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Throwable&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;kd&#34;&gt;super&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;shutdown&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-        /**
-         * 析构函数中执行 shutdown，修改线程池状态
-         * @throws Throwable
-         */
-        @Override
-        protected void finalize() throws Throwable {
-            super.shutdown();
-        }
-    }
+    &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;DelegatedTExecutorService&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;extends&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;TExecutorService&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
 
-    static class DelegatedTExecutorService extends TExecutorService {
+        &lt;span class=&#34;kd&#34;&gt;protected&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;TExecutorService&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
 
-        protected TExecutorService e;
+        &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;DelegatedTExecutorService&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;TExecutorService&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;executor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;e&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;executor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-        public DelegatedTExecutorService(TExecutorService executor) {
-            this.e = executor;
-        }
+        &lt;span class=&#34;nd&#34;&gt;@Override&lt;/span&gt;
+        &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-        @Override
-        public void execute() {
-            e.execute();
-        }
+        &lt;span class=&#34;nd&#34;&gt;@Override&lt;/span&gt;
+        &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;shutdown&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;shutdown&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-        @Override
-        public void shutdown() {
-            e.shutdown();
-        }
-    }
-}
+&lt;span class=&#34;c1&#34;&gt;//TThreadPoolExecutor.java，模拟 juc 的 ThreadPoolExecutor
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;TThreadPoolExecutor&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;extends&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;TExecutorService&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
 
-//TThreadPoolExecutor.java，模拟 juc 的 ThreadPoolExecutor
-public class TThreadPoolExecutor extends TExecutorService {
+    &lt;span class=&#34;cm&#34;&gt;/**
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;     * 线程池状态，false：未关闭，true 已关闭
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;     */&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;private&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AtomicBoolean&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ctl&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AtomicBoolean&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
 
-    /**
-     * 线程池状态，false：未关闭，true 已关闭
-     */
-    private AtomicBoolean ctl = new AtomicBoolean();
+    &lt;span class=&#34;nd&#34;&gt;@Override&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// 启动一个新线程，模拟 ThreadPoolExecutor.execute
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Thread&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Runnable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;nd&#34;&gt;@Override&lt;/span&gt;
+            &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
 
-    @Override
-    public void execute() {
-        // 启动一个新线程，模拟 ThreadPoolExecutor.execute
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+            &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;start&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;// 如果线程池被提前 shutdown，则抛出异常
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;1_000_000&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ctl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()){&lt;/span&gt;
+                &lt;span class=&#34;k&#34;&gt;throw&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;RuntimeException&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;reject!!![&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ctl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;]&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+            &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-            }
-        }).start();
-        // 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
-        // 如果线程池被提前 shutdown，则抛出异常
-        for (int i = 0; i &amp;lt; 1_000_000; i++) {
-            if(ctl.get()){
-                throw new RuntimeException("reject!!!["+ctl.get()+"]");
-            }
-        }
-    }
-
-    @Override
-    public void shutdown() {
-        ctl.compareAndSet(false,true);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;执行若干时间后报错：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;Exception in thread "Thread-1" java.lang.RuntimeException: reject!!![true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;从错误上来看，“线程池”同样被提前 shutdown 了，那么一定是由于新建线程导致的吗？&lt;/p&gt;
-
-&lt;p&gt;下面将新建线程修改为&amp;nbsp;&lt;code&gt;Thread.sleep&lt;/code&gt;测试一下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;//TThreadPoolExecutor.java，修改后的 execute 方法
-public void execute() {
-    try {
-        // 显式的 sleep 1 ns，主动切换线程
-        TimeUnit.NANOSECONDS.sleep(1);
-    } catch (InterruptedException e) {
-        e.printStackTrace();
-    }
-    // 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
-    // 如果线程池被提前 shutdown，则抛出异常
-    for (int i = 0; i &amp;lt; 1_000_000; i++) {
-        if(ctl.get()){
-            throw new RuntimeException("reject!!!["+ctl.get()+"]");
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;执行结果一样是报错&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;Exception in thread "Thread-3" java.lang.RuntimeException: reject!!![true]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;strong&gt;由此可得，如果在执行的过程中，发生一次显式的线程切换，则会让编译器 / 代码生成器认为外层包装对象不可达&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h2 id=""&gt;总结&lt;/h2&gt;
-
+    &lt;span class=&#34;nd&#34;&gt;@Override&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;shutdown&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;ctl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;compareAndSet&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;执行若干时间后报错：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;n&#34;&gt;Exception&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;thread&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;Thread-1&amp;#34;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;java&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;lang&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;RuntimeException&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;reject&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!!![&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;从错误上来看，“线程池”同样被提前 shutdown 了，那么一定是由于新建线程导致的吗？&lt;/p&gt;
+&lt;p&gt;下面将新建线程修改为 &lt;code&gt;Thread.sleep&lt;/code&gt;测试一下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;c1&#34;&gt;//TThreadPoolExecutor.java，修改后的 execute 方法
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;try&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// 显式的 sleep 1 ns，主动切换线程
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;TimeUnit&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;NANOSECONDS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;sleep&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;catch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;InterruptedException&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;printStackTrace&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;// 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;// 如果线程池被提前 shutdown，则抛出异常
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;1_000_000&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ctl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()){&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;throw&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;RuntimeException&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;reject!!![&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ctl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;]&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;执行结果一样是报错&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;n&#34;&gt;Exception&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;thread&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;Thread-3&amp;#34;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;java&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;lang&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;RuntimeException&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;reject&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!!![&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;由此可得，如果在执行的过程中，发生一次显式的线程切换，则会让编译器 / 代码生成器认为外层包装对象不可达&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
 &lt;p&gt;虽然 GC 只会回收不可达 GC ROOT 的对象，但是在编译器（没有明确指出，也可能是 JIT）/ 代码生成器的优化下，可能会出现对象提前置 null，或者线程切换导致的“提前对象不可达”的情况。&lt;/p&gt;
-
 &lt;p&gt;所以如果想在 finalize 方法里做些事情的话，一定在最后显示的引用一下对象（toString/hashcode 都可以），保持对象的可达性（reachable）&lt;/p&gt;
-
 &lt;p&gt;上面关于线程切换导致的对象不可达，没有官方文献的支持，只是个人一个测试结果，如有问题欢迎指出&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;综上所述，这种回收机制并不是 JDK 的 bug，而算是一个优化策略，提前回收而已。但&amp;nbsp;&lt;code&gt;Executors.newSingleThreadExecutor&lt;/code&gt;的实现里通过 finalize 来自动关闭线程池的做法是有 Bug 的，在经过优化后可能会导致线程池的提前 shutdown，从而导致异常。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;线程池的这个问题，在 JDK 的论坛里也是一个公开但未解决状态的问题&lt;a href="https://bugs.openjdk.java.net/browse/JDK-8145304"&gt;&amp;nbsp;https://bugs.openjdk.java.net/browse/JDK-8145304&amp;nbsp;&lt;/a&gt;。&lt;/p&gt;
-
+&lt;p&gt;&lt;strong&gt;综上所述，这种回收机制并不是 JDK 的 bug，而算是一个优化策略，提前回收而已。但 &lt;code&gt;Executors.newSingleThreadExecutor&lt;/code&gt;的实现里通过 finalize 来自动关闭线程池的做法是有 Bug 的，在经过优化后可能会导致线程池的提前 shutdown，从而导致异常。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;线程池的这个问题，在 JDK 的论坛里也是一个公开但未解决状态的问题&lt;a href=&#34;https://bugs.openjdk.java.net/browse/JDK-8145304&#34;&gt; https://bugs.openjdk.java.net/browse/JDK-8145304 &lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;不过在 JDK11 下，该问题已经被修复：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="java"&gt;JUC  Executors.FinalizableDelegatedExecutorService
-public void execute(Runnable command) {
-    try {
-        e.execute(command);
-    } finally { reachabilityFence(this); }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;strong&gt;本文转载自公众号玉刚说（ID：YugangTalk）。&lt;/strong&gt;&lt;/p&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;n&#34;&gt;JUC&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;Executors&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;FinalizableDelegatedExecutorService&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Runnable&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;command&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;try&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;command&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;finally&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;reachabilityFence&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;本文转载自公众号玉刚说（ID：YugangTalk）。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;原文链接&lt;/strong&gt;：&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;a href="https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw"&gt;https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//BAMG55WHQt1iYrNSBRRh.html</guid></item><item><title>怎么把脚本变为 Mac 的 App</title><link>http://blog.shrp.me//How-To-Convert-Shell-Script-Into-Mac-App.html</link><pubdate>2019-01-01</pubdate><content:encoded>&lt;p&gt;有时候我们需要把一些有意义的脚本变成程序，发布出来；或者对一些已有的程序增加一点定制，比如我下载的这款 OpenProj，好用是好用，但是默认的 app 已经不能直接打开，编辑 plist 什么的也不太好用。还好 Mac 操作系统这些操作都很简单。&lt;/p&gt;
-
+&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw&#34;&gt;https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>怎么把脚本变为 Mac 的 App</title>
+      <link>http://blog.shrp.me/How-To-Convert-Shell-Script-Into-Mac-App.html</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.shrp.me/How-To-Convert-Shell-Script-Into-Mac-App.html</guid>
+      <description>&lt;p&gt;有时候我们需要把一些有意义的脚本变成程序，发布出来；或者对一些已有的程序增加一点定制，比如我下载的这款 OpenProj，好用是好用，但是默认的 app 已经不能直接打开，编辑 plist 什么的也不太好用。还好 Mac 操作系统这些操作都很简单。&lt;/p&gt;
 &lt;p&gt;首先我们找到原来这个程序应该怎么去执行的。通过分析原来的 App 目录下的 Info.plist 文件，我发现原来的程序是通过&lt;code&gt;java -Xms128m -Xmx768m -classpath ./Resources/Java/openproj.jar:./Resources/Java/lib/  com.projity.main.Main&lt;/code&gt;命令来执行的。这不就是简单的 Java 命令嘛！打开 Mac 自带的 Automator，选择新建应用程序，在工作区中添加运行 shell 脚本，把上述命令粘贴进去不就行了嘛。可是点击右上角的运行，哎，不行啊，原来命令的目录是.，也就是相对路径，现在用 automator 工具执行是不行的。导出为 app 以后呢？试了一下，结果仍然不行。在 shell 命令里加一些调试的输出后发现，执行过程中相对路径是用户的 home，不是当前 app 的目录，也没有参数指向 app 的目录，这可真麻烦了。当然我们可以简单假设用户一定不会修改我 App 的名称，也一定会放到/Applications目录下，这样我们写成绝对路径是可以执行的。不过这样是合理的方案吗？当然不是了。怎么办呢？&lt;/p&gt;
-
 &lt;p&gt;还好难不倒我，通过在 shell 脚本前执行一段 AppleScript 脚本来获取当前应用的位置不就好了嘛！这段脚本如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;on run {input, parameters}
-        set p to POSIX path of (path to me)
-        return {p}
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;on run {input, parameters}
+		set p to POSIX path of (path to me)
+		return {p}
 end run
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然后再下边 shell 脚本的右上方选择“传递输入：作为自变量”，于是现在程序执行的地址就被当做第一个参数被传进来了。同样更新一下 shell 脚本来使用这段路径：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;java -Xms128m -Xmx768m -classpath "$1Contents/Resources/Java/openproj.jar":"$1Contents/Resources/Java/lib/" com.projity.main.Main
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;执行一下，嗯，不错！不过……为啥界面是英文的？刚刚我从命令行启动的好像是中文的呀？不用想，肯定是 app 里的 shell肯定是有定制化的成分，并没有直接获取系统的语言。还好这对 Java 程序来说非常简单，增加启动参数&lt;code&gt;-Duser.language=zh -Duser.region=CN&lt;/code&gt;就行了嘛。&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;然后再下边 shell 脚本的右上方选择“传递输入：作为自变量”，于是现在程序执行的地址就被当做第一个参数被传进来了。同样更新一下 shell 脚本来使用这段路径：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;java -Xms128m -Xmx768m -classpath &amp;#34;$1Contents/Resources/Java/openproj.jar&amp;#34;:&amp;#34;$1Contents/Resources/Java/lib/&amp;#34; com.projity.main.Main
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;执行一下，嗯，不错！不过……为啥界面是英文的？刚刚我从命令行启动的好像是中文的呀？不用想，肯定是 app 里的 shell肯定是有定制化的成分，并没有直接获取系统的语言。还好这对 Java 程序来说非常简单，增加启动参数&lt;code&gt;-Duser.language=zh -Duser.region=CN&lt;/code&gt;就行了嘛。&lt;/p&gt;
 &lt;p&gt;再试了一下，嗯，这回都对了！不过……能不能直接打开保存的文件，而不用每次都打开程序后在菜单里选择打开啊？太麻烦了！&lt;/p&gt;
-
 &lt;p&gt;嘛，这个倒也不是不能做，只是有些麻烦。首先是启动时的 AppleScript 要接收被打开的文件参数，然后传给 shell 脚本，然后 shell 脚本将其附加在最后作为程序的第一个参数给到 Java 就可以了。
 修改如下:&lt;/p&gt;
-
 &lt;p&gt;AppleScript:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;on run {input, parameters}
-    set inputCount to count of input
-    if inputCount is greater than or equal to 1 then
-        set fileName to item 1 of input
-        set p to {(POSIX path of (path to me) as string), (POSIX path of (fileName) as string)}
-        return p
-    else
-        set p to POSIX path of (path to me) as string
-        return {p}
-    end if
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;on run {input, parameters}
+	set inputCount to count of input
+	if inputCount is greater than or equal to 1 then
+		set fileName to item 1 of input
+		set p to {(POSIX path of (path to me) as string), (POSIX path of (fileName) as string)}
+		return p
+	else
+		set p to POSIX path of (path to me) as string
+		return {p}
+	end if
 end run
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;通过判断输入参数的个数来决定给 shell 的参数有几个。这里只选取第一个打开的文件作为参数传递给 Java。&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;通过判断输入参数的个数来决定给 shell 的参数有几个。这里只选取第一个打开的文件作为参数传递给 Java。&lt;/p&gt;
 &lt;p&gt;shell：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;if [ -f $2 ];then 
-    java -Xms128m -Xmx768m -Duser.language=zh -Duser.region=CN -classpath "$1Contents/Resources/Java/openproj.jar":"$1Contents/Resources/Java/lib/" com.projity.main.Main "$2"
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;if [ -f $2 ];then 
+	java -Xms128m -Xmx768m -Duser.language=zh -Duser.region=CN -classpath &amp;#34;$1Contents/Resources/Java/openproj.jar&amp;#34;:&amp;#34;$1Contents/Resources/Java/lib/&amp;#34; com.projity.main.Main &amp;#34;$2&amp;#34;
 else 
-    java -Xms128m -Xmx768m -Duser.language=zh -Duser.region=CN -classpath "$1Contents/Resources/Java/openproj.jar":"$1Contents/Resources/Java/lib/" com.projity.main.Main
+	java -Xms128m -Xmx768m -Duser.language=zh -Duser.region=CN -classpath &amp;#34;$1Contents/Resources/Java/openproj.jar&amp;#34;:&amp;#34;$1Contents/Resources/Java/lib/&amp;#34; com.projity.main.Main
 fi
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;操作界面镇楼！&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://stirp.github.io/img/1.jpg" alt="" title=""&gt;&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;操作界面镇楼！&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://stirp.github.io/img/1.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;这样再一保存，完美~通过系统选择以后打开的程序，果然能够直接打开了。&lt;/p&gt;
-
 &lt;p&gt;不过……这个程序的图标也太丑了吧？还好 Mac 可以这么简单的修改图标：在应用点击右键，显示简介，先去找个合适的 icns 文件，复制，然后选择简介左上角的图标，然后粘贴，图标就被替换啦！&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://stirp.github.io/img/2.jpg" alt="" title=""&gt;&lt;/p&gt;
-
-&lt;p&gt;有了这个方法，你自己的 shell 程序或者 Java 程序也能非常简单的变成 Mac 的 App 了。我自己的项目已经放到 &lt;a href="https://github.com/stirp/repackOpenProj"&gt;GitHub - stirp/repackOpenProj: OpenProj是一个微软 Project 的开源替代方案，但是最后的维护时间已经是十年前了。在最新的 Mac 操作系统上没法直接使用，于是我重新封装为一个 App，需要系统拥有 java 命令。&lt;/a&gt;，欢迎 follow。&lt;/p&gt;
-
-&lt;p&gt;PS：如果你要按照我的文章去操作，请注意我没有把程序的本体，也就是上文中出现的 Java 目录及 icns 文件放上来，大家可以自行到&lt;a href="https://sourceforge.net/projects/openproj/"&gt;OpenProj - Project Management download \| SourceForge.net&lt;/a&gt;下载。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//How-To-Convert-Shell-Script-Into-Mac-App.html</guid></item><item><title>我是中国人，谷歌的蜻蜓项目必须继续</title><link>http://blog.shrp.me//i-am-chinese-the-dragonfly-must-go-on.html</link><pubdate>2018-12-02</pubdate><content:encoded>&lt;p&gt;有两个省，甲省有B企业生产粮食，但是日常在里面掺屎，群众虽然心知肚明，可是敢怒不敢言，时不时吃了一嘴屎；乙省规定健全，乙省的G企业虽然不像自己口头上说的那样不作恶，但也没像乙省的Y企业那么恶劣：Y企业曾主动把符合乙省规定，但是违背甲省规定的记者吃的食物发给甲省，好让甲省的警察抓住这名记者。&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&#34;http://stirp.github.io/img/2.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;有了这个方法，你自己的 shell 程序或者 Java 程序也能非常简单的变成 Mac 的 App 了。我自己的项目已经放到 &lt;a href=&#34;https://github.com/stirp/repackOpenProj&#34;&gt;GitHub - stirp/repackOpenProj: OpenProj是一个微软 Project 的开源替代方案，但是最后的维护时间已经是十年前了。在最新的 Mac 操作系统上没法直接使用，于是我重新封装为一个 App，需要系统拥有 java 命令。&lt;/a&gt;，欢迎 follow。&lt;/p&gt;
+&lt;p&gt;PS：如果你要按照我的文章去操作，请注意我没有把程序的本体，也就是上文中出现的 Java 目录及 icns 文件放上来，大家可以自行到&lt;a href=&#34;https://sourceforge.net/projects/openproj/&#34;&gt;OpenProj - Project Management download | SourceForge.net&lt;/a&gt;下载。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>我是中国人，谷歌的蜻蜓项目必须继续</title>
+      <link>http://blog.shrp.me/i-am-chinese-the-dragonfly-must-go-on.html</link>
+      <pubDate>Sun, 02 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.shrp.me/i-am-chinese-the-dragonfly-must-go-on.html</guid>
+      <description>&lt;p&gt;有两个省，甲省有B企业生产粮食，但是日常在里面掺屎，群众虽然心知肚明，可是敢怒不敢言，时不时吃了一嘴屎；乙省规定健全，乙省的G企业虽然不像自己口头上说的那样不作恶，但也没像乙省的Y企业那么恶劣：Y企业曾主动把符合乙省规定，但是违背甲省规定的记者吃的食物发给甲省，好让甲省的警察抓住这名记者。&lt;/p&gt;
 &lt;p&gt;不过自打G企业从甲省逐出后，B企业越发肆无忌惮，粮食里的屎越来越多了，大家都从黑市上买G企业的粮食。G企业想想，与其让大家去黑市买，不如我把我的陈年旧米卖给他们，好让他们少吃点屎，我也赚点钱。其实G企业也想卖新米，但是甲省不让卖，G企业的领导也没法子呀。&lt;/p&gt;
-
 &lt;p&gt;可是实在没想到，这么一件好事，甲省那在黑市买卖的人居然还不领情：我们吃了这么多年的屎了，懂的自然就不吃了，剩下的人必然都爱吃屎！你们来卖陈年大米，我们黑市怎么卖高价呢！黑市赚不到钱，自然卖的人少了，我怎么吃新米呢！&lt;/p&gt;
-
 &lt;p&gt;G企业的员工和乙省的人民也纷纷表示不赞同：我们自己都不吃的陈年大米为什么要卖给他们吃？这不符合我们的人权价值观！你这是作恶！什么，Y企业做的更过分？我不管Y企业，G企业就是不行！&lt;/p&gt;
-
-&lt;p&gt;最后甲省人民只好继续吃屎，G企业员工和乙省人民也满意的回家了。回家打开手机一看，正巧乙省媒体新闻曰：你看甲省人民在吃屎，而且，他们吃得好开心啊！乙省人民想起家里刚买的G企业的米绝对不会是陈米，在日记本上写道：“啊，这是多么有意义的一天啊！”&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//i-am-chinese-the-dragonfly-must-go-on.html</guid></item><item><title>为 Java 程序增加一个异步任务功能</title><link>http://blog.shrp.me//add-sync-task-for-Java.html</link><pubdate>2018-11-04</pubdate><content:encoded>&lt;p&gt;最近在开发一个系统，里面经常在一个请求里处理一系列的任务，其中一些任务是不需要阻塞请求结束的应答的，因此最简单的办法就是异步去执行这些任务。然而如果程序关闭导致任务被丢失，那是最不可接受的情况，因此这种情况下要把任务提交到 MQ 里，利用 MQ 的失败重试来保证非程序性任务失败（毕竟程序性问题最好解决，而非程序性丢失通常不容易恢复）。&lt;/p&gt;
-
+&lt;p&gt;最后甲省人民只好继续吃屎，G企业员工和乙省人民也满意的回家了。回家打开手机一看，正巧乙省媒体新闻曰：你看甲省人民在吃屎，而且，他们吃得好开心啊！乙省人民想起家里刚买的G企业的米绝对不会是陈米，在日记本上写道：“啊，这是多么有意义的一天啊！”&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>为 Java 程序增加一个异步任务功能</title>
+      <link>http://blog.shrp.me/add-sync-task-for-Java.html</link>
+      <pubDate>Sun, 04 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.shrp.me/add-sync-task-for-Java.html</guid>
+      <description>&lt;p&gt;最近在开发一个系统，里面经常在一个请求里处理一系列的任务，其中一些任务是不需要阻塞请求结束的应答的，因此最简单的办法就是异步去执行这些任务。然而如果程序关闭导致任务被丢失，那是最不可接受的情况，因此这种情况下要把任务提交到 MQ 里，利用 MQ 的失败重试来保证非程序性任务失败（毕竟程序性问题最好解决，而非程序性丢失通常不容易恢复）。&lt;/p&gt;
 &lt;p&gt;但是一般来说在系统里做这么一个事情是非常复杂而又繁琐的，要初始化 MQ 的生产者和消费者，然后定义传输的 DTO，然后在异步任务处写一个破坏阅读的任务提交，来把任务提交给 MQ。怎么才能简化这个过程呢？&lt;/p&gt;
-
 &lt;p&gt;我想出并实现了一个模块来解决这个问题。如果原来的代码是&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="Java"&gt;dbmapper.create(po);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;那么在我的模块写起来就是&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="Java"&gt;dbmapper.task().create(po);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;是不是看起来很简单，又一目了然？&lt;/p&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Java&#34; data-lang=&#34;Java&#34;&gt;&lt;span class=&#34;n&#34;&gt;dbmapper&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;create&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;po&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;那么在我的模块写起来就是&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Java&#34; data-lang=&#34;Java&#34;&gt;&lt;span class=&#34;n&#34;&gt;dbmapper&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;task&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;create&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;po&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;是不是看起来很简单，又一目了然？&lt;/p&gt;
 &lt;p&gt;其实原理很简单，task()函数一定是得到了一个代理，通过这个代理拦截了 create 函数，将其函数名称、函数所在的接口名称和函数实参，通过 mq 传递给消费者；而消费者注册了相同的 mapper，因此通过反射获得了上述参数，从而在消费者实现了实际的数据库操作。怎么能让不同的 db 接口上都有 task 函数？当然就是让他们实现 task 接口啦，Java8 提供了default 函数，正好可以拿来提供 task 函数的默认实现，每个 dbmapper 直接声明 implements 接口，但是不需要再写 task 函数。在 task 函数里，每个 dbmapper 的代理可以在获取的时候懒创建。&lt;/p&gt;
-
 &lt;p&gt;原理是很简单的，写起来的方法也有很多种，由于是工作需要，代码和具体设计并不能提供出来，但是有了这个原理，相信大家都能自己做到。&lt;/p&gt;
-
 &lt;p&gt;对于我来说，这个模块编写过程中有一个容易出错的地方，原因是我在代理中获取到的 method 去获取其所在的 interface 的名称时，一开始用了getDeclaringClass 后又对其获取 interfaces，但是其实getDeclaringClass这个函数本来就是返回这个 method 所在的 interface 的，继续获取 interface 只能是把函数本来所在的接口跳过，最终消费者最后拿到的接口名称和函数是不对应的。只要 getDeclaringClass 的 name 就是 interface 的名称了。&lt;/p&gt;
-
-&lt;p&gt;此外还有一个地方需要留意，就是实参发给消费者的时候要对每个参数分别序列化后得到一个 String 数组，消费者先按照接口名称和函数名称得到形参的类型，然后才能对 String 数组按顺序反序列化成实参，这点其实无需多言，诸位实践的时候自然会想得到。（直接反序列化成 Object[] 可行吗？我没有试过，大家可以自己试一下，哈哈）&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//add-sync-task-for-Java.html</guid></item><item><title>公交撞桥坠河的最好观点</title><link>http://blog.shrp.me//The-best-opinion-of-bus-crash-into-the-river.html</link><pubdate>2018-11-04</pubdate><content:encoded>&lt;p&gt;今天在微博看到一条关于公交撞桥坠河的&lt;a href="https://weibo.com/5173399462/H0OWQ3x46?type=comment#_rnd1541263764030"&gt;观点&lt;/a&gt;，其观点跟我的看法高度相似，所以就粘贴到这里来：
- &lt;img src="http://stirp.github.io/img/005E73wOgy1fwtu7vma6rj30mi1tu19y.jpg" alt="" title=""&gt; &lt;/p&gt;
-
+&lt;p&gt;此外还有一个地方需要留意，就是实参发给消费者的时候要对每个参数分别序列化后得到一个 String 数组，消费者先按照接口名称和函数名称得到形参的类型，然后才能对 String 数组按顺序反序列化成实参，这点其实无需多言，诸位实践的时候自然会想得到。（直接反序列化成 Object[] 可行吗？我没有试过，大家可以自己试一下，哈哈）&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>公交撞桥坠河的最好观点</title>
+      <link>http://blog.shrp.me/The-best-opinion-of-bus-crash-into-the-river.html</link>
+      <pubDate>Sun, 04 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.shrp.me/The-best-opinion-of-bus-crash-into-the-river.html</guid>
+      <description>&lt;p&gt;今天在微博看到一条关于公交撞桥坠河的&lt;a href=&#34;https://weibo.com/5173399462/H0OWQ3x46?type=comment#_rnd1541263764030&#34;&gt;观点&lt;/a&gt;，其观点跟我的看法高度相似，所以就粘贴到这里来：
+&lt;img src=&#34;http://stirp.github.io/img/005E73wOgy1fwtu7vma6rj30mi1tu19y.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;一开始我想司机是不是想借小车的撞击力减速，从而撞桥停住，但是看撞击的位置，一个老司机肯定不会犯这样的错误；而且最后撞到桥上的时候不减速不打方向盘，说明撞下河是其预期内的。&lt;/p&gt;
-
 &lt;p&gt;但是我猜他一定看了很多车从桥上冲下河去逃生的故事，他很有可能想撞下去可以生还的。这个猜测得看最后车到河里前的视频是否有逃生的动作才知道，可是这段视频都没有流传，无从判断。&lt;/p&gt;
-
-&lt;p&gt;如果司机并没有逃生的动作，说明司机其实是由轻生念头的——这个问题本质上是我国底层劳动人民的地位和收入问题，也是财富观价值观的问题，短期内不见好转趋势，民众间的相互攻击恐怕会持续很久一阵子了。&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//The-best-opinion-of-bus-crash-into-the-river.html</guid></item><item><title>Intellij VM 参数优化</title><link>http://blog.shrp.me//Intellij-VM-optiomazation.html</link><pubdate>2018-10-30</pubdate><content:encoded>&lt;p&gt;今天看了&lt;a href="https://mp.weixin.qq.com/s/DMzz717E2oZ3XwcIsM8Dgw"&gt;《IntelliJ IDEA 内存优化最佳实践》&lt;/a&gt;一文，正好之前自己也做了自己机器的 Intellij 的内存优化，原来文章里的最优方案跟我自用的是一样的，都是增加内存。&lt;/p&gt;
-
+&lt;p&gt;如果司机并没有逃生的动作，说明司机其实是由轻生念头的——这个问题本质上是我国底层劳动人民的地位和收入问题，也是财富观价值观的问题，短期内不见好转趋势，民众间的相互攻击恐怕会持续很久一阵子了。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Intellij VM 参数优化</title>
+      <link>http://blog.shrp.me/Intellij-VM-optiomazation.html</link>
+      <pubDate>Tue, 30 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.shrp.me/Intellij-VM-optiomazation.html</guid>
+      <description>&lt;p&gt;今天看了&lt;a href=&#34;https://mp.weixin.qq.com/s/DMzz717E2oZ3XwcIsM8Dgw&#34;&gt;《IntelliJ IDEA 内存优化最佳实践》&lt;/a&gt;一文，正好之前自己也做了自己机器的 Intellij 的内存优化，原来文章里的最优方案跟我自用的是一样的，都是增加内存。&lt;/p&gt;
 &lt;p&gt;我的配置如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;-Xms2g
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;-Xms2g
 -Xmx4g
 -XX:MaxPermSize=2g
 -XX:ReservedCodeCacheSize=2g
 -XX:+UseCompressedOops
 -Dide.no.platform.update=true
-&lt;/code&gt;&lt;/pre&gt;</content:encoded><guid>http://blog.shrp.me//Intellij-VM-optiomazation.html</guid></item><item><title>NBA2k9怎么在Win10运行?</title><link>http://blog.shrp.me//How-to-run-NBA-2k9-on-Win10.html</link><pubdate>2018-10-24</pubdate><content:encoded>&lt;p&gt;如果现在新电脑要装Windows，那基本上都是Win10了。然而对于一些有意思的老游戏，比如像拥有巅峰姚明和火箭的NBA2k9，Win10并不能直接玩，使用兼容设置也依然如此。到谷歌上搜索，也基本没有什么有效信息。&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>NBA2k9怎么在Win10运行?</title>
+      <link>http://blog.shrp.me/How-to-run-NBA-2k9-on-Win10.html</link>
+      <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.shrp.me/How-to-run-NBA-2k9-on-Win10.html</guid>
+      <description>&lt;p&gt;如果现在新电脑要装Windows，那基本上都是Win10了。然而对于一些有意思的老游戏，比如像拥有巅峰姚明和火箭的NBA2k9，Win10并不能直接玩，使用兼容设置也依然如此。到谷歌上搜索，也基本没有什么有效信息。&lt;/p&gt;
 &lt;p&gt;然而我还是不死心，安装虚拟机总可以了吧 ？用了免费的VirtualBox，嗯……对显卡的虚拟化基本没有，3D加速能力相当于无，就算是装了工具，在1060上也没法看全特效。还好瞄了一眼VMware，嗯？非商业用途的VMware Player可以免费下载？多年前了解这个是免费的，但是只能运行虚拟机，不能创建。下载下来打开一看，现在的VMware Player原来也支持创建虚拟机了。不但如此，其网络支持pptp拨号，支持显卡虚拟化，上G的显存都有用武之地，这都是VirtualBox所没有的。&lt;/p&gt;
-
-&lt;p&gt;以前一直用开源的VirtualBox，没想到商业虚拟机软件在娱乐领域有独特的优势。玩了两把游戏，嗯，真香！&lt;/p&gt;</content:encoded><guid>http://blog.shrp.me//How-to-run-NBA-2k9-on-Win10.html</guid></item><item><title>赞同了回答: 被家暴的女人都有什么共同点？ 张佳玮的知乎动态</title><link>http://blog.shrp.me//Commons-of-Women-Been-domestic-violence.html</link><pubdate>2018-10-14</pubdate><content:encoded>&lt;p&gt;还好几日前使用了赞助的 RssHub 关注了&lt;a href="https://www.zhihu.com/people/zhang-jia-wei"&gt;张佳玮&lt;/a&gt;，看到了他赞的一篇极好的文章，没想到打开后已经被删除。如果不是 Rss，这段文字只能留在极少数人的脑海中。为了留下这篇文章，转载到这里，但是我看不到作者是谁，知乎账号也不能使用，实在无法联系作者授权，只能无奈的说，请作者看到后联系我，非常惭愧。&lt;/p&gt;
-
-&lt;p&gt;以下是原文：&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;等了好多年，终于等到了这个适合我回答的问题！我在妇联工作过，我同时也是志愿者，我见到过太多被家暴妇女了，都是多次被家暴。&lt;/p&gt;
-  
-  &lt;p&gt;我的回答只是描述我接待过的妇女，家暴发生，绝对是施暴者的错。家暴的原因是这个丈夫太暴虐，而不是因为这个妻子如何如何。任何问题都不该用武力解决，我个人认为家暴家人的男人，不配拥有妻儿。&lt;/p&gt;
-  
-  &lt;p&gt;我不能概括所有被家暴妇女的特征，她们也许仅仅就是太倒霉了。但是我特别了解被家暴并来到妇联求助的妇女，她们都有很显著的共同特征。&lt;/p&gt;
-  
-  &lt;p&gt;1、她们有多次婚史；2、她们没有工作。&lt;/p&gt;
-  
-  &lt;p&gt;我接待过的几十余名被家暴妇女，百分之九十五以上具有这两个特征。只有一个妇女有工作，她开了一家缝补店，她最后还是把婚离了。&lt;/p&gt;
-  
-  &lt;p&gt;其他共同特征：年龄大概是三十四岁的比较多，学历都是高中及以下。&lt;/p&gt;
-  
-  &lt;p&gt;然而我从来没有遇到过初婚被家暴的妇女，我猜测可能是女性年轻的时候，如果不想继续婚姻，离婚再婚都比较容易。年纪大了之后，考虑到自己的年龄大了，再次离婚不好再找，以及自己和孩子的经济来源等问题，洒脱离婚很难。&lt;/p&gt;
-  
-  &lt;p&gt;我想，被家暴但是没有来妇联求助的妇女，大概分三种：一种是被打一次就离婚的，所以我基本没见过二十几岁的被家暴妇女。一种是默默忍受了一辈子的，所以我很少见到五六十岁往上的被家暴妇女。还有一种先忍耐，受不了就直接把丈夫杀了的，她们在女子监狱，那是另一本沉痛的书。&lt;/p&gt;
-  
-  &lt;p&gt;来到妇联的妇女，如果伤痕严重，我们会建议她马上就医，留下就诊证明。马上报警，在派出所留下备案记录。起诉的时候都是有力证据。&lt;/p&gt;
-  
-  &lt;p&gt;但是她们需要的帮助，我们真的很难做到，她们想要的结果就是——希望老公不再打她们，希望老公继续养她们。&lt;/p&gt;
-  
-  &lt;p&gt;我们会让她们把老公的联系方式给我们，给她老公打电话，一般在我们表明身份时，她们的老公会很不礼貌的挂掉电话。&lt;/p&gt;
-  
-  &lt;p&gt;接下来我会对妇女说：“大姐，你看，你的老公我们根本无法和他进行交流，根据我们多年的工作经验，以及妇联多年被家暴案例来看，家暴这个事情，只有零次和无数次，家暴的男人是一定要离开的，我们还是建议你勇敢离婚。我们有免费法律咨询服务的，如果你需要了解的法律知识，我可以马上打电话给律师，让律师为您解答。”&lt;/p&gt;
-  
-  &lt;p&gt;妇女回答：“我不能离婚啊，我没有收入。”&lt;/p&gt;
-  
-  &lt;p&gt;我说：“没有收入就找工作啊，你看你不是健健康康的吗。”&lt;/p&gt;
-  
-  &lt;p&gt;妇女：“我找不到工作我什么都不会。”&lt;/p&gt;
-  
-  &lt;p&gt;我说：“不是这样的大姐，你看西街那几家盲人按摩院，盲人不是能养活自己吗。河心街的修鞋店你知道嘛，老板是残疾人没有双腿，照样靠修鞋养家糊口。你看你不是好手好脚的嘛，我们可以把你推荐到妇联一直联系的制衣厂和家政公司，他们会给你安排一份足以让你自食其力的工作。去制衣厂绝对没问题的，这是我们市最好的制衣厂，生产的衣服要出口到外国的，老板是个非常好的大姐，我们推荐了几个残疾妇女过去，活路一下就上手了，月收入都很不错。家政公司是我们市最大的那个家政公司，他们提供免费培训，学好了之后他们还推荐工作，家政行业其实有点辛苦，但是收入很可观的。”&lt;/p&gt;
-  
-  &lt;p&gt;我说了这一番很长的话，遗憾的是，这番话最长也最没用。因为说了就像没说一样，她们不接腔，会开始哭或者抱怨，为什么命苦为什么又嫁错了人，一般来说她们都是二婚三婚的。&lt;/p&gt;
-  
-  &lt;p&gt;有很强的无力感和无能感。&lt;/p&gt;
-  
-  &lt;p&gt;印象比较深的是一个妇女，她的初中女儿陪她来的。我也是这般劝她，她说我什么都不会找不到工作啊。&lt;/p&gt;
-  
-  &lt;p&gt;她的女儿突然略带恼怒地说：“不会就学啊！”&lt;/p&gt;
-  
-  &lt;p&gt;我当时觉得这么多年的劝解，这次总算不再是像以前一样一拳打到棉花上。&lt;/p&gt;
-  
-  &lt;p&gt;我连连点头：“对啊大姐，你看你女儿都懂你还不懂！”&lt;/p&gt;
-  
-  &lt;p&gt;我希望新一代的女孩，都能像这个女孩一样，让我看到希望！&lt;/p&gt;
-  
-  &lt;p&gt;希望她们拥有这四种精神：自尊自强自立自爱。&lt;/p&gt;
-  
-  &lt;p&gt;这就是妇联一直倡导的“四自精神”。&lt;/p&gt;
-  
-  &lt;p&gt;哀其不幸怒其不争，我见过那么多来妇联被家暴妇女，她们有相同的哀怨、相同的无助、相同的软弱、相同的懒惰、相同的不自信和依赖心。&lt;/p&gt;
-  
-  &lt;p&gt;所以我一直对我女儿有一个期望，长大了一定要经济独立，经济独立和精神独立是一体的。其余的，结不结婚、生不生孩子、爱同性或者异性，无所谓的。&lt;/p&gt;
-  
-  &lt;p&gt;因为命运非常的无常，你是否会遇到虐待你的父母、家暴你的伴侣、欺负你的邻居、有时候是不可控的。&lt;/p&gt;
-  
-  &lt;p&gt;如果一个人说爱你，却又打你，那他一定是不爱你或者不够爱你。那么这时候只有自己才能救自己，怎么救，三条路：相信法律、经济独立、学习知识。&lt;/p&gt;
-  
-  &lt;p&gt;软弱、忍受、顺从、是最最无用的。&lt;/p&gt;
-  
-  &lt;p&gt;如果一个人打你，你忍受，他就会怜惜你而不打你了吗？不可能，他只会打得更顺手更频繁。只有坚硬、爆发、反抗，才能救自己，才能让他知道软柿子没那么好捏。&lt;/p&gt;
-  
-  &lt;p&gt;记得那些扬言如果妻子报警就弄死妻子的家暴男，在见到妇联人员和警察时，怂得像什么似的。纸老虎而已！可是妻子在他们日复一日的威胁里，已经战战兢兢。&lt;/p&gt;
-  
-  &lt;p&gt;被家暴这个事情，我也经历过的，我其实不想提的，我的父母在很我很小就离婚了，我和父亲、继母、以及他们两的孩子一起生活，我是挨过很多打的，有一次父亲一个巴掌过来我嘴角就流血了，几岁的时候继母用铁衣架打我，两条大腿流血了。&lt;/p&gt;
-  
-  &lt;p&gt;亲人们都说我小时候性格非常非常倔强，打我我也不认错，我就是不服软，打死我吧，我眼睛里面有寒光，我说：“打小孩犯法，等我长大了，就和你们断绝关系，我会记住的，等我长大了你老了，我也不会忘记我挨的打。”&lt;/p&gt;
-  
-  &lt;p&gt;十三岁时，父亲说：洗碗！我可能那天被骂了，或许是我就不想洗，那是一个对我没有爱的家，我为什么要温顺。我说：我不洗。父亲：不洗就滚出去。&lt;/p&gt;
-  
-  &lt;p&gt;然后我打开门出去了，我不敢上街，晚上了我也怕坏人，我到楼顶的鸡笼旁边坐着，面对黑夜思考我这一生的悲伤。&lt;/p&gt;
-  
-  &lt;p&gt;这次虽然没挨打，但印象很深刻，因为这个晚上之后，我患上了多年不愈的荨麻疹。&lt;/p&gt;
-  
-  &lt;p&gt;我从小就明白只有自己才能救自己，忍耐和软弱帮不了我。怎样才能救自己，是十几年以后才明白的，就是那三条路：相信法律、经济独立、学习知识。&lt;/p&gt;
-  
-  &lt;p&gt;相信法律，不管是儿童还是成人，只要去妇联和派出所求救，就一定能得到帮助的，即便这个帮助不像你想象中一样可以旧貌换新颜，也足以大大改善你的困境。&lt;/p&gt;
-  
-  &lt;p&gt;经济独立，我长大之后亲人们都说我性格现在很和顺，和小时候完全不一样。因为我经济独立了，生活不用依靠父母，我远离了父母。没有了要反抗和愤怒的东西，自然不用再倔强。如果一直伸手向别人要钱，别人会觉得你活着都要靠我，自然想打你就打你。&lt;/p&gt;
-  
-  &lt;p&gt;学习知识，学习知识才能明辨是非，被性侵的孩子才能明白错的不是自己，是性侵者；被校园霸凌的人才会明白，如果老师对你说“他为什么不打别人就打你”，那么这个老师不配为师；女性才会明白“我负责貌美如花，你负责赚钱养家”这句话会害人。&lt;/p&gt;
-  
-  &lt;p&gt;我常常思考：家庭暴力、校园霸凌、性侵…到底要怎样才能杜绝？答案是不能杜绝，一个孩子没办法决定自己生在一个不会虐待自己的家庭，人群中总有一定比例的恋童癖，社会中总有人无法抑制自己欺负弱小的本性。&lt;/p&gt;
-  
-  &lt;p&gt;后来我年岁渐长，再读了一个法律学位，渐渐想明白，法律和教育就是让社会文明的两个基础。法治社会建设得越好，人们受教育程度越高，暴力和侵犯才会越少。受教育程度高的男人，爱动手打人的可能性更低。受教育程度高的女人，经济独立的可能性更大。受教育程度高的人类，遛狗拴绳的几率更高，在电梯里面抽烟的几率更低。&lt;/p&gt;
-  
-  &lt;p&gt;我也渐渐变成了一个看起来很计较的人。生活中遇到侵犯我权益的一定要投诉。工作中认为同事执行工作或处理问题不合理的时候，就是吵架也要说清楚讲明白。小区里有人遛狗不拴，我也要直接走过去说麻烦拴一下行不行。&lt;/p&gt;
-  
-  &lt;p&gt;我不怕吵架、不怕投诉、不怕报警和起诉。因为我希望大家都守规矩，讲道理。忍了算了，不能改善现状。&lt;/p&gt;
-  
-  &lt;p&gt;我一个人去外地，被酒店欺负的时候，我冷静地对他们说：你们已经侵犯了消费者权益，我再给你们十分钟时间解决问题，否则我会采取法律手段。&lt;/p&gt;
-  
-  &lt;p&gt;有时候奸商会给我说：“给你赔偿金，不要投诉我们了行不行。”&lt;/p&gt;
-  
-  &lt;p&gt;不好意思，不要钱。&lt;/p&gt;
-  
-  &lt;p&gt;朋友问我：“你就拿钱多好。”&lt;/p&gt;
-  
-  &lt;p&gt;我不想啊，我就是要投诉，就是要给奸商好看，似乎这样做，这个世界就能更文明一点，我希望将来子孙后代生活的世界，大家都遵守法律法规，文明礼貌互相尊重。我拿了钱而不投诉，就像在纵容奸商似的，我的钱包里多了钱，可是世界没有变得更好。&lt;/p&gt;
-  
-  &lt;p&gt;我好不容易走过残酷的童年，我不再是弱小，我还能帮助弱小，所以活得特别用力。&lt;/p&gt;
-  
-  &lt;p&gt;我长大了，并且有知识懂法律不容易被欺负，我自己或者自己一家过得好，这个世界没有变得更好，是长久之计吗？我不受欺负，并不能保证我的孩子，或者孩子的孩子将来也能如我一般。只有这个世界变得更好，他们才能活得更好。&lt;/p&gt;
-  
-  &lt;p&gt;某些既得利益者们有没有想过，你靠着见不得光的方法敛了财，得了势，你的世世代代也能在不公平的社会竞争中占上风吗？如果规则都是潜规则，那么人人都会有无力感，既不知道自己是怎么输的，也不知道该怎样去赢。&lt;/p&gt;
-  
-  &lt;p&gt;只有法律、法规、公平、正义、光明，才能让这个世界变得更好。&lt;/p&gt;
-  
-  &lt;p&gt;我不要世界改变我，我要改变这个世界，一点点也行。&lt;/p&gt;
-&lt;/blockquote&gt;</content:encoded><guid>http://blog.shrp.me//Commons-of-Women-Been-domestic-violence.html</guid></item></channel>
+&lt;p&gt;以前一直用开源的VirtualBox，没想到商业虚拟机软件在娱乐领域有独特的优势。玩了两把游戏，嗯，真香！&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
 </rss>

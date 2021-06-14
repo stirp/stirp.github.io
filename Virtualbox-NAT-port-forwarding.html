@@ -1,185 +1,312 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
-    <meta name="author" content="尚弟" />
-    <meta name="robots" content="all" />
-    <meta http-equiv="Content-Language" content="zh-cn" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="Keywords" content="尚弟 博客 笔记"/>
-    <meta name="Description" content="尚弟 博客 笔记"/>
-    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
-    <title>尚弟的小笔记</title>
-    <link rel="shortcut icon" href="/static/favicon.png"/>
-    <link rel="stylesheet" type="text/css" href="main.css" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Virtualbox NAT模式下配置端口映射 - 尚弟的小笔记</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="尚弟" /><meta name="description" content="在VirtualBox NAT网络模式下面，Guest系统对Host系统和局域网内其他的机器都是不可见的，所以Guest上面的任何服务都不能被" /><meta name="keywords" content="尚弟, 博客, 笔记" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
+
+
+<link rel="canonical" href="http://blog.shrp.me/Virtualbox-NAT-port-forwarding.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Virtualbox NAT模式下配置端口映射" />
+<meta property="og:description" content="在VirtualBox NAT网络模式下面，Guest系统对Host系统和局域网内其他的机器都是不可见的，所以Guest上面的任何服务都不能被" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.shrp.me/Virtualbox-NAT-port-forwarding.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2011-03-07T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2021-06-12T15:13:29&#43;08:00" />
+
+<meta itemprop="name" content="Virtualbox NAT模式下配置端口映射">
+<meta itemprop="description" content="在VirtualBox NAT网络模式下面，Guest系统对Host系统和局域网内其他的机器都是不可见的，所以Guest上面的任何服务都不能被"><meta itemprop="datePublished" content="2011-03-07T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2021-06-12T15:13:29&#43;08:00" />
+<meta itemprop="wordCount" content="1457">
+<meta itemprop="keywords" content="," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Virtualbox NAT模式下配置端口映射"/>
+<meta name="twitter:description" content="在VirtualBox NAT网络模式下面，Guest系统对Host系统和局域网内其他的机器都是不可见的，所以Guest上面的任何服务都不能被"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
 <body>
-<div class="main">
-    <div class="header">
-        <ul id="pages">
-            <li>
-                <a href="/">首页</a>
-            </li>
-            <li>
-                <a href="/#/tags">标签</a>
-            </li>
-            <li>
-                <a href="/#/archive">归档</a>
-            </li>
-            <li>
-                <a href="/rss.xml" target="_blank">RSS</a>
-            </li>
-        </ul>
-    </div>
-    <div class="wrap-header">
-        <h1>
-            <a href="/" id="title"></a>
-        </h1>
-    </div>
-    <div id="md" style="display: none;">
-<!-- markdown -->
-在VirtualBox NAT网络模式下面，Guest系统对Host系统和局域网内其他的机器都是不可见的，所以Guest上面的任何服务都不能被外界访问到。这样很多情况下，是不能接受的，比如想在Guest系统为Ubuntu的虚拟机上面开启SSH服务，怎么办呢？两个方法，1、把网络连接方式改成Bridge模式，这样虚拟机的Guest系统就有了自己的IP地址，相当于局域网内的一台主机，这样Host系统和局域网内的其他机器都可以访问他了。2、在NAT网络模式下，开启端口映射。需要什么服务就映射什么端口数据。今天我以VirtualBox的guest系统Ubuntu系统开启SSH服务为例来介绍怎么配置端口映射。
-
- 首先介绍一下NAT网络模式下端口映射的优点，首先节省一个IP地址（有些情况下，IP地址资源比较宝贵）；其次，这样可以避免Server暴露过多的接口，提供什么服务暴露什么接口，这样保证Server安全性。当然这种方式也有一定的局限性，服务的端口必须是固定的，假如服务的端口是动态的，那么这种方式就没有办法了，比如NFS服务就不能用端口映射来实现。
-
- 下面介绍怎样在VirtualBox的Guest系统Ubuntu中启用SSH服务，Host系统为Windows。SSH服务的端口是22端口，理论上可以把Host系统Windows的22端口映射到Ubuntu的22端口。这样做不好，假如有一天Host系统Windows也要在22端口上提供服务就没有办法了，所以我们准备用Host系统的2222端口，映射到Ubuntu的22端口。
-
-#####1. 首先从命令行进入到VirtualBox安装目录。
-
-#####2. 在安装目录下面，目录下面有VBoxManage.exe程序。如果你的VirtualBox版本是3.2之前的版本，请执行如下的命令：
-
-```
-VBoxManage setextradata "Linux Guest" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/guestssh/Protocol" TCP
-
-VBoxManage setextradata "Linux Guest" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/guestssh/GuestPort" 22
-
-VBoxManage setextradata "Linux Guest" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/guestssh/HostPort" 2222
-```
-其中“Linux Guest”是你虚拟机Ubuntu系统的名称，pcnet表示Ubuntu选的是PCNet的网卡，0表示第一块网卡，guestssh是自定义的名字。TCP表示只映射TCP协议的数据，当然也可以设置成UDP协议数据映射的。
-
-通过以上命令就可以完成Host Windows系统2222端口到Guest Ubuntu系统的端口映射了。当然需要三个命令来完成端口映射挺麻烦的，Oracle公司也这样认为。在最新的3.2版本中，VirtualBox简化了端口映射的步骤，只要一条命令就可以了。
-``VBoxManage modifyvm "VM name" --natpf1 "guestssh,tcp,,2222,,22"``
-“VM name”就是Guest系统的名字，guestssh还是用户自定义的名字。你可能发现第三个参数和第五个参数空白了，是什么意思呢？当Host系统有多块网卡的时候，通过第三个参数指定那款网卡的2222端口映射；如果Host系统有多块网卡时，通过第五个参数指定那个网卡的22端口接收数据。
-``VBoxManage modifyvm "VM name" --natpf1 "guestssh,tcp,,2222,10.0.2.19,22"``
-以上的命令式将Host系统2222端口的数据映射到Guest系统的10.0.2.10网卡的22端口。
-
-#####3. 已经设置好了端口映射，现在登录到Ubuntu中，安装SSH server。
-
-sudo apt-get install openssh-server4、在Windows平台下面用ssh工具，通过2222端口登录到Ubuntu就可以了。也可以从局域网内的机器上，用SSH工具，通过Host机器的2222端口登录到Ubuntu的ssh服务。
-
-至此，Ubuntu的SSH服务已经暴露在局域网了。通过上面的描述可以看到在VirtualBox3.2版本中端口映射已经做得比较简单，并且非常完善了。
-
-如有错误欢迎指正。
-<!-- markdown end -->
-    </div>
-    <div class="entry" id="main">
-<!-- content -->
-<p>在VirtualBox NAT网络模式下面，Guest系统对Host系统和局域网内其他的机器都是不可见的，所以Guest上面的任何服务都不能被外界访问到。这样很多情况下，是不能接受的，比如想在Guest系统为Ubuntu的虚拟机上面开启SSH服务，怎么办呢？两个方法，1、把网络连接方式改成Bridge模式，这样虚拟机的Guest系统就有了自己的IP地址，相当于局域网内的一台主机，这样Host系统和局域网内的其他机器都可以访问他了。2、在NAT网络模式下，开启端口映射。需要什么服务就映射什么端口数据。今天我以VirtualBox的guest系统Ubuntu系统开启SSH服务为例来介绍怎么配置端口映射。</p>
-
-<p>首先介绍一下NAT网络模式下端口映射的优点，首先节省一个IP地址（有些情况下，IP地址资源比较宝贵）；其次，这样可以避免Server暴露过多的接口，提供什么服务暴露什么接口，这样保证Server安全性。当然这种方式也有一定的局限性，服务的端口必须是固定的，假如服务的端口是动态的，那么这种方式就没有办法了，比如NFS服务就不能用端口映射来实现。</p>
-
-<p>下面介绍怎样在VirtualBox的Guest系统Ubuntu中启用SSH服务，Host系统为Windows。SSH服务的端口是22端口，理论上可以把Host系统Windows的22端口映射到Ubuntu的22端口。这样做不好，假如有一天Host系统Windows也要在22端口上提供服务就没有办法了，所以我们准备用Host系统的2222端口，映射到Ubuntu的22端口。</p>
-
-<h5 id="1virtualbox">1. 首先从命令行进入到VirtualBox安装目录。</h5>
-
-<h5 id="2vboxmanageexevirtualbox32">2. 在安装目录下面，目录下面有VBoxManage.exe程序。如果你的VirtualBox版本是3.2之前的版本，请执行如下的命令：</h5>
-
-<pre><code>VBoxManage setextradata "Linux Guest" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/guestssh/Protocol" TCP
-
-VBoxManage setextradata "Linux Guest" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/guestssh/GuestPort" 22
-
-VBoxManage setextradata "Linux Guest" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/guestssh/HostPort" 2222
-</code></pre>
-
-<p>其中“Linux Guest”是你虚拟机Ubuntu系统的名称，pcnet表示Ubuntu选的是PCNet的网卡，0表示第一块网卡，guestssh是自定义的名字。TCP表示只映射TCP协议的数据，当然也可以设置成UDP协议数据映射的。</p>
-
-<p>通过以上命令就可以完成Host Windows系统2222端口到Guest Ubuntu系统的端口映射了。当然需要三个命令来完成端口映射挺麻烦的，Oracle公司也这样认为。在最新的3.2版本中，VirtualBox简化了端口映射的步骤，只要一条命令就可以了。
-<code>VBoxManage modifyvm "VM name" --natpf1 "guestssh,tcp,,2222,,22"</code>
-“VM name”就是Guest系统的名字，guestssh还是用户自定义的名字。你可能发现第三个参数和第五个参数空白了，是什么意思呢？当Host系统有多块网卡的时候，通过第三个参数指定那款网卡的2222端口映射；如果Host系统有多块网卡时，通过第五个参数指定那个网卡的22端口接收数据。
-<code>VBoxManage modifyvm "VM name" --natpf1 "guestssh,tcp,,2222,10.0.2.19,22"</code>
-以上的命令式将Host系统2222端口的数据映射到Guest系统的10.0.2.10网卡的22端口。</p>
-
-<h5 id="3ubuntusshserver">3. 已经设置好了端口映射，现在登录到Ubuntu中，安装SSH server。</h5>
-
-<p>sudo apt-get install openssh-server4、在Windows平台下面用ssh工具，通过2222端口登录到Ubuntu就可以了。也可以从局域网内的机器上，用SSH工具，通过Host机器的2222端口登录到Ubuntu的ssh服务。</p>
-
-<p>至此，Ubuntu的SSH服务已经暴露在局域网了。通过上面的描述可以看到在VirtualBox3.2版本中端口映射已经做得比较简单，并且非常完善了。</p>
-
-<p>如有错误欢迎指正。</p>
-<!-- content end -->
-    </div>
-    <br>
-    <br>
-
-    <div id="disqus_thread"></div>
-    <div class="footer">
-        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
-    </div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">尚弟的小笔记</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
-<script src="main.js"></script>
-<script id="content" type="text/mustache">
-    <h1>{{title}}</h1>
-    <div class="tag">
-    {{date}}
-    {{#tags}}
-    <a href="/#/tag/{{name}}">#{{name}}</a>
-    {{/tags}}
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/tags.html">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/post.html">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/rss.xml">
+        <li class="mobile-menu-item">RSS</li>
+      </a><a href="/blogrolls.html">
+        <li class="mobile-menu-item">友情链接</li>
+      </a><a href="/about.html">
+        <li class="mobile-menu-item">关于我</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">尚弟的小笔记</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags.html">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post.html">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/rss.xml">RSS</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls.html">友情链接</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about.html">关于我</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Virtualbox NAT模式下配置端口映射</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2011-03-07 </span>
+        
+          <span class="more-meta"> 约 1457 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>在VirtualBox NAT网络模式下面，Guest系统对Host系统和局域网内其他的机器都是不可见的，所以Guest上面的任何服务都不能被外界访问到。这样很多情况下，是不能接受的，比如想在Guest系统为Ubuntu的虚拟机上面开启SSH服务，怎么办呢？两个方法，1、把网络连接方式改成Bridge模式，这样虚拟机的Guest系统就有了自己的IP地址，相当于局域网内的一台主机，这样Host系统和局域网内的其他机器都可以访问他了。2、在NAT网络模式下，开启端口映射。需要什么服务就映射什么端口数据。今天我以VirtualBox的guest系统Ubuntu系统开启SSH服务为例来介绍怎么配置端口映射。</p>
+<p>首先介绍一下NAT网络模式下端口映射的优点，首先节省一个IP地址（有些情况下，IP地址资源比较宝贵）；其次，这样可以避免Server暴露过多的接口，提供什么服务暴露什么接口，这样保证Server安全性。当然这种方式也有一定的局限性，服务的端口必须是固定的，假如服务的端口是动态的，那么这种方式就没有办法了，比如NFS服务就不能用端口映射来实现。</p>
+<p>下面介绍怎样在VirtualBox的Guest系统Ubuntu中启用SSH服务，Host系统为Windows。SSH服务的端口是22端口，理论上可以把Host系统Windows的22端口映射到Ubuntu的22端口。这样做不好，假如有一天Host系统Windows也要在22端口上提供服务就没有办法了，所以我们准备用Host系统的2222端口，映射到Ubuntu的22端口。</p>
+<p>#####1. 首先从命令行进入到VirtualBox安装目录。</p>
+<p>#####2. 在安装目录下面，目录下面有VBoxManage.exe程序。如果你的VirtualBox版本是3.2之前的版本，请执行如下的命令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">VBoxManage setextradata &#34;Linux Guest&#34; &#34;VBoxInternal/Devices/pcnet/0/LUN#0/Config/guestssh/Protocol&#34; TCP
+
+VBoxManage setextradata &#34;Linux Guest&#34; &#34;VBoxInternal/Devices/pcnet/0/LUN#0/Config/guestssh/GuestPort&#34; 22
+
+VBoxManage setextradata &#34;Linux Guest&#34; &#34;VBoxInternal/Devices/pcnet/0/LUN#0/Config/guestssh/HostPort&#34; 2222
+</code></pre></td></tr></table>
+</div>
+</div><p>其中“Linux Guest”是你虚拟机Ubuntu系统的名称，pcnet表示Ubuntu选的是PCNet的网卡，0表示第一块网卡，guestssh是自定义的名字。TCP表示只映射TCP协议的数据，当然也可以设置成UDP协议数据映射的。</p>
+<p>通过以上命令就可以完成Host Windows系统2222端口到Guest Ubuntu系统的端口映射了。当然需要三个命令来完成端口映射挺麻烦的，Oracle公司也这样认为。在最新的3.2版本中，VirtualBox简化了端口映射的步骤，只要一条命令就可以了。
+<code>VBoxManage modifyvm &quot;VM name&quot; --natpf1 &quot;guestssh,tcp,,2222,,22&quot;</code>
+“VM name”就是Guest系统的名字，guestssh还是用户自定义的名字。你可能发现第三个参数和第五个参数空白了，是什么意思呢？当Host系统有多块网卡的时候，通过第三个参数指定那款网卡的2222端口映射；如果Host系统有多块网卡时，通过第五个参数指定那个网卡的22端口接收数据。
+<code>VBoxManage modifyvm &quot;VM name&quot; --natpf1 &quot;guestssh,tcp,,2222,10.0.2.19,22&quot;</code>
+以上的命令式将Host系统2222端口的数据映射到Guest系统的10.0.2.10网卡的22端口。</p>
+<p>#####3. 已经设置好了端口映射，现在登录到Ubuntu中，安装SSH server。</p>
+<p>sudo apt-get install openssh-server4、在Windows平台下面用ssh工具，通过2222端口登录到Ubuntu就可以了。也可以从局域网内的机器上，用SSH工具，通过Host机器的2222端口登录到Ubuntu的ssh服务。</p>
+<p>至此，Ubuntu的SSH服务已经暴露在局域网了。通过上面的描述可以看到在VirtualBox3.2版本中端口映射已经做得比较简单，并且非常完善了。</p>
+<p>如有错误欢迎指正。</p>
+
     </div>
 
-</script>
-<script id="pagesTemplate" type="text/mustache">
-    {{#pages}}
-    <li>
-        <a href="{{path}}">{{title}}</a>
-    </li>
-    {{/pages}}
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">尚弟</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-06-12
+        <a href="https://github.com/stirp/stirp.github.io/commit/7e4096a4b0a9fcb6c66839c35464229ff717d2fe" title="update imported">(7e4096a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content">© Copyright 2021 by 尚弟</span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/.html"></a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/Cross-PlantForm-C-compilation-in-windows.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">打造在windows下边的跨平台C语言代码编译环境</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/goal-achieved.html">
+            <span class="next-text nav-default">目标达成</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
 
-</script>
-<script>
-    $(document).ready(function () {
-        $.ajax({
-            url: "main.json",
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                $("#title").html(data.name);
-                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
-                var pagesHtml = pagesTemplate.render({"pages": data.pages});
-                $("#pages").append(pagesHtml);
-                //path
-                var path = "Virtualbox-NAT-port-forwarding.html";
-                //path end
-                var now = 0;
-                for (var i = 0; i < data.posts.length; ++i)
-                    if (path == data.posts[i].path)
-                        now = i;
-                var post = data.posts[now];
-                var tmp = post.tags.split(" ");
-                var tags = [];
-                for (var i = 0; i < tmp.length; ++i)
-                    if (tmp[i].length > 0)
-                        tags.push({"name": tmp[i]});
-                var contentTemplate = Hogan.compile($("#content").html());
-                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
-                $("#main").prepend(contentHtml);
-                if (data.disqus_shortname.length > 0) {
-                    var disqus_shortname = data.disqus_shortname;
-                    (function () {
-                        var dsq = document.createElement('script');
-                        dsq.type = 'text/javascript';
-                        dsq.async = true;
-                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                    })();
-                }
-            }
-        });
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'stirp';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:srpwy@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/stirp" class="iconfont icon-github" title="github"></a>
+  <a href="http://blog.shrp.me/rss.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2010 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>shrp</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-cn".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?249d9fe60c26e4771c81467fa3b43862";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
 </script>
+
+
+
+
+
+
 </body>
 </html>

@@ -1,424 +1,525 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
-    <meta name="author" content="尚弟" />
-    <meta name="robots" content="all" />
-    <meta http-equiv="Content-Language" content="zh-cn" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="Keywords" content="尚弟 博客 笔记"/>
-    <meta name="Description" content="尚弟 博客 笔记"/>
-    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
-    <title>尚弟的小笔记</title>
-    <link rel="shortcut icon" href="/static/favicon.png"/>
-    <link rel="stylesheet" type="text/css" href="main.css" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>JAVA线程和 IO 的同步异步，阻塞非阻塞的个人理解 - 尚弟的小笔记</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="尚弟" /><meta name="description" content="最近在工作中跟同事讨论起了一个调用是否算是非阻塞、异步时，居然发现我们对同一段代码的定性是不一样的，于是就想写一篇文章把这个问题琢磨琢磨。由" /><meta name="keywords" content="尚弟, 博客, 笔记" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
+
+
+<link rel="canonical" href="http://blog.shrp.me/personal-understanding-of-async-and-blocking.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="JAVA线程和 IO 的同步异步，阻塞非阻塞的个人理解" />
+<meta property="og:description" content="最近在工作中跟同事讨论起了一个调用是否算是非阻塞、异步时，居然发现我们对同一段代码的定性是不一样的，于是就想写一篇文章把这个问题琢磨琢磨。由" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.shrp.me/personal-understanding-of-async-and-blocking.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2018-08-19T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2021-06-12T15:13:29&#43;08:00" />
+
+<meta itemprop="name" content="JAVA线程和 IO 的同步异步，阻塞非阻塞的个人理解">
+<meta itemprop="description" content="最近在工作中跟同事讨论起了一个调用是否算是非阻塞、异步时，居然发现我们对同一段代码的定性是不一样的，于是就想写一篇文章把这个问题琢磨琢磨。由"><meta itemprop="datePublished" content="2018-08-19T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2021-06-12T15:13:29&#43;08:00" />
+<meta itemprop="wordCount" content="2788">
+<meta itemprop="keywords" content="java,sync,async,blocking,non-blocking," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="JAVA线程和 IO 的同步异步，阻塞非阻塞的个人理解"/>
+<meta name="twitter:description" content="最近在工作中跟同事讨论起了一个调用是否算是非阻塞、异步时，居然发现我们对同一段代码的定性是不一样的，于是就想写一篇文章把这个问题琢磨琢磨。由"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
 <body>
-<div class="main">
-    <div class="header">
-        <ul id="pages">
-            <li>
-                <a href="/">首页</a>
-            </li>
-            <li>
-                <a href="/#/tags">标签</a>
-            </li>
-            <li>
-                <a href="/#/archive">归档</a>
-            </li>
-            <li>
-                <a href="/rss.xml" target="_blank">RSS</a>
-            </li>
-        </ul>
-    </div>
-    <div class="wrap-header">
-        <h1>
-            <a href="/" id="title"></a>
-        </h1>
-    </div>
-    <div id="md" style="display: none;">
-<!-- markdown -->
-  最近在工作中跟同事讨论起了一个调用是否算是非阻塞、异步时，居然发现我们对同一段代码的定性是不一样的，于是就想写一篇文章把这个问题琢磨琢磨。由于这里涉及很多专有名词的含义，因此就先从字典开始研究。
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">尚弟的小笔记</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/tags.html">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/post.html">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/rss.xml">
+        <li class="mobile-menu-item">RSS</li>
+      </a><a href="/blogrolls.html">
+        <li class="mobile-menu-item">友情链接</li>
+      </a><a href="/about.html">
+        <li class="mobile-menu-item">关于我</li>
+      </a>
+  </ul>
 
-名词字典
---------------------------
-1. 同步阻塞 IO——内核态阻塞 IO。这种 IO 模型的工作方式是这样的：用户空间的进程发起一个系统调用，这导致了用户空间的这个进程被阻塞，无法执行任何进程上的其它代码，直到系统调用返回。
-2. 同步非阻塞 IO——内核态非阻塞 IO。这种 IO 的工作方式是这样的：用户空间的进程发起一个系统调用，进程并不会被阻塞，而是回到用户空间继续执行，但是会时不时通过系统调用回到内核检查之前的调用是否结束。如果没有结束，则返回用户空间继续执行，并且很快再次通过系统调用去检查结果，直到结果被返回。
-3. 异步 IO——用户态 IO。这种 IO 的工作方式是这样的：用户空间的进程发起系统调用，进程不阻塞立刻回到用户空间继续执行，也不需要回到内核检查结果，而是内核在结果准备好后复制给用户进程，再通知进程数据已经准备好了。这样用户进程不需要到内核中进行 IO 操作，虽然真正的 IO 仍然是内核完成的。
-
-（如果对上述文字难以理解，可以参考[聊聊Linux 五种IO模型 - 简书](https://www.jianshu.com/p/486b0965c296)这篇文章）
-
-4. 同步请求——调用方主动获取被调方的结果
-5. 异步请求——调用方被动收到被调方的通知
-6. Java线程阻塞状态——blocked
-7. Java线程等待状态——waiting，timed waiting
-
-对于 Java 线程的状态，可以参考下图：
-
-![](http://stirp.github.io/img/n2U3N.png)
-
-我们到底在说的是哪个概念？
---------------------------
-
-一般当我们在说同步异步，阻塞非阻塞的时候，我们说的到底是哪个概念呢？
-
-是系统内核 IO 类型吗？如果这样的话，根本是没有异步阻塞的说法的，因为 IO 只有异步模型，按照异步模型的行为，是不阻塞进程执行的。
-
-那么我们是在说字典里的4567这四条解释吗？看起来好像是的，当我们说同步请求的时候，确实是在等执行结束后才能得到结果，主动赋值给一个变量；异步请求的时候，通过 callback 或者 listener 调用回来修改数据 ；当我们说阻塞的时候，Java 线程的状态是……哎？Java 线程的状态可不是只有阻塞（blocked）一个这么简单，而是还有 Waiting、Timed Waiting 状态，表示线程没有继续执行，在等待条件成熟的手变成 Runable 或者 Blocked。难道这种情况算是非阻塞？
-
-原来，当我们说一个函数阻塞非阻塞的时候，并不是在按照上述的定义去解释的，而是按照线程执行的角度去解释的。也就是说，如果函数调用的时候线程在继续执行逻辑，就是非阻塞的；如果在等待调用结束不继续执行，就是阻塞的。也就是说，第六条和第七条都算是阻塞的。
-
-为什么我们要按照这个定义去理解？
---------------------------
-有人可能觉得不服气，怎么就不能按照执行过程中的 IO 类型来划分？
-我是这么理解的：一个编程概念的提出，是有它的语境的。比如 IO 模型，很确定是发生在IO 时的事情，而我们讨论一个函数的同步异步，阻塞非阻塞，是为了研究这次函数调用对我的程序执行顺序的影响，而非其中的某次 IO，因为这次 IO 的类型不会影响我怎么写代码，这种类型差异在封装过程中就已经抹平了。在我看来，同步就是函数返回值，异步就是回调函数，阻塞就是不执行结束不继续执行后边的逻辑，非阻塞就是不等结果继续执行。这样的定义才能让使用函数的人不用看源码就能继续放心的开发下去。
-
-可以举个例子吗？
------------------------
-嗯，光是在理论逻辑上去论证是很枯燥又难以理解的，不如我们看点例子吧。
-
-首先看一个最简单的函数：
-
-```java
-import java.util.concurrent.*;
-
-public class Test {
-    public static class Result{
-        volatile boolean done = false;
-        volatile String text;
-    }
-    public static Result test() throws ExecutionException, InterruptedException {
-        final ExecutorService executorService = Executors.newFixedThreadPool(1);
-        final Result result = new Result();
-        final Future<String> submit = executorService.submit(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return "test";
-        });
-        result.done = true;
-        result.text = submit.get();
-        executorService.shutdown();
-        return result;
-    }
-    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
-        final Result test = test();
-        System.out.println(test.text);
-    }
-}
+  
 
 
-```
+</nav>
 
-test函数是同步还是异步，阻塞还是非阻塞呢？有朋友看到这里有线程池，执行的结果是交由另一个线程来处理的，所以理所当然的认为是异步的；由于执行过程会被 ```submit.get()```所阻塞，所以是阻塞的。可是在我看来，这个函数你会起名为 asyncTest 吗？不会的。虽然```executorService.submit```确实是异步执行，但是这个函数内还对 future 进行了 get 操作，使得整个函数结束后返回完整的应答，变成了同步的。因此这个函数可以说是同步阻塞的。
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">尚弟的小笔记</a>
+</div>
 
-再看一个的：
-```java
-import java.util.concurrent.*;
 
-public class Test {
-    public static class Result{
-        volatile boolean done = false;
-        volatile String text;
-    }
-    final static ExecutorService executorService = Executors.newFixedThreadPool(1);
-    public static Result test(){
-        final Result result = new Result();
-        executorService.execute(() ->{
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            result.done = true;
-            result.text = "test";
-        });
-        return result;
-    }
-    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
-        final Result test = test();
-        System.out.println("doing sth in main");
-        while (!test.done);
-        System.out.println(test.text);
-    }
-}
-```
 
-这个test 函数的声明看起来就是个普通函数，但是需要等 done 结束才能使用。这是同步的还是异步的呢？我认为这算是异步的，因为需要等待 done 被通知修改后才能完成整改逻辑。由于可以 doing sth in main，这个是异步非阻塞的。如果把 done 改成传入的一个回调函数，就更容易被确认为异步了；我认为这两个行为是没有差别的，因为远离都是提交出去的任务通过通知的方式给到了原有线程。
 
-啊，既然这么说来，如果想变成异步阻塞怎么办呢？就在 test 函数中阻塞一下，比如 join 提交的任务，这不就是传说中的异步阻塞了嘛。只是异步阻塞的编程大多数情况下没必要写，因为都已经阻塞了，异步跟同步对于原有线程的代码执行顺序都没有任何区别了，无非是主动发请求还是收通知。异步的写法比同步写法麻烦多了，也就不太需要异步阻塞了。我能想到一种异步阻塞的情况，就是提交的任务会周期性的执行，也就是不只一次通知原有线程，比如配置文件的 watch就是类似的情况，会写成```Config.watch(filename,listener)```,在程序初始化的过程中，必须先执行 listener，得到配置文件内容才能继续初始化；初始化后，如果有人改了配置文件，listener 会被再一次触发，从而改变程序的行为。
 
-再来看一个例子，来自ConcurrentLinkedQueue：
-```java
-public boolean offer(E e) {
-        checkNotNull(e);
-        final Node<E> newNode = new Node<E>(e);
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags.html">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post.html">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/rss.xml">RSS</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls.html">友情链接</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about.html">关于我</a>
+      </li>
+  </ul>
+</nav>
 
-        for (Node<E> t = tail, p = t;;) {
-            Node<E> q = p.next;
-            if (q == null) {
-                // p is last node
-                if (p.casNext(null, newNode)) {
-                    // Successful CAS is the linearization point
-                    // for e to become an element of this queue,
-                    // and for newNode to become "live".
-                    if (p != t) // hop two nodes at a time
-                        casTail(t, newNode);  // Failure is OK.
-                    return true;
-                }
-                // Lost CAS race to another thread; re-read next
-            }
-            else if (p == q)
-                // We have fallen off list.  If tail is unchanged, it
-                // will also be off-list, in which case we need to
-                // jump to head, from which all live nodes are always
-                // reachable.  Else the new tail is a better bet.
-                p = (t != (t = tail)) ? t : head;
-            else
-                // Check for tail updates after two hops.
-                p = (p != t && t != (t = tail)) ? t : q;
-        }
-    }
-```
-这个函数在执行过程中的亮点在于 ```p.casNext(null, newNode)``` 和 ```casTail(t, newNode)```，两个 CAS 操作不阻塞，又完成了并发条件下的 offer 函数，整个函数是同步的，又没有阻塞，因此是同步非阻塞。
+    </header>
 
-总结
----------------------------
-其实很多时候不同的看法是因为我们的定义不同。如果同步和异步是指通信方式，阻塞非阻塞是指线程执行与否，那么我们就可以顺利得到示例里的结论；如果指的是 Linux IO 模型，那么显然我示例都是与之无关的。
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">JAVA线程和 IO 的同步异步，阻塞非阻塞的个人理解</h1>
 
-但是不管怎样，只要你能够根据你使用的定义去理解程序的行为方式，并写出正确的调用代码，我想这才是最重要的。
-<!-- markdown end -->
-    </div>
-    <div class="entry" id="main">
-<!-- content -->
-<p>最近在工作中跟同事讨论起了一个调用是否算是非阻塞、异步时，居然发现我们对同一段代码的定性是不一样的，于是就想写一篇文章把这个问题琢磨琢磨。由于这里涉及很多专有名词的含义，因此就先从字典开始研究。</p>
+      <div class="post-meta">
+        <span class="post-time"> 2018-08-19 </span>
+        
+          <span class="more-meta"> 约 2788 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        
+      </div>
+    </header>
 
-<h2 id="">名词字典</h2>
-
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#名词字典">名词字典</a></li>
+        <li><a href="#我们到底在说的是哪个概念">我们到底在说的是哪个概念？</a></li>
+        <li><a href="#为什么我们要按照这个定义去理解">为什么我们要按照这个定义去理解？</a></li>
+        <li><a href="#可以举个例子吗">可以举个例子吗？</a></li>
+        <li><a href="#总结">总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>最近在工作中跟同事讨论起了一个调用是否算是非阻塞、异步时，居然发现我们对同一段代码的定性是不一样的，于是就想写一篇文章把这个问题琢磨琢磨。由于这里涉及很多专有名词的含义，因此就先从字典开始研究。</p>
+<h2 id="名词字典">名词字典</h2>
 <ol>
 <li>同步阻塞 IO——内核态阻塞 IO。这种 IO 模型的工作方式是这样的：用户空间的进程发起一个系统调用，这导致了用户空间的这个进程被阻塞，无法执行任何进程上的其它代码，直到系统调用返回。</li>
 <li>同步非阻塞 IO——内核态非阻塞 IO。这种 IO 的工作方式是这样的：用户空间的进程发起一个系统调用，进程并不会被阻塞，而是回到用户空间继续执行，但是会时不时通过系统调用回到内核检查之前的调用是否结束。如果没有结束，则返回用户空间继续执行，并且很快再次通过系统调用去检查结果，直到结果被返回。</li>
 <li>异步 IO——用户态 IO。这种 IO 的工作方式是这样的：用户空间的进程发起系统调用，进程不阻塞立刻回到用户空间继续执行，也不需要回到内核检查结果，而是内核在结果准备好后复制给用户进程，再通知进程数据已经准备好了。这样用户进程不需要到内核中进行 IO 操作，虽然真正的 IO 仍然是内核完成的。</li>
 </ol>
-
 <p>（如果对上述文字难以理解，可以参考<a href="https://www.jianshu.com/p/486b0965c296">聊聊Linux 五种IO模型 - 简书</a>这篇文章）</p>
-
-<ol>
+<ol start="4">
 <li>同步请求——调用方主动获取被调方的结果</li>
 <li>异步请求——调用方被动收到被调方的通知</li>
 <li>Java线程阻塞状态——blocked</li>
 <li>Java线程等待状态——waiting，timed waiting</li>
 </ol>
-
 <p>对于 Java 线程的状态，可以参考下图：</p>
-
-<p><img src="http://stirp.github.io/img/n2U3N.png" alt="" title=""></p>
-
-<h2 id="">我们到底在说的是哪个概念？</h2>
-
+<p><img src="http://stirp.github.io/img/n2U3N.png" alt=""></p>
+<h2 id="我们到底在说的是哪个概念">我们到底在说的是哪个概念？</h2>
 <p>一般当我们在说同步异步，阻塞非阻塞的时候，我们说的到底是哪个概念呢？</p>
-
 <p>是系统内核 IO 类型吗？如果这样的话，根本是没有异步阻塞的说法的，因为 IO 只有异步模型，按照异步模型的行为，是不阻塞进程执行的。</p>
-
 <p>那么我们是在说字典里的4567这四条解释吗？看起来好像是的，当我们说同步请求的时候，确实是在等执行结束后才能得到结果，主动赋值给一个变量；异步请求的时候，通过 callback 或者 listener 调用回来修改数据 ；当我们说阻塞的时候，Java 线程的状态是……哎？Java 线程的状态可不是只有阻塞（blocked）一个这么简单，而是还有 Waiting、Timed Waiting 状态，表示线程没有继续执行，在等待条件成熟的手变成 Runable 或者 Blocked。难道这种情况算是非阻塞？</p>
-
 <p>原来，当我们说一个函数阻塞非阻塞的时候，并不是在按照上述的定义去解释的，而是按照线程执行的角度去解释的。也就是说，如果函数调用的时候线程在继续执行逻辑，就是非阻塞的；如果在等待调用结束不继续执行，就是阻塞的。也就是说，第六条和第七条都算是阻塞的。</p>
-
-<h2 id="">为什么我们要按照这个定义去理解？</h2>
-
+<h2 id="为什么我们要按照这个定义去理解">为什么我们要按照这个定义去理解？</h2>
 <p>有人可能觉得不服气，怎么就不能按照执行过程中的 IO 类型来划分？
 我是这么理解的：一个编程概念的提出，是有它的语境的。比如 IO 模型，很确定是发生在IO 时的事情，而我们讨论一个函数的同步异步，阻塞非阻塞，是为了研究这次函数调用对我的程序执行顺序的影响，而非其中的某次 IO，因为这次 IO 的类型不会影响我怎么写代码，这种类型差异在封装过程中就已经抹平了。在我看来，同步就是函数返回值，异步就是回调函数，阻塞就是不执行结束不继续执行后边的逻辑，非阻塞就是不等结果继续执行。这样的定义才能让使用函数的人不用看源码就能继续放心的开发下去。</p>
-
-<h2 id="">可以举个例子吗？</h2>
-
+<h2 id="可以举个例子吗">可以举个例子吗？</h2>
 <p>嗯，光是在理论逻辑上去论证是很枯燥又难以理解的，不如我们看点例子吧。</p>
-
 <p>首先看一个最简单的函数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.util.concurrent.*</span><span class="o">;</span>
 
-<pre><code class="java">import java.util.concurrent.*;
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Result</span><span class="o">{</span>
+        <span class="kd">volatile</span> <span class="kt">boolean</span> <span class="n">done</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="kd">volatile</span> <span class="n">String</span> <span class="n">text</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Result</span> <span class="nf">test</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">ExecutionException</span><span class="o">,</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">ExecutorService</span> <span class="n">executorService</span> <span class="o">=</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newFixedThreadPool</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
+        <span class="kd">final</span> <span class="n">Result</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Result</span><span class="o">();</span>
+        <span class="kd">final</span> <span class="n">Future</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">submit</span> <span class="o">=</span> <span class="n">executorService</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="s">&#34;test&#34;</span><span class="o">;</span>
+        <span class="o">});</span>
+        <span class="n">result</span><span class="o">.</span><span class="na">done</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="n">result</span><span class="o">.</span><span class="na">text</span> <span class="o">=</span> <span class="n">submit</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+        <span class="n">executorService</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span><span class="o">,</span> <span class="n">ExecutionException</span><span class="o">,</span> <span class="n">TimeoutException</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">Result</span> <span class="n">test</span> <span class="o">=</span> <span class="n">test</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">test</span><span class="o">.</span><span class="na">text</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
 
-public class Test {
-    public static class Result{
-        volatile boolean done = false;
-        volatile String text;
-    }
-    public static Result test() throws ExecutionException, InterruptedException {
-        final ExecutorService executorService = Executors.newFixedThreadPool(1);
-        final Result result = new Result();
-        final Future&lt;String&gt; submit = executorService.submit(() -&gt; {
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return "test";
-        });
-        result.done = true;
-        result.text = submit.get();
-        executorService.shutdown();
-        return result;
-    }
-    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
-        final Result test = test();
-        System.out.println(test.text);
-    }
-}
-</code></pre>
 
-<p>test函数是同步还是异步，阻塞还是非阻塞呢？有朋友看到这里有线程池，执行的结果是交由另一个线程来处理的，所以理所当然的认为是异步的；由于执行过程会被 <code>submit.get()</code>所阻塞，所以是阻塞的。可是在我看来，这个函数你会起名为 asyncTest 吗？不会的。虽然<code>executorService.submit</code>确实是异步执行，但是这个函数内还对 future 进行了 get 操作，使得整个函数结束后返回完整的应答，变成了同步的。因此这个函数可以说是同步阻塞的。</p>
-
-<p>再看一个的：</p>
-
-<pre><code class="java">import java.util.concurrent.*;
-
-public class Test {
-    public static class Result{
-        volatile boolean done = false;
-        volatile String text;
-    }
-    final static ExecutorService executorService = Executors.newFixedThreadPool(1);
-    public static Result test(){
-        final Result result = new Result();
-        executorService.execute(() -&gt;{
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            result.done = true;
-            result.text = "test";
-        });
-        return result;
-    }
-    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
-        final Result test = test();
-        System.out.println("doing sth in main");
-        while (!test.done);
-        System.out.println(test.text);
-    }
-}
-</code></pre>
-
-<p>这个test 函数的声明看起来就是个普通函数，但是需要等 done 结束才能使用。这是同步的还是异步的呢？我认为这算是异步的，因为需要等待 done 被通知修改后才能完成整改逻辑。由于可以 doing sth in main，这个是异步非阻塞的。如果把 done 改成传入的一个回调函数，就更容易被确认为异步了；我认为这两个行为是没有差别的，因为远离都是提交出去的任务通过通知的方式给到了原有线程。</p>
-
-<p>啊，既然这么说来，如果想变成异步阻塞怎么办呢？就在 test 函数中阻塞一下，比如 join 提交的任务，这不就是传说中的异步阻塞了嘛。只是异步阻塞的编程大多数情况下没必要写，因为都已经阻塞了，异步跟同步对于原有线程的代码执行顺序都没有任何区别了，无非是主动发请求还是收通知。异步的写法比同步写法麻烦多了，也就不太需要异步阻塞了。我能想到一种异步阻塞的情况，就是提交的任务会周期性的执行，也就是不只一次通知原有线程，比如配置文件的 watch就是类似的情况，会写成<code>Config.watch(filename,listener)</code>,在程序初始化的过程中，必须先执行 listener，得到配置文件内容才能继续初始化；初始化后，如果有人改了配置文件，listener 会被再一次触发，从而改变程序的行为。</p>
-
-<p>再来看一个例子，来自ConcurrentLinkedQueue：</p>
-
-<pre><code class="java">public boolean offer(E e) {
-        checkNotNull(e);
-        final Node&lt;E&gt; newNode = new Node&lt;E&gt;(e);
-
-        for (Node&lt;E&gt; t = tail, p = t;;) {
-            Node&lt;E&gt; q = p.next;
-            if (q == null) {
-                // p is last node
-                if (p.casNext(null, newNode)) {
-                    // Successful CAS is the linearization point
-                    // for e to become an element of this queue,
-                    // and for newNode to become "live".
-                    if (p != t) // hop two nodes at a time
-                        casTail(t, newNode);  // Failure is OK.
-                    return true;
-                }
-                // Lost CAS race to another thread; re-read next
-            }
-            else if (p == q)
-                // We have fallen off list.  If tail is unchanged, it
-                // will also be off-list, in which case we need to
-                // jump to head, from which all live nodes are always
-                // reachable.  Else the new tail is a better bet.
-                p = (t != (t = tail)) ? t : head;
-            else
-                // Check for tail updates after two hops.
-                p = (p != t &amp;&amp; t != (t = tail)) ? t : q;
-        }
-    }
-</code></pre>
-
-<p>这个函数在执行过程中的亮点在于 <code>p.casNext(null, newNode)</code> 和 <code>casTail(t, newNode)</code>，两个 CAS 操作不阻塞，又完成了并发条件下的 offer 函数，整个函数是同步的，又没有阻塞，因此是同步非阻塞。</p>
-
-<h2 id="">总结</h2>
-
-<p>其实很多时候不同的看法是因为我们的定义不同。如果同步和异步是指通信方式，阻塞非阻塞是指线程执行与否，那么我们就可以顺利得到示例里的结论；如果指的是 Linux IO 模型，那么显然我示例都是与之无关的。</p>
-
-<p>但是不管怎样，只要你能够根据你使用的定义去理解程序的行为方式，并写出正确的调用代码，我想这才是最重要的。</p>
-<!-- content end -->
-    </div>
-    <br>
-    <br>
-
-    <div id="disqus_thread"></div>
-    <div class="footer">
-        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
-    </div>
+</code></pre></td></tr></table>
 </div>
-<script src="main.js"></script>
-<script id="content" type="text/mustache">
-    <h1>{{title}}</h1>
-    <div class="tag">
-    {{date}}
-    {{#tags}}
-    <a href="/#/tag/{{name}}">#{{name}}</a>
-    {{/tags}}
+</div><p>test函数是同步还是异步，阻塞还是非阻塞呢？有朋友看到这里有线程池，执行的结果是交由另一个线程来处理的，所以理所当然的认为是异步的；由于执行过程会被 <code>submit.get()</code>所阻塞，所以是阻塞的。可是在我看来，这个函数你会起名为 asyncTest 吗？不会的。虽然<code>executorService.submit</code>确实是异步执行，但是这个函数内还对 future 进行了 get 操作，使得整个函数结束后返回完整的应答，变成了同步的。因此这个函数可以说是同步阻塞的。</p>
+<p>再看一个的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.util.concurrent.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Result</span><span class="o">{</span>
+        <span class="kd">volatile</span> <span class="kt">boolean</span> <span class="n">done</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="kd">volatile</span> <span class="n">String</span> <span class="n">text</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">final</span> <span class="kd">static</span> <span class="n">ExecutorService</span> <span class="n">executorService</span> <span class="o">=</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newFixedThreadPool</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Result</span> <span class="nf">test</span><span class="o">(){</span>
+        <span class="kd">final</span> <span class="n">Result</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Result</span><span class="o">();</span>
+        <span class="n">executorService</span><span class="o">.</span><span class="na">execute</span><span class="o">(()</span> <span class="o">-&gt;{</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+            <span class="o">}</span>
+            <span class="n">result</span><span class="o">.</span><span class="na">done</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+            <span class="n">result</span><span class="o">.</span><span class="na">text</span> <span class="o">=</span> <span class="s">&#34;test&#34;</span><span class="o">;</span>
+        <span class="o">});</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span><span class="o">,</span> <span class="n">ExecutionException</span><span class="o">,</span> <span class="n">TimeoutException</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">Result</span> <span class="n">test</span> <span class="o">=</span> <span class="n">test</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;doing sth in main&#34;</span><span class="o">);</span>
+        <span class="k">while</span> <span class="o">(!</span><span class="n">test</span><span class="o">.</span><span class="na">done</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">test</span><span class="o">.</span><span class="na">text</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这个test 函数的声明看起来就是个普通函数，但是需要等 done 结束才能使用。这是同步的还是异步的呢？我认为这算是异步的，因为需要等待 done 被通知修改后才能完成整改逻辑。由于可以 doing sth in main，这个是异步非阻塞的。如果把 done 改成传入的一个回调函数，就更容易被确认为异步了；我认为这两个行为是没有差别的，因为远离都是提交出去的任务通过通知的方式给到了原有线程。</p>
+<p>啊，既然这么说来，如果想变成异步阻塞怎么办呢？就在 test 函数中阻塞一下，比如 join 提交的任务，这不就是传说中的异步阻塞了嘛。只是异步阻塞的编程大多数情况下没必要写，因为都已经阻塞了，异步跟同步对于原有线程的代码执行顺序都没有任何区别了，无非是主动发请求还是收通知。异步的写法比同步写法麻烦多了，也就不太需要异步阻塞了。我能想到一种异步阻塞的情况，就是提交的任务会周期性的执行，也就是不只一次通知原有线程，比如配置文件的 watch就是类似的情况，会写成<code>Config.watch(filename,listener)</code>,在程序初始化的过程中，必须先执行 listener，得到配置文件内容才能继续初始化；初始化后，如果有人改了配置文件，listener 会被再一次触发，从而改变程序的行为。</p>
+<p>再来看一个例子，来自ConcurrentLinkedQueue：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">offer</span><span class="o">(</span><span class="n">E</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">checkNotNull</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+        <span class="kd">final</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">newNode</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;(</span><span class="n">e</span><span class="o">);</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="n">Node</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">tail</span><span class="o">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">t</span><span class="o">;;)</span> <span class="o">{</span>
+            <span class="n">Node</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">q</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">q</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c1">// p is last node
+</span><span class="c1"></span>                <span class="k">if</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">casNext</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">newNode</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="c1">// Successful CAS is the linearization point
+</span><span class="c1"></span>                    <span class="c1">// for e to become an element of this queue,
+</span><span class="c1"></span>                    <span class="c1">// and for newNode to become &#34;live&#34;.
+</span><span class="c1"></span>                    <span class="k">if</span> <span class="o">(</span><span class="n">p</span> <span class="o">!=</span> <span class="n">t</span><span class="o">)</span> <span class="c1">// hop two nodes at a time
+</span><span class="c1"></span>                        <span class="n">casTail</span><span class="o">(</span><span class="n">t</span><span class="o">,</span> <span class="n">newNode</span><span class="o">);</span>  <span class="c1">// Failure is OK.
+</span><span class="c1"></span>                    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="c1">// Lost CAS race to another thread; re-read next
+</span><span class="c1"></span>            <span class="o">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">p</span> <span class="o">==</span> <span class="n">q</span><span class="o">)</span>
+                <span class="c1">// We have fallen off list.  If tail is unchanged, it
+</span><span class="c1"></span>                <span class="c1">// will also be off-list, in which case we need to
+</span><span class="c1"></span>                <span class="c1">// jump to head, from which all live nodes are always
+</span><span class="c1"></span>                <span class="c1">// reachable.  Else the new tail is a better bet.
+</span><span class="c1"></span>                <span class="n">p</span> <span class="o">=</span> <span class="o">(</span><span class="n">t</span> <span class="o">!=</span> <span class="o">(</span><span class="n">t</span> <span class="o">=</span> <span class="n">tail</span><span class="o">))</span> <span class="o">?</span> <span class="n">t</span> <span class="o">:</span> <span class="n">head</span><span class="o">;</span>
+            <span class="k">else</span>
+                <span class="c1">// Check for tail updates after two hops.
+</span><span class="c1"></span>                <span class="n">p</span> <span class="o">=</span> <span class="o">(</span><span class="n">p</span> <span class="o">!=</span> <span class="n">t</span> <span class="o">&amp;&amp;</span> <span class="n">t</span> <span class="o">!=</span> <span class="o">(</span><span class="n">t</span> <span class="o">=</span> <span class="n">tail</span><span class="o">))</span> <span class="o">?</span> <span class="n">t</span> <span class="o">:</span> <span class="n">q</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这个函数在执行过程中的亮点在于 <code>p.casNext(null, newNode)</code> 和 <code>casTail(t, newNode)</code>，两个 CAS 操作不阻塞，又完成了并发条件下的 offer 函数，整个函数是同步的，又没有阻塞，因此是同步非阻塞。</p>
+<h2 id="总结">总结</h2>
+<p>其实很多时候不同的看法是因为我们的定义不同。如果同步和异步是指通信方式，阻塞非阻塞是指线程执行与否，那么我们就可以顺利得到示例里的结论；如果指的是 Linux IO 模型，那么显然我示例都是与之无关的。</p>
+<p>但是不管怎样，只要你能够根据你使用的定义去理解程序的行为方式，并写出正确的调用代码，我想这才是最重要的。</p>
+
     </div>
 
-</script>
-<script id="pagesTemplate" type="text/mustache">
-    {{#pages}}
-    <li>
-        <a href="{{path}}">{{title}}</a>
-    </li>
-    {{/pages}}
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">尚弟</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-06-12
+        <a href="https://github.com/stirp/stirp.github.io/commit/7e4096a4b0a9fcb6c66839c35464229ff717d2fe" title="update imported">(7e4096a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content">© Copyright 2021 by 尚弟</span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/java.html">java</a>
+          <a href="/tags/sync.html">sync</a>
+          <a href="/tags/async.html">async</a>
+          <a href="/tags/blocking.html">blocking</a>
+          <a href="/tags/non-blocking.html">non-blocking</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2018-08-19.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">2018-08-19</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/change-ip-freely-on-bandwagon.html">
+            <span class="next-text nav-default">搬瓦工免费换 ip</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
 
-</script>
-<script>
-    $(document).ready(function () {
-        $.ajax({
-            url: "main.json",
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                $("#title").html(data.name);
-                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
-                var pagesHtml = pagesTemplate.render({"pages": data.pages});
-                $("#pages").append(pagesHtml);
-                //path
-                var path = "personal-understanding-of-async-and-blocking.html";
-                //path end
-                var now = 0;
-                for (var i = 0; i < data.posts.length; ++i)
-                    if (path == data.posts[i].path)
-                        now = i;
-                var post = data.posts[now];
-                var tmp = post.tags.split(" ");
-                var tags = [];
-                for (var i = 0; i < tmp.length; ++i)
-                    if (tmp[i].length > 0)
-                        tags.push({"name": tmp[i]});
-                var contentTemplate = Hogan.compile($("#content").html());
-                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
-                $("#main").prepend(contentHtml);
-                if (data.disqus_shortname.length > 0) {
-                    var disqus_shortname = data.disqus_shortname;
-                    (function () {
-                        var dsq = document.createElement('script');
-                        dsq.type = 'text/javascript';
-                        dsq.async = true;
-                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                    })();
-                }
-            }
-        });
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'stirp';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:srpwy@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/stirp" class="iconfont icon-github" title="github"></a>
+  <a href="http://blog.shrp.me/rss.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2010 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>shrp</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-cn".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?249d9fe60c26e4771c81467fa3b43862";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
 </script>
+
+
+
+
+
+
 </body>
 </html>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>从Simple迁移到Hugo - 尚弟的小笔记</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="尚弟" /><meta name="description" content="为什么不继续用Simple Simple是一个非常简单又纯粹的博客托管方案,然而它严重依赖 github 的API登录方案&amp;ndash;而这个方案已经在去年" /><meta name="keywords" content="尚弟, 博客, 笔记" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
+
+
+<link rel="canonical" href="http://blog.shrp.me/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="从Simple迁移到Hugo" />
+<meta property="og:description" content="为什么不继续用Simple Simple是一个非常简单又纯粹的博客托管方案,然而它严重依赖 github 的API登录方案&ndash;而这个方案已经在去年" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.shrp.me/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-04-05T17:54:47&#43;00:00" />
+<meta property="article:modified_time" content="2021-06-10T17:54:47&#43;00:00" />
+
+<meta itemprop="name" content="从Simple迁移到Hugo">
+<meta itemprop="description" content="为什么不继续用Simple Simple是一个非常简单又纯粹的博客托管方案,然而它严重依赖 github 的API登录方案&ndash;而这个方案已经在去年"><meta itemprop="datePublished" content="2021-04-05T17:54:47&#43;00:00" />
+<meta itemprop="dateModified" content="2021-06-10T17:54:47&#43;00:00" />
+<meta itemprop="wordCount" content="2767">
+<meta itemprop="keywords" content="hugo,Simple,迁移," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="从Simple迁移到Hugo"/>
+<meta name="twitter:description" content="为什么不继续用Simple Simple是一个非常简单又纯粹的博客托管方案,然而它严重依赖 github 的API登录方案&ndash;而这个方案已经在去年"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">尚弟的小笔记</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/tags.html">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/post.html">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/rss.xml">
+        <li class="mobile-menu-item">RSS</li>
+      </a><a href="/blogrolls.html">
+        <li class="mobile-menu-item">友情链接</li>
+      </a><a href="/about.html">
+        <li class="mobile-menu-item">关于我</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">尚弟的小笔记</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags.html">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post.html">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/rss.xml">RSS</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls.html">友情链接</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about.html">关于我</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">从Simple迁移到Hugo</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-04-05 </span>
+        
+          <span class="more-meta"> 约 2767 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#为什么不继续用simple">为什么不继续用Simple</a></li>
+        <li><a href="#为什么是hugo">为什么是Hugo</a></li>
+        <li><a href="#导出simple">导出Simple</a></li>
+        <li><a href="#导入hugo">导入Hugo</a></li>
+        <li><a href="#使用even">使用Even</a></li>
+        <li><a href="#修复tag的url">修复Tag的URL</a></li>
+        <li><a href="#rss全文化">RSS全文化</a></li>
+        <li><a href="#部署">部署</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="为什么不继续用simple">为什么不继续用Simple</h2>
+<p>　　Simple是一个非常简单又纯粹的博客托管方案,然而它严重依赖 github 的API登录方案&ndash;而这个方案已经在去年关闭掉了,现在没有自己的服务器,应该是无法完成github的授权的.因此我必须要换掉Simple了.</p>
+<h2 id="为什么是hugo">为什么是Hugo</h2>
+<p>　　其实我也想过类似hexo之类的方案.但是它们有个很麻烦的问题:编译过程需要nodejs的支持.nodejs当然不是不好,但是相关的安装文件体积会很大,依赖关系也会比较复杂.而我希望我的博客编写可以差不多随时随地&ndash;比起Simple的一个网页走天下,现在的方案可能会复杂的多.还好我有VS code的server版,随时随地写markdown并不是问题;但是想随地编译网站,这个成本就有点高了.经过一番调查,hugo的依赖相对简单,采用docker的方式来使用,成本也不高,相对来说还是可以接受的.</p>
+<h2 id="导出simple">导出Simple</h2>
+<p>　　不论如何, 导出原有的文章是必须的.Simple作为基于GitHub API的静态博客，它自己是没有数据库来存储文章的，而是将markdown作为注释放在正文里的。我们恰好可以借助这一特性，将相应的md文件提取出来：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat fileName.html <span class="p">|</span> awk <span class="s1">&#39;/&lt;!-- markdown --&gt;/,/&lt;!-- markdown end --&gt;/&#39;</span> &gt; exports/fileName.md
+</code></pre></td></tr></table>
+</div>
+</div><p>　　怎么遍历文件名就不赘述了，bash脚本跑循环就好。</p>
+<p>　　不过这样导出的文件里还有markdown的注解,可以使用如下命令来清除:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sed -i <span class="s2">&#34;s/&lt;!-- markdown --&gt;//g&#34;</span> *.md
+sed -i <span class="s2">&#34;s/&lt;!-- markdown end --&gt;//g&#34;</span> *.md
+</code></pre></td></tr></table>
+</div>
+</div><p>　　那么当我之前的博客都备份好了，怎么导入到Hugo里呢？</p>
+<h2 id="导入hugo">导入Hugo</h2>
+<p>　　先不说Hugo的站点结构如何，这个问题各位观众那都可以慢慢调整；最重要的是Hugo的md文件是有格式的，你得遵照一定的格式导入，也就是每篇文章开头的元数据，至少包含title，date。此外我希望导入以后，<strong>网页的URL还能按照原先的URL存在</strong>，避免死链.那怎么办呢？</p>
+<p>　　原来Simple有一个main.json是专门存储元数据的，我们可以从它解析到相应的参数，填入目标文档。经过一番探究，我写了如下的脚本生成相应的目标文档：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">&#34;---&#34;</span> &gt;hugo/content/imported/<span class="nv">$filename</span>.md <span class="o">&amp;&amp;</span> <span class="se">\
+</span><span class="se"></span><span class="nb">echo</span> <span class="s2">&#34;title: \&#34;</span><span class="k">$(</span>jq -r <span class="s1">&#39;.posts|map(select(.path == &#34;&#39;</span><span class="nv">$filename</span><span class="s1">&#39;.html&#34;).title)[0]&#39;</span> main.json<span class="k">)</span><span class="s2">\&#34;&#34;</span> &gt;&gt; hugo/content/imported/<span class="nv">$filename</span>.md <span class="o">&amp;&amp;</span> <span class="se">\
+</span><span class="se"></span><span class="nb">echo</span> <span class="s2">&#34;date: \&#34;</span><span class="k">$(</span>jq -r <span class="s1">&#39;.posts|map(select(.path == &#34;&#39;</span><span class="nv">$filename</span><span class="s1">&#39;.html&#34;).date)[0]&#39;</span> main.json<span class="k">)</span><span class="s2">T00:00:00Z\&#34;&#34;</span> &gt;&gt; hugo/content/imported/<span class="nv">$filename</span>.md <span class="o">&amp;&amp;</span> <span class="se">\
+</span><span class="se"></span><span class="nb">echo</span> <span class="s2">&#34;draft: false&#34;</span> &gt;&gt; hugo/content/imported/<span class="nv">$filename</span>.md <span class="o">&amp;&amp;</span> <span class="se">\
+</span><span class="se"></span><span class="nb">echo</span> <span class="s2">&#34;tags: [\&#34;</span><span class="k">$(</span>jq -r <span class="s1">&#39;.posts|map(select(.path == &#34;&#39;</span><span class="nv">$filename</span><span class="s1">&#39;.html&#34;).tags)[0]|split(&#34; &#34;)|join(&#34;\&#34;,\&#34;&#34;)&#39;</span> main.json<span class="k">)</span><span class="s2">\&#34;]&#34;</span> &gt;&gt; hugo/content/imported/<span class="nv">$filename</span>.md <span class="o">&amp;&amp;</span> <span class="se">\
+</span><span class="se"></span><span class="nb">echo</span> <span class="s2">&#34;url: </span><span class="nv">$filename</span><span class="s2">.html&#34;</span> &gt;&gt; hugo/content/imported/<span class="nv">$filename</span>.md <span class="o">&amp;&amp;</span> <span class="se">\
+</span><span class="se"></span><span class="nb">echo</span> <span class="s2">&#34;---&#34;</span> &gt;&gt; hugo/content/imported/<span class="nv">$filename</span>.md <span class="o">&amp;&amp;</span> cat exports/<span class="nv">$filename</span>.md &gt;&gt; hugo/content/imported/<span class="nv">$filename</span>.md
+</code></pre></td></tr></table>
+</div>
+</div><p>　　通过上述脚本指定的url, 我们导入的文章在imported目录下,而url仍然在根目录下,不会受到影响,这样的url就跟原来的simple的url一致，保证迁移后搜索引擎的链接仍然有效。</p>
+<h2 id="使用even">使用Even</h2>
+<p>　　据我观察, Hugo 使用 Even 主题的博客很多,简单了解了一下,这个主题已经比较完善了.但是我刚刚开始使用它,咦,目录空了,囧. 谷歌一下,发现它必须使用post目录,而不是默认的posts目录,更不支持imported目录了.最简单的办法就是把imported目录放到post目录下,以后新建的文章就放到post目录下就好啦.</p>
+<p>　　但是随后就发现生成的rss文章包括了关于我这样的页面,这个问题还是比较严重的.不过默认hugo生成的rss是包含区域rss的,因此直接使用post/rss.xml就可以只生成post目录下的rss文件了.还可以在编译后将rss.xml拷贝到根目录下,这样原有url的rss也是正确的了.</p>
+<h2 id="修复tag的url">修复Tag的URL</h2>
+<p>默认的tag是baseurl/tags/MyTag.html,但是tag页面的url是baseurl/tags/MyTag/.怎么修复呢?原来Hugo本身有一个Tag的uglyUrl的<a href="https://discourse.gohugo.io/t/html-links-for-tags-and-categories/3567">bug</a>,在生成tag的时候读不到config里的uglyUrl的变量.这个能力在Even里已经解决了,但是不是非常的优雅:就是在config里的params再增加一个uglyURLs的变量,供even使用.记得它跟config的uglyURLs变量保持一致即可.</p>
+<h2 id="rss全文化">RSS全文化</h2>
+<p>　　RSS默认只输出部分,这种体验对于我们这种不求访问量的网站的订阅者来说,是非常不友好的.因此需要调整为全文输出.按照网友的经验,在layouts目录下新建index.rss.xml就可以解决这个问题:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml">{{- $pctx := . -}}
+{{- if .IsHome -}}{{ $pctx = .Site }}{{- end -}}
+{{- $pages := slice -}}
+{{- if or $.IsHome $.IsSection -}}
+{{- $pages = $pctx.RegularPages -}}
+{{- else -}}
+{{- $pages = $pctx.Pages -}}
+{{- end -}}
+{{- $limit := .Site.Config.Services.RSS.Limit -}}
+{{- if ge $limit 1 -}}
+{{- $pages = $pages | first $limit -}}
+{{- end -}}
+{{- printf &#34;<span class="cp">&lt;?xml version=\&#34;1.0\&#34; encoding=\&#34;utf-8\&#34; standalone=\&#34;yes\&#34;?&gt;</span>&#34; | safeHTML }}
+<span class="nt">&lt;rss</span> <span class="na">version=</span><span class="s">&#34;2.0&#34;</span> <span class="na">xmlns:atom=</span><span class="s">&#34;http://www.w3.org/2005/Atom&#34;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;channel&gt;</span>
+    <span class="nt">&lt;title&gt;</span>{{ if eq  .Title  .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{.}} on {{ end }}{{ .Site.Title }}{{ end }}<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;link&gt;</span>{{ .Permalink }}<span class="nt">&lt;/link&gt;</span>
+    <span class="nt">&lt;description&gt;</span>Recent content {{ if ne  .Title  .Site.Title }}{{ with .Title }}in {{.}} {{ end }}{{ end }}on {{ .Site.Title }}<span class="nt">&lt;/description&gt;</span>
+    <span class="nt">&lt;generator&gt;</span>Hugo -- gohugo.io<span class="nt">&lt;/generator&gt;</span>{{ with .Site.LanguageCode }}
+    <span class="nt">&lt;language&gt;</span>{{.}}<span class="nt">&lt;/language&gt;</span>{{end}}{{ with .Site.Author.email }}
+    <span class="nt">&lt;managingEditor&gt;</span>{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}<span class="nt">&lt;/managingEditor&gt;</span>{{end}}{{ with .Site.Author.email }}
+    <span class="nt">&lt;webMaster&gt;</span>{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}<span class="nt">&lt;/webMaster&gt;</span>{{end}}{{ with .Site.Copyright }}
+    <span class="nt">&lt;copyright&gt;</span>{{.}}<span class="nt">&lt;/copyright&gt;</span>{{end}}{{ if not .Date.IsZero }}
+    <span class="nt">&lt;lastBuildDate&gt;</span>{{ .Date.Format &#34;Mon, 02 Jan 2006 15:04:05 -0700&#34; | safeHTML }}<span class="nt">&lt;/lastBuildDate&gt;</span>{{ end }}
+    {{- with .OutputFormats.Get &#34;RSS&#34; -}}
+    {{ printf &#34;<span class="nt">&lt;atom:link</span> <span class="na">href=</span><span class="s">%q</span> <span class="na">rel=</span><span class="s">\&#34;self\&#34;</span> <span class="na">type=</span><span class="s">%q</span> <span class="nt">/&gt;</span>&#34; .Permalink .MediaType | safeHTML }}
+    {{- end -}}
+    {{ range $pages }}
+    <span class="nt">&lt;item&gt;</span>
+      <span class="nt">&lt;title&gt;</span>{{ .Title }}<span class="nt">&lt;/title&gt;</span>
+      <span class="nt">&lt;link&gt;</span>{{ .Permalink }}<span class="nt">&lt;/link&gt;</span>
+      <span class="nt">&lt;pubDate&gt;</span>{{ .Date.Format &#34;Mon, 02 Jan 2006 15:04:05 -0700&#34; | safeHTML }}<span class="nt">&lt;/pubDate&gt;</span>
+      {{ with .Site.Author.email }}<span class="nt">&lt;author&gt;</span>{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}<span class="nt">&lt;/author&gt;</span>{{end}}
+      <span class="nt">&lt;guid&gt;</span>{{ .Permalink }}<span class="nt">&lt;/guid&gt;</span>
+      <span class="nt">&lt;description&gt;</span>{{ .Content | html }}<span class="nt">&lt;/description&gt;</span>
+    <span class="nt">&lt;/item&gt;</span>
+    {{ end }}
+  <span class="nt">&lt;/channel&gt;</span>
+<span class="nt">&lt;/rss&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>但是我们发现有个问题,about之类的静态页面也被当成博文输出到RSS里了,这个体验可有点奇怪.正常的解决方案是如何将这些非正常的页面不被识别为RegularPages,不过我找了半天,并没有找到怎么处理.好在这个问题已经有人<a href="https://benjamincongdon.me/blog/2020/01/14/Tips-for-Customizing-Hugo-RSS-Feeds/">解决</a>过了,将28行的代码改成</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-toml" data-lang="toml"><span class="p">{{</span> <span class="nx">range</span> <span class="err">(</span><span class="nx">where</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Pages</span> <span class="s2">&#34;.Section&#34;</span> <span class="s2">&#34;post&#34;</span><span class="err">)</span> <span class="p">}}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>但是这个方案并不完美,因为开头的代码刚刚处理了limit问题,这里一改,一夜回到解放前lol.</p>
+<p>那我们把这个条件换到开头的if里即可.而且使用的section就是post,因为我们说过了,even这个主题只支持post目录下的文章,自然我们只要输出post目录就行了.</p>
+<p>但是这还有个问题,因为hugo会生成每个section的landing page,名为posts.html,title是Posts,输出的RSS里总有这个文件. 这个可能跟我们刚刚改的方案有关系,少了regularpages的判断,那么条件可以改成</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-toml" data-lang="toml"><span class="err">(</span><span class="nx">where</span> <span class="err">$</span><span class="nx">pctx</span><span class="p">.</span><span class="nx">RegularPages</span> <span class="s2">&#34;.Section&#34;</span> <span class="s2">&#34;post&#34;</span><span class="err">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>那自然是大功告成了,最终的模板如下:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-toml" data-lang="toml"><span class="p">{{</span><span class="err">-</span> <span class="err">$</span><span class="nx">pctx</span> <span class="err">:</span><span class="p">=</span> <span class="p">.</span> <span class="err">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="err">-</span> <span class="nx">if</span> <span class="p">.</span><span class="nx">IsHome</span> <span class="err">-</span><span class="p">}}{{</span> <span class="err">$</span><span class="nx">pctx</span> <span class="p">=</span> <span class="p">.</span><span class="nx">Site</span> <span class="p">}}{{</span><span class="err">-</span> <span class="nx">end</span> <span class="err">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="err">-</span> <span class="err">$</span><span class="nx">pages</span> <span class="err">:</span><span class="p">=</span> <span class="nx">slice</span> <span class="err">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="err">-</span> <span class="nx">if</span> <span class="err">$</span><span class="p">.</span><span class="nx">IsHome</span> <span class="err">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="err">-</span> <span class="err">$</span><span class="nx">pages</span> <span class="p">=</span> <span class="err">(</span><span class="nx">where</span> <span class="err">$</span><span class="nx">pctx</span><span class="p">.</span><span class="nx">RegularPages</span> <span class="s2">&#34;.Section&#34;</span> <span class="s2">&#34;post&#34;</span><span class="err">)</span> <span class="err">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="err">-</span> <span class="nx">else</span> <span class="nx">if</span> <span class="err">$</span><span class="p">.</span><span class="nx">IsSection</span> <span class="err">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="err">-</span> <span class="err">$</span><span class="nx">pages</span> <span class="p">=</span> <span class="err">$</span><span class="nx">pctx</span><span class="p">.</span><span class="nx">RegularPages</span> <span class="err">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="err">-</span> <span class="nx">else</span> <span class="err">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="err">-</span> <span class="err">$</span><span class="nx">pages</span> <span class="p">=</span> <span class="err">$</span><span class="nx">pctx</span><span class="p">.</span><span class="nx">Pages</span> <span class="err">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="err">-</span> <span class="nx">end</span> <span class="err">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="err">-</span> <span class="err">$</span><span class="nx">limit</span> <span class="err">:</span><span class="p">=</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Config</span><span class="p">.</span><span class="nx">Services</span><span class="p">.</span><span class="nx">RSS</span><span class="p">.</span><span class="nx">Limit</span> <span class="err">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="err">-</span> <span class="nx">if</span> <span class="nx">ge</span> <span class="err">$</span><span class="nx">limit</span> <span class="mi">1</span> <span class="err">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="err">-</span> <span class="err">$</span><span class="nx">pages</span> <span class="p">=</span> <span class="err">$</span><span class="nx">pages</span> <span class="err">|</span> <span class="nx">first</span> <span class="err">$</span><span class="nx">limit</span> <span class="err">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="err">-</span> <span class="nx">end</span> <span class="err">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="err">-</span> <span class="nx">printf</span> <span class="s2">&#34;&lt;?xml version=\&#34;1.0\&#34; encoding=\&#34;utf-8\&#34; standalone=\&#34;yes\&#34;?&gt;&#34;</span> <span class="err">|</span> <span class="nx">safeHTML</span> <span class="p">}}</span>
+<span class="err">&lt;</span><span class="nx">rss</span> <span class="nx">version</span><span class="p">=</span><span class="s2">&#34;2.0&#34;</span> <span class="nx">xmlns</span><span class="err">:</span><span class="nx">atom</span><span class="p">=</span><span class="s2">&#34;http://www.w3.org/2005/Atom&#34;</span><span class="err">&gt;</span>
+  <span class="err">&lt;</span><span class="nx">channel</span><span class="err">&gt;</span>
+    <span class="err">&lt;</span><span class="nx">title</span><span class="err">&gt;</span><span class="p">{{</span> <span class="nx">if</span> <span class="nx">eq</span>  <span class="p">.</span><span class="nx">Title</span>  <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Title</span> <span class="p">}}{{</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Title</span> <span class="p">}}{{</span> <span class="nx">else</span> <span class="p">}}{{</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">Title</span> <span class="p">}}{{.}}</span> <span class="nx">on</span> <span class="p">{{</span> <span class="nx">end</span> <span class="p">}}{{</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Title</span> <span class="p">}}{{</span> <span class="nx">end</span> <span class="p">}}</span><span class="err">&lt;/</span><span class="nx">title</span><span class="err">&gt;</span>
+    <span class="err">&lt;</span><span class="nx">link</span><span class="err">&gt;</span><span class="p">{{</span> <span class="p">.</span><span class="nx">Permalink</span> <span class="p">}}</span><span class="err">&lt;/</span><span class="nx">link</span><span class="err">&gt;</span>
+    <span class="err">&lt;</span><span class="nx">description</span><span class="err">&gt;</span><span class="nx">Recent</span> <span class="nx">content</span> <span class="p">{{</span> <span class="nx">if</span> <span class="nx">ne</span>  <span class="p">.</span><span class="nx">Title</span>  <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Title</span> <span class="p">}}{{</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">Title</span> <span class="p">}}</span><span class="nx">in</span> <span class="p">{{.}}</span> <span class="p">{{</span> <span class="nx">end</span> <span class="p">}}{{</span> <span class="nx">end</span> <span class="p">}}</span><span class="nx">on</span> <span class="p">{{</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Title</span> <span class="p">}}</span><span class="err">&lt;/</span><span class="nx">description</span><span class="err">&gt;</span>
+    <span class="err">&lt;</span><span class="nx">generator</span><span class="err">&gt;</span><span class="nx">Hugo</span> <span class="err">--</span> <span class="nx">gohugo</span><span class="p">.</span><span class="nx">io</span><span class="err">&lt;/</span><span class="nx">generator</span><span class="err">&gt;</span><span class="p">{{</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">LanguageCode</span> <span class="p">}}</span>
+    <span class="err">&lt;</span><span class="nx">language</span><span class="err">&gt;</span><span class="p">{{.}}</span><span class="err">&lt;/</span><span class="nx">language</span><span class="err">&gt;</span><span class="p">{{</span><span class="nx">end</span><span class="p">}}{{</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Author</span><span class="p">.</span><span class="nx">email</span> <span class="p">}}</span>
+    <span class="err">&lt;</span><span class="nx">managingEditor</span><span class="err">&gt;</span><span class="p">{{.}}{{</span> <span class="nx">with</span> <span class="err">$</span><span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Author</span><span class="p">.</span><span class="nx">name</span> <span class="p">}}</span> <span class="err">(</span><span class="p">{{.}}</span><span class="err">)</span><span class="p">{{</span><span class="nx">end</span><span class="p">}}</span><span class="err">&lt;/</span><span class="nx">managingEditor</span><span class="err">&gt;</span><span class="p">{{</span><span class="nx">end</span><span class="p">}}{{</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Author</span><span class="p">.</span><span class="nx">email</span> <span class="p">}}</span>
+    <span class="err">&lt;</span><span class="nx">webMaster</span><span class="err">&gt;</span><span class="p">{{.}}{{</span> <span class="nx">with</span> <span class="err">$</span><span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Author</span><span class="p">.</span><span class="nx">name</span> <span class="p">}}</span> <span class="err">(</span><span class="p">{{.}}</span><span class="err">)</span><span class="p">{{</span><span class="nx">end</span><span class="p">}}</span><span class="err">&lt;/</span><span class="nx">webMaster</span><span class="err">&gt;</span><span class="p">{{</span><span class="nx">end</span><span class="p">}}{{</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Copyright</span> <span class="p">}}</span>
+    <span class="err">&lt;</span><span class="nx">copyright</span><span class="err">&gt;</span><span class="p">{{.}}</span><span class="err">&lt;/</span><span class="nx">copyright</span><span class="err">&gt;</span><span class="p">{{</span><span class="nx">end</span><span class="p">}}{{</span> <span class="nx">if</span> <span class="nx">not</span> <span class="p">.</span><span class="nx">Date</span><span class="p">.</span><span class="nx">IsZero</span> <span class="p">}}</span>
+    <span class="err">&lt;</span><span class="nx">lastBuildDate</span><span class="err">&gt;</span><span class="p">{{</span> <span class="p">.</span><span class="nx">Date</span><span class="p">.</span><span class="nx">Format</span> <span class="s2">&#34;Mon, 02 Jan 2006 15:04:05 -0700&#34;</span> <span class="err">|</span> <span class="nx">safeHTML</span> <span class="p">}}</span><span class="err">&lt;/</span><span class="nx">lastBuildDate</span><span class="err">&gt;</span><span class="p">{{</span> <span class="nx">end</span> <span class="p">}}</span>
+    <span class="p">{{</span><span class="err">-</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">OutputFormats</span><span class="p">.</span><span class="nx">Get</span> <span class="s2">&#34;RSS&#34;</span> <span class="err">-</span><span class="p">}}</span>
+    <span class="p">{{</span> <span class="nx">printf</span> <span class="s2">&#34;&lt;atom:link href=%q rel=\&#34;self\&#34; type=%q /&gt;&#34;</span> <span class="p">.</span><span class="nx">Permalink</span> <span class="p">.</span><span class="nx">MediaType</span> <span class="err">|</span> <span class="nx">safeHTML</span> <span class="p">}}</span>
+    <span class="p">{{</span><span class="err">-</span> <span class="nx">end</span> <span class="err">-</span><span class="p">}}</span>
+    <span class="p">{{</span> <span class="nx">range</span> <span class="err">$</span><span class="nx">pages</span> <span class="p">}}</span>
+    <span class="err">&lt;</span><span class="nx">item</span><span class="err">&gt;</span>
+      <span class="err">&lt;</span><span class="nx">title</span><span class="err">&gt;</span><span class="p">{{</span> <span class="p">.</span><span class="nx">Title</span> <span class="p">}}</span><span class="err">&lt;/</span><span class="nx">title</span><span class="err">&gt;</span>
+      <span class="err">&lt;</span><span class="nx">link</span><span class="err">&gt;</span><span class="p">{{</span> <span class="p">.</span><span class="nx">Permalink</span> <span class="p">}}</span><span class="err">&lt;/</span><span class="nx">link</span><span class="err">&gt;</span>
+      <span class="err">&lt;</span><span class="nx">pubDate</span><span class="err">&gt;</span><span class="p">{{</span> <span class="p">.</span><span class="nx">Date</span><span class="p">.</span><span class="nx">Format</span> <span class="s2">&#34;Mon, 02 Jan 2006 15:04:05 -0700&#34;</span> <span class="err">|</span> <span class="nx">safeHTML</span> <span class="p">}}</span><span class="err">&lt;/</span><span class="nx">pubDate</span><span class="err">&gt;</span>
+      <span class="p">{{</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Author</span><span class="p">.</span><span class="nx">email</span> <span class="p">}}</span><span class="err">&lt;</span><span class="nx">author</span><span class="err">&gt;</span><span class="p">{{.}}{{</span> <span class="nx">with</span> <span class="err">$</span><span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Author</span><span class="p">.</span><span class="nx">name</span> <span class="p">}}</span> <span class="err">(</span><span class="p">{{.}}</span><span class="err">)</span><span class="p">{{</span><span class="nx">end</span><span class="p">}}</span><span class="err">&lt;/</span><span class="nx">author</span><span class="err">&gt;</span><span class="p">{{</span><span class="nx">end</span><span class="p">}}</span>
+      <span class="err">&lt;</span><span class="nx">guid</span><span class="err">&gt;</span><span class="p">{{</span> <span class="p">.</span><span class="nx">Permalink</span> <span class="p">}}</span><span class="err">&lt;/</span><span class="nx">guid</span><span class="err">&gt;</span>
+      <span class="err">&lt;</span><span class="nx">description</span><span class="err">&gt;</span><span class="p">{{</span> <span class="p">.</span><span class="nx">Content</span> <span class="err">|</span> <span class="nx">html</span> <span class="p">}}</span><span class="err">&lt;/</span><span class="nx">description</span><span class="err">&gt;</span>
+    <span class="err">&lt;/</span><span class="nx">item</span><span class="err">&gt;</span>
+    <span class="p">{{</span> <span class="nx">end</span> <span class="p">}}</span>
+  <span class="err">&lt;/</span><span class="nx">channel</span><span class="err">&gt;</span>
+<span class="err">&lt;/</span><span class="nx">rss</span><span class="err">&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="部署">部署</h2>
+<p>我的博客放在github上,部署的话非常简单,只要把生成的public目录推送到github即可. 可以借助刘家财的<a href="https://github.com/jiacai2050/jiacai2050.github.io/blob/hugo/deploy.sh">部署脚本</a>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/usr/bin/env bash
+</span><span class="cp"></span>
+<span class="c1"># If a command fails then the deploy stops</span>
+<span class="nb">set</span> -e
+
+<span class="nb">printf</span> <span class="s2">&#34;\033[0;32mDeploying updates to GitHub...\033[0m\n&#34;</span>
+
+rm -rf public/*
+
+<span class="c1"># Build the project.</span>
+hugo <span class="c1"># if using a theme, replace with `hugo -t &lt;YOURTHEME&gt;`</span>
+
+<span class="c1"># Go To Public folder</span>
+<span class="nb">cd</span> public
+
+<span class="c1"># Add changes to git.</span>
+git add -A .
+
+<span class="c1"># Commit changes.</span>
+<span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;rebuilding site </span><span class="k">$(</span>date<span class="k">)</span><span class="s2">&#34;</span>
+<span class="k">if</span> <span class="o">[</span> -n <span class="s2">&#34;</span><span class="nv">$*</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+	<span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$*</span><span class="s2">&#34;</span>
+<span class="k">fi</span>
+git commit -m <span class="s2">&#34;</span><span class="nv">$msg</span><span class="s2">&#34;</span>
+
+<span class="c1"># Push source and build repos.</span>
+git push origin master
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">尚弟</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-06-10
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content">© Copyright 2021 by 尚弟</span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/hugo.html">hugo</a>
+          <a href="/tags/Simple.html">Simple</a>
+          <a href="/tags/%E8%BF%81%E7%A7%BB.html">迁移</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/adjust-embedded-tomcat-version.html">
+            <span class="next-text nav-default">tomcat7-maven-plugin指定 tomcat 版本</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'stirp';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:srpwy@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/stirp" class="iconfont icon-github" title="github"></a>
+  <a href="http://blog.shrp.me/rss.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2010 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>shrp</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-cn".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?249d9fe60c26e4771c81467fa3b43862";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

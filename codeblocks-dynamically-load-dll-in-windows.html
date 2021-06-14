@@ -1,67 +1,184 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
-    <meta name="author" content="尚弟" />
-    <meta name="robots" content="all" />
-    <meta http-equiv="Content-Language" content="zh-cn" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="Keywords" content="尚弟 博客 笔记"/>
-    <meta name="Description" content="尚弟 博客 笔记"/>
-    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
-    <title>尚弟的小笔记</title>
-    <link rel="shortcut icon" href="/static/favicon.png"/>
-    <link rel="stylesheet" type="text/css" href="main.css" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>code::blocks在windows平台如何加载动态链接库dll - 尚弟的小笔记</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="尚弟" /><meta name="description" content="今天写一个数据结构，突然想到这种东西必然会经常复用，完全可以写个库来供以后调用。然后就研究了下code::blocks下怎么来写库，又怎么去" /><meta name="keywords" content="尚弟, 博客, 笔记" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
+
+
+<link rel="canonical" href="http://blog.shrp.me/codeblocks-dynamically-load-dll-in-windows.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="code::blocks在windows平台如何加载动态链接库dll" />
+<meta property="og:description" content="今天写一个数据结构，突然想到这种东西必然会经常复用，完全可以写个库来供以后调用。然后就研究了下code::blocks下怎么来写库，又怎么去" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.shrp.me/codeblocks-dynamically-load-dll-in-windows.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2011-09-18T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2021-06-12T15:13:29&#43;08:00" />
+
+<meta itemprop="name" content="code::blocks在windows平台如何加载动态链接库dll">
+<meta itemprop="description" content="今天写一个数据结构，突然想到这种东西必然会经常复用，完全可以写个库来供以后调用。然后就研究了下code::blocks下怎么来写库，又怎么去"><meta itemprop="datePublished" content="2011-09-18T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2021-06-12T15:13:29&#43;08:00" />
+<meta itemprop="wordCount" content="1173">
+<meta itemprop="keywords" content="codeblocks,dll,C," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="code::blocks在windows平台如何加载动态链接库dll"/>
+<meta name="twitter:description" content="今天写一个数据结构，突然想到这种东西必然会经常复用，完全可以写个库来供以后调用。然后就研究了下code::blocks下怎么来写库，又怎么去"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
 <body>
-<div class="main">
-    <div class="header">
-        <ul id="pages">
-            <li>
-                <a href="/">首页</a>
-            </li>
-            <li>
-                <a href="/#/tags">标签</a>
-            </li>
-            <li>
-                <a href="/#/archive">归档</a>
-            </li>
-            <li>
-                <a href="/rss.xml" target="_blank">RSS</a>
-            </li>
-        </ul>
-    </div>
-    <div class="wrap-header">
-        <h1>
-            <a href="/" id="title"></a>
-        </h1>
-    </div>
-    <div id="md" style="display: none;">
-<!-- markdown -->
-　　今天写一个数据结构，突然想到这种东西必然会经常复用，完全可以写个库来供以后调用。然后就研究了下code::blocks下怎么来写库，又怎么去调用。
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">尚弟的小笔记</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/tags.html">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/post.html">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/rss.xml">
+        <li class="mobile-menu-item">RSS</li>
+      </a><a href="/blogrolls.html">
+        <li class="mobile-menu-item">友情链接</li>
+      </a><a href="/about.html">
+        <li class="mobile-menu-item">关于我</li>
+      </a>
+  </ul>
 
-　　首先是静态库。这个最为简单，只要选择static library项目新建。写好的库ctrl+F9，就能生成一个.a文件。要调用的时候只要在所需的项目中添加一个链接库，链接到这个.a文件即可。然后在项目中添加相应的.h文件，就像是使用正常的函数一样了。
+  
 
-　　其次是动态库。动态库略为复杂，不过也不难。首先写库的时候新建的时候选择dynamic link library，写好以后ctrl+f9会生成三个文件（10.05版本如此，好像之前的版本并非如此，还需更改编译选项，在项目属性的构建目标中选中选中红色选项框内的内容
 
- ![](http://stirp.github.io/img/1.JPG)
+</nav>
 
-）。生成的除了dll外，还有一个.a和一个.def文件。.def是给其它语言导入使用的，.a是一个导出库，类似于一个空壳实现。这时在新的项目中只要添加相应的头文件，并且在链接的时候链接到.a文件就行。
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">尚弟的小笔记</a>
+</div>
 
- ![](http://stirp.github.io/img/2.JPG)
 
-　　当然，运行程序的时候，.dll应该在.exe的执行目录中。不要问执行目录和存放目录有什么区别……这个请参照win快捷方式的start in（或者称为启动位置？手头没有中文系统）属性。
 
-　　不过如果不是cb生成的dll呢？我们只有.dll文件和.h文件，那也没有关系。直接把.dll文件替换上述.a文件，cb会根据dll当做.h的实现的。
 
-　　如果更进一步，没有.h，只知道几个重要的函数怎么办？那也没关系，用windows.h提供的LoadLibrary函数就可以了。具体可以查看下说明。
 
-　　下边我提供代码作为一个示例：
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags.html">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post.html">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/rss.xml">RSS</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls.html">友情链接</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about.html">关于我</a>
+      </li>
+  </ul>
+</nav>
 
-　　首先创建一个实验的动态链接库，比如我这里的LynxArrayList。 ![](http://stirp.github.io/img/lynxarrylist.png)其中的main.c如下：
+    </header>
 
-~~~~{c}
-/** @brief 简单的相加
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">code::blocks在windows平台如何加载动态链接库dll</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2011-09-18 </span>
+        
+          <span class="more-meta"> 约 1173 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>　　今天写一个数据结构，突然想到这种东西必然会经常复用，完全可以写个库来供以后调用。然后就研究了下code::blocks下怎么来写库，又怎么去调用。</p>
+<p>　　首先是静态库。这个最为简单，只要选择static library项目新建。写好的库ctrl+F9，就能生成一个.a文件。要调用的时候只要在所需的项目中添加一个链接库，链接到这个.a文件即可。然后在项目中添加相应的.h文件，就像是使用正常的函数一样了。</p>
+<p>　　其次是动态库。动态库略为复杂，不过也不难。首先写库的时候新建的时候选择dynamic link library，写好以后ctrl+f9会生成三个文件（10.05版本如此，好像之前的版本并非如此，还需更改编译选项，在项目属性的构建目标中选中选中红色选项框内的内容</p>
+<p><img src="http://stirp.github.io/img/1.JPG" alt=""></p>
+<p>）。生成的除了dll外，还有一个.a和一个.def文件。.def是给其它语言导入使用的，.a是一个导出库，类似于一个空壳实现。这时在新的项目中只要添加相应的头文件，并且在链接的时候链接到.a文件就行。</p>
+<p><img src="http://stirp.github.io/img/2.JPG" alt=""></p>
+<p>　　当然，运行程序的时候，.dll应该在.exe的执行目录中。不要问执行目录和存放目录有什么区别……这个请参照win快捷方式的start in（或者称为启动位置？手头没有中文系统）属性。</p>
+<p>　　不过如果不是cb生成的dll呢？我们只有.dll文件和.h文件，那也没有关系。直接把.dll文件替换上述.a文件，cb会根据dll当做.h的实现的。</p>
+<p>　　如果更进一步，没有.h，只知道几个重要的函数怎么办？那也没关系，用windows.h提供的LoadLibrary函数就可以了。具体可以查看下说明。</p>
+<p>　　下边我提供代码作为一个示例：</p>
+<p>　　首先创建一个实验的动态链接库，比如我这里的LynxArrayList。 <img src="http://stirp.github.io/img/lynxarrylist.png" alt="">其中的main.c如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">/** @brief 简单的相加
 *
 * @param 第一个加数
 * @param 第二个加数
@@ -73,42 +190,73 @@ int SampleAddInt(int i1, int i2)
 {
     return i1 + i2;
 }
-~~~~
-
-version.h就不用看了，那个是自动更新版本号的。
-
-然后更改为release，ctrl+F9，查看release目录下边生成了3个文件。然后删除除dll以外的文件（其实删不删都一样）。
-
-新建一个普通的console application，在构造选项的链接器设置中添加刚才的.dll文件。
-
- ![](http://stirp.github.io/img/lynxtest.png)
-
-之后在代码中声明SampleAddInt函数就行：
-
-LynxArrayList.h文件：
-
-~~~~{c}
-#ifndef LYNXARRAYLIST_H_INCLUDED
+</code></pre></td></tr></table>
+</div>
+</div><p>version.h就不用看了，那个是自动更新版本号的。</p>
+<p>然后更改为release，ctrl+F9，查看release目录下边生成了3个文件。然后删除除dll以外的文件（其实删不删都一样）。</p>
+<p>新建一个普通的console application，在构造选项的链接器设置中添加刚才的.dll文件。</p>
+<p><img src="http://stirp.github.io/img/lynxtest.png" alt=""></p>
+<p>之后在代码中声明SampleAddInt函数就行：</p>
+<p>LynxArrayList.h文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">#ifndef LYNXARRAYLIST_H_INCLUDED
 #define LYNXARRAYLIST_H_INCLUDED
 #ifdef __cplusplus
-extern "C" {
+extern &#34;C&#34; {
 #endif
 int SampleAddInt(int i1, int i2);
 #ifdef __cplusplus
 }
 #endif
 #endif // LYNXARRAYLIST_H_INCLUDED
-~~~~
-
-然后在main函数中include这个头文件，就可以使用SampleAddInt函数了。下边的主函数代码还示范了如何使用windows.h来动态加载dll，可以合理掌握dll的加载和释放时间，更加合理一些。
-
-main.c文件：
-
-~~~~{c}
-#include <stdio.h>
-#include <stdlib.h>
-#include <windows.h>
-#include "LynxArrayList.h"
+</code></pre></td></tr></table>
+</div>
+</div><p>然后在main函数中include这个头文件，就可以使用SampleAddInt函数了。下边的主函数代码还示范了如何使用windows.h来动态加载dll，可以合理掌握dll的加载和释放时间，更加合理一些。</p>
+<p>main.c文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;windows.h&gt;
+#include &#34;LynxArrayList.h&#34;
 /** @brief 主函数
 *
 * @return int
@@ -119,183 +267,144 @@ int main()
 {
     HINSTANCE hinstDLL;
     int (*myfunc)(int,int);
-    hinstDLL = LoadLibrary("libLynxArrayList.dll");
+    hinstDLL = LoadLibrary(&#34;libLynxArrayList.dll&#34;);
     if(hinstDLL != 0){
-        myfunc = (int (*)(int, int))GetProcAddress(hinstDLL, "SampleAddInt");
+        myfunc = (int (*)(int, int))GetProcAddress(hinstDLL, &#34;SampleAddInt&#34;);
     }
-    printf("%d\n",myfunc(1,2));
+    printf(&#34;%d\n&#34;,myfunc(1,2));
     FreeLibrary(hinstDLL);
-    printf("%d\n",SampleAddInt(2,3));
+    printf(&#34;%d\n&#34;,SampleAddInt(2,3));
     return 0;
 }
-~~~~
-
-<!-- markdown end -->
-    </div>
-    <div class="entry" id="main">
-<!-- content -->
-<p>　　今天写一个数据结构，突然想到这种东西必然会经常复用，完全可以写个库来供以后调用。然后就研究了下code::blocks下怎么来写库，又怎么去调用。</p>
-
-<p>　　首先是静态库。这个最为简单，只要选择static library项目新建。写好的库ctrl+F9，就能生成一个.a文件。要调用的时候只要在所需的项目中添加一个链接库，链接到这个.a文件即可。然后在项目中添加相应的.h文件，就像是使用正常的函数一样了。</p>
-
-<p>　　其次是动态库。动态库略为复杂，不过也不难。首先写库的时候新建的时候选择dynamic link library，写好以后ctrl+f9会生成三个文件（10.05版本如此，好像之前的版本并非如此，还需更改编译选项，在项目属性的构建目标中选中选中红色选项框内的内容</p>
-
-<p><img src="http://stirp.github.io/img/1.JPG" alt="" title=""></p>
-
-<p>）。生成的除了dll外，还有一个.a和一个.def文件。.def是给其它语言导入使用的，.a是一个导出库，类似于一个空壳实现。这时在新的项目中只要添加相应的头文件，并且在链接的时候链接到.a文件就行。</p>
-
-<p><img src="http://stirp.github.io/img/2.JPG" alt="" title=""></p>
-
-<p>　　当然，运行程序的时候，.dll应该在.exe的执行目录中。不要问执行目录和存放目录有什么区别……这个请参照win快捷方式的start in（或者称为启动位置？手头没有中文系统）属性。</p>
-
-<p>　　不过如果不是cb生成的dll呢？我们只有.dll文件和.h文件，那也没有关系。直接把.dll文件替换上述.a文件，cb会根据dll当做.h的实现的。</p>
-
-<p>　　如果更进一步，没有.h，只知道几个重要的函数怎么办？那也没关系，用windows.h提供的LoadLibrary函数就可以了。具体可以查看下说明。</p>
-
-<p>　　下边我提供代码作为一个示例：</p>
-
-<p>　　首先创建一个实验的动态链接库，比如我这里的LynxArrayList。 <img src="http://stirp.github.io/img/lynxarrylist.png" alt="" title="">其中的main.c如下：</p>
-
-<pre class=" language-c"><code class=" language-c"><span class="token comment" spellcheck="true">/** @brief 简单的相加
-*
-* @param 第一个加数
-* @param 第二个加数
-* @return 返回相加的和
-*
-*/</span>
-
-<span class="token keyword">int</span> <span class="token function">SampleAddInt<span class="token punctuation">(</span></span><span class="token keyword">int</span> i1<span class="token punctuation">,</span> <span class="token keyword">int</span> i2<span class="token punctuation">)</span>
-<span class="token punctuation">{</span>
-    <span class="token keyword">return</span> i1 <span class="token operator">+</span> i2<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-</code></pre>
-
-<p>version.h就不用看了，那个是自动更新版本号的。</p>
-
-<p>然后更改为release，ctrl+F9，查看release目录下边生成了3个文件。然后删除除dll以外的文件（其实删不删都一样）。</p>
-
-<p>新建一个普通的console application，在构造选项的链接器设置中添加刚才的.dll文件。</p>
-
-<p><img src="http://stirp.github.io/img/lynxtest.png" alt="" title=""></p>
-
-<p>之后在代码中声明SampleAddInt函数就行：</p>
-
-<p>LynxArrayList.h文件：</p>
-
-<pre class=" language-c"><code class=" language-c"><span class="token property">#ifndef LYNXARRAYLIST_H_INCLUDED</span>
-<span class="token property">#define LYNXARRAYLIST_H_INCLUDED</span>
-<span class="token property">#ifdef __cplusplus</span>
-<span class="token keyword">extern</span> <span class="token string">"C"</span> <span class="token punctuation">{</span>
-#endif
-<span class="token keyword">int</span> <span class="token function">SampleAddInt<span class="token punctuation">(</span></span><span class="token keyword">int</span> i1<span class="token punctuation">,</span> <span class="token keyword">int</span> i2<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token property">#ifdef __cplusplus</span>
-<span class="token punctuation">}</span>
-#endif
-#endif<span class="token comment" spellcheck="true"> // LYNXARRAYLIST_H_INCLUDED
-</span></code></pre>
-
-<p>然后在main函数中include这个头文件，就可以使用SampleAddInt函数了。下边的主函数代码还示范了如何使用windows.h来动态加载dll，可以合理掌握dll的加载和释放时间，更加合理一些。</p>
-
-<p>main.c文件：</p>
-
-<pre class=" language-c"><code class=" language-c"><span class="token property">#include <span class="token property">&lt;stdio.h&gt;</span></span>
-<span class="token property">#include <span class="token property">&lt;stdlib.h&gt;</span></span>
-<span class="token property">#include <span class="token property">&lt;windows.h&gt;</span></span>
-<span class="token property">#include </span><span class="token string">"LynxArrayList.h"</span>
-<span class="token comment" spellcheck="true">/** @brief 主函数
-*
-* @return int
-*
-*/</span>
-
-<span class="token keyword">int</span> <span class="token function">main<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
-<span class="token punctuation">{</span>
-    HINSTANCE hinstDLL<span class="token punctuation">;</span>
-    <span class="token keyword">int</span> <span class="token punctuation">(</span><span class="token operator">*</span>myfunc<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">,</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    hinstDLL <span class="token operator">=</span> <span class="token function">LoadLibrary<span class="token punctuation">(</span></span><span class="token string">"libLynxArrayList.dll"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>hinstDLL <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-        myfunc <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token function">GetProcAddress<span class="token punctuation">(</span></span>hinstDLL<span class="token punctuation">,</span> <span class="token string">"SampleAddInt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token function">printf<span class="token punctuation">(</span></span><span class="token string">"%d\n"</span><span class="token punctuation">,</span><span class="token function">myfunc<span class="token punctuation">(</span></span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">FreeLibrary<span class="token punctuation">(</span></span>hinstDLL<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">printf<span class="token punctuation">(</span></span><span class="token string">"%d\n"</span><span class="token punctuation">,</span><span class="token function">SampleAddInt<span class="token punctuation">(</span></span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-</code></pre>
-<!-- content end -->
-    </div>
-    <br>
-    <br>
-
-    <div id="disqus_thread"></div>
-    <div class="footer">
-        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
-    </div>
+</code></pre></td></tr></table>
 </div>
-<script src="main.js"></script>
-<script id="content" type="text/mustache">
-    <h1>{{title}}</h1>
-    <div class="tag">
-    {{date}}
-    {{#tags}}
-    <a href="/#/tag/{{name}}">#{{name}}</a>
-    {{/tags}}
+</div>
     </div>
 
-</script>
-<script id="pagesTemplate" type="text/mustache">
-    {{#pages}}
-    <li>
-        <a href="{{path}}">{{title}}</a>
-    </li>
-    {{/pages}}
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">尚弟</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-06-12
+        <a href="https://github.com/stirp/stirp.github.io/commit/7e4096a4b0a9fcb6c66839c35464229ff717d2fe" title="update imported">(7e4096a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content">© Copyright 2021 by 尚弟</span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/codeblocks.html">codeblocks</a>
+          <a href="/tags/dll.html">dll</a>
+          <a href="/tags/C.html">C</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/something-about-pointer-point-to-method.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">关于函数指针的一点小研究</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/using-http-client-for-api-of-youku-and-tudou.html">
+            <span class="next-text nav-default">http client 对于优酷和土豆的api调用</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
 
-</script>
-<script>
-    $(document).ready(function () {
-        $.ajax({
-            url: "main.json",
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                $("#title").html(data.name);
-                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
-                var pagesHtml = pagesTemplate.render({"pages": data.pages});
-                $("#pages").append(pagesHtml);
-                //path
-                var path = "codeblocks-dynamically-load-dll-in-windows.html";
-                //path end
-                var now = 0;
-                for (var i = 0; i < data.posts.length; ++i)
-                    if (path == data.posts[i].path)
-                        now = i;
-                var post = data.posts[now];
-                var tmp = post.tags.split(" ");
-                var tags = [];
-                for (var i = 0; i < tmp.length; ++i)
-                    if (tmp[i].length > 0)
-                        tags.push({"name": tmp[i]});
-                var contentTemplate = Hogan.compile($("#content").html());
-                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
-                $("#main").prepend(contentHtml);
-                if (data.disqus_shortname.length > 0) {
-                    var disqus_shortname = data.disqus_shortname;
-                    (function () {
-                        var dsq = document.createElement('script');
-                        dsq.type = 'text/javascript';
-                        dsq.async = true;
-                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                    })();
-                }
-            }
-        });
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'stirp';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:srpwy@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/stirp" class="iconfont icon-github" title="github"></a>
+  <a href="http://blog.shrp.me/rss.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2010 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>shrp</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-cn".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?249d9fe60c26e4771c81467fa3b43862";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
 </script>
+
+
+
+
+
+
 </body>
 </html>

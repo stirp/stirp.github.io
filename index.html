@@ -1,239 +1,421 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
-    <meta name="author" content="尚弟" />
-    <meta name="robots" content="all" />
-    <meta http-equiv="Content-Language" content="zh-cn" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="Keywords" content="尚弟 博客 笔记"/>
-    <meta name="Description" content="尚弟 博客 笔记"/>
-    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
-    <title>尚弟的小笔记</title>
-    <link rel="shortcut icon" href="/static/favicon.png"/>
-    <link rel="stylesheet" type="text/css" href="main.css" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>尚弟的小笔记</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="尚弟" /><meta name="description" content="尚弟 博客 笔记" /><meta name="keywords" content="尚弟, 博客, 笔记" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
+
+
+<link rel="canonical" href="http://blog.shrp.me/" />
+  <link href="http://blog.shrp.me/rss.xml" rel="alternate" type="application/rss+xml" title="尚弟的小笔记" />
+  <link href="http://blog.shrp.me/rss.xml" rel="feed" type="application/rss+xml" title="尚弟的小笔记" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="" />
+<meta property="og:description" content="尚弟 博客 笔记" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://blog.shrp.me/" />
+
+<meta itemprop="name" content="">
+<meta itemprop="description" content="尚弟 博客 笔记"><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="尚弟 博客 笔记"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
 <body>
-<div class="main">
-    <div class="header">
-        <ul id="pages">
-            <li>
-                <a href="/">首页</a>
-            </li>
-            <li>
-                <a href="/#/tags">标签</a>
-            </li>
-            <li>
-                <a href="/#/archive">归档</a>
-            </li>
-            <li>
-                <a href="/rss.xml" target="_blank">RSS</a>
-            </li>
-        </ul>
-    </div>
-    <div class="wrap-header">
-        <h1>
-        <a href="/" id="title"></a>
-        </h1>
-    </div>
-    <div class="innermain" id="main">
-    </div>
-    <div class="footer">
-        <p>© Copyright 2016 by 尚弟, Designed by isnowfy & 尚弟</p>
-    </div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">尚弟的小笔记</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
-<script src="main.js"></script>
-<script id="itemTemplate" type="text/mustache">
-    {{#posts}}
-    <div class="item">
-        <div class="date">
-            <div class="little">
-            </div>
-            {{date}}
-        </div>
-        <div class="title">
-            <h2>
-                <a href="{{path}}">{{title}}</a>
-            </h2>
-        </div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/tags.html">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/post.html">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/rss.xml">
+        <li class="mobile-menu-item">RSS</li>
+      </a><a href="/blogrolls.html">
+        <li class="mobile-menu-item">友情链接</li>
+      </a><a href="/about.html">
+        <li class="mobile-menu-item">关于我</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">尚弟的小笔记</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags.html">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post.html">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/rss.xml">RSS</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls.html">友情链接</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about.html">关于我</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html">从Simple迁移到Hugo</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-04-05 </span>
+      
+        <span class="more-meta"> 约 2767 字 </span>
+        <span class="more-meta"> 预计阅读 6 分钟 </span>
     </div>
-    {{/posts}}
-    <ul class="pages">
-        页码:
-        {{#pages}}
-            <li>
-            {{#select}}
-                <span class="selected">{{num}}</span>
-            {{/select}}
-            {{^select}}
-                <a href="{{path}}">{{num}}</a>
-            {{/select}}
-            </li>
-        {{/pages}}
-    </ul>
-</script>
-<script id="archiveTemplate" type="text/mustache">
-    {{#group}}
-    {{name}}
-    {{#posts}}
-    <div class="archive">
-    <span>{{date}}</span>
-    <a href="{{path}}">{{title}}</a>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      为什么不继续用Simple Simple是一个非常简单又纯粹的博客托管方案,然而它严重依赖 github 的API登录方案&ndash;而这个方案已经在去年
     </div>
-    {{/posts}}
-    {{/group}}
+    <div class="read-more">
+      <a href="/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/adjust-embedded-tomcat-version.html">tomcat7-maven-plugin指定 tomcat 版本</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-02-18 </span>
+      
+        <span class="more-meta"> 约 507 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      最近用 Maven tomcat 插件启动的时候，突然发现很多关于 tomcat 扫描注解时发现一些 jar 包内 meta-info.class 的注解无效的信息，一般提示是Invalid byte tag in constant pool: 19。 这是为啥呢？
+    </div>
+    <div class="read-more">
+      <a href="/adjust-embedded-tomcat-version.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html">拨公司 VPN 后，指定了外网 dns，却无法访问内网域名的解决办法</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-02-02 </span>
+      
+        <span class="more-meta"> 约 366 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      今天我遇到一个情况，就是使用公司 VPN 后再指定家里的 DNS 后，公司的内网域名反而无法访问的问题。 这是因为我家路由器上的 DNSMASQ 配置了rebind_prot
+    </div>
+    <div class="read-more">
+      <a href="/Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/BAMG55WHQt1iYrNSBRRh.html">【分享】一个 Java 线程池 bug 引发的 GC 机制思考</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-01-02 </span>
+      
+        <span class="more-meta"> 约 3065 字 </span>
+        <span class="more-meta"> 预计阅读 7 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      原文地址：一个 Java 线程池 bug 引发的 GC 机制思考 问题描述 前几天，在帮同事排查一个线上偶发的线程池错误 逻辑很简单，线程池执行了一个带结果的异步任务。但
+    </div>
+    <div class="read-more">
+      <a href="/BAMG55WHQt1iYrNSBRRh.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/How-To-Convert-Shell-Script-Into-Mac-App.html">怎么把脚本变为 Mac 的 App</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-01-01 </span>
+      
+        <span class="more-meta"> 约 1405 字 </span>
+        <span class="more-meta"> 预计阅读 3 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      有时候我们需要把一些有意义的脚本变成程序，发布出来；或者对一些已有的程序增加一点定制，比如我下载的这款 OpenProj，好用是好用，但是默认
+    </div>
+    <div class="read-more">
+      <a href="/How-To-Convert-Shell-Script-Into-Mac-App.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/i-am-chinese-the-dragonfly-must-go-on.html">我是中国人，谷歌的蜻蜓项目必须继续</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-12-02 </span>
+      
+        <span class="more-meta"> 约 588 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      有两个省，甲省有B企业生产粮食，但是日常在里面掺屎，群众虽然心知肚明，可是敢怒不敢言，时不时吃了一嘴屎；乙省规定健全，乙省的G企业虽然不像自
+    </div>
+    <div class="read-more">
+      <a href="/i-am-chinese-the-dragonfly-must-go-on.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/add-sync-task-for-Java.html">为 Java 程序增加一个异步任务功能</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-11-04 </span>
+      
+        <span class="more-meta"> 约 943 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      最近在开发一个系统，里面经常在一个请求里处理一系列的任务，其中一些任务是不需要阻塞请求结束的应答的，因此最简单的办法就是异步去执行这些任务。
+    </div>
+    <div class="read-more">
+      <a href="/add-sync-task-for-Java.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/The-best-opinion-of-bus-crash-into-the-river.html">公交撞桥坠河的最好观点</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-11-04 </span>
+      
+        <span class="more-meta"> 约 309 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      今天在微博看到一条关于公交撞桥坠河的观点，其观点跟我的看法高度相似，所以就粘贴到这里来： 一开始我想司机是不是想借小车的撞击力减速，从而撞桥停
+    </div>
+    <div class="read-more">
+      <a href="/The-best-opinion-of-bus-crash-into-the-river.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/Intellij-VM-optiomazation.html">Intellij VM 参数优化</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-10-30 </span>
+      
+        <span class="more-meta"> 约 93 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      今天看了《IntelliJ IDEA 内存优化最佳实践》一文，正好之前自己也做了自己机器的 Intellij 的内存优化，原来文章里的最优方案跟我自用的是一样的，都是增
+    </div>
+    <div class="read-more">
+      <a href="/Intellij-VM-optiomazation.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/How-to-run-NBA-2k9-on-Win10.html">NBA2k9怎么在Win10运行?</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-10-24 </span>
+      
+        <span class="more-meta"> 约 402 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      如果现在新电脑要装Windows，那基本上都是Win10了。然而对于一些有意思的老游戏，比如像拥有巅峰姚明和火箭的NBA2k9，Win10并
+    </div>
+    <div class="read-more">
+      <a href="/How-to-run-NBA-2k9-on-Win10.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    </section>
+  
+  <nav class="pagination">
+    
+    <a class="next" href="/page/2.html">
+        <span class="next-text">下一页</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+  </nav>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:srpwy@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/stirp" class="iconfont icon-github" title="github"></a>
+  <a href="http://blog.shrp.me/rss.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2010 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>shrp</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-cn".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?249d9fe60c26e4771c81467fa3b43862";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
 </script>
-<script id="pagesTemplate" type="text/mustache">
-    {{#pages}}
-    <li>
-        <a href="{{path}}">{{title}}</a>
-    </li>
-    {{/pages}}
-</script>
-<script id="tagsTemplate" type="text/mustache">
-    <ul style="list-style: none">
-        {{#tags}}
-        <li style="display:inline; margin: 15px;">
-            <a href="{{path}}" style="font-size: {{size}}%">{{name}}</a>
-        </li>
-        {{/tags}}
-    </ul>
-</script>
-<script>
-$(document).ready(function() {
-    $.ajax({
-        url: "main.json",
-        type: "GET",
-        dataType: "json",
-        success: function(data) {
-            $("#title").html(data.name);
-            data.posts.sort(function(a, b){
-                if (a.date > b.date)
-                    return -1;
-                if (a.date < b.date)
-                    return 1;
-                return 0;
-            });
-            console.log(data.posts);
-            var per = data.number_of_posts_per_page;
-            var n = data.posts.length;
-            var num = Math.floor((n-1)/per)+1;
-            var arr = [];
-            var tmp = [];
-            for (var i = 0; i < n; ++i) {
-                if (i != 0 && i % per == 0) {
-                    arr.push(tmp)
-                    tmp = [];
-                }
-                tmp.push(data.posts[i]);
-            }
-            if (tmp.length > 0)
-                arr.push(tmp);
-            var pages = [{"select": true, "num": 1, "path": "#/page/1"}];
-            for (var i = 1; i < num; ++i)
-                pages.push({"select": false, "num": i+1, "path": "#/page/"+(i+1)});
-            var itemTemplate = Hogan.compile($("#itemTemplate").html());
-            var itemHtml = itemTemplate.render({"posts": arr[0], "pages": pages});
-            $("#main").html(itemHtml);
-            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
-            var pagesHtml = pagesTemplate.render({"pages": data.pages});
-            $("#pages").append(pagesHtml);
-            var App = Spine.Controller.sub({
-                el: $("#main"),
-                init: function() {
-                    this.routes({
-                        "/page/:page": function(page) {this.go(page);},
-                        "/tags": function() {this.tags();},
-                        "/tag/:tag": function(param) {this.tag(param);},
-                        "/archive": function() {this.archive();}
-                    });
-                    Spine.Route.setup();
-                },
-                go: function(page) {
-                    page = Math.floor(page.page);
-                    for (var i = 0; i < pages.length; ++i)
-                        pages[i].select = false;
-                    pages[page-1].select = true;
-                    var tmppages = pages;
-                    if (page > 2 && pages.length > 4)
-                        tmppages = pages.slice(page-3);
-                    if (tmppages.length > 5)
-                        tmppages = tmppages.slice(0, 5);
-                    if (pages.length > 4 && tmppages.length < 5)
-                        tmppages = pages.slice(-5);
-                    itemHtml = itemTemplate.render({"posts": arr[page-1], "pages": tmppages});
-                    $("#main").html(itemHtml);
-                },
-                tags: function() {
-                    var ts = {};
-                    var posts = data.posts;
-                    var tf = function() {
-                        for (var i = 0; i < posts.length; ++i) {
-                            var tmp = posts[i].tags.split(" ");
-                            for (var j = 0; j < tmp.length; ++j) {
-                                if (tmp[j].length == 0)
-                                    continue;
-                                if (!(tmp[j] in ts))
-                                    ts[tmp[j]] = 0;
-                                ts[tmp[j]]++;
-                            }
-                        }
-                    }
-                    tf();
-                    posts = data.pages;
-                    tf();
-                    var ans = [];
-                    for (var k in ts) {
-                        ans.push({"name": "#"+k, "size": 100+Math.sqrt(ts[k]-1)*30, "path": "#/tag/"+k});
-                    }
-                    var tagsTemplate = Hogan.compile($("#tagsTemplate").html());
-                    var tagsHtml = tagsTemplate.render({"tags": ans});
-                    $("#main").html(tagsHtml);
-                },
-                tag: function(param) {
-                    var tag = decodeURI(param.tag);
-                    var group = [{"name": "#"+tag}];
-                    var posts = [];
-                    for (var i = 0; i < data.posts.length; ++i) {
-                        var tmp = data.posts[i].tags.split(" ");
-                        if (tmp.indexOf(tag) != -1)
-                            posts.push(data.posts[i]);
-                    }
-                    for (var i = 0; i < data.pages.length; ++i) {
-                        var tmp = data.pages[i].tags.split(" ");
-                        if (tmp.indexOf(tag) != -1)
-                            posts.push(data.pages[i]);
-                    }
-                    group[0].posts = posts;
-                    var tmpTemplate = Hogan.compile($("#archiveTemplate").html());
-                    var tmpHtml = tmpTemplate.render({"group": group});
-                    $("#main").html(tmpHtml);
-                },
-                archive: function() {
-                    var group = [];
-                    var posts = data.posts;
-                    var now = -1;
-                    var name = "";
-                    for (var i = 0; i < posts.length; ++i) {
-                        if (name != posts[i].date.slice(0,4)) {
-                            name = posts[i].date.slice(0,4);
-                            group.push({"name": name, "posts": []});
-                            now++;
-                        }
-                        group[now].posts.push(posts[i]);
-                    }
-                    var tmpTemplate = Hogan.compile($("#archiveTemplate").html());
-                    var tmpHtml = tmpTemplate.render({"group": group});
-                    $("#main").html(tmpHtml);
-                }
-            });
-            new App();
-        },
-        error: function(e) {
-            console.log("init error");
-        }
-    });    
-});
-</script>
+
+
+
+
+
+
 </body>
 </html>

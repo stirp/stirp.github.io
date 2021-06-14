@@ -1,312 +1,330 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
-    <meta name="author" content="尚弟" />
-    <meta name="robots" content="all" />
-    <meta http-equiv="Content-Language" content="zh-cn" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="Keywords" content="尚弟 博客 笔记"/>
-    <meta name="Description" content="尚弟 博客 笔记"/>
-    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
-    <title>尚弟的小笔记</title>
-    <link rel="shortcut icon" href="/static/favicon.png"/>
-    <link rel="stylesheet" type="text/css" href="main.css" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>多机共享键鼠软件横向测评 - 尚弟的小笔记</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="尚弟" /><meta name="description" content="我用了多年的多机共享软件Synergy，一直孤陋寡闻以为跨屏共享软件就只有这么一个，直到前两天在小众软件看到了sharemouse这款软件，" /><meta name="keywords" content="尚弟, 博客, 笔记" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
+
+
+<link rel="canonical" href="http://blog.shrp.me/Multi-Computer-Mouse-and-Keyboard-sharing.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="多机共享键鼠软件横向测评" />
+<meta property="og:description" content="我用了多年的多机共享软件Synergy，一直孤陋寡闻以为跨屏共享软件就只有这么一个，直到前两天在小众软件看到了sharemouse这款软件，" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.shrp.me/Multi-Computer-Mouse-and-Keyboard-sharing.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2016-07-02T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2021-06-12T15:13:29&#43;08:00" />
+
+<meta itemprop="name" content="多机共享键鼠软件横向测评">
+<meta itemprop="description" content="我用了多年的多机共享软件Synergy，一直孤陋寡闻以为跨屏共享软件就只有这么一个，直到前两天在小众软件看到了sharemouse这款软件，"><meta itemprop="datePublished" content="2016-07-02T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2021-06-12T15:13:29&#43;08:00" />
+<meta itemprop="wordCount" content="3971">
+<meta itemprop="keywords" content="Synergy,键鼠共享," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="多机共享键鼠软件横向测评"/>
+<meta name="twitter:description" content="我用了多年的多机共享软件Synergy，一直孤陋寡闻以为跨屏共享软件就只有这么一个，直到前两天在小众软件看到了sharemouse这款软件，"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
 <body>
-<div class="main">
-    <div class="header">
-        <ul id="pages">
-            <li>
-                <a href="/">首页</a>
-            </li>
-            <li>
-                <a href="/#/tags">标签</a>
-            </li>
-            <li>
-                <a href="/#/archive">归档</a>
-            </li>
-            <li>
-                <a href="/rss.xml" target="_blank">RSS</a>
-            </li>
-        </ul>
-    </div>
-    <div class="wrap-header">
-        <h1>
-            <a href="/" id="title"></a>
-        </h1>
-    </div>
-    <div id="md" style="display: none;">
-<!-- markdown -->
-我用了多年的多机共享软件Synergy，一直孤陋寡闻以为跨屏共享软件就只有这么一个，直到前两天在小众软件看到了[sharemouse](http://www.appinn.com/sharemouse/)这款软件，试用后发现功能感觉更为强大；稍后更是检索了一番，发现了一众多屏共享软件，于是挑选了几个有代表性的软件做了简单的测试。
-
-首先介绍下多机共享软件的原理：此类软件都是通过网络连接，将控制机的键鼠动作和粘贴板的行为同步到被控制机器，从而达到用一套键鼠操作多台电脑的目的，节约用户的桌面空间，方便用户用一套软件控制多台机器。功能原理其实非常简单，因此测评主要注重用户体验。
-
-###1. [Synergy](http://symless.com/synergy/)
-
-Synergy 应该是最流行的一款多机共享操作的软件了，至少从[alternativeto.net](http://alternativeto.net/software/mouse-without-borders2)来看是这样的；它的功能强大，简单好用，但是设置使用也是相对来说比较麻烦的。
-
-首先说怎么配置。它的软件安装后需要设置是服务端还是客户端，原理是键鼠所在的机器应该设置为服务端，其它机器设置为客户端，然后在客户端填写服务端IP或者HostName来连接服务端程序，完成配置。服务端和客户端都会生成自己的配置，如果你愿意，可以把它们都存到本地，然后通过文本修改来调整GUI界面所不提供的一些参数和功能；当然，这种调整对于大多数人来说根本没有用。
-
-配置好了以后当然是使用了，它提供了以下几种功能：
-
-基本功能：通过鼠标可以在不同的机器间移动，完成键鼠控制不同机器的目的。它支持最多15台机器互联和控制。可以通过鼠标拖拽实现文件的粘贴，文本和图片的复制粘贴也是可以的。
-
-热键：它提供自定义热键，可以切换屏幕，可以切换方向，也可以锁定指针在某一个屏幕。（话说这个功能我才注意到，不用鼠标切换桌面对于我来说非常实用的啊，应该早点注意到的）
-
-死角：死角是当鼠标移动到显示器的角落时，不切换屏幕。这个功能非常实用，因为这些地方通常有关闭按钮啊，开始菜单之类的，面积不算大，一不小心就挪出屏幕了。死角可以保证操作顺利。Synergy的死角可以统一设置，也可以针对某个机器进行单独设置。
-
-按键映射：Mac和Windows的按键是不一样的，如果在多个系统之间使用，肯定是要处理下ctrl，meta键的行为。我一般是Mac控制Windows，此时Windows的按键Cmd和Ctrl键是互换的。
-
-操作系统支持：Mac Linux Windows，有人也做了Android和iOS的程序（似乎没维护，iOS的好像已经不支持了）
-
-安全：由于客户端必须指定服务端IP，并且只能从服务端控制客户端，其控制的安全还是有保障的，很难被其他人控制了你的客户端。如果使用高级账户的SSL功能，网络也不能劫持到你通过网络传输的密码了，还是比较安全的。
-
-登陆界面：不管你的服务端和客户端是不是登陆界面，它都支持把鼠标挪进不同的机器，并且控制。
-
-缺点么，使用一段时间后我也发现很多了：它好像只支持从主机拖拽拖拽文件到Windows客户端而不能反向操作，Mac目录拖拽过去变成了一个很小的文件而不能使用（或许因为Mac的文件夹也是文件，没有当做文件夹处理）。复制文本和图片是双向的，但是有时候需要在进行复制的机器上找个地方粘贴一下，否则不能同步到其它机器——这可能跟文本复制粘贴的程序相关，我不止一次发现在客户端的Windows的微信客户端不能直接粘贴文本，必须要在客户端系统打开记事本粘贴一下再复制才能粘贴到客户端的微信。服务器的截图倒是可以直接粘贴到微信，但是根据截图大小，需要等网络传输后才能在客户端粘贴（高度怀疑没有压缩，直接传位图了），而且网络传输没有进度条，因此你不知道到底什么时候才能粘贴。使用复制粘贴不能将文件从一台电脑拷贝到另一台。还有，当客户端Windows的UAC窗口出现时，它是不能控制客户端的——UAC把它的能力禁止了。
-
-还有一个不算缺点的缺点：由于账号体系不是原生的，所以你机器的IP地址是没有中心服务器管理的——也就是说，如果你的两台设备在一个大局域网的不同子网内，没有做hostname的跨子网通知，并且强制DHCP，那么你就只能每次DHCP后重新在客户端设置服务端IP。如果能通过账号体系将自己的IP上报再下发到客户端，客户端再连接此IP的话就能解决这个问题了。
-
-它的收费目前分基本版和高级版，都是一次性购买，目前基本版10美元，高级版29美元。目前来说高级版的ssl和客服支持对于大多数人来说什么用也没有，10美元的lifetime access买这么一款给力的软件实在是……太便宜了。只能说作者现在要养活这么一个开发团队，难度有点高啊，很大可能若干年后作者跑路。不过Synergy的代码是开源的，开源社区会接盘。至少我还在用的话肯定会想办法去编译兼容版本的。
-
-###2. [ShareMouse](http://www.keyboard-and-mouse-sharing.com/index.html)
-
-今天就是试用它以后才发现它做的真的很不错，如果是同一个局域网的话，安装好以后都不用设置就已经连接到一起了——不过在公司怎么办呢？那只好买收费版啦。它的另一个好处是没有服务端和客户端的区别，玩游戏时可以用一台电脑控制一台平板，睡觉的时候用平板控制电脑关机——等等，平板怎么把鼠标挪出屏幕呢？好吧，这个功能用处似乎不太多……
-
-基本功能：免费版支持最多2台机器互联和控制，高级版支持9台。可以通过鼠标拖拽和复制粘贴功能实现文件的粘贴，文本和图片的复制粘贴也是可以的。文件的复制粘贴会显示进度条，但是拖拽文件的时候没有显示，会卡死接受文件的目录——对，它接受文件的时候可以在任意文件夹。
-
-热键：只有直接跳到另一个屏幕的热键和粘贴的热键ctrl+v，不过这就够了吧。
-
-死角：这个功能当然也有啦，不过似乎不能指定几个像素。此外还有全屏自动禁止切换，这样玩游戏的时候另一台看电影听音乐，不会影响打游戏的。
-
-按键映射：这个我真没找到……
-
-操作系统支持：Mac Windows，很多真正有多屏使用需要的人免不了要用Linux的，这个客户端的缺失其实影响应该很大吧
-
-安全：免费的不能加密码，加密码后客户端是相同密码的就可以连接。也就是想在公司用，掏钱是肯定嗒。
-
-登陆界面：不管你的服务端和客户端是不是登陆界面，它都支持把鼠标挪进不同的机器，并且控制。而且UAC界面也能控制哦。
-
-简单试了一下，如果它是一次性购买的话我肯定就用它替代Synergy了——跟Synergy一样的流畅，方便，外加比它简单的配置，文件复制粘贴，都直击痛点。而且进入离开某台机器的时候可以屏幕变暗，真是太简单了有木有。
-
-缺点也是有的，最大的一个痛点是除了直接互联外，如果想自己加一台机器进来只能使用IP而不能使用HOSTNAME——也就是说，在使用DHCP的公司内，好像更加难用了。按键映射在跨平台的时候是个问题，我总不能Mac用Cmd+v而到Windows使用ctrl+v吧。Linux也要支持啊。
-
-至于收费么……它不仅不是一次性收费，每年的年费还特别高：即便是按照每年最便宜的年费，标准版是\$8.97，高级版是\$22.48。这是你一次性要交5年的情况下才有如此优惠。
-
-如果你只是在家里的两台电脑之间这么用，它的免费版还是挺值得推荐的(但是文件拖动是不支持的)；但凡你的使用场景比较复杂，那它就只能爱莫能助了。
-
-###3. [Mouse without Borders](https://www.microsoft.com/en-us/download/details.aspx?id=35460)
-
-这款软件更像是钦定的感觉，你问我资瓷不资瓷，我当然是资瓷的啦，家里的两台Windows电脑已经使用它来替换Synergy了。作为微软官方的产品，它只支持Windows系列的系统；但是它的设定也简单，也没有客户端服务端的区别，文件的粘贴复制、拖拽更加流畅，没有卡死的情况发生。如果仅从文件操作这点来说，其它两个软件还是有点图样。
-
-基本功能：支持最多4台机器互联和控制，相互之间可以水平也可以上下各两台。可以通过鼠标拖拽和复制粘贴功能实现文件的粘贴，文本和图片的复制粘贴也是可以的。文件的复制粘贴会弹气泡提示。拖动到第二台机器的时候也会显示拖动的图标，跟在一台机器似的，效果相当赞。
-
-热键：有不少热键可以用，比Synergy多多了。
-
-死角：这个功能当然也有啦，也不能指定几个像素。并有全屏自动禁止切换
-
-按键映射：这个有，但是为啥Windows之间还要映射……
-
-操作系统支持：Sorry，Windows only
-
-安全：这个是通过软件显示自己的code，在另一台输入来实现的互联。所以不会导致你的电脑被别人控制的。
-
-
-登陆界面：如同ShareMouse，不管你的服务端和客户端是不是登陆界面，它都支持。UAC也不能阻止。
-
-此外它还支持IP的mapping，类似host功能，这是它应对跨子网DHCP的策略：你自己把ip写进去，然后用hostname去连接。
-
-如果你只用Windows，没有理由不用它改用其他软件。Windows最好的体验，外加免费。
-
-###4. [teleport](http://abyssoft.com/software/teleport/)
-
-一款只支持Mac的软件，简历上说作者从04年到现在都在苹果做开发。这么说来这软件就像是上边那款一样，都是官方出品啊。作者还有一款soundfly，是把声音传到另一台去的，难道这是airplay的原型？不明觉厉。
-
-不过看它的界面，真是非常非常简单，恐怕也没有办法在家以外使用。我就不进行尝试了，有需要的人可以试一试~
-
-###5. [across](http://www.acrosscenter.com/)
-
-如果说上边几款软件通过TCP/IP来使用，这款软件就有意思多了，它使用蓝牙虚拟为键盘和鼠标，从而进一步操作对方的。然而它还是需要在控制和被控机器都安装自己，从而限制了它的使用范围。因此他只支持Mac和Windows和安卓（没有蓝牙的Windows台式机和iOS残念中……）
-
-不过话说它并不贵，	Windows客户端6.99美刀，Mac客户端6.99美刀，一起买9.99美刀。
-
-###6. [Multiplicity](http://edgerunner.com/multiplicity)
-
-这款软件似乎又是只能支持Windows的，不过它有几个特点：可以同时锁定解锁，可以单独一台显示器（这跟硬件KVM几乎一样了啊！）。由于上边这条特性，它也可以远程工作，通过VPN工作，反正就一台显示器嘛，显示就是了。价格是一次性买断的， 我看还是比较合理，对于运维同学可以入手，其他人就算了吧……
-<!-- markdown end -->
-    </div>
-    <div class="entry" id="main">
-<!-- content -->
-<p>我用了多年的多机共享软件Synergy，一直孤陋寡闻以为跨屏共享软件就只有这么一个，直到前两天在小众软件看到了<a href="http://www.appinn.com/sharemouse/">sharemouse</a>这款软件，试用后发现功能感觉更为强大；稍后更是检索了一番，发现了一众多屏共享软件，于是挑选了几个有代表性的软件做了简单的测试。</p>
-
-<p>首先介绍下多机共享软件的原理：此类软件都是通过网络连接，将控制机的键鼠动作和粘贴板的行为同步到被控制机器，从而达到用一套键鼠操作多台电脑的目的，节约用户的桌面空间，方便用户用一套软件控制多台机器。功能原理其实非常简单，因此测评主要注重用户体验。</p>
-
-<h3 id="1synergyhttpsymlesscomsynergy">1. <a href="http://symless.com/synergy/">Synergy</a></h3>
-
-<p>Synergy 应该是最流行的一款多机共享操作的软件了，至少从<a href="http://alternativeto.net/software/mouse-without-borders2">alternativeto.net</a>来看是这样的；它的功能强大，简单好用，但是设置使用也是相对来说比较麻烦的。</p>
-
-<p>首先说怎么配置。它的软件安装后需要设置是服务端还是客户端，原理是键鼠所在的机器应该设置为服务端，其它机器设置为客户端，然后在客户端填写服务端IP或者HostName来连接服务端程序，完成配置。服务端和客户端都会生成自己的配置，如果你愿意，可以把它们都存到本地，然后通过文本修改来调整GUI界面所不提供的一些参数和功能；当然，这种调整对于大多数人来说根本没有用。</p>
-
-<p>配置好了以后当然是使用了，它提供了以下几种功能：</p>
-
-<p>基本功能：通过鼠标可以在不同的机器间移动，完成键鼠控制不同机器的目的。它支持最多15台机器互联和控制。可以通过鼠标拖拽实现文件的粘贴，文本和图片的复制粘贴也是可以的。</p>
-
-<p>热键：它提供自定义热键，可以切换屏幕，可以切换方向，也可以锁定指针在某一个屏幕。（话说这个功能我才注意到，不用鼠标切换桌面对于我来说非常实用的啊，应该早点注意到的）</p>
-
-<p>死角：死角是当鼠标移动到显示器的角落时，不切换屏幕。这个功能非常实用，因为这些地方通常有关闭按钮啊，开始菜单之类的，面积不算大，一不小心就挪出屏幕了。死角可以保证操作顺利。Synergy的死角可以统一设置，也可以针对某个机器进行单独设置。</p>
-
-<p>按键映射：Mac和Windows的按键是不一样的，如果在多个系统之间使用，肯定是要处理下ctrl，meta键的行为。我一般是Mac控制Windows，此时Windows的按键Cmd和Ctrl键是互换的。</p>
-
-<p>操作系统支持：Mac Linux Windows，有人也做了Android和iOS的程序（似乎没维护，iOS的好像已经不支持了）</p>
-
-<p>安全：由于客户端必须指定服务端IP，并且只能从服务端控制客户端，其控制的安全还是有保障的，很难被其他人控制了你的客户端。如果使用高级账户的SSL功能，网络也不能劫持到你通过网络传输的密码了，还是比较安全的。</p>
-
-<p>登陆界面：不管你的服务端和客户端是不是登陆界面，它都支持把鼠标挪进不同的机器，并且控制。</p>
-
-<p>缺点么，使用一段时间后我也发现很多了：它好像只支持从主机拖拽拖拽文件到Windows客户端而不能反向操作，Mac目录拖拽过去变成了一个很小的文件而不能使用（或许因为Mac的文件夹也是文件，没有当做文件夹处理）。复制文本和图片是双向的，但是有时候需要在进行复制的机器上找个地方粘贴一下，否则不能同步到其它机器——这可能跟文本复制粘贴的程序相关，我不止一次发现在客户端的Windows的微信客户端不能直接粘贴文本，必须要在客户端系统打开记事本粘贴一下再复制才能粘贴到客户端的微信。服务器的截图倒是可以直接粘贴到微信，但是根据截图大小，需要等网络传输后才能在客户端粘贴（高度怀疑没有压缩，直接传位图了），而且网络传输没有进度条，因此你不知道到底什么时候才能粘贴。使用复制粘贴不能将文件从一台电脑拷贝到另一台。还有，当客户端Windows的UAC窗口出现时，它是不能控制客户端的——UAC把它的能力禁止了。</p>
-
-<p>还有一个不算缺点的缺点：由于账号体系不是原生的，所以你机器的IP地址是没有中心服务器管理的——也就是说，如果你的两台设备在一个大局域网的不同子网内，没有做hostname的跨子网通知，并且强制DHCP，那么你就只能每次DHCP后重新在客户端设置服务端IP。如果能通过账号体系将自己的IP上报再下发到客户端，客户端再连接此IP的话就能解决这个问题了。</p>
-
-<p>它的收费目前分基本版和高级版，都是一次性购买，目前基本版10美元，高级版29美元。目前来说高级版的ssl和客服支持对于大多数人来说什么用也没有，10美元的lifetime access买这么一款给力的软件实在是……太便宜了。只能说作者现在要养活这么一个开发团队，难度有点高啊，很大可能若干年后作者跑路。不过Synergy的代码是开源的，开源社区会接盘。至少我还在用的话肯定会想办法去编译兼容版本的。</p>
-
-<h3 id="2sharemousehttpwwwkeyboardandmousesharingcomindexhtml">2. <a href="http://www.keyboard-and-mouse-sharing.com/index.html">ShareMouse</a></h3>
-
-<p>今天就是试用它以后才发现它做的真的很不错，如果是同一个局域网的话，安装好以后都不用设置就已经连接到一起了——不过在公司怎么办呢？那只好买收费版啦。它的另一个好处是没有服务端和客户端的区别，玩游戏时可以用一台电脑控制一台平板，睡觉的时候用平板控制电脑关机——等等，平板怎么把鼠标挪出屏幕呢？好吧，这个功能用处似乎不太多……</p>
-
-<p>基本功能：免费版支持最多2台机器互联和控制，高级版支持9台。可以通过鼠标拖拽和复制粘贴功能实现文件的粘贴，文本和图片的复制粘贴也是可以的。文件的复制粘贴会显示进度条，但是拖拽文件的时候没有显示，会卡死接受文件的目录——对，它接受文件的时候可以在任意文件夹。</p>
-
-<p>热键：只有直接跳到另一个屏幕的热键和粘贴的热键ctrl+v，不过这就够了吧。</p>
-
-<p>死角：这个功能当然也有啦，不过似乎不能指定几个像素。此外还有全屏自动禁止切换，这样玩游戏的时候另一台看电影听音乐，不会影响打游戏的。</p>
-
-<p>按键映射：这个我真没找到……</p>
-
-<p>操作系统支持：Mac Windows，很多真正有多屏使用需要的人免不了要用Linux的，这个客户端的缺失其实影响应该很大吧</p>
-
-<p>安全：免费的不能加密码，加密码后客户端是相同密码的就可以连接。也就是想在公司用，掏钱是肯定嗒。</p>
-
-<p>登陆界面：不管你的服务端和客户端是不是登陆界面，它都支持把鼠标挪进不同的机器，并且控制。而且UAC界面也能控制哦。</p>
-
-<p>简单试了一下，如果它是一次性购买的话我肯定就用它替代Synergy了——跟Synergy一样的流畅，方便，外加比它简单的配置，文件复制粘贴，都直击痛点。而且进入离开某台机器的时候可以屏幕变暗，真是太简单了有木有。</p>
-
-<p>缺点也是有的，最大的一个痛点是除了直接互联外，如果想自己加一台机器进来只能使用IP而不能使用HOSTNAME——也就是说，在使用DHCP的公司内，好像更加难用了。按键映射在跨平台的时候是个问题，我总不能Mac用Cmd+v而到Windows使用ctrl+v吧。Linux也要支持啊。</p>
-
-<p>至于收费么……它不仅不是一次性收费，每年的年费还特别高：即便是按照每年最便宜的年费，标准版是<span>$</span>8.97，高级版是<span>$</span>22.48。这是你一次性要交5年的情况下才有如此优惠。</p>
-
-<p>如果你只是在家里的两台电脑之间这么用，它的免费版还是挺值得推荐的(但是文件拖动是不支持的)；但凡你的使用场景比较复杂，那它就只能爱莫能助了。</p>
-
-<h3 id="3mousewithoutbordershttpswwwmicrosoftcomenusdownloaddetailsaspxid35460">3. <a href="https://www.microsoft.com/en-us/download/details.aspx?id=35460">Mouse without Borders</a></h3>
-
-<p>这款软件更像是钦定的感觉，你问我资瓷不资瓷，我当然是资瓷的啦，家里的两台Windows电脑已经使用它来替换Synergy了。作为微软官方的产品，它只支持Windows系列的系统；但是它的设定也简单，也没有客户端服务端的区别，文件的粘贴复制、拖拽更加流畅，没有卡死的情况发生。如果仅从文件操作这点来说，其它两个软件还是有点图样。</p>
-
-<p>基本功能：支持最多4台机器互联和控制，相互之间可以水平也可以上下各两台。可以通过鼠标拖拽和复制粘贴功能实现文件的粘贴，文本和图片的复制粘贴也是可以的。文件的复制粘贴会弹气泡提示。拖动到第二台机器的时候也会显示拖动的图标，跟在一台机器似的，效果相当赞。</p>
-
-<p>热键：有不少热键可以用，比Synergy多多了。</p>
-
-<p>死角：这个功能当然也有啦，也不能指定几个像素。并有全屏自动禁止切换</p>
-
-<p>按键映射：这个有，但是为啥Windows之间还要映射……</p>
-
-<p>操作系统支持：Sorry，Windows only</p>
-
-<p>安全：这个是通过软件显示自己的code，在另一台输入来实现的互联。所以不会导致你的电脑被别人控制的。</p>
-
-<p>登陆界面：如同ShareMouse，不管你的服务端和客户端是不是登陆界面，它都支持。UAC也不能阻止。</p>
-
-<p>此外它还支持IP的mapping，类似host功能，这是它应对跨子网DHCP的策略：你自己把ip写进去，然后用hostname去连接。</p>
-
-<p>如果你只用Windows，没有理由不用它改用其他软件。Windows最好的体验，外加免费。</p>
-
-<h3 id="4teleporthttpabyssoftcomsoftwareteleport">4. <a href="http://abyssoft.com/software/teleport/">teleport</a></h3>
-
-<p>一款只支持Mac的软件，简历上说作者从04年到现在都在苹果做开发。这么说来这软件就像是上边那款一样，都是官方出品啊。作者还有一款soundfly，是把声音传到另一台去的，难道这是airplay的原型？不明觉厉。</p>
-
-<p>不过看它的界面，真是非常非常简单，恐怕也没有办法在家以外使用。我就不进行尝试了，有需要的人可以试一试~</p>
-
-<h3 id="5acrosshttpwwwacrosscentercom">5. <a href="http://www.acrosscenter.com/">across</a></h3>
-
-<p>如果说上边几款软件通过TCP/IP来使用，这款软件就有意思多了，它使用蓝牙虚拟为键盘和鼠标，从而进一步操作对方的。然而它还是需要在控制和被控机器都安装自己，从而限制了它的使用范围。因此他只支持Mac和Windows和安卓（没有蓝牙的Windows台式机和iOS残念中……）</p>
-
-<p>不过话说它并不贵，    Windows客户端6.99美刀，Mac客户端6.99美刀，一起买9.99美刀。</p>
-
-<h3 id="6multiplicityhttpedgerunnercommultiplicity">6. <a href="http://edgerunner.com/multiplicity">Multiplicity</a></h3>
-
-<p>这款软件似乎又是只能支持Windows的，不过它有几个特点：可以同时锁定解锁，可以单独一台显示器（这跟硬件KVM几乎一样了啊！）。由于上边这条特性，它也可以远程工作，通过VPN工作，反正就一台显示器嘛，显示就是了。价格是一次性买断的， 我看还是比较合理，对于运维同学可以入手，其他人就算了吧……</p>
-<!-- content end -->
-    </div>
-    <br>
-    <br>
-
-    <div id="disqus_thread"></div>
-    <div class="footer">
-        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
-    </div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">尚弟的小笔记</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
-<script src="main.js"></script>
-<script id="content" type="text/mustache">
-    <h1>{{title}}</h1>
-    <div class="tag">
-    {{date}}
-    {{#tags}}
-    <a href="/#/tag/{{name}}">#{{name}}</a>
-    {{/tags}}
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/tags.html">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/post.html">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/rss.xml">
+        <li class="mobile-menu-item">RSS</li>
+      </a><a href="/blogrolls.html">
+        <li class="mobile-menu-item">友情链接</li>
+      </a><a href="/about.html">
+        <li class="mobile-menu-item">关于我</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">尚弟的小笔记</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags.html">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post.html">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/rss.xml">RSS</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls.html">友情链接</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about.html">关于我</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">多机共享键鼠软件横向测评</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-07-02 </span>
+        
+          <span class="more-meta"> 约 3971 字 </span>
+          <span class="more-meta"> 预计阅读 8 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>我用了多年的多机共享软件Synergy，一直孤陋寡闻以为跨屏共享软件就只有这么一个，直到前两天在小众软件看到了<a href="http://www.appinn.com/sharemouse/">sharemouse</a>这款软件，试用后发现功能感觉更为强大；稍后更是检索了一番，发现了一众多屏共享软件，于是挑选了几个有代表性的软件做了简单的测试。</p>
+<p>首先介绍下多机共享软件的原理：此类软件都是通过网络连接，将控制机的键鼠动作和粘贴板的行为同步到被控制机器，从而达到用一套键鼠操作多台电脑的目的，节约用户的桌面空间，方便用户用一套软件控制多台机器。功能原理其实非常简单，因此测评主要注重用户体验。</p>
+<p>###1. <a href="http://symless.com/synergy/">Synergy</a></p>
+<p>Synergy 应该是最流行的一款多机共享操作的软件了，至少从<a href="http://alternativeto.net/software/mouse-without-borders2">alternativeto.net</a>来看是这样的；它的功能强大，简单好用，但是设置使用也是相对来说比较麻烦的。</p>
+<p>首先说怎么配置。它的软件安装后需要设置是服务端还是客户端，原理是键鼠所在的机器应该设置为服务端，其它机器设置为客户端，然后在客户端填写服务端IP或者HostName来连接服务端程序，完成配置。服务端和客户端都会生成自己的配置，如果你愿意，可以把它们都存到本地，然后通过文本修改来调整GUI界面所不提供的一些参数和功能；当然，这种调整对于大多数人来说根本没有用。</p>
+<p>配置好了以后当然是使用了，它提供了以下几种功能：</p>
+<p>基本功能：通过鼠标可以在不同的机器间移动，完成键鼠控制不同机器的目的。它支持最多15台机器互联和控制。可以通过鼠标拖拽实现文件的粘贴，文本和图片的复制粘贴也是可以的。</p>
+<p>热键：它提供自定义热键，可以切换屏幕，可以切换方向，也可以锁定指针在某一个屏幕。（话说这个功能我才注意到，不用鼠标切换桌面对于我来说非常实用的啊，应该早点注意到的）</p>
+<p>死角：死角是当鼠标移动到显示器的角落时，不切换屏幕。这个功能非常实用，因为这些地方通常有关闭按钮啊，开始菜单之类的，面积不算大，一不小心就挪出屏幕了。死角可以保证操作顺利。Synergy的死角可以统一设置，也可以针对某个机器进行单独设置。</p>
+<p>按键映射：Mac和Windows的按键是不一样的，如果在多个系统之间使用，肯定是要处理下ctrl，meta键的行为。我一般是Mac控制Windows，此时Windows的按键Cmd和Ctrl键是互换的。</p>
+<p>操作系统支持：Mac Linux Windows，有人也做了Android和iOS的程序（似乎没维护，iOS的好像已经不支持了）</p>
+<p>安全：由于客户端必须指定服务端IP，并且只能从服务端控制客户端，其控制的安全还是有保障的，很难被其他人控制了你的客户端。如果使用高级账户的SSL功能，网络也不能劫持到你通过网络传输的密码了，还是比较安全的。</p>
+<p>登陆界面：不管你的服务端和客户端是不是登陆界面，它都支持把鼠标挪进不同的机器，并且控制。</p>
+<p>缺点么，使用一段时间后我也发现很多了：它好像只支持从主机拖拽拖拽文件到Windows客户端而不能反向操作，Mac目录拖拽过去变成了一个很小的文件而不能使用（或许因为Mac的文件夹也是文件，没有当做文件夹处理）。复制文本和图片是双向的，但是有时候需要在进行复制的机器上找个地方粘贴一下，否则不能同步到其它机器——这可能跟文本复制粘贴的程序相关，我不止一次发现在客户端的Windows的微信客户端不能直接粘贴文本，必须要在客户端系统打开记事本粘贴一下再复制才能粘贴到客户端的微信。服务器的截图倒是可以直接粘贴到微信，但是根据截图大小，需要等网络传输后才能在客户端粘贴（高度怀疑没有压缩，直接传位图了），而且网络传输没有进度条，因此你不知道到底什么时候才能粘贴。使用复制粘贴不能将文件从一台电脑拷贝到另一台。还有，当客户端Windows的UAC窗口出现时，它是不能控制客户端的——UAC把它的能力禁止了。</p>
+<p>还有一个不算缺点的缺点：由于账号体系不是原生的，所以你机器的IP地址是没有中心服务器管理的——也就是说，如果你的两台设备在一个大局域网的不同子网内，没有做hostname的跨子网通知，并且强制DHCP，那么你就只能每次DHCP后重新在客户端设置服务端IP。如果能通过账号体系将自己的IP上报再下发到客户端，客户端再连接此IP的话就能解决这个问题了。</p>
+<p>它的收费目前分基本版和高级版，都是一次性购买，目前基本版10美元，高级版29美元。目前来说高级版的ssl和客服支持对于大多数人来说什么用也没有，10美元的lifetime access买这么一款给力的软件实在是……太便宜了。只能说作者现在要养活这么一个开发团队，难度有点高啊，很大可能若干年后作者跑路。不过Synergy的代码是开源的，开源社区会接盘。至少我还在用的话肯定会想办法去编译兼容版本的。</p>
+<p>###2. <a href="http://www.keyboard-and-mouse-sharing.com/index.html">ShareMouse</a></p>
+<p>今天就是试用它以后才发现它做的真的很不错，如果是同一个局域网的话，安装好以后都不用设置就已经连接到一起了——不过在公司怎么办呢？那只好买收费版啦。它的另一个好处是没有服务端和客户端的区别，玩游戏时可以用一台电脑控制一台平板，睡觉的时候用平板控制电脑关机——等等，平板怎么把鼠标挪出屏幕呢？好吧，这个功能用处似乎不太多……</p>
+<p>基本功能：免费版支持最多2台机器互联和控制，高级版支持9台。可以通过鼠标拖拽和复制粘贴功能实现文件的粘贴，文本和图片的复制粘贴也是可以的。文件的复制粘贴会显示进度条，但是拖拽文件的时候没有显示，会卡死接受文件的目录——对，它接受文件的时候可以在任意文件夹。</p>
+<p>热键：只有直接跳到另一个屏幕的热键和粘贴的热键ctrl+v，不过这就够了吧。</p>
+<p>死角：这个功能当然也有啦，不过似乎不能指定几个像素。此外还有全屏自动禁止切换，这样玩游戏的时候另一台看电影听音乐，不会影响打游戏的。</p>
+<p>按键映射：这个我真没找到……</p>
+<p>操作系统支持：Mac Windows，很多真正有多屏使用需要的人免不了要用Linux的，这个客户端的缺失其实影响应该很大吧</p>
+<p>安全：免费的不能加密码，加密码后客户端是相同密码的就可以连接。也就是想在公司用，掏钱是肯定嗒。</p>
+<p>登陆界面：不管你的服务端和客户端是不是登陆界面，它都支持把鼠标挪进不同的机器，并且控制。而且UAC界面也能控制哦。</p>
+<p>简单试了一下，如果它是一次性购买的话我肯定就用它替代Synergy了——跟Synergy一样的流畅，方便，外加比它简单的配置，文件复制粘贴，都直击痛点。而且进入离开某台机器的时候可以屏幕变暗，真是太简单了有木有。</p>
+<p>缺点也是有的，最大的一个痛点是除了直接互联外，如果想自己加一台机器进来只能使用IP而不能使用HOSTNAME——也就是说，在使用DHCP的公司内，好像更加难用了。按键映射在跨平台的时候是个问题，我总不能Mac用Cmd+v而到Windows使用ctrl+v吧。Linux也要支持啊。</p>
+<p>至于收费么……它不仅不是一次性收费，每年的年费还特别高：即便是按照每年最便宜的年费，标准版是$8.97，高级版是$22.48。这是你一次性要交5年的情况下才有如此优惠。</p>
+<p>如果你只是在家里的两台电脑之间这么用，它的免费版还是挺值得推荐的(但是文件拖动是不支持的)；但凡你的使用场景比较复杂，那它就只能爱莫能助了。</p>
+<p>###3. <a href="https://www.microsoft.com/en-us/download/details.aspx?id=35460">Mouse without Borders</a></p>
+<p>这款软件更像是钦定的感觉，你问我资瓷不资瓷，我当然是资瓷的啦，家里的两台Windows电脑已经使用它来替换Synergy了。作为微软官方的产品，它只支持Windows系列的系统；但是它的设定也简单，也没有客户端服务端的区别，文件的粘贴复制、拖拽更加流畅，没有卡死的情况发生。如果仅从文件操作这点来说，其它两个软件还是有点图样。</p>
+<p>基本功能：支持最多4台机器互联和控制，相互之间可以水平也可以上下各两台。可以通过鼠标拖拽和复制粘贴功能实现文件的粘贴，文本和图片的复制粘贴也是可以的。文件的复制粘贴会弹气泡提示。拖动到第二台机器的时候也会显示拖动的图标，跟在一台机器似的，效果相当赞。</p>
+<p>热键：有不少热键可以用，比Synergy多多了。</p>
+<p>死角：这个功能当然也有啦，也不能指定几个像素。并有全屏自动禁止切换</p>
+<p>按键映射：这个有，但是为啥Windows之间还要映射……</p>
+<p>操作系统支持：Sorry，Windows only</p>
+<p>安全：这个是通过软件显示自己的code，在另一台输入来实现的互联。所以不会导致你的电脑被别人控制的。</p>
+<p>登陆界面：如同ShareMouse，不管你的服务端和客户端是不是登陆界面，它都支持。UAC也不能阻止。</p>
+<p>此外它还支持IP的mapping，类似host功能，这是它应对跨子网DHCP的策略：你自己把ip写进去，然后用hostname去连接。</p>
+<p>如果你只用Windows，没有理由不用它改用其他软件。Windows最好的体验，外加免费。</p>
+<p>###4. <a href="http://abyssoft.com/software/teleport/">teleport</a></p>
+<p>一款只支持Mac的软件，简历上说作者从04年到现在都在苹果做开发。这么说来这软件就像是上边那款一样，都是官方出品啊。作者还有一款soundfly，是把声音传到另一台去的，难道这是airplay的原型？不明觉厉。</p>
+<p>不过看它的界面，真是非常非常简单，恐怕也没有办法在家以外使用。我就不进行尝试了，有需要的人可以试一试~</p>
+<p>###5. <a href="http://www.acrosscenter.com/">across</a></p>
+<p>如果说上边几款软件通过TCP/IP来使用，这款软件就有意思多了，它使用蓝牙虚拟为键盘和鼠标，从而进一步操作对方的。然而它还是需要在控制和被控机器都安装自己，从而限制了它的使用范围。因此他只支持Mac和Windows和安卓（没有蓝牙的Windows台式机和iOS残念中……）</p>
+<p>不过话说它并不贵，	Windows客户端6.99美刀，Mac客户端6.99美刀，一起买9.99美刀。</p>
+<p>###6. <a href="http://edgerunner.com/multiplicity">Multiplicity</a></p>
+<p>这款软件似乎又是只能支持Windows的，不过它有几个特点：可以同时锁定解锁，可以单独一台显示器（这跟硬件KVM几乎一样了啊！）。由于上边这条特性，它也可以远程工作，通过VPN工作，反正就一台显示器嘛，显示就是了。价格是一次性买断的， 我看还是比较合理，对于运维同学可以入手，其他人就算了吧……</p>
+
     </div>
 
-</script>
-<script id="pagesTemplate" type="text/mustache">
-    {{#pages}}
-    <li>
-        <a href="{{path}}">{{title}}</a>
-    </li>
-    {{/pages}}
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">尚弟</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-06-12
+        <a href="https://github.com/stirp/stirp.github.io/commit/7e4096a4b0a9fcb6c66839c35464229ff717d2fe" title="update imported">(7e4096a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content">© Copyright 2021 by 尚弟</span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/Synergy.html">Synergy</a>
+          <a href="/tags/%E9%94%AE%E9%BC%A0%E5%85%B1%E4%BA%AB.html">键鼠共享</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/Increase-Number-of-file-descriptor.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Mac如何提高文件描述符个数</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/Restore-from-AppleDNS.html">
+            <span class="next-text nav-default">AppleDNS的Mac受害及恢复</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
 
-</script>
-<script>
-    $(document).ready(function () {
-        $.ajax({
-            url: "main.json",
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                $("#title").html(data.name);
-                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
-                var pagesHtml = pagesTemplate.render({"pages": data.pages});
-                $("#pages").append(pagesHtml);
-                //path
-                var path = "Multi-Computer-Mouse-and-Keyboard-sharing.html";
-                //path end
-                var now = 0;
-                for (var i = 0; i < data.posts.length; ++i)
-                    if (path == data.posts[i].path)
-                        now = i;
-                var post = data.posts[now];
-                var tmp = post.tags.split(" ");
-                var tags = [];
-                for (var i = 0; i < tmp.length; ++i)
-                    if (tmp[i].length > 0)
-                        tags.push({"name": tmp[i]});
-                var contentTemplate = Hogan.compile($("#content").html());
-                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
-                $("#main").prepend(contentHtml);
-                if (data.disqus_shortname.length > 0) {
-                    var disqus_shortname = data.disqus_shortname;
-                    (function () {
-                        var dsq = document.createElement('script');
-                        dsq.type = 'text/javascript';
-                        dsq.async = true;
-                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                    })();
-                }
-            }
-        });
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'stirp';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:srpwy@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/stirp" class="iconfont icon-github" title="github"></a>
+  <a href="http://blog.shrp.me/rss.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2010 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>shrp</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-cn".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?249d9fe60c26e4771c81467fa3b43862";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
 </script>
+
+
+
+
+
+
 </body>
 </html>

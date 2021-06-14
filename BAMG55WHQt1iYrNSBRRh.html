@@ -1,825 +1,885 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
-    <meta name="author" content="尚弟" />
-    <meta name="robots" content="all" />
-    <meta http-equiv="Content-Language" content="zh-cn" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="Keywords" content="尚弟 博客 笔记"/>
-    <meta name="Description" content="尚弟 博客 笔记"/>
-    <meta name="Copyright" content="Copyright 尚弟 all rights reserved." />
-    <title>尚弟的小笔记</title>
-    <link rel="shortcut icon" href="/static/favicon.png"/>
-    <link rel="stylesheet" type="text/css" href="main.css" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>【分享】一个 Java 线程池 bug 引发的 GC 机制思考 - 尚弟的小笔记</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="尚弟" /><meta name="description" content="原文地址：一个 Java 线程池 bug 引发的 GC 机制思考 问题描述 前几天，在帮同事排查一个线上偶发的线程池错误 逻辑很简单，线程池执行了一个带结果的异步任务。但" /><meta name="keywords" content="尚弟, 博客, 笔记" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
+
+
+<link rel="canonical" href="http://blog.shrp.me/BAMG55WHQt1iYrNSBRRh.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="【分享】一个 Java 线程池 bug 引发的 GC 机制思考" />
+<meta property="og:description" content="原文地址：一个 Java 线程池 bug 引发的 GC 机制思考 问题描述 前几天，在帮同事排查一个线上偶发的线程池错误 逻辑很简单，线程池执行了一个带结果的异步任务。但" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.shrp.me/BAMG55WHQt1iYrNSBRRh.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-01-02T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2021-06-12T15:13:29&#43;08:00" />
+
+<meta itemprop="name" content="【分享】一个 Java 线程池 bug 引发的 GC 机制思考">
+<meta itemprop="description" content="原文地址：一个 Java 线程池 bug 引发的 GC 机制思考 问题描述 前几天，在帮同事排查一个线上偶发的线程池错误 逻辑很简单，线程池执行了一个带结果的异步任务。但"><meta itemprop="datePublished" content="2020-01-02T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2021-06-12T15:13:29&#43;08:00" />
+<meta itemprop="wordCount" content="3065">
+<meta itemprop="keywords" content="Java,分享,线程池,bug," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="【分享】一个 Java 线程池 bug 引发的 GC 机制思考"/>
+<meta name="twitter:description" content="原文地址：一个 Java 线程池 bug 引发的 GC 机制思考 问题描述 前几天，在帮同事排查一个线上偶发的线程池错误 逻辑很简单，线程池执行了一个带结果的异步任务。但"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
 <body>
-<div class="main">
-    <div class="header">
-        <ul id="pages">
-            <li>
-                <a href="/">首页</a>
-            </li>
-            <li>
-                <a href="/#/tags">标签</a>
-            </li>
-            <li>
-                <a href="/#/archive">归档</a>
-            </li>
-            <li>
-                <a href="/rss.xml" target="_blank">RSS</a>
-            </li>
-        </ul>
-    </div>
-    <div class="wrap-header">
-        <h1>
-            <a href="/" id="title"></a>
-        </h1>
-    </div>
-    <div id="md" style="display: none;">
-<!-- markdown -->
-原文地址：[一个 Java 线程池 bug 引发的 GC 机制思考](https://www.infoq.cn/article/BAMG55WHQt1iYrNSBRRh?utm_source=rss&utm_medium=article)
-
-## 问题描述
-
-前几天，在帮同事排查一个线上偶发的线程池错误
-
-逻辑很简单，线程池执行了一个带结果的异步任务。但是最近有偶发的报错：
-
-```
-java.util.concurrent.RejectedExecutionException:
- Task java.util.concurrent.FutureTask@a5acd19
- rejected from java.util.concurrent.ThreadPoolExecutor@30890a38
-[Terminated, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0]
-```
-
-本文中的模拟代码已经问题都是在 HotSpot java8 (1.8.0_221) 版本下模拟 & 出现的
-
-下面是模拟代码，通过 Executors.newSingleThreadExecutor 创建一个单线程的线程池，然后在调用方获取 Future 的结果
-
-```java 
-public class ThreadPoolTest {
-
-    public static void main(String[] args) {
-        final ThreadPoolTest threadPoolTest = new ThreadPoolTest();
-        for (int i = 0; i < 8; i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-
-                        Future<String> future = threadPoolTest.submit();
-                        try {
-                            String s = future.get();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        } catch (Error e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }).start();
-        }
-
-        // 子线程不停 gc，模拟偶发的 gc
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    System.gc();
-                }
-            }
-        }).start();
-    }
-
-    /**
-     * 异步执行任务
-     * @return
-     */
-    public Future<String> submit() {
-        // 关键点，通过 Executors.newSingleThreadExecutor 创建一个单线程的线程池
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        FutureTask<String> futureTask = new FutureTask(new Callable() {
-            @Override
-            public Object call() throws Exception {
-                Thread.sleep(50);
-                return System.currentTimeMillis() + "";
-            }
-        });
-        executorService.execute(futureTask);
-        return futureTask;
-    }
-
-}
-```
-
-## 分析 & 疑问
-
-第一个思考的问题是：线程池为什么关闭了，代码中并没有手动关闭的地方。看一下 `Executors.newSingleThreadExecotor`的源码实现：
-```java
-public static ExecutorService newSingleThreadExecutor() {
-    return new FinalizableDelegatedExecutorService
-            (new ThreadPoolExecutor(1, 1,
-                    0L, TimeUnit.MILLISECONDS,
-                    new LinkedBlockingQueue<Runnable>()));
-}
-```
-
-这里创建的实际上是一个 `FinalizableDelegatedExecutorService`，这个包装类重写了 `finalize`函数，也就是说这个类会在被 GC 回收之前，先执行线程池的 shutdown 方法。
-
-问题来了，**GC 只会回收不可达（unreachable）的对象**，在 `submit`函数的栈帧未执行完出栈之前， `executorService`应该是可达的才对。
-
-对于此问题，先抛出结论：
-
-**当对象仍存在于作用域（stack frame）时， `finalize`也可能会被执行**
-
-oracle jdk 文档中有一段关于 finalize 的介绍：
-
-[https://docs.oracle.com/javas ](https://docs.oracle.com/javas)…
-
-> A reachable object is any object that can be accessed in any potential continuing computation from any live thread.
-> Optimizing transformations of a program can be designed that reduce the number of objects that are reachable to be less than those which would naively be considered reachable. For example, a Java compiler or code generator may choose to set a variable or parameter that will no longer be used to null to cause the storage for such an object to be potentially reclaimable sooner.
-
-**大概意思是：可达对象 (reachable object) 是可以从任何活动线程的任何潜在的持续访问中的任何对象；java 编译器或代码生成器可能会对不再访问的对象提前置为 null，使得对象可以被提前回收**
-
-也就是说，在 jvm 的优化下，可能会出现对象不可达之后被提前置空并回收的情况
-
-举个例子来验证一下（摘自[ https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope ](https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope)）：
-
-```java
-class A {
-    @Override protected void finalize() {
-        System.out.println(this + " was finalized!");
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        A a = new A();
-        System.out.println("Created " + a);
-        for (int i = 0; i < 1_000_000_000; i++) {
-            if (i % 1_000_00 == 0)
-                System.gc();
-        }
-        System.out.println("done.");
-    }
-}
-
-// 打印结果
-Created A@1be6f5c3
-A@1be6f5c3 was finalized!//finalize 方法输出
-done.
-```
-
-从例子中可以看到，如果 a 在循环完成后已经不再使用了，则会出现先执行 finalize 的情况；虽然从对象作用域来说，方法没有执行完，栈帧并没有出栈，但是还是会被提前执行。
-
-现在来增加一行代码，在最后一行打印对象 a，让编译器 / 代码生成器认为后面有对象 a 的引用
-```java
-...
-System.out.println(a);
-
-// 打印结果
-Created A@1be6f5c3
-done.
-A@1be6f5c3
-```
-
-从结果上看，finalize 方法都没有执行（因为 main 方法执行完成后进程直接结束了），更不会出现提前 finalize 的问题了
-
-基于上面的测试结果，再测试一种情况，在循环之前先将对象 a 置为 null，并且在最后打印保持对象 a 的引用
-```java
-A a = new A();
-System.out.println("Created " + a);
-a = null;// 手动置 null
-for (int i = 0; i < 1_000_000_000; i++) {
-    if (i % 1_000_00 == 0)
-        System.gc();
-}
-System.out.println("done.");
-System.out.println(a);
-
-// 打印结果
-Created A@1be6f5c3
-A@1be6f5c3 was finalized!
-done.
-null
-
-```
-
-从结果上看，手动置 null 的话也会导致对象被提前回收，虽然在最后还有引用，但此时引用的也是 null 了
-
-* * *
-
-现在再回到上面的线程池问题，根据上面介绍的机制，在分析没有引用之后，对象会被提前 finalize
-
-可在上述代码中，return 之前明明是有引用的 `executorService.execute(futureTask)`，为什么也会提前 finalize 呢？
-
-猜测可能是由于在 execute 方法中，会调用 threadPoolExecutor，会创建并启动一个新线程，这时会发生一次主动的线程切换，导致在活动线程中对象不可达
-
-结合上面 Oracle Jdk 文档中的描述“可达对象 (reachable object) 是可以从任何活动线程的任何潜在的持续访问中的任何对象”，可以认为可能是因为一次显示的线程切换，对象被认为不可达了，导致线程池被提前 finalize 了
-
-下面来验证一下猜想：
-
-```java
-// 入口函数
-public class FinalizedTest {
-    public static void main(String[] args) {
-        final FinalizedTest finalizedTest = new FinalizedTest();
-        for (int i = 0; i < 8; i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        TFutureTask future = finalizedTest.submit();
-                    }
-                }
-            }).start();
-        }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    System.gc();
-                }
-            }
-        }).start();
-    }
-    public TFutureTask submit(){
-        TExecutorService TExecutorService = Executors.create();
-        TExecutorService.execute();
-        return null;
-    }
-}
-
-//Executors.java，模拟 juc 的 Executors
-public class Executors {
-    /**
-     * 模拟 Executors.createSingleExecutor
-     * @return
-     */
-    public static TExecutorService create(){
-        return new FinalizableDelegatedTExecutorService(new TThreadPoolExecutor());
-    }
-
-    static class FinalizableDelegatedTExecutorService extends DelegatedTExecutorService {
-
-        FinalizableDelegatedTExecutorService(TExecutorService executor) {
-            super(executor);
-        }
-
-        /**
-         * 析构函数中执行 shutdown，修改线程池状态
-         * @throws Throwable
-         */
-        @Override
-        protected void finalize() throws Throwable {
-            super.shutdown();
-        }
-    }
-
-    static class DelegatedTExecutorService extends TExecutorService {
-
-        protected TExecutorService e;
-
-        public DelegatedTExecutorService(TExecutorService executor) {
-            this.e = executor;
-        }
-
-        @Override
-        public void execute() {
-            e.execute();
-        }
-
-        @Override
-        public void shutdown() {
-            e.shutdown();
-        }
-    }
-}
-
-//TThreadPoolExecutor.java，模拟 juc 的 ThreadPoolExecutor
-public class TThreadPoolExecutor extends TExecutorService {
-
-    /**
-     * 线程池状态，false：未关闭，true 已关闭
-     */
-    private AtomicBoolean ctl = new AtomicBoolean();
-
-    @Override
-    public void execute() {
-        // 启动一个新线程，模拟 ThreadPoolExecutor.execute
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        }).start();
-        // 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
-        // 如果线程池被提前 shutdown，则抛出异常
-        for (int i = 0; i < 1_000_000; i++) {
-            if(ctl.get()){
-                throw new RuntimeException("reject!!!["+ctl.get()+"]");
-            }
-        }
-    }
-
-    @Override
-    public void shutdown() {
-        ctl.compareAndSet(false,true);
-    }
-}
-```
-
-执行若干时间后报错：
-
-```java
-Exception in thread "Thread-1" java.lang.RuntimeException: reject!!![true
-```
-
-从错误上来看，“线程池”同样被提前 shutdown 了，那么一定是由于新建线程导致的吗？
-
-下面将新建线程修改为 `Thread.sleep`测试一下：
-```java
-//TThreadPoolExecutor.java，修改后的 execute 方法
-public void execute() {
-    try {
-        // 显式的 sleep 1 ns，主动切换线程
-        TimeUnit.NANOSECONDS.sleep(1);
-    } catch (InterruptedException e) {
-        e.printStackTrace();
-    }
-    // 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
-    // 如果线程池被提前 shutdown，则抛出异常
-    for (int i = 0; i < 1_000_000; i++) {
-        if(ctl.get()){
-            throw new RuntimeException("reject!!!["+ctl.get()+"]");
-        }
-    }
-}
-```
-执行结果一样是报错
-
-```java
-Exception in thread "Thread-3" java.lang.RuntimeException: reject!!![true]
-```
-
-**由此可得，如果在执行的过程中，发生一次显式的线程切换，则会让编译器 / 代码生成器认为外层包装对象不可达**
-
-## 总结
-
-虽然 GC 只会回收不可达 GC ROOT 的对象，但是在编译器（没有明确指出，也可能是 JIT）/ 代码生成器的优化下，可能会出现对象提前置 null，或者线程切换导致的“提前对象不可达”的情况。
-
-所以如果想在 finalize 方法里做些事情的话，一定在最后显示的引用一下对象（toString/hashcode 都可以），保持对象的可达性（reachable）
-
-上面关于线程切换导致的对象不可达，没有官方文献的支持，只是个人一个测试结果，如有问题欢迎指出
-
-**综上所述，这种回收机制并不是 JDK 的 bug，而算是一个优化策略，提前回收而已。但 `Executors.newSingleThreadExecutor`的实现里通过 finalize 来自动关闭线程池的做法是有 Bug 的，在经过优化后可能会导致线程池的提前 shutdown，从而导致异常。**
-
-线程池的这个问题，在 JDK 的论坛里也是一个公开但未解决状态的问题[ https://bugs.openjdk.java.net/browse/JDK-8145304 ](https://bugs.openjdk.java.net/browse/JDK-8145304)。
-
-不过在 JDK11 下，该问题已经被修复：
-```java
-JUC  Executors.FinalizableDelegatedExecutorService
-public void execute(Runnable command) {
-    try {
-        e.execute(command);
-    } finally { reachabilityFence(this); }
-}
-```
-
-**本文转载自公众号玉刚说（ID：YugangTalk）。**
-
-**原文链接**：
-
-**[https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw](https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw)**
-<!-- markdown end -->
-    </div>
-    <div class="entry" id="main">
-<!-- content -->
-<p>原文地址：<a href="https://www.infoq.cn/article/BAMG55WHQt1iYrNSBRRh?utm_source=rss&amp;utm_medium=article">一个 Java 线程池 bug 引发的 GC 机制思考</a></p>
-
-<h2 id="">问题描述</h2>
-
-<p>前几天，在帮同事排查一个线上偶发的线程池错误</p>
-
-<p>逻辑很简单，线程池执行了一个带结果的异步任务。但是最近有偶发的报错：</p>
-
-<pre><code>java.util.concurrent.RejectedExecutionException:
- Task java.util.concurrent.FutureTask@a5acd19
- rejected from java.util.concurrent.ThreadPoolExecutor@30890a38
-[Terminated, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0]
-</code></pre>
-
-<p>本文中的模拟代码已经问题都是在 HotSpot java8 (1.8.0_221) 版本下模拟 &amp; 出现的</p>
-
-<p>下面是模拟代码，通过 Executors.newSingleThreadExecutor 创建一个单线程的线程池，然后在调用方获取 Future 的结果</p>
-
-<pre><code class="java ">public class ThreadPoolTest {
-
-    public static void main(String[] args) {
-        final ThreadPoolTest threadPoolTest = new ThreadPoolTest();
-        for (int i = 0; i &lt; 8; i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-
-                        Future&lt;String&gt; future = threadPoolTest.submit();
-                        try {
-                            String s = future.get();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        } catch (Error e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }).start();
-        }
-
-        // 子线程不停 gc，模拟偶发的 gc
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    System.gc();
-                }
-            }
-        }).start();
-    }
-
-    /**
-     * 异步执行任务
-     * @return
-     */
-    public Future&lt;String&gt; submit() {
-        // 关键点，通过 Executors.newSingleThreadExecutor 创建一个单线程的线程池
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        FutureTask&lt;String&gt; futureTask = new FutureTask(new Callable() {
-            @Override
-            public Object call() throws Exception {
-                Thread.sleep(50);
-                return System.currentTimeMillis() + "";
-            }
-        });
-        executorService.execute(futureTask);
-        return futureTask;
-    }
-
-}
-</code></pre>
-
-<h2 id="">分析 &amp; 疑问</h2>
-
-<p>第一个思考的问题是：线程池为什么关闭了，代码中并没有手动关闭的地方。看一下&nbsp;<code>Executors.newSingleThreadExecotor</code>的源码实现：</p>
-
-<pre><code class="java">public static ExecutorService newSingleThreadExecutor() {
-    return new FinalizableDelegatedExecutorService
-            (new ThreadPoolExecutor(1, 1,
-                    0L, TimeUnit.MILLISECONDS,
-                    new LinkedBlockingQueue&lt;Runnable&gt;()));
-}
-</code></pre>
-
-<p>这里创建的实际上是一个&nbsp;<code>FinalizableDelegatedExecutorService</code>，这个包装类重写了&nbsp;<code>finalize</code>函数，也就是说这个类会在被 GC 回收之前，先执行线程池的 shutdown 方法。</p>
-
-<p>问题来了，<strong>GC 只会回收不可达（unreachable）的对象</strong>，在&nbsp;<code>submit</code>函数的栈帧未执行完出栈之前，&nbsp;<code>executorService</code>应该是可达的才对。</p>
-
-<p>对于此问题，先抛出结论：</p>
-
-<p><strong>当对象仍存在于作用域（stack frame）时，&nbsp;<code>finalize</code>也可能会被执行</strong></p>
-
-<p>oracle jdk 文档中有一段关于 finalize 的介绍：</p>
-
-<p><a href="https://docs.oracle.com/javas">https://docs.oracle.com/javas&nbsp;</a>…</p>
-
-<blockquote>
-  <p>A reachable object is any object that can be accessed in any potential continuing computation from any live thread.
-  Optimizing transformations of a program can be designed that reduce the number of objects that are reachable to be less than those which would naively be considered reachable. For example, a Java compiler or code generator may choose to set a variable or parameter that will no longer be used to null to cause the storage for such an object to be potentially reclaimable sooner.</p>
-</blockquote>
-
-<p><strong>大概意思是：可达对象 (reachable object) 是可以从任何活动线程的任何潜在的持续访问中的任何对象；java 编译器或代码生成器可能会对不再访问的对象提前置为 null，使得对象可以被提前回收</strong></p>
-
-<p>也就是说，在 jvm 的优化下，可能会出现对象不可达之后被提前置空并回收的情况</p>
-
-<p>举个例子来验证一下（摘自<a href="https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope">&nbsp;https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope&nbsp;</a>）：</p>
-
-<pre><code class="java">class A {
-    @Override protected void finalize() {
-        System.out.println(this + " was finalized!");
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        A a = new A();
-        System.out.println("Created " + a);
-        for (int i = 0; i &lt; 1_000_000_000; i++) {
-            if (i % 1_000_00 == 0)
-                System.gc();
-        }
-        System.out.println("done.");
-    }
-}
-
-// 打印结果
-Created A@1be6f5c3
-A@1be6f5c3 was finalized!//finalize 方法输出
-done.
-</code></pre>
-
-<p>从例子中可以看到，如果 a 在循环完成后已经不再使用了，则会出现先执行 finalize 的情况；虽然从对象作用域来说，方法没有执行完，栈帧并没有出栈，但是还是会被提前执行。</p>
-
-<p>现在来增加一行代码，在最后一行打印对象 a，让编译器 / 代码生成器认为后面有对象 a 的引用</p>
-
-<pre><code class="java">...
-System.out.println(a);
-
-// 打印结果
-Created A@1be6f5c3
-done.
-A@1be6f5c3
-</code></pre>
-
-<p>从结果上看，finalize 方法都没有执行（因为 main 方法执行完成后进程直接结束了），更不会出现提前 finalize 的问题了</p>
-
-<p>基于上面的测试结果，再测试一种情况，在循环之前先将对象 a 置为 null，并且在最后打印保持对象 a 的引用</p>
-
-<pre><code class="java">A a = new A();
-System.out.println("Created " + a);
-a = null;// 手动置 null
-for (int i = 0; i &lt; 1_000_000_000; i++) {
-    if (i % 1_000_00 == 0)
-        System.gc();
-}
-System.out.println("done.");
-System.out.println(a);
-
-// 打印结果
-Created A@1be6f5c3
-A@1be6f5c3 was finalized!
-done.
-null
-</code></pre>
-
-<p>从结果上看，手动置 null 的话也会导致对象被提前回收，虽然在最后还有引用，但此时引用的也是 null 了</p>
-
-<hr>
-
-<p>现在再回到上面的线程池问题，根据上面介绍的机制，在分析没有引用之后，对象会被提前 finalize</p>
-
-<p>可在上述代码中，return 之前明明是有引用的&nbsp;<code>executorService.execute(futureTask)</code>，为什么也会提前 finalize 呢？</p>
-
-<p>猜测可能是由于在 execute 方法中，会调用 threadPoolExecutor，会创建并启动一个新线程，这时会发生一次主动的线程切换，导致在活动线程中对象不可达</p>
-
-<p>结合上面 Oracle Jdk 文档中的描述“可达对象 (reachable object) 是可以从任何活动线程的任何潜在的持续访问中的任何对象”，可以认为可能是因为一次显示的线程切换，对象被认为不可达了，导致线程池被提前 finalize 了</p>
-
-<p>下面来验证一下猜想：</p>
-
-<pre><code class="java">// 入口函数
-public class FinalizedTest {
-    public static void main(String[] args) {
-        final FinalizedTest finalizedTest = new FinalizedTest();
-        for (int i = 0; i &lt; 8; i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        TFutureTask future = finalizedTest.submit();
-                    }
-                }
-            }).start();
-        }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    System.gc();
-                }
-            }
-        }).start();
-    }
-    public TFutureTask submit(){
-        TExecutorService TExecutorService = Executors.create();
-        TExecutorService.execute();
-        return null;
-    }
-}
-
-//Executors.java，模拟 juc 的 Executors
-public class Executors {
-    /**
-     * 模拟 Executors.createSingleExecutor
-     * @return
-     */
-    public static TExecutorService create(){
-        return new FinalizableDelegatedTExecutorService(new TThreadPoolExecutor());
-    }
-
-    static class FinalizableDelegatedTExecutorService extends DelegatedTExecutorService {
-
-        FinalizableDelegatedTExecutorService(TExecutorService executor) {
-            super(executor);
-        }
-
-        /**
-         * 析构函数中执行 shutdown，修改线程池状态
-         * @throws Throwable
-         */
-        @Override
-        protected void finalize() throws Throwable {
-            super.shutdown();
-        }
-    }
-
-    static class DelegatedTExecutorService extends TExecutorService {
-
-        protected TExecutorService e;
-
-        public DelegatedTExecutorService(TExecutorService executor) {
-            this.e = executor;
-        }
-
-        @Override
-        public void execute() {
-            e.execute();
-        }
-
-        @Override
-        public void shutdown() {
-            e.shutdown();
-        }
-    }
-}
-
-//TThreadPoolExecutor.java，模拟 juc 的 ThreadPoolExecutor
-public class TThreadPoolExecutor extends TExecutorService {
-
-    /**
-     * 线程池状态，false：未关闭，true 已关闭
-     */
-    private AtomicBoolean ctl = new AtomicBoolean();
-
-    @Override
-    public void execute() {
-        // 启动一个新线程，模拟 ThreadPoolExecutor.execute
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        }).start();
-        // 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
-        // 如果线程池被提前 shutdown，则抛出异常
-        for (int i = 0; i &lt; 1_000_000; i++) {
-            if(ctl.get()){
-                throw new RuntimeException("reject!!!["+ctl.get()+"]");
-            }
-        }
-    }
-
-    @Override
-    public void shutdown() {
-        ctl.compareAndSet(false,true);
-    }
-}
-</code></pre>
-
-<p>执行若干时间后报错：</p>
-
-<pre><code class="java">Exception in thread "Thread-1" java.lang.RuntimeException: reject!!![true
-</code></pre>
-
-<p>从错误上来看，“线程池”同样被提前 shutdown 了，那么一定是由于新建线程导致的吗？</p>
-
-<p>下面将新建线程修改为&nbsp;<code>Thread.sleep</code>测试一下：</p>
-
-<pre><code class="java">//TThreadPoolExecutor.java，修改后的 execute 方法
-public void execute() {
-    try {
-        // 显式的 sleep 1 ns，主动切换线程
-        TimeUnit.NANOSECONDS.sleep(1);
-    } catch (InterruptedException e) {
-        e.printStackTrace();
-    }
-    // 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
-    // 如果线程池被提前 shutdown，则抛出异常
-    for (int i = 0; i &lt; 1_000_000; i++) {
-        if(ctl.get()){
-            throw new RuntimeException("reject!!!["+ctl.get()+"]");
-        }
-    }
-}
-</code></pre>
-
-<p>执行结果一样是报错</p>
-
-<pre><code class="java">Exception in thread "Thread-3" java.lang.RuntimeException: reject!!![true]
-</code></pre>
-
-<p><strong>由此可得，如果在执行的过程中，发生一次显式的线程切换，则会让编译器 / 代码生成器认为外层包装对象不可达</strong></p>
-
-<h2 id="">总结</h2>
-
-<p>虽然 GC 只会回收不可达 GC ROOT 的对象，但是在编译器（没有明确指出，也可能是 JIT）/ 代码生成器的优化下，可能会出现对象提前置 null，或者线程切换导致的“提前对象不可达”的情况。</p>
-
-<p>所以如果想在 finalize 方法里做些事情的话，一定在最后显示的引用一下对象（toString/hashcode 都可以），保持对象的可达性（reachable）</p>
-
-<p>上面关于线程切换导致的对象不可达，没有官方文献的支持，只是个人一个测试结果，如有问题欢迎指出</p>
-
-<p><strong>综上所述，这种回收机制并不是 JDK 的 bug，而算是一个优化策略，提前回收而已。但&nbsp;<code>Executors.newSingleThreadExecutor</code>的实现里通过 finalize 来自动关闭线程池的做法是有 Bug 的，在经过优化后可能会导致线程池的提前 shutdown，从而导致异常。</strong></p>
-
-<p>线程池的这个问题，在 JDK 的论坛里也是一个公开但未解决状态的问题<a href="https://bugs.openjdk.java.net/browse/JDK-8145304">&nbsp;https://bugs.openjdk.java.net/browse/JDK-8145304&nbsp;</a>。</p>
-
-<p>不过在 JDK11 下，该问题已经被修复：</p>
-
-<pre><code class="java">JUC  Executors.FinalizableDelegatedExecutorService
-public void execute(Runnable command) {
-    try {
-        e.execute(command);
-    } finally { reachabilityFence(this); }
-}
-</code></pre>
-
-<p><strong>本文转载自公众号玉刚说（ID：YugangTalk）。</strong></p>
-
-<p><strong>原文链接</strong>：</p>
-
-<p><strong><a href="https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw">https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw</a></strong></p>
-<!-- content end -->
-    </div>
-    <br>
-    <br>
-
-    <div id="disqus_thread"></div>
-    <div class="footer">
-        <p>© Copyright 2016 by 尚弟, Designed by 尚弟</p>
-    </div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">尚弟的小笔记</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
-<script src="main.js"></script>
-<script id="content" type="text/mustache">
-    <h1>{{title}}</h1>
-    <div class="tag">
-    {{date}}
-    {{#tags}}
-    <a href="/#/tag/{{name}}">#{{name}}</a>
-    {{/tags}}
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/tags.html">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/post.html">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/rss.xml">
+        <li class="mobile-menu-item">RSS</li>
+      </a><a href="/blogrolls.html">
+        <li class="mobile-menu-item">友情链接</li>
+      </a><a href="/about.html">
+        <li class="mobile-menu-item">关于我</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">尚弟的小笔记</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags.html">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post.html">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/rss.xml">RSS</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls.html">友情链接</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about.html">关于我</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">【分享】一个 Java 线程池 bug 引发的 GC 机制思考</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-01-02 </span>
+        
+          <span class="more-meta"> 约 3065 字 </span>
+          <span class="more-meta"> 预计阅读 7 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#问题描述">问题描述</a></li>
+        <li><a href="#分析--疑问">分析 &amp; 疑问</a></li>
+        <li><a href="#总结">总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>原文地址：<a href="https://www.infoq.cn/article/BAMG55WHQt1iYrNSBRRh?utm_source=rss&amp;utm_medium=article">一个 Java 线程池 bug 引发的 GC 机制思考</a></p>
+<h2 id="问题描述">问题描述</h2>
+<p>前几天，在帮同事排查一个线上偶发的线程池错误</p>
+<p>逻辑很简单，线程池执行了一个带结果的异步任务。但是最近有偶发的报错：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">java.util.concurrent.RejectedExecutionException:
+ Task java.util.concurrent.FutureTask@a5acd19
+ rejected from java.util.concurrent.ThreadPoolExecutor@30890a38
+[Terminated, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0]
+</code></pre></td></tr></table>
+</div>
+</div><p>本文中的模拟代码已经问题都是在 HotSpot java8 (1.8.0_221) 版本下模拟 &amp; 出现的</p>
+<p>下面是模拟代码，通过 Executors.newSingleThreadExecutor 创建一个单线程的线程池，然后在调用方获取 Future 的结果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ThreadPoolTest</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">ThreadPoolTest</span> <span class="n">threadPoolTest</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ThreadPoolTest</span><span class="o">();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">8</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="k">new</span> <span class="n">Runnable</span><span class="o">()</span> <span class="o">{</span>
+                <span class="nd">@Override</span>
+                <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+                    <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+
+                        <span class="n">Future</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">future</span> <span class="o">=</span> <span class="n">threadPoolTest</span><span class="o">.</span><span class="na">submit</span><span class="o">();</span>
+                        <span class="k">try</span> <span class="o">{</span>
+                            <span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+                        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+                        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">ExecutionException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+                        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Error</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+                        <span class="o">}</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="c1">// 子线程不停 gc，模拟偶发的 gc
+</span><span class="c1"></span>        <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="k">new</span> <span class="n">Runnable</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+                <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">gc</span><span class="o">();</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+</span><span class="cm">     * 异步执行任务
+</span><span class="cm">     * @return
+</span><span class="cm">     */</span>
+    <span class="kd">public</span> <span class="n">Future</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">submit</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// 关键点，通过 Executors.newSingleThreadExecutor 创建一个单线程的线程池
+</span><span class="c1"></span>        <span class="n">ExecutorService</span> <span class="n">executorService</span> <span class="o">=</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newSingleThreadExecutor</span><span class="o">();</span>
+        <span class="n">FutureTask</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">futureTask</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FutureTask</span><span class="o">(</span><span class="k">new</span> <span class="n">Callable</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="n">Object</span> <span class="nf">call</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+                <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">50</span><span class="o">);</span>
+                <span class="k">return</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">+</span> <span class="s">&#34;&#34;</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+        <span class="n">executorService</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">futureTask</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">futureTask</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="分析--疑问">分析 &amp; 疑问</h2>
+<p>第一个思考的问题是：线程池为什么关闭了，代码中并没有手动关闭的地方。看一下 <code>Executors.newSingleThreadExecotor</code>的源码实现：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="n">ExecutorService</span> <span class="nf">newSingleThreadExecutor</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">FinalizableDelegatedExecutorService</span>
+            <span class="o">(</span><span class="k">new</span> <span class="n">ThreadPoolExecutor</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span>
+                    <span class="n">0L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">,</span>
+                    <span class="k">new</span> <span class="n">LinkedBlockingQueue</span><span class="o">&lt;</span><span class="n">Runnable</span><span class="o">&gt;()));</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这里创建的实际上是一个 <code>FinalizableDelegatedExecutorService</code>，这个包装类重写了 <code>finalize</code>函数，也就是说这个类会在被 GC 回收之前，先执行线程池的 shutdown 方法。</p>
+<p>问题来了，<strong>GC 只会回收不可达（unreachable）的对象</strong>，在 <code>submit</code>函数的栈帧未执行完出栈之前， <code>executorService</code>应该是可达的才对。</p>
+<p>对于此问题，先抛出结论：</p>
+<p><strong>当对象仍存在于作用域（stack frame）时， <code>finalize</code>也可能会被执行</strong></p>
+<p>oracle jdk 文档中有一段关于 finalize 的介绍：</p>
+<p><a href="https://docs.oracle.com/javas">https://docs.oracle.com/javas </a>…</p>
+<blockquote>
+<p>A reachable object is any object that can be accessed in any potential continuing computation from any live thread.
+Optimizing transformations of a program can be designed that reduce the number of objects that are reachable to be less than those which would naively be considered reachable. For example, a Java compiler or code generator may choose to set a variable or parameter that will no longer be used to null to cause the storage for such an object to be potentially reclaimable sooner.</p>
+</blockquote>
+<p><strong>大概意思是：可达对象 (reachable object) 是可以从任何活动线程的任何潜在的持续访问中的任何对象；java 编译器或代码生成器可能会对不再访问的对象提前置为 null，使得对象可以被提前回收</strong></p>
+<p>也就是说，在 jvm 的优化下，可能会出现对象不可达之后被提前置空并回收的情况</p>
+<p>举个例子来验证一下（摘自<a href="https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope"> https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope </a>）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">A</span> <span class="o">{</span>
+    <span class="nd">@Override</span> <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">finalize</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span> <span class="o">+</span> <span class="s">&#34; was finalized!&#34;</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+        <span class="n">A</span> <span class="n">a</span> <span class="o">=</span> <span class="k">new</span> <span class="n">A</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Created &#34;</span> <span class="o">+</span> <span class="n">a</span><span class="o">);</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">1_000_000_000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">1_000_00</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">gc</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;done.&#34;</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">// 打印结果
+</span><span class="c1"></span><span class="n">Created</span> <span class="n">A</span><span class="nd">@1be6f5c3</span>
+<span class="n">A</span><span class="nd">@1be6f5c3</span> <span class="n">was</span> <span class="n">finalized</span><span class="o">!</span><span class="c1">//finalize 方法输出
+</span><span class="c1"></span><span class="n">done</span><span class="o">.</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>从例子中可以看到，如果 a 在循环完成后已经不再使用了，则会出现先执行 finalize 的情况；虽然从对象作用域来说，方法没有执行完，栈帧并没有出栈，但是还是会被提前执行。</p>
+<p>现在来增加一行代码，在最后一行打印对象 a，让编译器 / 代码生成器认为后面有对象 a 的引用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="o">...</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">a</span><span class="o">);</span>
+
+<span class="c1">// 打印结果
+</span><span class="c1"></span><span class="n">Created</span> <span class="n">A</span><span class="nd">@1be6f5c3</span>
+<span class="n">done</span><span class="o">.</span>
+<span class="n">A</span><span class="nd">@1be6f5c3</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>从结果上看，finalize 方法都没有执行（因为 main 方法执行完成后进程直接结束了），更不会出现提前 finalize 的问题了</p>
+<p>基于上面的测试结果，再测试一种情况，在循环之前先将对象 a 置为 null，并且在最后打印保持对象 a 的引用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">A</span> <span class="n">a</span> <span class="o">=</span> <span class="k">new</span> <span class="n">A</span><span class="o">();</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Created &#34;</span> <span class="o">+</span> <span class="n">a</span><span class="o">);</span>
+<span class="n">a</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span><span class="c1">// 手动置 null
+</span><span class="c1"></span><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">1_000_000_000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">1_000_00</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">gc</span><span class="o">();</span>
+<span class="o">}</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;done.&#34;</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">a</span><span class="o">);</span>
+
+<span class="c1">// 打印结果
+</span><span class="c1"></span><span class="n">Created</span> <span class="n">A</span><span class="nd">@1be6f5c3</span>
+<span class="n">A</span><span class="nd">@1be6f5c3</span> <span class="n">was</span> <span class="n">finalized</span><span class="o">!</span>
+<span class="n">done</span><span class="o">.</span>
+<span class="kc">null</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>从结果上看，手动置 null 的话也会导致对象被提前回收，虽然在最后还有引用，但此时引用的也是 null 了</p>
+<hr>
+<p>现在再回到上面的线程池问题，根据上面介绍的机制，在分析没有引用之后，对象会被提前 finalize</p>
+<p>可在上述代码中，return 之前明明是有引用的 <code>executorService.execute(futureTask)</code>，为什么也会提前 finalize 呢？</p>
+<p>猜测可能是由于在 execute 方法中，会调用 threadPoolExecutor，会创建并启动一个新线程，这时会发生一次主动的线程切换，导致在活动线程中对象不可达</p>
+<p>结合上面 Oracle Jdk 文档中的描述“可达对象 (reachable object) 是可以从任何活动线程的任何潜在的持续访问中的任何对象”，可以认为可能是因为一次显示的线程切换，对象被认为不可达了，导致线程池被提前 finalize 了</p>
+<p>下面来验证一下猜想：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// 入口函数
+</span><span class="c1"></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FinalizedTest</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">FinalizedTest</span> <span class="n">finalizedTest</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FinalizedTest</span><span class="o">();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">8</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="k">new</span> <span class="n">Runnable</span><span class="o">()</span> <span class="o">{</span>
+                <span class="nd">@Override</span>
+                <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+                    <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="n">TFutureTask</span> <span class="n">future</span> <span class="o">=</span> <span class="n">finalizedTest</span><span class="o">.</span><span class="na">submit</span><span class="o">();</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="k">new</span> <span class="n">Runnable</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+                <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">gc</span><span class="o">();</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">TFutureTask</span> <span class="nf">submit</span><span class="o">(){</span>
+        <span class="n">TExecutorService</span> <span class="n">TExecutorService</span> <span class="o">=</span> <span class="n">Executors</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+        <span class="n">TExecutorService</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">//Executors.java，模拟 juc 的 Executors
+</span><span class="c1"></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Executors</span> <span class="o">{</span>
+    <span class="cm">/**
+</span><span class="cm">     * 模拟 Executors.createSingleExecutor
+</span><span class="cm">     * @return
+</span><span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">TExecutorService</span> <span class="nf">create</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">FinalizableDelegatedTExecutorService</span><span class="o">(</span><span class="k">new</span> <span class="n">TThreadPoolExecutor</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">FinalizableDelegatedTExecutorService</span> <span class="kd">extends</span> <span class="n">DelegatedTExecutorService</span> <span class="o">{</span>
+
+        <span class="n">FinalizableDelegatedTExecutorService</span><span class="o">(</span><span class="n">TExecutorService</span> <span class="n">executor</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kd">super</span><span class="o">(</span><span class="n">executor</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="cm">/**
+</span><span class="cm">         * 析构函数中执行 shutdown，修改线程池状态
+</span><span class="cm">         * @throws Throwable
+</span><span class="cm">         */</span>
+        <span class="nd">@Override</span>
+        <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">finalize</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+            <span class="kd">super</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">DelegatedTExecutorService</span> <span class="kd">extends</span> <span class="n">TExecutorService</span> <span class="o">{</span>
+
+        <span class="kd">protected</span> <span class="n">TExecutorService</span> <span class="n">e</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="nf">DelegatedTExecutorService</span><span class="o">(</span><span class="n">TExecutorService</span> <span class="n">executor</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">e</span> <span class="o">=</span> <span class="n">executor</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">()</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shutdown</span><span class="o">()</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">//TThreadPoolExecutor.java，模拟 juc 的 ThreadPoolExecutor
+</span><span class="c1"></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TThreadPoolExecutor</span> <span class="kd">extends</span> <span class="n">TExecutorService</span> <span class="o">{</span>
+
+    <span class="cm">/**
+</span><span class="cm">     * 线程池状态，false：未关闭，true 已关闭
+</span><span class="cm">     */</span>
+    <span class="kd">private</span> <span class="n">AtomicBoolean</span> <span class="n">ctl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicBoolean</span><span class="o">();</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// 启动一个新线程，模拟 ThreadPoolExecutor.execute
+</span><span class="c1"></span>        <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="k">new</span> <span class="n">Runnable</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+
+            <span class="o">}</span>
+        <span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+        <span class="c1">// 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
+</span><span class="c1"></span>        <span class="c1">// 如果线程池被提前 shutdown，则抛出异常
+</span><span class="c1"></span>        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">1_000_000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">ctl</span><span class="o">.</span><span class="na">get</span><span class="o">()){</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&#34;reject!!![&#34;</span><span class="o">+</span><span class="n">ctl</span><span class="o">.</span><span class="na">get</span><span class="o">()+</span><span class="s">&#34;]&#34;</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shutdown</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">ctl</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span><span class="kc">true</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>执行若干时间后报错：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Exception</span> <span class="n">in</span> <span class="n">thread</span> <span class="s">&#34;Thread-1&#34;</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">RuntimeException</span><span class="o">:</span> <span class="n">reject</span><span class="o">!!![</span><span class="kc">true</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>从错误上来看，“线程池”同样被提前 shutdown 了，那么一定是由于新建线程导致的吗？</p>
+<p>下面将新建线程修改为 <code>Thread.sleep</code>测试一下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">//TThreadPoolExecutor.java，修改后的 execute 方法
+</span><span class="c1"></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="c1">// 显式的 sleep 1 ns，主动切换线程
+</span><span class="c1"></span>        <span class="n">TimeUnit</span><span class="o">.</span><span class="na">NANOSECONDS</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="c1">// 模拟 ThreadPoolExecutor，启动新建线程后，循环检查线程池状态，验证是否会在 finalize 中 shutdown
+</span><span class="c1"></span>    <span class="c1">// 如果线程池被提前 shutdown，则抛出异常
+</span><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">1_000_000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">ctl</span><span class="o">.</span><span class="na">get</span><span class="o">()){</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&#34;reject!!![&#34;</span><span class="o">+</span><span class="n">ctl</span><span class="o">.</span><span class="na">get</span><span class="o">()+</span><span class="s">&#34;]&#34;</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>执行结果一样是报错</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Exception</span> <span class="n">in</span> <span class="n">thread</span> <span class="s">&#34;Thread-3&#34;</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">RuntimeException</span><span class="o">:</span> <span class="n">reject</span><span class="o">!!![</span><span class="kc">true</span><span class="o">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>由此可得，如果在执行的过程中，发生一次显式的线程切换，则会让编译器 / 代码生成器认为外层包装对象不可达</strong></p>
+<h2 id="总结">总结</h2>
+<p>虽然 GC 只会回收不可达 GC ROOT 的对象，但是在编译器（没有明确指出，也可能是 JIT）/ 代码生成器的优化下，可能会出现对象提前置 null，或者线程切换导致的“提前对象不可达”的情况。</p>
+<p>所以如果想在 finalize 方法里做些事情的话，一定在最后显示的引用一下对象（toString/hashcode 都可以），保持对象的可达性（reachable）</p>
+<p>上面关于线程切换导致的对象不可达，没有官方文献的支持，只是个人一个测试结果，如有问题欢迎指出</p>
+<p><strong>综上所述，这种回收机制并不是 JDK 的 bug，而算是一个优化策略，提前回收而已。但 <code>Executors.newSingleThreadExecutor</code>的实现里通过 finalize 来自动关闭线程池的做法是有 Bug 的，在经过优化后可能会导致线程池的提前 shutdown，从而导致异常。</strong></p>
+<p>线程池的这个问题，在 JDK 的论坛里也是一个公开但未解决状态的问题<a href="https://bugs.openjdk.java.net/browse/JDK-8145304"> https://bugs.openjdk.java.net/browse/JDK-8145304 </a>。</p>
+<p>不过在 JDK11 下，该问题已经被修复：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">JUC</span>  <span class="n">Executors</span><span class="o">.</span><span class="na">FinalizableDelegatedExecutorService</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">(</span><span class="n">Runnable</span> <span class="n">command</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="n">e</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">command</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span> <span class="n">reachabilityFence</span><span class="o">(</span><span class="k">this</span><span class="o">);</span> <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>本文转载自公众号玉刚说（ID：YugangTalk）。</strong></p>
+<p><strong>原文链接</strong>：</p>
+<p><strong><a href="https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw">https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw</a></strong></p>
+
     </div>
 
-</script>
-<script id="pagesTemplate" type="text/mustache">
-    {{#pages}}
-    <li>
-        <a href="{{path}}">{{title}}</a>
-    </li>
-    {{/pages}}
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">尚弟</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-06-12
+        <a href="https://github.com/stirp/stirp.github.io/commit/7e4096a4b0a9fcb6c66839c35464229ff717d2fe" title="update imported">(7e4096a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content">© Copyright 2021 by 尚弟</span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/Java.html">Java</a>
+          <a href="/tags/%E5%88%86%E4%BA%AB.html">分享</a>
+          <a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0.html">线程池</a>
+          <a href="/tags/bug.html">bug</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">拨公司 VPN 后，指定了外网 dns，却无法访问内网域名的解决办法</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/How-To-Convert-Shell-Script-Into-Mac-App.html">
+            <span class="next-text nav-default">怎么把脚本变为 Mac 的 App</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
 
-</script>
-<script>
-    $(document).ready(function () {
-        $.ajax({
-            url: "main.json",
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                $("#title").html(data.name);
-                var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
-                var pagesHtml = pagesTemplate.render({"pages": data.pages});
-                $("#pages").append(pagesHtml);
-                //path
-                var path = "BAMG55WHQt1iYrNSBRRh.html";
-                //path end
-                var now = 0;
-                for (var i = 0; i < data.posts.length; ++i)
-                    if (path == data.posts[i].path)
-                        now = i;
-                var post = data.posts[now];
-                var tmp = post.tags.split(" ");
-                var tags = [];
-                for (var i = 0; i < tmp.length; ++i)
-                    if (tmp[i].length > 0)
-                        tags.push({"name": tmp[i]});
-                var contentTemplate = Hogan.compile($("#content").html());
-                var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
-                $("#main").prepend(contentHtml);
-                if (data.disqus_shortname.length > 0) {
-                    var disqus_shortname = data.disqus_shortname;
-                    (function () {
-                        var dsq = document.createElement('script');
-                        dsq.type = 'text/javascript';
-                        dsq.async = true;
-                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                    })();
-                }
-            }
-        });
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'stirp';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:srpwy@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/stirp" class="iconfont icon-github" title="github"></a>
+  <a href="http://blog.shrp.me/rss.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2010 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>shrp</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-cn".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?249d9fe60c26e4771c81467fa3b43862";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
 </script>
+
+
+
+
+
+
 </body>
 </html>

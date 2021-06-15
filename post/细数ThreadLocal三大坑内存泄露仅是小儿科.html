@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>【分享】2021 06 15 细数ThreadLocal三大坑，内存泄露仅是小儿科 - 尚弟的小笔记</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="尚弟" /><meta name="description" content="原文地址 我在参加Code Review的时候不止一次听到有同学说：我写的这个上下文工具没问题，在线上跑了好久了。其实这种想法是有问题的，Thr" /><meta name="keywords" content="尚弟, 博客, 笔记" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.shrp.me/post/%E7%BB%86%E6%95%B0ThreadLocal%E4%B8%89%E5%A4%A7%E5%9D%91%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E4%BB%85%E6%98%AF%E5%B0%8F%E5%84%BF%E7%A7%91.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="【分享】2021 06 15 细数ThreadLocal三大坑，内存泄露仅是小儿科" />
+<meta property="og:description" content="原文地址 我在参加Code Review的时候不止一次听到有同学说：我写的这个上下文工具没问题，在线上跑了好久了。其实这种想法是有问题的，Thr" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.shrp.me/post/%E7%BB%86%E6%95%B0ThreadLocal%E4%B8%89%E5%A4%A7%E5%9D%91%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E4%BB%85%E6%98%AF%E5%B0%8F%E5%84%BF%E7%A7%91.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-06-15T10:06:13&#43;08:00" />
+<meta property="article:modified_time" content="2021-06-15T10:06:13&#43;08:00" />
+
+<meta itemprop="name" content="【分享】2021 06 15 细数ThreadLocal三大坑，内存泄露仅是小儿科">
+<meta itemprop="description" content="原文地址 我在参加Code Review的时候不止一次听到有同学说：我写的这个上下文工具没问题，在线上跑了好久了。其实这种想法是有问题的，Thr"><meta itemprop="datePublished" content="2021-06-15T10:06:13&#43;08:00" />
+<meta itemprop="dateModified" content="2021-06-15T10:06:13&#43;08:00" />
+<meta itemprop="wordCount" content="2942">
+<meta itemprop="keywords" content="分享,ThreadLocal,内存泄露,上下文丢失," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="【分享】2021 06 15 细数ThreadLocal三大坑，内存泄露仅是小儿科"/>
+<meta name="twitter:description" content="原文地址 我在参加Code Review的时候不止一次听到有同学说：我写的这个上下文工具没问题，在线上跑了好久了。其实这种想法是有问题的，Thr"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">尚弟的小笔记</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/tags.html">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/post.html">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/rss.xml">
+        <li class="mobile-menu-item">RSS</li>
+      </a><a href="/blogrolls.html">
+        <li class="mobile-menu-item">友情链接</li>
+      </a><a href="/about.html">
+        <li class="mobile-menu-item">关于我</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">尚弟的小笔记</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags.html">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post.html">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/rss.xml">RSS</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls.html">友情链接</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about.html">关于我</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">【分享】2021 06 15 细数ThreadLocal三大坑，内存泄露仅是小儿科</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-06-15 </span>
+        
+          <span class="more-meta"> 约 2942 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#内存泄露">内存泄露</a></li>
+        <li><a href="#线程池中线程上下文丢失">线程池中线程上下文丢失</a></li>
+        <li><a href="#并行流中线程上下文丢失">并行流中线程上下文丢失</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>原文<a href="https://mp.weixin.qq.com/s/eWgTmP283kD_M2VxSxvYag">地址</a></p>
+<p>我在参加Code Review的时候不止一次听到有同学说：我写的这个上下文工具没问题，在线上跑了好久了。其实这种想法是有问题的，<code>ThreadLocal</code>写错难，但是用错就很容易，本文将会详细总结<code>ThreadLocal</code>容易用错的三个坑：</p>
+<blockquote>
+<ul>
+<li>内存泄露</li>
+<li>线程池中线程上下文丢失</li>
+<li>并行流中线程上下文丢失</li>
+</ul>
+</blockquote>
+<h2 id="内存泄露">内存泄露</h2>
+<p>由于<code>ThreadLocal</code>的<code>key</code>是弱引用，因此如果使用后不调用<code>remove</code>清理的话会导致对应的<code>value</code>内存泄露。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testThreadLocalMemoryLeaks</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">ThreadLocal</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;&gt;</span> <span class="n">localCache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ThreadLocal</span><span class="o">&lt;&gt;();</span>
+   <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">cacheInstance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="n">10000</span><span class="o">);</span>
+    <span class="n">localCache</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">cacheInstance</span><span class="o">);</span>
+    <span class="n">localCache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ThreadLocal</span><span class="o">&lt;&gt;();</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>当<code>localCache</code>的值被重置之后<code>cacheInstance</code>被<code>ThreadLocalMap</code>中的<code>value</code>引用，无法被GC，但是其<code>key</code>对<code>ThreadLocal</code>实例的引用是一个弱引用，本来<code>ThreadLocal</code>的实例被<code>localCache</code>和<code>ThreadLocalMap</code>的<code>key</code>同时引用，但是当<code>localCache</code>的引用被重置之后，则<code>ThreadLocal</code>的实例只有<code>ThreadLocalMap</code>的<code>key</code>这样一个弱引用了，此时这个实例在GC的时候能够被清理。
+<img src="https://mmbiz.qpic.cn/mmbiz_jpg/4xfJbk4AmfjWImbjAuEDxAaUmzknXeLe7yjJLic9ZC5zYGPvHm204A89nib4TrE951uEicndeibiba8OK5CibPbeJ0BQ/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>其实看过<code>ThreadLocal</code>源码的同学会知道，<code>ThreadLocal</code>本身对于<code>key</code>为<code>null</code>的<code>Entity</code>有自清理的过程，但是这个过程是依赖于后续对<code>ThreadLocal</code>的继续使用，假如上面的这段代码是处于一个秒杀场景下，会有一个瞬间的流量峰值，这个流量峰值也会将集群的内存打到高位(或者运气不好的话直接将集群内存打满导致故障)，后面由于峰值流量已过，对<code>ThreadLocal</code>的调用也下降，会使得<code>ThreadLocal</code>的自清理能力下降，造成内存泄露。<code>ThreadLocal</code>的自清理是锦上添花，千万不要指望他雪中送碳。</p>
+<p>相比于<code>ThreadLocal</code>中存储的<code>value</code>对象泄露，<code>ThreadLocal</code>用在<code>web</code>容器中时更需要注意其引起的<code>ClassLoader</code>泄露。</p>
+<p><code>Tomcat</code>官网对在<code>web</code>容器中使用<code>ThreadLocal</code>引起的内存泄露做了一个总结，详见：https://cwiki.apache.org/confluence/display/tomcat/MemoryLeakProtection， 这里我们列举其中的一个例子。</p>
+<p>熟悉<code>Tomcat</code>的同学知道，Tomcat中的web应用由<code>Webapp Classloader</code>这个类加载器的，并且<code>Webapp Classloader</code>是破坏双亲委派机制实现的，即所有的<code>web</code>应用先由<code>Webapp classloader</code>加载，这样的好处就是可以让同一个容器中的<code>web</code>应用以及依赖隔离。下面我们看具体的内存泄露的例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyCounter</span> <span class="o">{</span>
+ <span class="kd">private</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">count</span><span class="o">++;</span>
+ <span class="o">}</span>
+
+ <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getCount</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="n">count</span><span class="o">;</span>
+ <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyThreadLocal</span> <span class="kd">extends</span> <span class="n">ThreadLocal</span><span class="o">&lt;</span><span class="n">MyCounter</span><span class="o">&gt;</span> <span class="o">{</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LeakingServlet</span> <span class="kd">extends</span> <span class="n">HttpServlet</span> <span class="o">{</span>
+ <span class="kd">private</span> <span class="kd">static</span> <span class="n">MyThreadLocal</span> <span class="n">myThreadLocal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MyThreadLocal</span><span class="o">();</span>
+
+ <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doGet</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span>
+   <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ServletException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+
+  <span class="n">MyCounter</span> <span class="n">counter</span> <span class="o">=</span> <span class="n">myThreadLocal</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">counter</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+   <span class="n">counter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MyCounter</span><span class="o">();</span>
+   <span class="n">myThreadLocal</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">counter</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="n">response</span><span class="o">.</span><span class="na">getWriter</span><span class="o">().</span><span class="na">println</span><span class="o">(</span>
+    <span class="s">&#34;The current thread served this servlet &#34;</span> <span class="o">+</span> <span class="n">counter</span><span class="o">.</span><span class="na">getCount</span><span class="o">()</span>
+      <span class="o">+</span> <span class="s">&#34; times&#34;</span><span class="o">);</span>
+  <span class="n">counter</span><span class="o">.</span><span class="na">increment</span><span class="o">();</span>
+ <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>需要注意这个例子中的两个非常关键的点：</p>
+<ul>
+<li><code>MyCounter</code>以及<code>MyThreadLocal</code>必须放到<code>web</code>应用的路径中，保被<code>Webapp Classloader</code>加载</li>
+<li><code>ThreadLocal</code>类一定得是<code>ThreadLocal</code>的继承类，比如例子中的<code>MyThreadLocal</code>，因为<code>ThreadLocal</code>本来被<code>Common Classloader</code>加载，其生命周期与<code>Tomcat</code>容器一致。<code>ThreadLocal</code>的继承类包括比较常见的<code>NamedThreadLocal</code>，注意不要踩坑。</li>
+</ul>
+<p>假如<code>LeakingServlet</code>所在的<code>Web</code>应用启动，<code>MyThreadLocal</code>类也会被<code>Webapp Classloader</code>加载，如果此时web应用下线，而线程的生命周期未结束(比如为<code>LeakingServlet</code>提供服务的线程是一个线程池中的线程)，那会导致<code>myThreadLocal</code>的实例仍然被这个线程引用，而不能被GC，期初看来这个带来的问题也不大，因为<code>myThreadLocal</code>所引用的对象占用的内存空间不太多，问题在于<code>myThreadLocal</code>间接持有加载web应用的<code>webapp classloader</code>的引用（通过<code>myThreadLocal.getClass().getClassLoader()</code>可以引用到），而加载web应用的<code>webapp classloader</code>有持有它加载的所有类的引用，这就引起了<code>Classloader</code>泄露，它泄露的内存就非常可观了。</p>
+<h2 id="线程池中线程上下文丢失">线程池中线程上下文丢失</h2>
+<p><code>ThreadLocal</code>不能在父子线程中传递，因此最常见的做法是把父线程中的<code>ThreadLocal</code>值拷贝到子线程中，因此大家会经常看到类似下面的这段代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="k">for</span><span class="o">(</span><span class="n">value</span> <span class="n">in</span> <span class="n">valueList</span><span class="o">){</span>
+     <span class="n">Future</span><span class="o">&lt;?&gt;</span> <span class="n">taskResult</span> <span class="o">=</span> <span class="n">threadPool</span><span class="o">.</span><span class="na">submit</span><span class="o">(</span><span class="k">new</span> <span class="n">BizTask</span><span class="o">(</span><span class="n">ContextHolder</span><span class="o">.</span><span class="na">get</span><span class="o">()));</span><span class="c1">//提交任务，并设置拷贝Context到子线程
+</span><span class="c1"></span>     <span class="n">results</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">taskResult</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="k">for</span><span class="o">(</span><span class="n">result</span> <span class="n">in</span> <span class="n">results</span><span class="o">){</span>
+    <span class="n">result</span><span class="o">.</span><span class="na">get</span><span class="o">();</span><span class="c1">//阻塞等待任务执行完成
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>提交的任务定义长这样：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">BizTask</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">Callable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span>  <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">session</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">BizTask</span><span class="o">(</span><span class="n">String</span> <span class="n">session</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">session</span> <span class="o">=</span> <span class="n">session</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">T</span> <span class="nf">call</span><span class="o">(){</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">ContextHolder</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">session</span><span class="o">);</span>
+            <span class="c1">// 执行业务逻辑
+</span><span class="c1"></span>        <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">){</span>
+            <span class="c1">//log error
+</span><span class="c1"></span>        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">ContextHolder</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span> <span class="c1">// 清理 ThreadLocal 的上下文，避免线程复用时context互串
+</span><span class="c1"></span>        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>对应的线程上下文管理类为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">ContextHolder</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">ThreadLocal</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">localThreadCache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ThreadLocal</span><span class="o">&lt;&gt;();</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">set</span><span class="o">(</span><span class="n">String</span> <span class="n">cacheValue</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">localThreadCache</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">cacheValue</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">get</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">localThreadCache</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">localThreadCache</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这么写倒也没有问题，我们再看看线程池的设置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">ThreadPoolExecutor</span> <span class="n">executorPool</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ThreadPoolExecutor</span><span class="o">(</span><span class="n">20</span><span class="o">,</span> <span class="n">40</span><span class="o">,</span> <span class="n">30</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">,</span> <span class="k">new</span> <span class="n">LinkedBlockingQueue</span><span class="o">&lt;</span><span class="n">Runnable</span><span class="o">&gt;(</span><span class="n">40</span><span class="o">),</span> <span class="k">new</span> <span class="n">XXXThreadFactory</span><span class="o">(),</span> <span class="n">ThreadPoolExecutor</span><span class="o">.</span><span class="na">CallerRunsPolicy</span><span class="o">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>其中最后一个参数控制着当线程池满时，该如何处理提交的任务，内置有4种策略</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ThreadPoolExecutor.AbortPolicy //直接抛出异常
+ThreadPoolExecutor.DiscardPolicy //丢弃当前任务
+ThreadPoolExecutor.DiscardOldestPolicy //丢弃工作队列头部的任务
+ThreadPoolExecutor.CallerRunsPolicy //转串行执行
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，我们初始化线程池的时候指定如果线程池满，则新提交的任务转为串行执行，那我们之前的写法就会有问题了，串行执行的时候调用<code>ContextHolder.remove();</code>会将主线程的上下文也清理，即使后面线程池继续并行工作，传给子线程的上下文也已经是<code>null</code>了，而且这样的问题很难在预发测试的时候发现。</p>
+<h2 id="并行流中线程上下文丢失">并行流中线程上下文丢失</h2>
+<p>如果<code>ThreadLocal</code>碰到并行流，也会有很多有意思的事情发生，比如有下面的代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">ParallelProcessor</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">dataList</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 先校验参数，篇幅限制先省略不写
+</span><span class="c1"></span>        <span class="n">dataList</span><span class="o">.</span><span class="na">parallelStream</span><span class="o">().</span><span class="na">forEach</span><span class="o">(</span><span class="n">entry</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">doIt</span><span class="o">();</span>
+        <span class="o">});</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">doIt</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">session</span> <span class="o">=</span> <span class="n">ContextHolder</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+        <span class="c1">// do something
+</span><span class="c1"></span>    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这段代码很容易在线下测试的过程中发现不能按照预期工作，因为并行流底层的实现也是一个<code>ForkJoin</code>线程池，既然是线程池，那<code>ContextHolder.get()</code>可能取出来的就是一个<code>null</code>。我们顺着这个思路把代码再改一下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">ParallelProcessor</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">session</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">ParallelProcessor</span><span class="o">(</span><span class="n">String</span> <span class="n">session</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">session</span> <span class="o">=</span> <span class="n">session</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">dataList</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 先校验参数，篇幅限制先省略不写
+</span><span class="c1"></span>        <span class="n">dataList</span><span class="o">.</span><span class="na">parallelStream</span><span class="o">().</span><span class="na">forEach</span><span class="o">(</span><span class="n">entry</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">ContextHolder</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">session</span><span class="o">);</span>
+                <span class="c1">// 业务处理
+</span><span class="c1"></span>                <span class="n">doIt</span><span class="o">();</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c1">// log it
+</span><span class="c1"></span>            <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+                <span class="n">ContextHolder</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">doIt</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">session</span> <span class="o">=</span> <span class="n">ContextHolder</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+        <span class="c1">// do something
+</span><span class="c1"></span>    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>修改完后的这段代码可以工作吗？如果运气好，你会发现这样改又有问题，运气不好，这段代码在线下运行良好，这段代码就顺利上线了。不久你就会发现系统中会有一些其他很诡异的bug。原因在于并行流的设计比较特殊，父线程也有可能参与到并行流线程池的调度，那如果上面的<code>process</code>方法被父线程执行，那么父线程的上下文会被清理。导致后续拷贝到子线程的上下文都为<code>null</code>，同样产生丢失上下文的问题。</p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E5%88%86%E4%BA%AB.html">分享</a>
+          <a href="/tags/ThreadLocal.html">ThreadLocal</a>
+          <a href="/tags/%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2.html">内存泄露</a>
+          <a href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%A2%E5%A4%B1.html">上下文丢失</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html">
+            <span class="next-text nav-default">从Simple迁移到Hugo</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'stirp';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:srpwy@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/stirp" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.shrp.me/rss.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2010 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>shrp</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-cn".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?249d9fe60c26e4771c81467fa3b43862";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

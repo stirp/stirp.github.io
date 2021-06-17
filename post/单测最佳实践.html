@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>【分享】我在阿里做架构 | 单测最佳实践 - 尚弟的小笔记</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="九叔" /><meta name="description" content="这篇文章的结论跟我现在的实践非常的类似，预计本月我会把我的实践也更新到 blog 里。这篇文章的原文地址是这里 前言 大家仔细思考，我们究竟为什么需要编写" /><meta name="keywords" content="单元测试, 最佳实践" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.shrp.me/post/%E5%8D%95%E6%B5%8B%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="【分享】我在阿里做架构 | 单测最佳实践" />
+<meta property="og:description" content="这篇文章的结论跟我现在的实践非常的类似，预计本月我会把我的实践也更新到 blog 里。这篇文章的原文地址是这里 前言 大家仔细思考，我们究竟为什么需要编写" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.shrp.me/post/%E5%8D%95%E6%B5%8B%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-06-17T13:39:06&#43;08:00" />
+<meta property="article:modified_time" content="2021-06-17T13:39:06&#43;08:00" />
+
+<meta itemprop="name" content="【分享】我在阿里做架构 | 单测最佳实践">
+<meta itemprop="description" content="这篇文章的结论跟我现在的实践非常的类似，预计本月我会把我的实践也更新到 blog 里。这篇文章的原文地址是这里 前言 大家仔细思考，我们究竟为什么需要编写"><meta itemprop="datePublished" content="2021-06-17T13:39:06&#43;08:00" />
+<meta itemprop="dateModified" content="2021-06-17T13:39:06&#43;08:00" />
+<meta itemprop="wordCount" content="2117">
+<meta itemprop="keywords" content="分享,Java,Mock,单元测试," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="【分享】我在阿里做架构 | 单测最佳实践"/>
+<meta name="twitter:description" content="这篇文章的结论跟我现在的实践非常的类似，预计本月我会把我的实践也更新到 blog 里。这篇文章的原文地址是这里 前言 大家仔细思考，我们究竟为什么需要编写"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">尚弟的小笔记</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/tags.html">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/post.html">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/rss.xml">
+        <li class="mobile-menu-item">RSS</li>
+      </a><a href="/blogrolls.html">
+        <li class="mobile-menu-item">友情链接</li>
+      </a><a href="/about.html">
+        <li class="mobile-menu-item">关于我</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">尚弟的小笔记</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags.html">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post.html">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/rss.xml">RSS</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls.html">友情链接</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about.html">关于我</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">【分享】我在阿里做架构 | 单测最佳实践</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-06-17 </span>
+        
+          <span class="more-meta"> 约 2117 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#前言">前言</a></li>
+            <li><a href="#别进入误区">别进入误区</a></li>
+            <li><a href="#单测最佳实践">单测最佳实践</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>这篇文章的结论跟我现在的实践非常的类似，预计本月我会把我的实践也更新到 blog 里。这篇文章的原文地址是<a href="https://xie.infoq.cn/article/5bdc454b875db1e07a3032d9d">这里</a></p>
+</blockquote>
+<h3 id="前言">前言</h3>
+<p>大家仔细思考，我们究竟为什么需要编写单元测试代码（下述简称单测）？站在特定的业务角度，单测并非强诉求，只要测试团队资源足够充裕（空间换时间），那么写不写单测最终达成的效果其实是一致的，<strong>这是事实</strong>。但是面对拥有较强专业复杂度和严谨性的支付业务场景，以及测试团队资源的严重匮乏，注定了编写单测代码的必要性和强制性，单测必须写，而且只能由开发同学来负责（毕竟你的逻辑你最熟悉），<strong>这是现实</strong>。单测是所有测试中最底层、最基础、最重要的一类测试，同时也是唯一能够保证代码覆盖率达到 100%的测试，如果开发同学能够认真书写单测代码，不把其当成“负担”，那么我们几乎能够确保&gt;=80%的代码缺陷能够在<strong>前置</strong>测试环节就被发现和修复，大幅度降低因后置而导致的高昂的缺陷修复成本，就像工厂组装手机一样，如果各个元器件在出厂时没有分别经过严格的质量检验，仅依靠最终组装成品来验证手机是否合格，那么你敢买吗？其次，我们习以为常的总是喜欢把“高内聚，低耦合”挂在嘴边，并标榜为优秀设计的标准，但如果我们很难编写出，或不知如何编写出对应的单测代码，那么如何能够快速验证自己的设计是否真的优秀？而如果我们拥有高覆盖率的单侧代码，则能够使得开发同学拥有足够的信心去重构自身的逻辑代码，使系统不断朝前进化。</p>
+<h3 id="别进入误区">别进入误区</h3>
+<p>但恰恰也是因为前置这个误区，从某种程度上错误的部分开发同学把单测当成了软件质量保证的“银弹”，大量集成测试阶段才需要实施的验证工作被前置在了单测阶段（比如：集成 localdb 去验证 SQL 语法、语义，以及 RPC 验证等），极大程度上束缚了整个产品的迭代交付速度，从而导致研发同学怨声载道（尤其是新同学）。<strong>我们需要转变思想</strong>，本质而言，单测是一件非常纯粹的工作，要写的轻薄，强调的是效率，必须采取小步快跑的模式。因此在编写单测代码时，开发同学仅需关注逻辑单元的正确性，任何超出单元范围的测试验证（<strong>单元所定义范围可以是目标函数，也可以是类，总之就是基于意图所定义出的最小功能模块</strong>），全部 MOCK，想要跑得快，那就必须丢包袱，在合适的环节去做正确的事，不要幻想着集中在某一个点能够解决所有问题。</p>
+<h3 id="单测最佳实践">单测最佳实践</h3>
+<h4 id="单测的定义">单测的定义</h4>
+<p>刚才我已经提及过，<strong>单元所定义范围可以是目标函数，也可以是类，总之就是基于意图所定义出的最小功能模块，意图很重要</strong>。举个例子，假设我今天需要在支付宝的账务系统上面新增一个缓冲记账的优化功能来缓解热点账户的问题，那么我需要在系统入口处至持久层都编写相应的缓冲逻辑，那么在编写对应的测试代码时，如果我把单元定义为函数，则需要为每一个目标函数都编写一个对应的单测代码，尽管可以这样做，但如果我把单元从逻辑上定义为“相同的目标”，那么我其实编写一个测试函数即可，哪怕其中包含了 N 个方法，也可以认为是同一个单元，并且这样做有利于做一些关联测试。</p>
+<p>在某些情况下，如果我们仅仅只是修改了某个函数代码块中的部分逻辑，不依赖任何其它函数的调用，示例 1-1：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">doHandle</span><span class="o">(</span><span class="n">UniformEvent</span> <span class="n">uniformEvent</span><span class="o">){</span>
+  <span class="c1">// 原有逻辑
+</span><span class="c1"></span>  <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;新增逻辑&#34;</span><span class="o">);</span>
+  <span class="c1">// 原有逻辑
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>如果我们所定义的单元就是上述目标函数，那么仅需为这个目标函数编写一个对应的测试方法验证其逻辑正确性即可。</p>
+<h4 id="单测究竟应该怎么写">单测究竟应该怎么写？</h4>
+<p>实际上，我并不是专业的测试人员，对于单元测试、增量测试、全量测试、回归测试、集成测试，以及冒烟测试等不胜枚举的测试方法及手段常常是望洋兴叹，甚至无法准确归类。实际上，我比较赞成和认同 google 的做法，对于测试，简单分为 3 类，没那么多花样，如图 1 所示。</p>
+<p><img src="https://static001.geekbang.org/infoq/03/0325382162684fa88331c74881ddf46a.png" alt="">
+图1 google软件测试分类</p>
+<p>其中小型测试仅关注目标函数的逻辑性验证，其它部分全部 mock，强调的是效率；而中型测试关注的是多模块之间的交互性验证；最后大型测试则显得比较重和全面，我们可以理解为集成测试。那么我们的单元测试究竟应该如何归类呢？显而易见，单元测试归类在小型测试中是最适合不过的。</p>
+<p>编写优秀的单测代码，即简单也复杂，最主要是需要理解编写单测究竟是为了验证什么。基本来说，大家可以参考如下 3 项标准来编写单测代码：</p>
+<ul>
+<li>
+<p>输入正确/错误的入参，验证逻辑代码正确/错误的处理逻辑是否符合预期；</p>
+</li>
+<li>
+<p>任何外部依赖（比如：RPC 依赖、DB 依赖、MQ 依赖）均应该 Mock 或 Fack，由集成测试阶段兜底；</p>
+</li>
+<li>
+<p>单元测试的数据应该在单测代码中构造，不应该依赖外部存储或中间件，确保整体测试环境的稳定（避免因某个前置方法的处理逻辑导致存储系统出现异常，继而影响后续的测试方法都出现异常，产生蝴蝶效应）。</p>
+</li>
+</ul>
+<p>关于第 3 点，我建议将测试数据和测试代码进行分离，在实际的开发过程中，我们往往需要构造 N 套测试数据基于相同的测试逻辑去验证逻辑代码是否符合预期，为了方便管理和维护测试数据，我们需要将测试数据了测试代码解耦，编写单独的测试方法去准备这些测试数据，示例 1-2：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kd">static</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">datas</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">();</span>
+<span class="kd">public</span> <span class="nd">@Test</span> <span class="kt">void</span> <span class="nf">testMethod</span><span class="o">(){</span>
+  <span class="n">datas</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">x</span><span class="o">-&gt;{</span>
+    <span class="c1">// 测试逻辑
+</span><span class="c1"></span>  <span class="o">});</span>
+<span class="o">}</span>
+
+<span class="nd">@BeforeClass</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(){</span>
+  <span class="c1">// 测试数据准备
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>除此之外，还可以选择存储在配置文件中（比如:yaml、csv 文件）。</p>
+<p><strong>====== END ======</strong></p>
+<p>至此，本文内容全部结束。如果在阅读过程中有任何疑问，欢迎在评论区留言参与讨论。</p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E5%88%86%E4%BA%AB.html">分享</a>
+          <a href="/tags/Java.html">Java</a>
+          <a href="/tags/Mock.html">Mock</a>
+          <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95.html">单元测试</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/%E7%BB%86%E6%95%B0ThreadLocal%E4%B8%89%E5%A4%A7%E5%9D%91%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E4%BB%85%E6%98%AF%E5%B0%8F%E5%84%BF%E7%A7%91.html">
+            <span class="next-text nav-default">【分享】2021 06 15 细数ThreadLocal三大坑，内存泄露仅是小儿科</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'stirp';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:srpwy@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/stirp" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.shrp.me/rss.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2010 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>shrp</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-cn".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?249d9fe60c26e4771c81467fa3b43862";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

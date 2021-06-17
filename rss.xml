@@ -7,7 +7,93 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>shrp</copyright>
-    <lastBuildDate>Tue, 15 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 17 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【分享】我在阿里做架构 | 单测最佳实践</title>
+      <link>https://blog.shrp.me/post/%E5%8D%95%E6%B5%8B%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html</link>
+      <pubDate>Thu, 17 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.shrp.me/post/%E5%8D%95%E6%B5%8B%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;这篇文章的结论跟我现在的实践非常的类似，预计本月我会把我的实践也更新到 blog 里。这篇文章的原文地址是&lt;a href=&#34;https://xie.infoq.cn/article/5bdc454b875db1e07a3032d9d&#34;&gt;这里&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;前言&#34;&gt;前言&lt;/h3&gt;
+&lt;p&gt;大家仔细思考，我们究竟为什么需要编写单元测试代码（下述简称单测）？站在特定的业务角度，单测并非强诉求，只要测试团队资源足够充裕（空间换时间），那么写不写单测最终达成的效果其实是一致的，&lt;strong&gt;这是事实&lt;/strong&gt;。但是面对拥有较强专业复杂度和严谨性的支付业务场景，以及测试团队资源的严重匮乏，注定了编写单测代码的必要性和强制性，单测必须写，而且只能由开发同学来负责（毕竟你的逻辑你最熟悉），&lt;strong&gt;这是现实&lt;/strong&gt;。单测是所有测试中最底层、最基础、最重要的一类测试，同时也是唯一能够保证代码覆盖率达到 100%的测试，如果开发同学能够认真书写单测代码，不把其当成“负担”，那么我们几乎能够确保&amp;gt;=80%的代码缺陷能够在&lt;strong&gt;前置&lt;/strong&gt;测试环节就被发现和修复，大幅度降低因后置而导致的高昂的缺陷修复成本，就像工厂组装手机一样，如果各个元器件在出厂时没有分别经过严格的质量检验，仅依靠最终组装成品来验证手机是否合格，那么你敢买吗？其次，我们习以为常的总是喜欢把“高内聚，低耦合”挂在嘴边，并标榜为优秀设计的标准，但如果我们很难编写出，或不知如何编写出对应的单测代码，那么如何能够快速验证自己的设计是否真的优秀？而如果我们拥有高覆盖率的单侧代码，则能够使得开发同学拥有足够的信心去重构自身的逻辑代码，使系统不断朝前进化。&lt;/p&gt;
+&lt;h3 id=&#34;别进入误区&#34;&gt;别进入误区&lt;/h3&gt;
+&lt;p&gt;但恰恰也是因为前置这个误区，从某种程度上错误的部分开发同学把单测当成了软件质量保证的“银弹”，大量集成测试阶段才需要实施的验证工作被前置在了单测阶段（比如：集成 localdb 去验证 SQL 语法、语义，以及 RPC 验证等），极大程度上束缚了整个产品的迭代交付速度，从而导致研发同学怨声载道（尤其是新同学）。&lt;strong&gt;我们需要转变思想&lt;/strong&gt;，本质而言，单测是一件非常纯粹的工作，要写的轻薄，强调的是效率，必须采取小步快跑的模式。因此在编写单测代码时，开发同学仅需关注逻辑单元的正确性，任何超出单元范围的测试验证（&lt;strong&gt;单元所定义范围可以是目标函数，也可以是类，总之就是基于意图所定义出的最小功能模块&lt;/strong&gt;），全部 MOCK，想要跑得快，那就必须丢包袱，在合适的环节去做正确的事，不要幻想着集中在某一个点能够解决所有问题。&lt;/p&gt;
+&lt;h3 id=&#34;单测最佳实践&#34;&gt;单测最佳实践&lt;/h3&gt;
+&lt;h4 id=&#34;单测的定义&#34;&gt;单测的定义&lt;/h4&gt;
+&lt;p&gt;刚才我已经提及过，&lt;strong&gt;单元所定义范围可以是目标函数，也可以是类，总之就是基于意图所定义出的最小功能模块，意图很重要&lt;/strong&gt;。举个例子，假设我今天需要在支付宝的账务系统上面新增一个缓冲记账的优化功能来缓解热点账户的问题，那么我需要在系统入口处至持久层都编写相应的缓冲逻辑，那么在编写对应的测试代码时，如果我把单元定义为函数，则需要为每一个目标函数都编写一个对应的单测代码，尽管可以这样做，但如果我把单元从逻辑上定义为“相同的目标”，那么我其实编写一个测试函数即可，哪怕其中包含了 N 个方法，也可以认为是同一个单元，并且这样做有利于做一些关联测试。&lt;/p&gt;
+&lt;p&gt;在某些情况下，如果我们仅仅只是修改了某个函数代码块中的部分逻辑，不依赖任何其它函数的调用，示例 1-1：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;doHandle&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;UniformEvent&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;uniformEvent&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;){&lt;/span&gt;
+  &lt;span class=&#34;c1&#34;&gt;// 原有逻辑
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;新增逻辑&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+  &lt;span class=&#34;c1&#34;&gt;// 原有逻辑
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;如果我们所定义的单元就是上述目标函数，那么仅需为这个目标函数编写一个对应的测试方法验证其逻辑正确性即可。&lt;/p&gt;
+&lt;h4 id=&#34;单测究竟应该怎么写&#34;&gt;单测究竟应该怎么写？&lt;/h4&gt;
+&lt;p&gt;实际上，我并不是专业的测试人员，对于单元测试、增量测试、全量测试、回归测试、集成测试，以及冒烟测试等不胜枚举的测试方法及手段常常是望洋兴叹，甚至无法准确归类。实际上，我比较赞成和认同 google 的做法，对于测试，简单分为 3 类，没那么多花样，如图 1 所示。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://static001.geekbang.org/infoq/03/0325382162684fa88331c74881ddf46a.png&#34; alt=&#34;&#34;&gt;
+图1 google软件测试分类&lt;/p&gt;
+&lt;p&gt;其中小型测试仅关注目标函数的逻辑性验证，其它部分全部 mock，强调的是效率；而中型测试关注的是多模块之间的交互性验证；最后大型测试则显得比较重和全面，我们可以理解为集成测试。那么我们的单元测试究竟应该如何归类呢？显而易见，单元测试归类在小型测试中是最适合不过的。&lt;/p&gt;
+&lt;p&gt;编写优秀的单测代码，即简单也复杂，最主要是需要理解编写单测究竟是为了验证什么。基本来说，大家可以参考如下 3 项标准来编写单测代码：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;输入正确/错误的入参，验证逻辑代码正确/错误的处理逻辑是否符合预期；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;任何外部依赖（比如：RPC 依赖、DB 依赖、MQ 依赖）均应该 Mock 或 Fack，由集成测试阶段兜底；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;单元测试的数据应该在单测代码中构造，不应该依赖外部存储或中间件，确保整体测试环境的稳定（避免因某个前置方法的处理逻辑导致存储系统出现异常，继而影响后续的测试方法都出现异常，产生蝴蝶效应）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;关于第 3 点，我建议将测试数据和测试代码进行分离，在实际的开发过程中，我们往往需要构造 N 套测试数据基于相同的测试逻辑去验证逻辑代码是否符合预期，为了方便管理和维护测试数据，我们需要将测试数据了测试代码解耦，编写单独的测试方法去准备这些测试数据，示例 1-2：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;kd&#34;&gt;private&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;List&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;datas&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ArrayList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;nd&#34;&gt;@Test&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;testMethod&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(){&lt;/span&gt;
+  &lt;span class=&#34;n&#34;&gt;datas&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;forEach&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;{&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;// 测试逻辑
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;});&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;nd&#34;&gt;@BeforeClass&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(){&lt;/span&gt;
+  &lt;span class=&#34;c1&#34;&gt;// 测试数据准备
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;除此之外，还可以选择存储在配置文件中（比如:yaml、csv 文件）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;====== END ======&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;至此，本文内容全部结束。如果在阅读过程中有任何疑问，欢迎在评论区留言参与讨论。&lt;/p&gt;
+</description>
+    </item>
+    
     <item>
       <title>【分享】2021 06 15 细数ThreadLocal三大坑，内存泄露仅是小儿科</title>
       <link>https://blog.shrp.me/post/%E7%BB%86%E6%95%B0ThreadLocal%E4%B8%89%E5%A4%A7%E5%9D%91%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E4%BB%85%E6%98%AF%E5%B0%8F%E5%84%BF%E7%A7%91.html</link>
@@ -1738,35 +1824,6 @@ fi
 &lt;p&gt;但是我猜他一定看了很多车从桥上冲下河去逃生的故事，他很有可能想撞下去可以生还的。这个猜测得看最后车到河里前的视频是否有逃生的动作才知道，可是这段视频都没有流传，无从判断。&lt;/p&gt;
 &lt;p&gt;如果司机并没有逃生的动作，说明司机其实是由轻生念头的——这个问题本质上是我国底层劳动人民的地位和收入问题，也是财富观价值观的问题，短期内不见好转趋势，民众间的相互攻击恐怕会持续很久一阵子了。&lt;/p&gt;
 </description>
-    </item>
-    
-    <item>
-      <title>Intellij VM 参数优化</title>
-      <link>https://blog.shrp.me/Intellij-VM-optiomazation.html</link>
-      <pubDate>Tue, 30 Oct 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.shrp.me/Intellij-VM-optiomazation.html</guid>
-      <description>&lt;p&gt;今天看了&lt;a href=&#34;https://mp.weixin.qq.com/s/DMzz717E2oZ3XwcIsM8Dgw&#34;&gt;《IntelliJ IDEA 内存优化最佳实践》&lt;/a&gt;一文，正好之前自己也做了自己机器的 Intellij 的内存优化，原来文章里的最优方案跟我自用的是一样的，都是增加内存。&lt;/p&gt;
-&lt;p&gt;我的配置如下：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;-Xms2g
--Xmx4g
--XX:MaxPermSize=2g
--XX:ReservedCodeCacheSize=2g
--XX:+UseCompressedOops
--Dide.no.platform.update=true
-&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description>
     </item>
     
   </channel>

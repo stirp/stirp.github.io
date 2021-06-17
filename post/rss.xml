@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>shrp</copyright>
-    <lastBuildDate>Tue, 15 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/post/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 17 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/post/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【分享】我在阿里做架构 | 单测最佳实践</title>
+      <link>https://blog.shrp.me/post/%E5%8D%95%E6%B5%8B%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html</link>
+      <pubDate>Thu, 17 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.shrp.me/post/%E5%8D%95%E6%B5%8B%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html</guid>
+      <description>这篇文章的结论跟我现在的实践非常的类似，预计本月我会把我的实践也更新到 blog 里。这篇文章的原文地址是这里 前言 大家仔细思考，我们究竟为什么需要编写</description>
+    </item>
+    
     <item>
       <title>【分享】2021 06 15 细数ThreadLocal三大坑，内存泄露仅是小儿科</title>
       <link>https://blog.shrp.me/post/%E7%BB%86%E6%95%B0ThreadLocal%E4%B8%89%E5%A4%A7%E5%9D%91%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E4%BB%85%E6%98%AF%E5%B0%8F%E5%84%BF%E7%A7%91.html</link>
@@ -87,15 +96,6 @@
       
       <guid>https://blog.shrp.me/The-best-opinion-of-bus-crash-into-the-river.html</guid>
       <description>今天在微博看到一条关于公交撞桥坠河的观点，其观点跟我的看法高度相似，所以就粘贴到这里来： 一开始我想司机是不是想借小车的撞击力减速，从而撞桥停</description>
-    </item>
-    
-    <item>
-      <title>Intellij VM 参数优化</title>
-      <link>https://blog.shrp.me/Intellij-VM-optiomazation.html</link>
-      <pubDate>Tue, 30 Oct 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.shrp.me/Intellij-VM-optiomazation.html</guid>
-      <description>今天看了《IntelliJ IDEA 内存优化最佳实践》一文，正好之前自己也做了自己机器的 Intellij 的内存优化，原来文章里的最优方案跟我自用的是一样的，都是增</description>
     </item>
     
   </channel>

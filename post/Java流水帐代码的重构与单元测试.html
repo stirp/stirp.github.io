@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Java流水帐代码的重构与单元测试 - 尚弟的小笔记</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="尚弟" /><meta name="description" content="我们都是学过很多编程思想的人,知道代码怎么写时最好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解决各种现实问题,会在代码里产" /><meta name="keywords" content="尚弟, 博客, 笔记" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.shrp.me/post/Java%E6%B5%81%E6%B0%B4%E5%B8%90%E4%BB%A3%E7%A0%81%E7%9A%84%E9%87%8D%E6%9E%84%E4%B8%8E%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Java流水帐代码的重构与单元测试" />
+<meta property="og:description" content="我们都是学过很多编程思想的人,知道代码怎么写时最好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解决各种现实问题,会在代码里产" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.shrp.me/post/Java%E6%B5%81%E6%B0%B4%E5%B8%90%E4%BB%A3%E7%A0%81%E7%9A%84%E9%87%8D%E6%9E%84%E4%B8%8E%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-06-27T18:19:32&#43;08:00" />
+<meta property="article:modified_time" content="2021-06-27T18:19:32&#43;08:00" />
+
+<meta itemprop="name" content="Java流水帐代码的重构与单元测试">
+<meta itemprop="description" content="我们都是学过很多编程思想的人,知道代码怎么写时最好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解决各种现实问题,会在代码里产"><meta itemprop="datePublished" content="2021-06-27T18:19:32&#43;08:00" />
+<meta itemprop="dateModified" content="2021-06-27T18:19:32&#43;08:00" />
+<meta itemprop="wordCount" content="4800">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java流水帐代码的重构与单元测试"/>
+<meta name="twitter:description" content="我们都是学过很多编程思想的人,知道代码怎么写时最好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解决各种现实问题,会在代码里产"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">尚弟的小笔记</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/tags.html">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/post.html">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/rss.xml">
+        <li class="mobile-menu-item">RSS</li>
+      </a><a href="/blogrolls.html">
+        <li class="mobile-menu-item">友情链接</li>
+      </a><a href="/about.html">
+        <li class="mobile-menu-item">关于我</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">尚弟的小笔记</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags.html">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post.html">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/rss.xml">RSS</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls.html">友情链接</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about.html">关于我</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Java流水帐代码的重构与单元测试</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-06-27 </span>
+        <div class="post-category">
+            <a href="/categories/Java/"> Java </a>
+            <a href="/categories/%E6%B5%81%E6%B0%B4%E5%B8%90%E4%BB%A3%E7%A0%81/"> 流水帐代码 </a>
+            <a href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/"> 单元测试 </a>
+            <a href="/categories/%E9%87%8D%E6%9E%84/"> 重构 </a>
+            </div>
+          <span class="more-meta"> 约 4800 字 </span>
+          <span class="more-meta"> 预计阅读 10 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>我们都是学过很多编程思想的人,知道代码怎么写时最好的,什么样的代码是糟糕的.</p>
+<p>然而我们在工作的过程中,为了满足和解决各种现实问题,会在代码里产生引入各种妥协和交换.最后有一天,我们发现,bug产生于一大段肮脏的业务代码,就像这样:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Java" data-lang="Java">
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+    <span class="c1">//输出业务计算的结果
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">Biz</span><span class="o">.</span><span class="na">Argument</span> <span class="n">argument</span> <span class="o">=</span> <span class="n">Biz</span><span class="o">.</span><span class="na">Argument</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">a</span><span class="o">(</span><span class="s">&#34;content a&#34;</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">b</span><span class="o">(</span><span class="n">9</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">c</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="k">new</span> <span class="n">Biz</span><span class="o">().</span><span class="na">getBizResult</span><span class="o">(</span>
+                <span class="n">argument</span>
+        <span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//业务的实现类
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Biz</span> <span class="o">{</span>
+
+        <span class="c1">//通常是注入的外部服务
+</span><span class="c1"></span>        <span class="kd">private</span> <span class="kd">volatile</span> <span class="n">IntegerCalculator</span> <span class="n">integerCalculator</span><span class="o">;</span>
+
+        <span class="o">{</span>
+            <span class="n">integerCalculator</span> <span class="o">=</span> <span class="k">new</span> <span class="n">IntegerCalculator</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="nd">@AllArgsConstructor</span>
+        <span class="nd">@Builder</span>
+        <span class="nd">@NoArgsConstructor</span>
+        <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Argument</span> <span class="o">{</span>
+            <span class="n">String</span> <span class="n">a</span><span class="o">;</span>
+            <span class="kt">int</span> <span class="n">b</span><span class="o">;</span>
+            <span class="kt">boolean</span> <span class="n">c</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="c1">//计算业务结果的过程
+</span><span class="c1"></span>        <span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">//一段校验逻辑
+</span><span class="c1"></span>            <span class="k">if</span> <span class="o">(</span><span class="n">argument</span><span class="o">.</span><span class="na">a</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">argument</span><span class="o">.</span><span class="na">b</span> <span class="o">&gt;</span> <span class="n">10</span> <span class="o">||</span> <span class="n">argument</span><span class="o">.</span><span class="na">b</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&#34;argument is not valid.&#34;</span><span class="o">);</span>
+            <span class="o">}</span>
+
+            <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="s">&#34;not inited.&#34;</span><span class="o">;</span>
+            <span class="n">Throwable</span> <span class="n">throwable</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">argument</span><span class="o">.</span><span class="na">c</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="na">a</span><span class="o">;</span>
+                    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">integerCalculator</span><span class="o">.</span><span class="na">calculate</span><span class="o">(</span><span class="n">argument</span><span class="o">.</span><span class="na">b</span><span class="o">));</span>
+                    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">throwable</span> <span class="o">=</span> <span class="n">t</span><span class="o">;</span>
+                <span class="k">throw</span> <span class="n">t</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+                <span class="c1">// 通常是统计和上报
+</span><span class="c1"></span>                <span class="k">if</span> <span class="o">(</span><span class="n">throwable</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s, throwable message is %s,&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">,</span> <span class="n">throwable</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="c1">//外部服务的实现,现实生活中实现通常是远端服务,这里写出来实现只是为了跑通测试
+</span><span class="c1"></span>    <span class="c1">//我们开发者只基于接口约束开发,对于其实现有没有bug不负责
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">IntegerCalculator</span> <span class="o">{</span>
+        <span class="nd">@NotNull</span>
+        <span class="kd">public</span> <span class="n">Integer</span> <span class="nf">calculate</span><span class="o">(</span><span class="nd">@Nullable</span> <span class="n">Integer</span> <span class="n">integer</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">integer</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">0</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="n">integer</span> <span class="o">*</span> <span class="n">integer</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>getBizResult 这一段代码里混合了三种逻辑,包括了校验,业务逻辑和统计上报. 代码初期可能并不复杂,但是后续类似的逻辑越加越多,维护成本会很快升高。我们称之为流水账代码.</p>
+<p>怎么样才能更可靠的拆解上述函数,使之更容易维护,也更容易编写单元测试,保证后续变更的影响更可控呢？我总结了一套重构方法,能够安全又快速的达到上述目标。此方法依赖于Java8 引入的一个能力: 在接口上提供default函数.通过接口提供实现的模式,称之为mixin模式.</p>
+<p>改造的<em><strong>第一步</strong></em>是先将要治理的函数内对函数参数的访问,抽取为函数的局部变量.这一步并不是最终目标,它是为了将对函数入参的直接访问,改为对中间变量的间接访问,并且每一个参数都得是可以最大复用的对象.比如说你项目都是基于公司的同一套中间件,那么抽取后的函数变量可以是中间件提供的对象;如果不是,那最好参数是都是Java自带的类,改造后提供的函数才能最大的复用.改造后的getBizResult如下:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">//计算业务结果的过程
+</span><span class="c1"></span>        <span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">//一段校验逻辑
+</span><span class="c1"></span>            <span class="kd">final</span> <span class="n">String</span> <span class="n">a</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="na">a</span><span class="o">;</span>
+            <span class="kd">final</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="na">b</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">a</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">b</span> <span class="o">&gt;</span> <span class="n">10</span> <span class="o">||</span> <span class="n">b</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&#34;argument is not valid.&#34;</span><span class="o">);</span>
+            <span class="o">}</span>
+
+            <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="s">&#34;not inited.&#34;</span><span class="o">;</span>
+            <span class="n">Throwable</span> <span class="n">throwable</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="kd">final</span> <span class="kt">boolean</span> <span class="n">c</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="na">c</span><span class="o">;</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">a</span><span class="o">;</span>
+                    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">integerCalculator</span><span class="o">.</span><span class="na">calculate</span><span class="o">(</span><span class="n">b</span><span class="o">));</span>
+                    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">throwable</span> <span class="o">=</span> <span class="n">t</span><span class="o">;</span>
+                <span class="k">throw</span> <span class="n">t</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+                <span class="c1">// 通常是统计和上报
+</span><span class="c1"></span>                <span class="k">if</span> <span class="o">(</span><span class="n">throwable</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s, throwable message is %s,&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">,</span> <span class="n">throwable</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>很明确的,抽取了a,b,c三个变量.通过idea,不论是观察高亮,还是查找argument变量的引用,都能很快确定除了初始化局部变量,已经没有对其的引用了.</p>
+<p>![[_storage/Pasted image 20210627162359.png]]</p>
+<p><em><strong>第二步</strong></em>就是将上述三个函数内的变量放到一个对象的属性里,这个对象我通常起名为xxContext,这个对象并不是为了在不同的位置复用的,它只供这个地方使用,所以名字可以跟业务非常耦合,比如这里叫做GetBizResultContext.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">        <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">GetBizResultContext</span><span class="o">{</span>
+            <span class="kd">public</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">a</span><span class="o">;</span>
+            <span class="kd">public</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">b</span><span class="o">;</span>
+            <span class="kd">public</span> <span class="kt">boolean</span> <span class="n">c</span><span class="o">;</span>
+
+            <span class="kd">public</span> <span class="nf">GetBizResultContext</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="na">a</span><span class="o">;</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="na">b</span><span class="o">;</span>
+            <span class="o">}</span>
+
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setC</span><span class="o">(</span><span class="kd">final</span> <span class="kt">boolean</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">this</span><span class="o">.</span><span class="na">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>读者可能很奇怪,这几个变量不是跟Argument长得一模一样吗?</p>
+<p>没错,在这个例子里,它确实长得是一模一样,因为这个实例代码的入参恰好只有argument一个.有时候我们的参数其实是多个,如<code>getBizResult(Argument argument,Object... otherArgs)</code>,那么,这个Context的构造函数就会是<code>xxxContext(Argument argument,Object... otherArgs)</code>,也就是理论上跟函数的入参一致.而且它的所有参数,都是public的,这是因为改造过程中idea暂时没有抽取context的能力,为了改造getBizResult的时候更稳妥(在业务函数中访问变量的前面只要加上getBizResult.),特意如此安排的.此时getBizResult函数里是这样的:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kd">final</span> <span class="n">GetBizResultContext</span> <span class="n">getBizResultContext</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GetBizResultContext</span><span class="o">(</span><span class="n">argument</span><span class="o">);</span>
+            <span class="c1">//一段校验逻辑
+</span><span class="c1"></span>            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">a</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">b</span> <span class="o">&gt;</span> <span class="n">10</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">b</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&#34;argument is not valid.&#34;</span><span class="o">);</span>
+            <span class="o">}</span>
+
+            <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="s">&#34;not inited.&#34;</span><span class="o">;</span>
+            <span class="n">Throwable</span> <span class="n">throwable</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">c</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="na">c</span><span class="o">;</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">c</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">a</span><span class="o">;</span>
+                    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">integerCalculator</span><span class="o">.</span><span class="na">calculate</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">b</span><span class="o">));</span>
+                    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">throwable</span> <span class="o">=</span> <span class="n">t</span><span class="o">;</span>
+                <span class="k">throw</span> <span class="n">t</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+                <span class="c1">// 通常是统计和上报
+</span><span class="c1"></span>                <span class="k">if</span> <span class="o">(</span><span class="n">throwable</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s, throwable message is %s,&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">,</span> <span class="n">throwable</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>可能刚刚有眼尖的朋友注意到,a和b是final的,c不是.这是为啥?因为c的赋值在函数中间有一次赋值,最快速稳妥的办法,是将这里改为对context的c的赋值,而不是在构造函数里初始化.如果想将这段逻辑移入context的构造函数,必须满足以下两个条件:</p>
+<ol>
+<li>在第二步抽取函数的局部变量的时候,这里是<em><strong>final</strong></em>的.也就是它后续没有编辑;</li>
+<li>c的初始化没有使用context有关的任意变量.如果它用到了,那么你必须继续保证这几个变量在此赋值前没有发生<em><strong>变化的可能</strong></em>.</li>
+</ol>
+<p>第一个条件很容易满足,因为在idea重构的时候,如果c后续没有再次赋值的话,会自动在函数局部变量c的声明处添加final修饰符.但是第二个条件要想满足,需要非常小心赋值的语句里有没有其它跟argument有关的变量,以及这些变量是否有变化.假如有改造前有如下代码:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
+<span class="c1">//参数规整
+</span><span class="c1"></span><span class="o">...</span>
+    <span class="n">argument</span><span class="o">.</span><span class="na">b</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="na">b</span> <span class="o">&gt;</span> <span class="n">10</span><span class="o">?</span> <span class="o">-</span><span class="n">10</span><span class="o">:</span> <span class="n">argument</span><span class="o">.</span><span class="na">b</span><span class="o">;</span>
+<span class="o">...</span>
+    <span class="n">argument</span><span class="o">.</span><span class="na">c</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="na">b</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">;</span>
+<span class="o">...</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>那么改造后的c是绝对不能放到context的构造函数里的,因为在这个阶段,b还没有规整过,c的处理可能是错的.因此最简单的办法,就是让c在原有抽取变量所在的位置set到context中,不用严格的验证c的初始化是否跟其它参数是正交(也就是跟其它参数没有任何关系)的了.</p>
+<p>改造的<em><strong>第三步</strong></em>非常简单:通过idea,将context里的public属性改为private.</p>
+<p>读者会对此很惊讶:刚刚还强调要public,现在怎么要改为private了呢?</p>
+<p>正如我刚才括号里写的,第二步里使用public,是因为在没有idea的重构功能加持下,为了保证每一个地方都改对,特意使用public.比如原来是<code>result = a;</code>的地方,现在是<code>result = getBizResultContext.a;</code>,编辑的时候并不容易出错.而现在改成private,是为了访问的方式改为函数,当需要复用的时候,可以轻易抽取接口,正如我所说,context不是为了复用而抽取的对象.为什么context不是复用的对象呢?因为它耦合了参数校验和规整,业务逻辑和上报三段逻辑所需要的字段,并不容易复用.</p>
+<p>修改修饰符idea会帮我们很快完成,此时业务逻辑变成了这样:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">        <span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kd">final</span> <span class="n">GetBizResultContext</span> <span class="n">getBizResultContext</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GetBizResultContext</span><span class="o">(</span><span class="n">argument</span><span class="o">);</span>
+            <span class="c1">//一段校验逻辑
+</span><span class="c1"></span>            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getA</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">10</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&#34;argument is not valid.&#34;</span><span class="o">);</span>
+            <span class="o">}</span>
+
+            <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="s">&#34;not inited.&#34;</span><span class="o">;</span>
+            <span class="n">Throwable</span> <span class="n">throwable</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setC</span><span class="o">(</span><span class="n">argument</span><span class="o">.</span><span class="na">c</span><span class="o">);</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">isC</span><span class="o">())</span> <span class="o">{</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getA</span><span class="o">();</span>
+                    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">integerCalculator</span><span class="o">.</span><span class="na">calculate</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">()));</span>
+                    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">throwable</span> <span class="o">=</span> <span class="n">t</span><span class="o">;</span>
+                <span class="k">throw</span> <span class="n">t</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+                <span class="c1">// 通常是统计和上报
+</span><span class="c1"></span>                <span class="k">if</span> <span class="o">(</span><span class="n">throwable</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s, throwable message is %s,&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">,</span> <span class="n">throwable</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这步之后就非常简单了,<em><strong>第四步</strong></em>将三段不同的逻辑分别用idea的抽取函数功能,变成三段函数:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">//计算业务结果的过程
+</span><span class="c1"></span>        <span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kd">final</span> <span class="n">GetBizResultContext</span> <span class="n">getBizResultContext</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GetBizResultContext</span><span class="o">(</span><span class="n">argument</span><span class="o">);</span>
+            <span class="c1">//一段校验逻辑
+</span><span class="c1"></span>            <span class="n">doValidation</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">);</span>
+
+            <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="s">&#34;not inited.&#34;</span><span class="o">;</span>
+            <span class="n">Throwable</span> <span class="n">throwable</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setC</span><span class="o">(</span><span class="n">argument</span><span class="o">.</span><span class="na">c</span><span class="o">);</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">getResult</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">);</span>
+                <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">throwable</span> <span class="o">=</span> <span class="n">t</span><span class="o">;</span>
+                <span class="k">throw</span> <span class="n">t</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+                <span class="c1">// 通常是统计和上报
+</span><span class="c1"></span>                <span class="n">afterBiz</span><span class="o">(</span><span class="n">result</span><span class="o">,</span> <span class="n">throwable</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="kd">private</span> <span class="kt">void</span> <span class="nf">afterBiz</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">result</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Throwable</span> <span class="n">throwable</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">throwable</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s, throwable message is %s,&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">,</span> <span class="n">throwable</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">}</span> 
+
+        <span class="nd">@org.jetbrains.annotations.NotNull</span>
+        <span class="kd">private</span> <span class="n">String</span> <span class="nf">getResult</span><span class="o">(</span><span class="kd">final</span> <span class="n">GetBizResultContext</span> <span class="n">getBizResultContext</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">isC</span><span class="o">())</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getA</span><span class="o">();</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">integerCalculator</span><span class="o">.</span><span class="na">calculate</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">()));</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="kd">private</span> <span class="kt">void</span> <span class="nf">doValidation</span><span class="o">(</span><span class="kd">final</span> <span class="n">GetBizResultContext</span> <span class="n">getBizResultContext</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getA</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">10</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&#34;argument is not valid.&#34;</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>哎,这一看,有个函数的参数还不止context,最好将其改造为只有context的方式:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">        <span class="c1">//计算业务结果的过程
+</span><span class="c1"></span>        <span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kd">final</span> <span class="n">GetBizResultContext</span> <span class="n">getBizResultContext</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GetBizResultContext</span><span class="o">(</span><span class="n">argument</span><span class="o">);</span>
+            <span class="c1">//一段校验逻辑
+</span><span class="c1"></span>            <span class="n">doValidation</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">);</span>
+
+            <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setResult</span><span class="o">(</span><span class="s">&#34;not inited.&#34;</span><span class="o">);</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setC</span><span class="o">(</span><span class="n">argument</span><span class="o">.</span><span class="na">c</span><span class="o">);</span>
+                <span class="n">getResult</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">);</span>
+                <span class="k">return</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getResult</span><span class="o">();</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setThrowable</span><span class="o">(</span><span class="n">t</span><span class="o">);</span>
+                <span class="k">throw</span> <span class="n">t</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+                <span class="c1">// 通常是统计和上报
+</span><span class="c1"></span>                <span class="n">afterBiz</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="kd">private</span> <span class="kt">void</span> <span class="nf">afterBiz</span><span class="o">(</span><span class="n">GetBizResultContext</span> <span class="n">getBizResultContext</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getThrowable</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s&#34;</span><span class="o">,</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s, throwable message is %s,&#34;</span><span class="o">,</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getResult</span><span class="o">(),</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getThrowable</span><span class="o">().</span><span class="na">getMessage</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="kd">private</span> <span class="kt">void</span> <span class="nf">getResult</span><span class="o">(</span><span class="kd">final</span> <span class="n">GetBizResultContext</span> <span class="n">getBizResultContext</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">isC</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setResult</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getA</span><span class="o">());</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setResult</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">integerCalculator</span><span class="o">.</span><span class="na">calculate</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">())));</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="kd">private</span> <span class="kt">void</span> <span class="nf">doValidation</span><span class="o">(</span><span class="kd">final</span> <span class="n">GetBizResultContext</span> <span class="n">getBizResultContext</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getA</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">10</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&#34;argument is not valid.&#34;</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>接下来可以将doValidation,getResult和afterBiz单独抽取到接口的default方法里.要注意的是getResult里有一个注入的函数integerCalculator,抽取的时候需要改为接口的函数.改造后是这样的:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+    <span class="c1">//业务的实现类
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Biz</span> <span class="kd">implements</span> <span class="n">BizAfterwards</span><span class="o">,</span><span class="n">BizProvider</span><span class="o">,</span><span class="n">BizValidator</span><span class="o">{</span>
+
+<span class="o">...</span>
+
+    <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">BizAfterwards</span><span class="o">{</span>
+        <span class="k">default</span> <span class="kt">void</span> <span class="nf">afterBiz</span><span class="o">(</span><span class="n">Biz</span><span class="o">.</span><span class="na">GetBizResultContext</span> <span class="n">getBizResultContext</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getThrowable</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s&#34;</span><span class="o">,</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s, throwable message is %s,&#34;</span><span class="o">,</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getResult</span><span class="o">(),</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getThrowable</span><span class="o">().</span><span class="na">getMessage</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">BizValidator</span><span class="o">{</span>
+        <span class="k">default</span> <span class="kt">void</span> <span class="nf">doValidation</span><span class="o">(</span><span class="kd">final</span> <span class="n">Biz</span><span class="o">.</span><span class="na">GetBizResultContext</span> <span class="n">getBizResultContext</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getA</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">10</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&#34;argument is not valid.&#34;</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">BizProvider</span><span class="o">{</span>
+        <span class="k">default</span> <span class="kt">void</span> <span class="nf">getResult</span><span class="o">(</span><span class="kd">final</span> <span class="n">Biz</span><span class="o">.</span><span class="na">GetBizResultContext</span> <span class="n">getBizResultContext</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">isC</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setResult</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getA</span><span class="o">());</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setResult</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">getIntegerCalculator</span><span class="o">().</span><span class="na">calculate</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">())));</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">IntegerCalculator</span> <span class="nf">getIntegerCalculator</span><span class="o">();</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>重构结束了,是不是各个业务逻辑已经单独抽取了?如果需要写单元测试,那就非常简单了,比如针对BizProvider.getBizResult做单元测试:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">TestTest</span> <span class="kd">extends</span> <span class="n">Specification</span> <span class="o">{</span>
+
+    <span class="n">def</span> <span class="s">&#34;test testBizResult&#34;</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">given</span><span class="o">:</span>
+        <span class="n">def</span> <span class="n">provider</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Test</span><span class="o">.</span><span class="na">BizProvider</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="n">Test</span><span class="o">.</span><span class="na">IntegerCalculator</span> <span class="nf">getIntegerCalculator</span><span class="o">()</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="k">new</span> <span class="n">Test</span><span class="o">.</span><span class="na">IntegerCalculator</span><span class="o">(){</span>
+                    <span class="nd">@Override</span>
+                    <span class="n">Integer</span> <span class="nf">calculate</span><span class="o">(</span><span class="kd">final</span> <span class="n">Integer</span> <span class="n">integer</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="k">return</span> <span class="n">10</span><span class="o">;</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">def</span> <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Test</span><span class="o">.</span><span class="na">Biz</span><span class="o">.</span><span class="na">GetBizResultContext</span><span class="o">(</span><span class="k">new</span> <span class="n">Test</span><span class="o">.</span><span class="na">Biz</span><span class="o">.</span><span class="na">Argument</span><span class="o">.</span><span class="na">ArgumentBuilder</span><span class="o">().</span><span class="na">a</span><span class="o">(</span><span class="s">&#34;content a&#34;</span><span class="o">).</span><span class="na">b</span><span class="o">(</span><span class="n">9</span><span class="o">).</span><span class="na">c</span><span class="o">(</span><span class="kc">false</span><span class="o">).</span><span class="na">build</span><span class="o">())</span>
+        <span class="n">when</span><span class="o">:</span>
+            <span class="n">provider</span><span class="o">.</span><span class="na">getResult</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+        <span class="n">then</span><span class="o">:</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">result</span> <span class="o">==</span> <span class="s">&#34;10&#34;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>单元测试里所有的外部依赖自然不需要真正的实现,只要返回你定义的某个结果就可以了.</p>
+<p>看到这里,其实大家现在做重构和单元测试的目的达到了,但是当我们需要复用的时候呢?</p>
+<p>首先先将default函数里的context要换成interface,比如getBizResult改成某interface,然后将函数里的get函数都自动生成,再将原有的context改为实现该接口,即可将该能力提供在其它地方复用了.比如:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"> <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">GetBizResultContext</span> <span class="kd">implements</span> <span class="n">BizArg</span><span class="o">{</span>
+ <span class="o">...</span>
+ <span class="o">}</span>
+ 
+ <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">BizProvider</span><span class="o">{</span>
+        <span class="k">default</span> <span class="kt">void</span> <span class="nf">getResult</span><span class="o">(</span><span class="kd">final</span> <span class="n">BizArg</span> <span class="n">getBizResultContext</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">isC</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setResult</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getA</span><span class="o">());</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setResult</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">getIntegerCalculator</span><span class="o">().</span><span class="na">calculate</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">())));</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">IntegerCalculator</span> <span class="nf">getIntegerCalculator</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">BizArg</span><span class="o">{</span>
+
+        <span class="kt">boolean</span> <span class="nf">isC</span><span class="o">();</span>
+
+        <span class="n">String</span> <span class="nf">getA</span><span class="o">();</span>
+
+        <span class="kt">int</span> <span class="nf">getB</span><span class="o">();</span>
+
+        <span class="kt">void</span> <span class="nf">setResult</span><span class="o">(</span><span class="n">String</span> <span class="n">a</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这个过程只需要:</p>
+<ol>
+<li>新增BizArg接口</li>
+<li>将BizProvider的函数参数改为BizArg接口</li>
+<li>将GetBizResultContext实现自BizArg接口</li>
+<li>修复BizProvider对BizArg的几个接口</li>
+</ol>
+<p>这样BizProvider就做好了对外的复用准备了,是不是特别容易复用了?</p>
+<p>最后这是完整的类:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.facishare.social.activity.facade</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">jetbrick.util.annotation.NotNull</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">jetbrick.util.annotation.Nullable</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">lombok.AllArgsConstructor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">lombok.Builder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">lombok.NoArgsConstructor</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+    <span class="c1">//输出业务计算的结果
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">Biz</span><span class="o">.</span><span class="na">Argument</span> <span class="n">argument</span> <span class="o">=</span> <span class="n">Biz</span><span class="o">.</span><span class="na">Argument</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">a</span><span class="o">(</span><span class="s">&#34;content a&#34;</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">b</span><span class="o">(</span><span class="n">9</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">c</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="k">new</span> <span class="n">Biz</span><span class="o">().</span><span class="na">getBizResult</span><span class="o">(</span>
+                <span class="n">argument</span>
+        <span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//业务的实现类
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Biz</span> <span class="kd">implements</span> <span class="n">BizAfterwards</span><span class="o">,</span><span class="n">BizProvider</span><span class="o">,</span><span class="n">BizValidator</span><span class="o">{</span>
+
+        <span class="c1">//通常是注入的外部服务
+</span><span class="c1"></span>        <span class="kd">private</span> <span class="kd">volatile</span> <span class="n">IntegerCalculator</span> <span class="n">integerCalculator</span><span class="o">;</span>
+
+        <span class="o">{</span>
+            <span class="n">integerCalculator</span> <span class="o">=</span> <span class="k">new</span> <span class="n">IntegerCalculator</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="n">IntegerCalculator</span> <span class="nf">getIntegerCalculator</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">integerCalculator</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="nd">@AllArgsConstructor</span>
+        <span class="nd">@Builder</span>
+        <span class="nd">@NoArgsConstructor</span>
+        <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Argument</span> <span class="o">{</span>
+            <span class="n">String</span> <span class="n">a</span><span class="o">;</span>
+            <span class="kt">int</span> <span class="n">b</span><span class="o">;</span>
+            <span class="kt">boolean</span> <span class="n">c</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">GetBizResultContext</span> <span class="kd">implements</span> <span class="n">BizArg</span><span class="o">{</span>
+            <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">a</span><span class="o">;</span>
+            <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">b</span><span class="o">;</span>
+            <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">c</span><span class="o">;</span>
+            <span class="kd">private</span> <span class="n">String</span> <span class="n">result</span><span class="o">;</span>
+            <span class="kd">private</span> <span class="n">Throwable</span> <span class="n">throwable</span><span class="o">;</span>
+
+            <span class="kd">public</span> <span class="nf">GetBizResultContext</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="na">a</span><span class="o">;</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="na">b</span><span class="o">;</span>
+            <span class="o">}</span>
+
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="n">String</span> <span class="nf">getA</span><span class="o">()</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">a</span><span class="o">;</span>
+            <span class="o">}</span>
+
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getB</span><span class="o">()</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">b</span><span class="o">;</span>
+            <span class="o">}</span>
+
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isC</span><span class="o">()</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">c</span><span class="o">;</span>
+            <span class="o">}</span>
+
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setC</span><span class="o">(</span><span class="kd">final</span> <span class="kt">boolean</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">this</span><span class="o">.</span><span class="na">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">;</span>
+            <span class="o">}</span>
+
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setResult</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">this</span><span class="o">.</span><span class="na">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">;</span>
+            <span class="o">}</span>
+
+            <span class="kd">public</span> <span class="n">String</span> <span class="nf">getResult</span><span class="o">()</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+            <span class="o">}</span>
+
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setThrowable</span><span class="o">(</span><span class="kd">final</span> <span class="n">Throwable</span> <span class="n">throwable</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">this</span><span class="o">.</span><span class="na">throwable</span> <span class="o">=</span> <span class="n">throwable</span><span class="o">;</span>
+            <span class="o">}</span>
+
+            <span class="kd">public</span> <span class="n">Throwable</span> <span class="nf">getThrowable</span><span class="o">()</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">throwable</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="c1">//计算业务结果的过程
+</span><span class="c1"></span>        <span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kd">final</span> <span class="n">GetBizResultContext</span> <span class="n">getBizResultContext</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GetBizResultContext</span><span class="o">(</span><span class="n">argument</span><span class="o">);</span>
+            <span class="c1">//一段校验逻辑
+</span><span class="c1"></span>            <span class="n">doValidation</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">);</span>
+
+            <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setResult</span><span class="o">(</span><span class="s">&#34;not inited.&#34;</span><span class="o">);</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setC</span><span class="o">(</span><span class="n">argument</span><span class="o">.</span><span class="na">c</span><span class="o">);</span>
+                <span class="n">getResult</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">);</span>
+                <span class="k">return</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getResult</span><span class="o">();</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setThrowable</span><span class="o">(</span><span class="n">t</span><span class="o">);</span>
+                <span class="k">throw</span> <span class="n">t</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+                <span class="c1">// 通常是统计和上报
+</span><span class="c1"></span>                <span class="n">afterBiz</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">BizAfterwards</span> <span class="o">{</span>
+        <span class="k">default</span> <span class="kt">void</span> <span class="nf">afterBiz</span><span class="o">(</span><span class="n">Biz</span><span class="o">.</span><span class="na">GetBizResultContext</span> <span class="n">getBizResultContext</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getThrowable</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s&#34;</span><span class="o">,</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result is %s, throwable message is %s,&#34;</span><span class="o">,</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getResult</span><span class="o">(),</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getThrowable</span><span class="o">().</span><span class="na">getMessage</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">BizValidator</span><span class="o">{</span>
+        <span class="k">default</span> <span class="kt">void</span> <span class="nf">doValidation</span><span class="o">(</span><span class="kd">final</span> <span class="n">Biz</span><span class="o">.</span><span class="na">GetBizResultContext</span> <span class="n">getBizResultContext</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getA</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">10</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&#34;argument is not valid.&#34;</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">BizProvider</span><span class="o">{</span>
+        <span class="k">default</span> <span class="kt">void</span> <span class="nf">getResult</span><span class="o">(</span><span class="kd">final</span> <span class="n">BizArg</span> <span class="n">getBizResultContext</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">isC</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setResult</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getA</span><span class="o">());</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">setResult</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">getIntegerCalculator</span><span class="o">().</span><span class="na">calculate</span><span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">())));</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">IntegerCalculator</span> <span class="nf">getIntegerCalculator</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">BizArg</span><span class="o">{</span>
+
+        <span class="kt">boolean</span> <span class="nf">isC</span><span class="o">();</span>
+
+        <span class="n">String</span> <span class="nf">getA</span><span class="o">();</span>
+
+        <span class="kt">int</span> <span class="nf">getB</span><span class="o">();</span>
+
+        <span class="kt">void</span> <span class="nf">setResult</span><span class="o">(</span><span class="n">String</span> <span class="n">a</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//外部服务的实现,现实生活中实现通常是远端服务,这里写出来实现只是为了跑通测试
+</span><span class="c1"></span>    <span class="c1">//我们开发者只基于接口约束开发,对于其实现有没有bug不负责
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">IntegerCalculator</span> <span class="o">{</span>
+        <span class="nd">@NotNull</span>
+        <span class="kd">public</span> <span class="n">Integer</span> <span class="nf">calculate</span><span class="o">(</span><span class="nd">@Nullable</span> <span class="n">Integer</span> <span class="n">integer</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">integer</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">0</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="n">integer</span> <span class="o">*</span> <span class="n">integer</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>这就是我近期总结的如何对流水账代码安全地做重构和单元测试.如果大家有什么意见和建议,欢迎在评论区里留言.</p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/%E5%8D%95%E6%B5%8B%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html">
+            <span class="next-text nav-default">【分享】我在阿里做架构 | 单测最佳实践</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'stirp';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:srpwy@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/stirp" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.shrp.me/rss.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2010 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>shrp</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-cn".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?249d9fe60c26e4771c81467fa3b43862";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

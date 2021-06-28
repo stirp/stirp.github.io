@@ -1021,11 +1021,9 @@
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;166
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;167
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;168
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;169
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;com.facishare.social.activity.facade&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
-
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;jetbrick.util.annotation.NotNull&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;jetbrick.util.annotation.Nullable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;lombok.AllArgsConstructor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;

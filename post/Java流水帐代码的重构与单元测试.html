@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="尚弟" /><meta name="description" content="我们都是学过很多编程思想的人,知道代码怎么写时最好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解决各种现实问题,会在代码里产" /><meta name="keywords" content="尚弟, 博客, 笔记" />
+<meta name="author" content="尚弟" /><meta name="description" content="背景 大多数软件开发者都是学过很多编程思想和知识的人,绝对不是不知道什么代码是好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解" /><meta name="keywords" content="尚弟, 博客, 笔记" />
 
 
 
@@ -40,19 +40,19 @@
 
 
 <meta property="og:title" content="Java流水帐代码的重构与单元测试" />
-<meta property="og:description" content="我们都是学过很多编程思想的人,知道代码怎么写时最好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解决各种现实问题,会在代码里产" />
+<meta property="og:description" content="背景 大多数软件开发者都是学过很多编程思想和知识的人,绝对不是不知道什么代码是好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.shrp.me/post/Java%E6%B5%81%E6%B0%B4%E5%B8%90%E4%BB%A3%E7%A0%81%E7%9A%84%E9%87%8D%E6%9E%84%E4%B8%8E%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95.html" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-06-27T18:19:32&#43;08:00" />
 <meta property="article:modified_time" content="2021-06-27T18:19:32&#43;08:00" />
 
 <meta itemprop="name" content="Java流水帐代码的重构与单元测试">
-<meta itemprop="description" content="我们都是学过很多编程思想的人,知道代码怎么写时最好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解决各种现实问题,会在代码里产"><meta itemprop="datePublished" content="2021-06-27T18:19:32&#43;08:00" />
+<meta itemprop="description" content="背景 大多数软件开发者都是学过很多编程思想和知识的人,绝对不是不知道什么代码是好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解"><meta itemprop="datePublished" content="2021-06-27T18:19:32&#43;08:00" />
 <meta itemprop="dateModified" content="2021-06-27T18:19:32&#43;08:00" />
-<meta itemprop="wordCount" content="4800">
+<meta itemprop="wordCount" content="5235">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Java流水帐代码的重构与单元测试"/>
-<meta name="twitter:description" content="我们都是学过很多编程思想的人,知道代码怎么写时最好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解决各种现实问题,会在代码里产"/>
+<meta name="twitter:description" content="背景 大多数软件开发者都是学过很多编程思想和知识的人,绝对不是不知道什么代码是好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -143,8 +143,8 @@
             <a href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/"> 单元测试 </a>
             <a href="/categories/%E9%87%8D%E6%9E%84/"> 重构 </a>
             </div>
-          <span class="more-meta"> 约 4800 字 </span>
-          <span class="more-meta"> 预计阅读 10 分钟 </span>
+          <span class="more-meta"> 约 5235 字 </span>
+          <span class="more-meta"> 预计阅读 11 分钟 </span>
         
       </div>
     </header>
@@ -152,11 +152,34 @@
     <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
-    <nav id="TableOfContents"></nav>
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#背景">背景</a></li>
+        <li><a href="#改造方案">改造方案</a></li>
+        <li><a href="#具体操作">具体操作</a>
+          <ul>
+            <li><a href="#第一步-将流水账函数的参数访问变为函数内的局部变量">第一步 将流水账函数的参数访问,变为函数内的局部变量</a></li>
+            <li><a href="#第二步-将函数内的局部变量转为context对象的public属性">第二步 将函数内的局部变量转为context对象的public属性</a></li>
+            <li><a href="#第三步-将context的public转为private">第三步 将context的public转为private</a></li>
+            <li><a href="#第四步-将流水账内的每一个功能转为一个private函数">第四步 将流水账内的每一个功能转为一个private函数</a></li>
+            <li><a href="#第五步-将上述private函数抽象到接口的default实现里">第五步 将上述private函数抽象到接口的default实现里</a></li>
+          </ul>
+        </li>
+        <li><a href="#单元测试">单元测试</a></li>
+        <li><a href="#能力复用">能力复用</a></li>
+        <li><a href="#完整的示例">完整的示例</a></li>
+        <li><a href="#待续">待续</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
   </div>
 </div>
     <div class="post-content">
-      <p>我们都是学过很多编程思想的人,知道代码怎么写时最好的,什么样的代码是糟糕的.</p>
+      <h2 id="背景">背景</h2>
+<p>大多数软件开发者都是学过很多编程思想和知识的人,绝对不是不知道什么代码是好的,什么样的代码是糟糕的.</p>
 <p>然而我们在工作的过程中,为了满足和解决各种现实问题,会在代码里产生引入各种妥协和交换.最后有一天,我们发现,bug产生于一大段肮脏的业务代码,就像这样:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -320,8 +343,18 @@
 
 </code></pre></td></tr></table>
 </div>
-</div><p>getBizResult 这一段代码里混合了三种逻辑,包括了校验,业务逻辑和统计上报. 代码初期可能并不复杂,但是后续类似的逻辑越加越多,维护成本会很快升高。我们称之为流水账代码.</p>
-<p>怎么样才能更可靠的拆解上述函数,使之更容易维护,也更容易编写单元测试,保证后续变更的影响更可控呢？我总结了一套重构方法,能够安全又快速的达到上述目标。此方法依赖于Java8 引入的一个能力: 在接口上提供default函数.通过接口提供实现的模式,称之为mixin模式.</p>
+</div><p>getBizResult 这一段代码里混合了三种逻辑,包括了校验,业务逻辑和统计上报. 代码初期可能并不复杂,但是后续类似的逻辑越加越多,维护成本会很快升高.我称之为流水账代码.</p>
+<h2 id="改造方案">改造方案</h2>
+<p>怎么样才能更可靠的拆解上述函数,使之更容易维护呢?我总结了一套重构方法,能够安全又快速的达到上述目标。此方法依赖于Java8 引入的一个能力: 在接口上提供default函数,也就是说,低于Java8,你就无法使用这种方法了.它一共有五步:</p>
+<ol>
+<li>将流水账函数的参数访问,变为函数内的局部变量</li>
+<li>将函数内的局部变量转为context对象的public属性</li>
+<li>将context的public转为private</li>
+<li>将流水账内的每一个功能转为一个private函数</li>
+<li>将上述private函数抽象到接口的default实现里</li>
+</ol>
+<h2 id="具体操作">具体操作</h2>
+<h3 id="第一步-将流水账函数的参数访问变为函数内的局部变量">第一步 将流水账函数的参数访问,变为函数内的局部变量</h3>
 <p>改造的<em><strong>第一步</strong></em>是先将要治理的函数内对函数参数的访问,抽取为函数的局部变量.这一步并不是最终目标,它是为了将对函数入参的直接访问,改为对中间变量的间接访问,并且每一个参数都得是可以最大复用的对象.比如说你项目都是基于公司的同一套中间件,那么抽取后的函数变量可以是中间件提供的对象;如果不是,那最好参数是都是Java自带的类,改造后提供的函数才能最大的复用.改造后的getBizResult如下:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -394,7 +427,8 @@
 </code></pre></td></tr></table>
 </div>
 </div><p>很明确的,抽取了a,b,c三个变量.通过idea,不论是观察高亮,还是查找argument变量的引用,都能很快确定除了初始化局部变量,已经没有对其的引用了.</p>
-<p>![[_storage/Pasted image 20210627162359.png]]</p>
+<p>![[img/Pasted image 20210627162359.png]]</p>
+<h3 id="第二步-将函数内的局部变量转为context对象的public属性">第二步 将函数内的局部变量转为context对象的public属性</h3>
 <p><em><strong>第二步</strong></em>就是将上述三个函数内的变量放到一个对象的属性里,这个对象我通常起名为xxContext,这个对象并不是为了在不同的位置复用的,它只供这个地方使用,所以名字可以跟业务非常耦合,比如这里叫做GetBizResultContext.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -529,6 +563,7 @@
 </code></pre></td></tr></table>
 </div>
 </div><p>那么改造后的c是绝对不能放到context的构造函数里的,因为在这个阶段,b还没有规整过,c的处理可能是错的.因此最简单的办法,就是让c在原有抽取变量所在的位置set到context中,不用严格的验证c的初始化是否跟其它参数是正交(也就是跟其它参数没有任何关系)的了.</p>
+<h3 id="第三步-将context的public转为private">第三步 将context的public转为private</h3>
 <p>改造的<em><strong>第三步</strong></em>非常简单:通过idea,将context里的public属性改为private.</p>
 <p>读者会对此很惊讶:刚刚还强调要public,现在怎么要改为private了呢?</p>
 <p>正如我刚才括号里写的,第二步里使用public,是因为在没有idea的重构功能加持下,为了保证每一个地方都改对,特意使用public.比如原来是<code>result = a;</code>的地方,现在是<code>result = getBizResultContext.a;</code>,编辑的时候并不容易出错.而现在改成private,是为了访问的方式改为函数,当需要复用的时候,可以轻易抽取接口,正如我所说,context不是为了复用而抽取的对象.为什么context不是复用的对象呢?因为它耦合了参数校验和规整,业务逻辑和上报三段逻辑所需要的字段,并不容易复用.</p>
@@ -599,7 +634,8 @@
         <span class="o">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>这步之后就非常简单了,<em><strong>第四步</strong></em>将三段不同的逻辑分别用idea的抽取函数功能,变成三段函数:</p>
+</div><h3 id="第四步-将流水账内的每一个功能转为一个private函数">第四步 将流水账内的每一个功能转为一个private函数</h3>
+<p>这步之后就非常简单了,<em><strong>第四步</strong></em>将三段不同的逻辑分别用idea的抽取函数功能,变成三段函数:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -781,7 +817,8 @@
         <span class="o">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>接下来可以将doValidation,getResult和afterBiz单独抽取到接口的default方法里.要注意的是getResult里有一个注入的函数integerCalculator,抽取的时候需要改为接口的函数.改造后是这样的:</p>
+</div><h3 id="第五步-将上述private函数抽象到接口的default实现里">第五步 将上述private函数抽象到接口的default实现里</h3>
+<p>接下来,也就是<strong>第五步</strong>,可以将doValidation,getResult和afterBiz单独抽取到接口的default方法里.要注意的是getResult里有一个注入的函数integerCalculator,抽取的时候需要改为接口的函数.改造后是这样的:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -856,7 +893,8 @@
     <span class="o">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>重构结束了,是不是各个业务逻辑已经单独抽取了?如果需要写单元测试,那就非常简单了,比如针对BizProvider.getBizResult做单元测试:</p>
+</div><h2 id="单元测试">单元测试</h2>
+<p>重构结束了,是不是各个业务逻辑已经单独抽取了?如果需要写单元测试,那就非常简单了,比如针对BizProvider.getBizResult做单元测试:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -908,6 +946,7 @@
 </code></pre></td></tr></table>
 </div>
 </div><p>单元测试里所有的外部依赖自然不需要真正的实现,只要返回你定义的某个结果就可以了.</p>
+<h2 id="能力复用">能力复用</h2>
 <p>看到这里,其实大家现在做重构和单元测试的目的达到了,但是当我们需要复用的时候呢?</p>
 <p>首先先将default函数里的context要换成interface,比如getBizResult改成某interface,然后将函数里的get函数都自动生成,再将原有的context改为实现该接口,即可将该能力提供在其它地方复用了.比如:</p>
 <div class="highlight"><div class="chroma">
@@ -971,9 +1010,10 @@
 <li>新增BizArg接口</li>
 <li>将BizProvider的函数参数改为BizArg接口</li>
 <li>将GetBizResultContext实现自BizArg接口</li>
-<li>修复BizProvider对BizArg的几个接口</li>
+<li>修复BizProvider对BizArg的几个接口的实现</li>
 </ol>
-<p>这样BizProvider就做好了对外的复用准备了,是不是特别容易复用了?</p>
+<p>这样BizProvider就做好了对外的复用准备了,是不是特别简单?</p>
+<h2 id="完整的示例">完整的示例</h2>
 <p>最后这是完整的类:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1319,7 +1359,9 @@
 
 </code></pre></td></tr></table>
 </div>
-</div><p>这就是我近期总结的如何对流水账代码安全地做重构和单元测试.如果大家有什么意见和建议,欢迎在评论区里留言.</p>
+</div><h2 id="待续">待续</h2>
+<p>没错,到这里,其实改造还没彻底结束.提供了能力的接口要怎么管理呢?这个得结合你项目的设计,考虑要不要把一些目的一致的能力做成命令模式,把一些几乎一致的context变成状态机.这个改造本身只是减少了耦合,提高了复用,但是怎么能让后续维护的同事易维护,还是需要花费不少心思的.</p>
+<p>这就是我近期总结的如何对流水账代码安全地做重构和单元测试.如果大家有什么意见和建议,欢迎在评论区里留言.</p>
 
     </div>
 

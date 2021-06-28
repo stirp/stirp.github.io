@@ -14,7 +14,8 @@
       <pubDate>Sun, 27 Jun 2021 00:00:00 +0000</pubDate>
       
       <guid>https://blog.shrp.me/post/Java%E6%B5%81%E6%B0%B4%E5%B8%90%E4%BB%A3%E7%A0%81%E7%9A%84%E9%87%8D%E6%9E%84%E4%B8%8E%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95.html</guid>
-      <description>&lt;p&gt;我们都是学过很多编程思想的人,知道代码怎么写时最好的,什么样的代码是糟糕的.&lt;/p&gt;
+      <description>&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;大多数软件开发者都是学过很多编程思想和知识的人,绝对不是不知道什么代码是好的,什么样的代码是糟糕的.&lt;/p&gt;
 &lt;p&gt;然而我们在工作的过程中,为了满足和解决各种现实问题,会在代码里产生引入各种妥协和交换.最后有一天,我们发现,bug产生于一大段肮脏的业务代码,就像这样:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -178,8 +179,18 @@
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;getBizResult 这一段代码里混合了三种逻辑,包括了校验,业务逻辑和统计上报. 代码初期可能并不复杂,但是后续类似的逻辑越加越多,维护成本会很快升高。我们称之为流水账代码.&lt;/p&gt;
-&lt;p&gt;怎么样才能更可靠的拆解上述函数,使之更容易维护,也更容易编写单元测试,保证后续变更的影响更可控呢？我总结了一套重构方法,能够安全又快速的达到上述目标。此方法依赖于Java8 引入的一个能力: 在接口上提供default函数.通过接口提供实现的模式,称之为mixin模式.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;getBizResult 这一段代码里混合了三种逻辑,包括了校验,业务逻辑和统计上报. 代码初期可能并不复杂,但是后续类似的逻辑越加越多,维护成本会很快升高.我称之为流水账代码.&lt;/p&gt;
+&lt;h2 id=&#34;改造方案&#34;&gt;改造方案&lt;/h2&gt;
+&lt;p&gt;怎么样才能更可靠的拆解上述函数,使之更容易维护呢?我总结了一套重构方法,能够安全又快速的达到上述目标。此方法依赖于Java8 引入的一个能力: 在接口上提供default函数,也就是说,低于Java8,你就无法使用这种方法了.它一共有五步:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;将流水账函数的参数访问,变为函数内的局部变量&lt;/li&gt;
+&lt;li&gt;将函数内的局部变量转为context对象的public属性&lt;/li&gt;
+&lt;li&gt;将context的public转为private&lt;/li&gt;
+&lt;li&gt;将流水账内的每一个功能转为一个private函数&lt;/li&gt;
+&lt;li&gt;将上述private函数抽象到接口的default实现里&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;具体操作&#34;&gt;具体操作&lt;/h2&gt;
+&lt;h3 id=&#34;第一步-将流水账函数的参数访问变为函数内的局部变量&#34;&gt;第一步 将流水账函数的参数访问,变为函数内的局部变量&lt;/h3&gt;
 &lt;p&gt;改造的&lt;em&gt;&lt;strong&gt;第一步&lt;/strong&gt;&lt;/em&gt;是先将要治理的函数内对函数参数的访问,抽取为函数的局部变量.这一步并不是最终目标,它是为了将对函数入参的直接访问,改为对中间变量的间接访问,并且每一个参数都得是可以最大复用的对象.比如说你项目都是基于公司的同一套中间件,那么抽取后的函数变量可以是中间件提供的对象;如果不是,那最好参数是都是Java自带的类,改造后提供的函数才能最大的复用.改造后的getBizResult如下:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -252,7 +263,8 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;很明确的,抽取了a,b,c三个变量.通过idea,不论是观察高亮,还是查找argument变量的引用,都能很快确定除了初始化局部变量,已经没有对其的引用了.&lt;/p&gt;
-&lt;p&gt;![[_storage/Pasted image 20210627162359.png]]&lt;/p&gt;
+&lt;p&gt;![[img/Pasted image 20210627162359.png]]&lt;/p&gt;
+&lt;h3 id=&#34;第二步-将函数内的局部变量转为context对象的public属性&#34;&gt;第二步 将函数内的局部变量转为context对象的public属性&lt;/h3&gt;
 &lt;p&gt;&lt;em&gt;&lt;strong&gt;第二步&lt;/strong&gt;&lt;/em&gt;就是将上述三个函数内的变量放到一个对象的属性里,这个对象我通常起名为xxContext,这个对象并不是为了在不同的位置复用的,它只供这个地方使用,所以名字可以跟业务非常耦合,比如这里叫做GetBizResultContext.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -387,6 +399,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;那么改造后的c是绝对不能放到context的构造函数里的,因为在这个阶段,b还没有规整过,c的处理可能是错的.因此最简单的办法,就是让c在原有抽取变量所在的位置set到context中,不用严格的验证c的初始化是否跟其它参数是正交(也就是跟其它参数没有任何关系)的了.&lt;/p&gt;
+&lt;h3 id=&#34;第三步-将context的public转为private&#34;&gt;第三步 将context的public转为private&lt;/h3&gt;
 &lt;p&gt;改造的&lt;em&gt;&lt;strong&gt;第三步&lt;/strong&gt;&lt;/em&gt;非常简单:通过idea,将context里的public属性改为private.&lt;/p&gt;
 &lt;p&gt;读者会对此很惊讶:刚刚还强调要public,现在怎么要改为private了呢?&lt;/p&gt;
 &lt;p&gt;正如我刚才括号里写的,第二步里使用public,是因为在没有idea的重构功能加持下,为了保证每一个地方都改对,特意使用public.比如原来是&lt;code&gt;result = a;&lt;/code&gt;的地方,现在是&lt;code&gt;result = getBizResultContext.a;&lt;/code&gt;,编辑的时候并不容易出错.而现在改成private,是为了访问的方式改为函数,当需要复用的时候,可以轻易抽取接口,正如我所说,context不是为了复用而抽取的对象.为什么context不是复用的对象呢?因为它耦合了参数校验和规整,业务逻辑和上报三段逻辑所需要的字段,并不容易复用.&lt;/p&gt;
@@ -457,7 +470,8 @@
         &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;这步之后就非常简单了,&lt;em&gt;&lt;strong&gt;第四步&lt;/strong&gt;&lt;/em&gt;将三段不同的逻辑分别用idea的抽取函数功能,变成三段函数:&lt;/p&gt;
+&lt;/div&gt;&lt;h3 id=&#34;第四步-将流水账内的每一个功能转为一个private函数&#34;&gt;第四步 将流水账内的每一个功能转为一个private函数&lt;/h3&gt;
+&lt;p&gt;这步之后就非常简单了,&lt;em&gt;&lt;strong&gt;第四步&lt;/strong&gt;&lt;/em&gt;将三段不同的逻辑分别用idea的抽取函数功能,变成三段函数:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -639,7 +653,8 @@
         &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;接下来可以将doValidation,getResult和afterBiz单独抽取到接口的default方法里.要注意的是getResult里有一个注入的函数integerCalculator,抽取的时候需要改为接口的函数.改造后是这样的:&lt;/p&gt;
+&lt;/div&gt;&lt;h3 id=&#34;第五步-将上述private函数抽象到接口的default实现里&#34;&gt;第五步 将上述private函数抽象到接口的default实现里&lt;/h3&gt;
+&lt;p&gt;接下来,也就是&lt;strong&gt;第五步&lt;/strong&gt;,可以将doValidation,getResult和afterBiz单独抽取到接口的default方法里.要注意的是getResult里有一个注入的函数integerCalculator,抽取的时候需要改为接口的函数.改造后是这样的:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -714,7 +729,8 @@
     &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;重构结束了,是不是各个业务逻辑已经单独抽取了?如果需要写单元测试,那就非常简单了,比如针对BizProvider.getBizResult做单元测试:&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;单元测试&#34;&gt;单元测试&lt;/h2&gt;
+&lt;p&gt;重构结束了,是不是各个业务逻辑已经单独抽取了?如果需要写单元测试,那就非常简单了,比如针对BizProvider.getBizResult做单元测试:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -766,6 +782,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;单元测试里所有的外部依赖自然不需要真正的实现,只要返回你定义的某个结果就可以了.&lt;/p&gt;
+&lt;h2 id=&#34;能力复用&#34;&gt;能力复用&lt;/h2&gt;
 &lt;p&gt;看到这里,其实大家现在做重构和单元测试的目的达到了,但是当我们需要复用的时候呢?&lt;/p&gt;
 &lt;p&gt;首先先将default函数里的context要换成interface,比如getBizResult改成某interface,然后将函数里的get函数都自动生成,再将原有的context改为实现该接口,即可将该能力提供在其它地方复用了.比如:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -829,9 +846,10 @@
 &lt;li&gt;新增BizArg接口&lt;/li&gt;
 &lt;li&gt;将BizProvider的函数参数改为BizArg接口&lt;/li&gt;
 &lt;li&gt;将GetBizResultContext实现自BizArg接口&lt;/li&gt;
-&lt;li&gt;修复BizProvider对BizArg的几个接口&lt;/li&gt;
+&lt;li&gt;修复BizProvider对BizArg的几个接口的实现&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;这样BizProvider就做好了对外的复用准备了,是不是特别容易复用了?&lt;/p&gt;
+&lt;p&gt;这样BizProvider就做好了对外的复用准备了,是不是特别简单?&lt;/p&gt;
+&lt;h2 id=&#34;完整的示例&#34;&gt;完整的示例&lt;/h2&gt;
 &lt;p&gt;最后这是完整的类:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -1177,7 +1195,9 @@
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;这就是我近期总结的如何对流水账代码安全地做重构和单元测试.如果大家有什么意见和建议,欢迎在评论区里留言.&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;待续&#34;&gt;待续&lt;/h2&gt;
+&lt;p&gt;没错,到这里,其实改造还没彻底结束.提供了能力的接口要怎么管理呢?这个得结合你项目的设计,考虑要不要把一些目的一致的能力做成命令模式,把一些几乎一致的context变成状态机.这个改造本身只是减少了耦合,提高了复用,但是怎么能让后续维护的同事易维护,还是需要花费不少心思的.&lt;/p&gt;
+&lt;p&gt;这就是我近期总结的如何对流水账代码安全地做重构和单元测试.如果大家有什么意见和建议,欢迎在评论区里留言.&lt;/p&gt;
 </description>
     </item>
     

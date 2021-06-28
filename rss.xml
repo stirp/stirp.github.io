@@ -263,7 +263,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;很明确的,抽取了a,b,c三个变量.通过idea,不论是观察高亮,还是查找argument变量的引用,都能很快确定除了初始化局部变量,已经没有对其的引用了.&lt;/p&gt;
-&lt;p&gt;![](/img/Pasted image 20210627162359.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://blog.shrp.me/img/Pasted%20image%2020210627162359.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;第二步-将函数内的局部变量转为context对象的public属性&#34;&gt;第二步 将函数内的局部变量转为context对象的public属性&lt;/h3&gt;
 &lt;p&gt;&lt;em&gt;&lt;strong&gt;第二步&lt;/strong&gt;&lt;/em&gt;就是将上述三个函数内的变量放到一个对象的属性里,这个对象我通常起名为xxContext,这个对象并不是为了在不同的位置复用的,它只供这个地方使用,所以名字可以跟业务非常耦合,比如这里叫做GetBizResultContext.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;

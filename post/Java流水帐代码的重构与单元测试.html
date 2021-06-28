@@ -427,7 +427,7 @@
 </code></pre></td></tr></table>
 </div>
 </div><p>很明确的,抽取了a,b,c三个变量.通过idea,不论是观察高亮,还是查找argument变量的引用,都能很快确定除了初始化局部变量,已经没有对其的引用了.</p>
-<p>![[/img/Pasted image 20210627162359.png]]</p>
+<p>![](/img/Pasted image 20210627162359.png)</p>
 <h3 id="第二步-将函数内的局部变量转为context对象的public属性">第二步 将函数内的局部变量转为context对象的public属性</h3>
 <p><em><strong>第二步</strong></em>就是将上述三个函数内的变量放到一个对象的属性里,这个对象我通常起名为xxContext,这个对象并不是为了在不同的位置复用的,它只供这个地方使用,所以名字可以跟业务非常耦合,比如这里叫做GetBizResultContext.</p>
 <div class="highlight"><div class="chroma">

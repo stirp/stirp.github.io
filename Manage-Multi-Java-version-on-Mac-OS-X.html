@@ -150,6 +150,11 @@
     <nav id="TableOfContents"></nav>
   </div>
 </div>
+  <div class="post-outdated">
+    <div class="hint">
+      <p>【注意】最后更新于 <span class="timeago" datetime="2021-06-12T15:13:29" title="June 12, 2021">June 12, 2021</span>，文中内容可能已过时，请谨慎使用。</p>
+    </div>
+  </div>
     <div class="post-content">
       <p>　　Java刚出了Java9，Java10也在日程上了。然而Java的相关环境实在是太多，对于某些增强型的组件，是依赖某个特定版本的Java进行工作的，当手头的项目多，不得不对不同版本的Java进行开发的时候，就必须来回不停切换版本，实在是不方便。其实不同版本的Java目录是不同的，完全可以同时存在。通过本文介绍的工具Jenv就可以管理本机的多个Java环境，并且通过简单的配置就可以让指定项目使用特定的Java版本，无需再进行反复切换了。这个工具本身还是开源的，地址就在<a href="https://github.com/gcuisinier/jenv">https://github.com/gcuisinier/jenv</a>。</p>
 <p>　　先要强调，Jenv是个脚本软件，作用环境限于shell环境内，如果是使用IDE比如eclipse，Intellij，那它体现不出它自己的价值，毕竟IDE一般都具有管理JDK的功能。安装Jenv的方式很简单，直接clone到~/.jenv中，然后把bin目录添加到系统路径中，重启shell就好啦。</p>

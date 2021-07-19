@@ -7,7 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>shrp</copyright>
-    <lastBuildDate>Sun, 27 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/post/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 19 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/post/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2021 07 19 在Mac上打开Iterm或终端时重建tab</title>
+      <link>https://blog.shrp.me/post/%E5%9C%A8Mac%E4%B8%8A%E6%89%93%E5%BC%80Iterm%E6%88%96%E7%BB%88%E7%AB%AF%E6%97%B6%E9%87%8D%E5%BB%BAtab.html</link>
+      <pubDate>Mon, 19 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.shrp.me/post/%E5%9C%A8Mac%E4%B8%8A%E6%89%93%E5%BC%80Iterm%E6%88%96%E7%BB%88%E7%AB%AF%E6%97%B6%E9%87%8D%E5%BB%BAtab.html</guid>
+      <description>&lt;p&gt;长期以来都不知道 Mac 上的 iTerm2 或者自带的 Terminal 程序怎么能在打开的时候恢复上一次关闭的标签，但是如果 Mac 四国重启，发现都是能打开上一次的标签的，说明有这个功能。&lt;/p&gt;
+&lt;p&gt;今天谷歌了一下，看到很多答案都是在系统设置里，一开始我还以为是答非所问，试了一下才发现所言非虚^_^。&lt;/p&gt;
+&lt;p&gt;答案就是在系统设置下的通用设置里，不要勾选「退出 App 时关闭窗口」。对于 iTerm，还需要在 General 设置页的 Startup  设置里选择 Use System Windows Restoration Setting。&lt;/p&gt;
+&lt;p&gt;![](&lt;a href=&#34;http://stirp.github.io/img/iShot2021-07-19&#34;&gt;http://stirp.github.io/img/iShot2021-07-19&lt;/a&gt; 10.29.40.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://stirp.github.io/img/iterm.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;这样下次打开的窗口的时候就能恢复上次关闭的窗口啦。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Java流水帐代码的重构与单元测试</title>
       <link>https://blog.shrp.me/post/Java%E6%B5%81%E6%B0%B4%E5%B8%90%E4%BB%A3%E7%A0%81%E7%9A%84%E9%87%8D%E6%9E%84%E4%B8%8E%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95.html</link>
@@ -87,15 +101,6 @@
       
       <guid>https://blog.shrp.me/i-am-chinese-the-dragonfly-must-go-on.html</guid>
       <description>有两个省，甲省有B企业生产粮食，但是日常在里面掺屎，群众虽然心知肚明，可是敢怒不敢言，时不时吃了一嘴屎；乙省规定健全，乙省的G企业虽然不像自</description>
-    </item>
-    
-    <item>
-      <title>为 Java 程序增加一个异步任务功能</title>
-      <link>https://blog.shrp.me/add-sync-task-for-Java.html</link>
-      <pubDate>Sun, 04 Nov 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.shrp.me/add-sync-task-for-Java.html</guid>
-      <description>最近在开发一个系统，里面经常在一个请求里处理一系列的任务，其中一些任务是不需要阻塞请求结束的应答的，因此最简单的办法就是异步去执行这些任务。</description>
     </item>
     
   </channel>

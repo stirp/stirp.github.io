@@ -150,6 +150,11 @@
     <nav id="TableOfContents"></nav>
   </div>
 </div>
+  <div class="post-outdated">
+    <div class="hint">
+      <p>【注意】最后更新于 <span class="timeago" datetime="2021-06-12T15:13:29" title="June 12, 2021">June 12, 2021</span>，文中内容可能已过时，请谨慎使用。</p>
+    </div>
+  </div>
     <div class="post-content">
       <p>　　今天写一个数据结构，突然想到这种东西必然会经常复用，完全可以写个库来供以后调用。然后就研究了下code::blocks下怎么来写库，又怎么去调用。</p>
 <p>　　首先是静态库。这个最为简单，只要选择static library项目新建。写好的库ctrl+F9，就能生成一个.a文件。要调用的时候只要在所需的项目中添加一个链接库，链接到这个.a文件即可。然后在项目中添加相应的.h文件，就像是使用正常的函数一样了。</p>

@@ -7,7 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>shrp</copyright>
-    <lastBuildDate>Sun, 27 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 19 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2021 07 19 在Mac上打开Iterm或终端时重建tab</title>
+      <link>https://blog.shrp.me/post/%E5%9C%A8Mac%E4%B8%8A%E6%89%93%E5%BC%80Iterm%E6%88%96%E7%BB%88%E7%AB%AF%E6%97%B6%E9%87%8D%E5%BB%BAtab.html</link>
+      <pubDate>Mon, 19 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.shrp.me/post/%E5%9C%A8Mac%E4%B8%8A%E6%89%93%E5%BC%80Iterm%E6%88%96%E7%BB%88%E7%AB%AF%E6%97%B6%E9%87%8D%E5%BB%BAtab.html</guid>
+      <description>&lt;p&gt;长期以来都不知道 Mac 上的 iTerm2 或者自带的 Terminal 程序怎么能在打开的时候恢复上一次关闭的标签，但是如果 Mac 四国重启，发现都是能打开上一次的标签的，说明有这个功能。&lt;/p&gt;
+&lt;p&gt;今天谷歌了一下，看到很多答案都是在系统设置里，一开始我还以为是答非所问，试了一下才发现所言非虚^_^。&lt;/p&gt;
+&lt;p&gt;答案就是在系统设置下的通用设置里，不要勾选「退出 App 时关闭窗口」。对于 iTerm，还需要在 General 设置页的 Startup  设置里选择 Use System Windows Restoration Setting。&lt;/p&gt;
+&lt;p&gt;![](&lt;a href=&#34;http://stirp.github.io/img/iShot2021-07-19&#34;&gt;http://stirp.github.io/img/iShot2021-07-19&lt;/a&gt; 10.29.40.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://stirp.github.io/img/iterm.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;这样下次打开的窗口的时候就能恢复上次关闭的窗口啦。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Java流水帐代码的重构与单元测试</title>
       <link>https://blog.shrp.me/post/Java%E6%B5%81%E6%B0%B4%E5%B8%90%E4%BB%A3%E7%A0%81%E7%9A%84%E9%87%8D%E6%9E%84%E4%B8%8E%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95.html</link>
@@ -2966,40 +2980,6 @@ fi
 &lt;p&gt;可是实在没想到，这么一件好事，甲省那在黑市买卖的人居然还不领情：我们吃了这么多年的屎了，懂的自然就不吃了，剩下的人必然都爱吃屎！你们来卖陈年大米，我们黑市怎么卖高价呢！黑市赚不到钱，自然卖的人少了，我怎么吃新米呢！&lt;/p&gt;
 &lt;p&gt;G企业的员工和乙省的人民也纷纷表示不赞同：我们自己都不吃的陈年大米为什么要卖给他们吃？这不符合我们的人权价值观！你这是作恶！什么，Y企业做的更过分？我不管Y企业，G企业就是不行！&lt;/p&gt;
 &lt;p&gt;最后甲省人民只好继续吃屎，G企业员工和乙省人民也满意的回家了。回家打开手机一看，正巧乙省媒体新闻曰：你看甲省人民在吃屎，而且，他们吃得好开心啊！乙省人民想起家里刚买的G企业的米绝对不会是陈米，在日记本上写道：“啊，这是多么有意义的一天啊！”&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>为 Java 程序增加一个异步任务功能</title>
-      <link>https://blog.shrp.me/add-sync-task-for-Java.html</link>
-      <pubDate>Sun, 04 Nov 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.shrp.me/add-sync-task-for-Java.html</guid>
-      <description>&lt;p&gt;最近在开发一个系统，里面经常在一个请求里处理一系列的任务，其中一些任务是不需要阻塞请求结束的应答的，因此最简单的办法就是异步去执行这些任务。然而如果程序关闭导致任务被丢失，那是最不可接受的情况，因此这种情况下要把任务提交到 MQ 里，利用 MQ 的失败重试来保证非程序性任务失败（毕竟程序性问题最好解决，而非程序性丢失通常不容易恢复）。&lt;/p&gt;
-&lt;p&gt;但是一般来说在系统里做这么一个事情是非常复杂而又繁琐的，要初始化 MQ 的生产者和消费者，然后定义传输的 DTO，然后在异步任务处写一个破坏阅读的任务提交，来把任务提交给 MQ。怎么才能简化这个过程呢？&lt;/p&gt;
-&lt;p&gt;我想出并实现了一个模块来解决这个问题。如果原来的代码是&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Java&#34; data-lang=&#34;Java&#34;&gt;&lt;span class=&#34;n&#34;&gt;dbmapper&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;create&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;po&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;那么在我的模块写起来就是&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Java&#34; data-lang=&#34;Java&#34;&gt;&lt;span class=&#34;n&#34;&gt;dbmapper&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;task&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;create&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;po&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;是不是看起来很简单，又一目了然？&lt;/p&gt;
-&lt;p&gt;其实原理很简单，task()函数一定是得到了一个代理，通过这个代理拦截了 create 函数，将其函数名称、函数所在的接口名称和函数实参，通过 mq 传递给消费者；而消费者注册了相同的 mapper，因此通过反射获得了上述参数，从而在消费者实现了实际的数据库操作。怎么能让不同的 db 接口上都有 task 函数？当然就是让他们实现 task 接口啦，Java8 提供了default 函数，正好可以拿来提供 task 函数的默认实现，每个 dbmapper 直接声明 implements 接口，但是不需要再写 task 函数。在 task 函数里，每个 dbmapper 的代理可以在获取的时候懒创建。&lt;/p&gt;
-&lt;p&gt;原理是很简单的，写起来的方法也有很多种，由于是工作需要，代码和具体设计并不能提供出来，但是有了这个原理，相信大家都能自己做到。&lt;/p&gt;
-&lt;p&gt;对于我来说，这个模块编写过程中有一个容易出错的地方，原因是我在代理中获取到的 method 去获取其所在的 interface 的名称时，一开始用了getDeclaringClass 后又对其获取 interfaces，但是其实getDeclaringClass这个函数本来就是返回这个 method 所在的 interface 的，继续获取 interface 只能是把函数本来所在的接口跳过，最终消费者最后拿到的接口名称和函数是不对应的。只要 getDeclaringClass 的 name 就是 interface 的名称了。&lt;/p&gt;
-&lt;p&gt;此外还有一个地方需要留意，就是实参发给消费者的时候要对每个参数分别序列化后得到一个 String 数组，消费者先按照接口名称和函数名称得到形参的类型，然后才能对 String 数组按顺序反序列化成实参，这点其实无需多言，诸位实践的时候自然会想得到。（直接反序列化成 Object[] 可行吗？我没有试过，大家可以自己试一下，哈哈）&lt;/p&gt;
 </description>
     </item>
     

@@ -22,13 +22,6 @@
   </url>
   
   <url>
-    <loc>https://blog.shrp.me/post/%E5%9C%A8Mac%E4%B8%8A%E6%89%93%E5%BC%80Iterm%E6%88%96%E7%BB%88%E7%AB%AF%E6%97%B6%E9%87%8D%E5%BB%BAtab.html</loc>
-    <lastmod>2021-07-19T10:17:16+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.shrp.me/tags/Iterm.html</loc>
     <lastmod>2021-07-19T10:17:16+08:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -58,6 +51,13 @@
   
   <url>
     <loc>https://blog.shrp.me/tags/Terminal.html</loc>
+    <lastmod>2021-07-19T10:17:16+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shrp.me/post/%E5%9C%A8Mac%E4%B8%8A%E6%89%93%E5%BC%80Iterm%E6%88%96%E7%BB%88%E7%AB%AF%E6%97%B6%E9%87%8D%E5%BB%BAtab.html</loc>
     <lastmod>2021-07-19T10:17:16+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

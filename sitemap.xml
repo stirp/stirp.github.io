@@ -17,8 +17,50 @@
   
   <url>
     <loc>https://blog.shrp.me/</loc>
-    <lastmod>2021-07-19T10:17:16+08:00</lastmod>
+    <lastmod>2021-07-31T16:18:02+08:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shrp.me/tags/Annotation.html</loc>
+    <lastmod>2021-07-31T16:18:02+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shrp.me/tags/Java.html</loc>
+    <lastmod>2021-07-31T16:18:02+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shrp.me/tags/Lombok.html</loc>
+    <lastmod>2021-07-31T16:18:02+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shrp.me/post.html</loc>
+    <lastmod>2021-07-31T16:18:02+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shrp.me/tags.html</loc>
+    <lastmod>2021-07-31T16:18:02+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shrp.me/post/%E8%B5%B0%E8%BF%9BLombok.html</loc>
+    <lastmod>2021-07-31T16:18:02+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -30,20 +72,6 @@
   
   <url>
     <loc>https://blog.shrp.me/tags/Mac.html</loc>
-    <lastmod>2021-07-19T10:17:16+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shrp.me/post.html</loc>
-    <lastmod>2021-07-19T10:17:16+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shrp.me/tags.html</loc>
     <lastmod>2021-07-19T10:17:16+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -66,13 +94,6 @@
   <url>
     <loc>https://blog.shrp.me/tags/%E7%BB%88%E7%AB%AF.html</loc>
     <lastmod>2021-07-19T10:17:16+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shrp.me/tags/Java.html</loc>
-    <lastmod>2021-06-27T18:19:32+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

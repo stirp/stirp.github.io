@@ -7,7 +7,63 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>shrp</copyright>
-    <lastBuildDate>Sat, 31 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 09 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2021 09 09 提升个人影响力的简单原则</title>
+      <link>https://blog.shrp.me/post/%E6%8F%90%E5%8D%87%E4%B8%AA%E4%BA%BA%E5%BD%B1%E5%93%8D%E5%8A%9B%E7%9A%84%E7%AE%80%E5%8D%95%E5%8E%9F%E5%88%99.html</link>
+      <pubDate>Thu, 09 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.shrp.me/post/%E6%8F%90%E5%8D%87%E4%B8%AA%E4%BA%BA%E5%BD%B1%E5%93%8D%E5%8A%9B%E7%9A%84%E7%AE%80%E5%8D%95%E5%8E%9F%E5%88%99.html</guid>
+      <description>&lt;p&gt;今天看到一篇讨论个人影响力的文章，感觉讲得不错，分享给大家。&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzU2MTgxODgwNA==&amp;amp;mid=2247483949&amp;amp;idx=1&amp;amp;sn=61a708899483313691c378ef6d239376&amp;amp;chksm=fc73bff6cb0436e05dc905b97d49b4ac1bb7b6982d22c8c3059199bdc82935c185111bd39f22&amp;amp;token=1861648132&amp;amp;lang=zh_CN&#34;&gt;原文地址&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;个人成长和投资一样，要学会利用杠杆的力量，影响力就是一项可以帮助自己更高效达成目标的杠杆。利用一些技巧，提升自己在团队中的影响力，从而提升自己的工作效率，创造更多的价值。原文：Low Hanging Fruits of Having a Bigger Impact[1]&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;有一项能力对我们的职业发展非常重要，那就是创造价值的能力。
+接下来让我们聊一聊在我们的每项工作中所创造的价值，这些价值就是我们的影响力。
+我们可以很容易的发现影响力和效率之间的关系：我们所拥有的影响力越大，我们的工作效率就越高。&lt;/p&gt;
+&lt;p&gt;拥有更大影响力的首要原则是专注于高杠杆活动（high-leverage activities）。还记得帕累托原理（Pareto Principle）[2]吗？这正是我们所需要利用的。&lt;/p&gt;
+&lt;p&gt;作为软件开发人员，可以做些什么来轻松的增加我们的影响力？下面是几个例子：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;指导公司的新员工。
+众所周知，新员工需要3到6个月的时间才能达到正常的生产力水平。在某些情况下，员工可能需要2年时间才能达到最佳绩效[3]。
+如果你能在新员工入职的第一个月，每天花1个小时（总共大约20个小时），那么你将花费一年工作时间（总共大约2000个小时）的1%来提升同事的表现。这将对他们的绩效提升有很大的帮助，而你的时间投资也因此获得了巨大的回报。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;参与面试过程。
+改进流程，为公司引进候选人，进行面试，这些都是对我们的团队和产品的直接投资。
+从长远来看，聘请优秀的人才将会带来巨大的回报。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不要再重复发明轮子，尽量利用别人的专业知识。
+把时间投入到创造独特的价值上，而不是重新创造已有的东西。开源模块和组件、第三方软件、同事的经验、甚至外包和自由职业服务都是更快获得现有解决方案的可行选择。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;自动化和优化流程。
+人们常说，手工重复工作是每个程序员最大的罪过。如果一项工作能让机器为我们做，我们就不应该自己去做。
+从长远来看，一个简单的自动化脚本可以节省几个小时的团队工作。
+如果我们优化了构建系统，每天节省了30分钟的等待时间，那么我们每年将为单个开发人员创造14天的空闲时间。在一个6人的小团队中，它的结果是3人月的额外时间。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;持续学习，不断完善自我。
+这一点尤其需要强调：我们应该在工作中专门花时间学习和提高自己。
+没有什么比投资于自己的能力和现有的机会能给你带来更大的影响和提供更大的杠杆了。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;可以看到，上面列举的几个方向（和原则）主要是通过关注我们周围其他人来提升我们的效率。这也是为什么一些软件开发人员更喜欢过渡到管理角色的主要原因之一——这样可以更快的获取更多的杠杆。&lt;/p&gt;
+&lt;p&gt;然而，管理并不是唯一的可能性。更重要的，如果你想打破玻璃天花板，你需要专注于增加影响力。&lt;/p&gt;
+&lt;p&gt;接下来，记住第二条重要原则：你的努力应该是可见的。例如，如果你的老板不知道你指导了同事、自动化了一些日常任务，你就不会很快得到晋升。你需要强调获得的小的进展和成就，并将所创造的价值传达出去。&lt;/p&gt;
+&lt;p&gt;如你所见，在某种程度上，人际关系和沟通对我们的成长至关重要。不要忽视这些方面，把时间花在掌握一些软技能上。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;Reference:&lt;/em&gt;
+[1] https://www.patreon.com/posts/low-hanging-of-18230210&lt;/p&gt;
+&lt;p&gt;[2] https://en.wikipedia.org/wiki/Pareto_principle&lt;/p&gt;
+&lt;p&gt;[3] http://recruitshop.com.au/long-take-employee-fully-productive/&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
+    
     <item>
       <title>走进Lombok</title>
       <link>https://blog.shrp.me/post/%E8%B5%B0%E8%BF%9BLombok.html</link>
@@ -3439,99 +3495,6 @@ Optimizing transformations of a program can be designed that reduce the number o
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;本文转载自公众号玉刚说（ID：YugangTalk）。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;原文链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw&#34;&gt;https://mp.weixin.qq.com/s/idDL9uJJb5KKOFY5tLlyKw&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>怎么把脚本变为 Mac 的 App</title>
-      <link>https://blog.shrp.me/How-To-Convert-Shell-Script-Into-Mac-App.html</link>
-      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.shrp.me/How-To-Convert-Shell-Script-Into-Mac-App.html</guid>
-      <description>&lt;p&gt;有时候我们需要把一些有意义的脚本变成程序，发布出来；或者对一些已有的程序增加一点定制，比如我下载的这款 OpenProj，好用是好用，但是默认的 app 已经不能直接打开，编辑 plist 什么的也不太好用。还好 Mac 操作系统这些操作都很简单。&lt;/p&gt;
-&lt;p&gt;首先我们找到原来这个程序应该怎么去执行的。通过分析原来的 App 目录下的 Info.plist 文件，我发现原来的程序是通过&lt;code&gt;java -Xms128m -Xmx768m -classpath ./Resources/Java/openproj.jar:./Resources/Java/lib/  com.projity.main.Main&lt;/code&gt;命令来执行的。这不就是简单的 Java 命令嘛！打开 Mac 自带的 Automator，选择新建应用程序，在工作区中添加运行 shell 脚本，把上述命令粘贴进去不就行了嘛。可是点击右上角的运行，哎，不行啊，原来命令的目录是.，也就是相对路径，现在用 automator 工具执行是不行的。导出为 app 以后呢？试了一下，结果仍然不行。在 shell 命令里加一些调试的输出后发现，执行过程中相对路径是用户的 home，不是当前 app 的目录，也没有参数指向 app 的目录，这可真麻烦了。当然我们可以简单假设用户一定不会修改我 App 的名称，也一定会放到/Applications目录下，这样我们写成绝对路径是可以执行的。不过这样是合理的方案吗？当然不是了。怎么办呢？&lt;/p&gt;
-&lt;p&gt;还好难不倒我，通过在 shell 脚本前执行一段 AppleScript 脚本来获取当前应用的位置不就好了嘛！这段脚本如下：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;on run {input, parameters}
-		set p to POSIX path of (path to me)
-		return {p}
-end run
-&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;然后再下边 shell 脚本的右上方选择“传递输入：作为自变量”，于是现在程序执行的地址就被当做第一个参数被传进来了。同样更新一下 shell 脚本来使用这段路径：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;java -Xms128m -Xmx768m -classpath &amp;#34;$1Contents/Resources/Java/openproj.jar&amp;#34;:&amp;#34;$1Contents/Resources/Java/lib/&amp;#34; com.projity.main.Main
-&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;执行一下，嗯，不错！不过……为啥界面是英文的？刚刚我从命令行启动的好像是中文的呀？不用想，肯定是 app 里的 shell肯定是有定制化的成分，并没有直接获取系统的语言。还好这对 Java 程序来说非常简单，增加启动参数&lt;code&gt;-Duser.language=zh -Duser.region=CN&lt;/code&gt;就行了嘛。&lt;/p&gt;
-&lt;p&gt;再试了一下，嗯，这回都对了！不过……能不能直接打开保存的文件，而不用每次都打开程序后在菜单里选择打开啊？太麻烦了！&lt;/p&gt;
-&lt;p&gt;嘛，这个倒也不是不能做，只是有些麻烦。首先是启动时的 AppleScript 要接收被打开的文件参数，然后传给 shell 脚本，然后 shell 脚本将其附加在最后作为程序的第一个参数给到 Java 就可以了。
-修改如下:&lt;/p&gt;
-&lt;p&gt;AppleScript:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;on run {input, parameters}
-	set inputCount to count of input
-	if inputCount is greater than or equal to 1 then
-		set fileName to item 1 of input
-		set p to {(POSIX path of (path to me) as string), (POSIX path of (fileName) as string)}
-		return p
-	else
-		set p to POSIX path of (path to me) as string
-		return {p}
-	end if
-end run
-&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;通过判断输入参数的个数来决定给 shell 的参数有几个。这里只选取第一个打开的文件作为参数传递给 Java。&lt;/p&gt;
-&lt;p&gt;shell：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;if [ -f $2 ];then 
-	java -Xms128m -Xmx768m -Duser.language=zh -Duser.region=CN -classpath &amp;#34;$1Contents/Resources/Java/openproj.jar&amp;#34;:&amp;#34;$1Contents/Resources/Java/lib/&amp;#34; com.projity.main.Main &amp;#34;$2&amp;#34;
-else 
-	java -Xms128m -Xmx768m -Duser.language=zh -Duser.region=CN -classpath &amp;#34;$1Contents/Resources/Java/openproj.jar&amp;#34;:&amp;#34;$1Contents/Resources/Java/lib/&amp;#34; com.projity.main.Main
-fi
-&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;操作界面镇楼！&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://stirp.github.io/img/1.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;p&gt;这样再一保存，完美~通过系统选择以后打开的程序，果然能够直接打开了。&lt;/p&gt;
-&lt;p&gt;不过……这个程序的图标也太丑了吧？还好 Mac 可以这么简单的修改图标：在应用点击右键，显示简介，先去找个合适的 icns 文件，复制，然后选择简介左上角的图标，然后粘贴，图标就被替换啦！&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://stirp.github.io/img/2.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;p&gt;有了这个方法，你自己的 shell 程序或者 Java 程序也能非常简单的变成 Mac 的 App 了。我自己的项目已经放到 &lt;a href=&#34;https://github.com/stirp/repackOpenProj&#34;&gt;GitHub - stirp/repackOpenProj: OpenProj是一个微软 Project 的开源替代方案，但是最后的维护时间已经是十年前了。在最新的 Mac 操作系统上没法直接使用，于是我重新封装为一个 App，需要系统拥有 java 命令。&lt;/a&gt;，欢迎 follow。&lt;/p&gt;
-&lt;p&gt;PS：如果你要按照我的文章去操作，请注意我没有把程序的本体，也就是上文中出现的 Java 目录及 icns 文件放上来，大家可以自行到&lt;a href=&#34;https://sourceforge.net/projects/openproj/&#34;&gt;OpenProj - Project Management download | SourceForge.net&lt;/a&gt;下载。&lt;/p&gt;
 </description>
     </item>
     

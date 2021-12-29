@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.81.0 with theme even" />
+<meta name="generator" content="Hugo 0.89.4 with theme even" />
 
 
 <link rel="canonical" href="https://blog.shrp.me/Understanding-Of-Restudy-C.html" />
@@ -35,7 +35,7 @@
 
 
 
-<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -43,12 +43,12 @@
 <meta property="og:description" content="####1. 为了跳过之前的回车，可以使用scanf(“空格%c”,&amp;chr);，其中的空格可以跳过零个或者若干个空白字符，包括换行、换页、行制" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.shrp.me/Understanding-Of-Restudy-C.html" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2011-04-25T00:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2021-06-12T15:13:29&#43;08:00" />
+<meta property="article:published_time" content="2011-04-25T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-06-12T15:13:29+08:00" />
 
 <meta itemprop="name" content="重新学习C的领悟">
-<meta itemprop="description" content="####1. 为了跳过之前的回车，可以使用scanf(“空格%c”,&amp;chr);，其中的空格可以跳过零个或者若干个空白字符，包括换行、换页、行制"><meta itemprop="datePublished" content="2011-04-25T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2021-06-12T15:13:29&#43;08:00" />
+<meta itemprop="description" content="####1. 为了跳过之前的回车，可以使用scanf(“空格%c”,&amp;chr);，其中的空格可以跳过零个或者若干个空白字符，包括换行、换页、行制"><meta itemprop="datePublished" content="2011-04-25T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-06-12T15:13:29+08:00" />
 <meta itemprop="wordCount" content="10915">
 <meta itemprop="keywords" content="C," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="重新学习C的领悟"/>
@@ -151,7 +151,7 @@
   </div>
 </div>
   <div class="post-outdated">
-    <div class="hint">
+    <div class="warn">
       <p>【注意】最后更新于 <span class="timeago" datetime="2021-06-12T15:13:29" title="June 12, 2021">June 12, 2021</span>，文中内容可能已过时，请谨慎使用。</p>
     </div>
   </div>
@@ -161,13 +161,13 @@
 <p>####3. 整型常量：八进制和十六进制没有负数常量。书写为：八进制：0开头，如0177；十六进制：0x开头，如0x7fff。默认属于int型，可以在后边添加L、U表示长整型、无符号型。为了输出负数八进制或十六进制，可以用下列方法：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">if( i &lt; 0)
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">if( i &lt; 0)
 	printf(&#34;-%x&#34;,-i);
 else
 	printf(&#34;%x&#34;,i);
@@ -179,12 +179,12 @@ else
 <p>####7.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">while (getchar() != &#39;\n&#39;);/*来跳过一行的输入*/
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">while (getchar() != &#39;\n&#39;);/*来跳过一行的输入*/
 
 while (getchar() == &#39; &#39;);/*来跳过空格的输入*/
 </code></pre></td></tr></table>
@@ -195,12 +195,12 @@ while (getchar() == &#39; &#39;);/*来跳过空格的输入*/
 <p>####10. 运算时溢出，即便结果是由更大范围的类型来保存依然会溢出。如：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">long int i;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">long int i;
 int j = 1000;
 i = j * j;//先溢出，再转换类型
 </code></pre></td></tr></table>
@@ -212,14 +212,14 @@ i = j * j;//先溢出，再转换类型
 <p>####15. 如果函数返回的类型非常长（如unsigned long int），那么有必要把返回类型单独放在一行</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">unsigned long int
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">unsigned long int
 average(float a, float b)
 {
 return ( a + b) / 2;
@@ -238,23 +238,23 @@ return ( a + b) / 2;
 <p>####25.  如果字符串太长，不能在一行内放置，可以使用\来延长。\要求之后没有除回车外的字符，下一行要顶头开始。如：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">    printf(“Put a \
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">    printf(“Put a \
 disk into drive a\n”);
 </code></pre></td></tr></table>
 </div>
 </div><p>不过会打乱缩进。还好C语言标准规定，只要两个字符串中间都是空白字符，则将两个字符串合并，如：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">    printf(&#34;Put a &#34;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">    printf(&#34;Put a &#34;
 
     &#34;disk into drive a\n&#34;);
 </code></pre></td></tr></table>
@@ -262,11 +262,11 @@ disk into drive a\n”);
 </div><p>####26. C语言允许对字符串加下标，如&quot;abc&quot;[1]。这个特性使得字符串常量也可能改变，如</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">char *p = &#34;abc&#34;[1];
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">char *p = &#34;abc&#34;[1];
 *p = &#39;x&#39;;
 </code></pre></td></tr></table>
 </div>
@@ -276,11 +276,11 @@ Ch的值是不确定的，而不是'\0'。这条仅知道即可。</p>
 <p>####28. 如果只显示字符串的一部分，则使用%.xs。如：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">char str[10] = &#34;123456789&#34;;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">char str[10] = &#34;123456789&#34;;
 printf(&#34;%.3s&#34;,str);
 </code></pre></td></tr></table>
 </div>
@@ -294,12 +294,12 @@ printf(&#34;%.3s&#34;,str);
 <p>####35. printf和scanf的第一个参数是字符串，并不只是字符串常量。因此可以实现下面的代码：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">char fmt = &#34;%d\n&#34;;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">char fmt = &#34;%d\n&#34;;
 int i = 10;
 printf(fmt,i);
 </code></pre></td></tr></table>
@@ -312,7 +312,7 @@ printf(fmt,i);
 <p>####39. 一些预定义的宏：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -323,7 +323,7 @@ printf(fmt,i);
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">__LINE__	被编译的文件的行数
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">__LINE__	被编译的文件的行数
 
 __FILE__	被编译的文件的名字
 
@@ -342,7 +342,7 @@ __STDC__    如果编译器接受标准C，那么为1
 <p>####45. 为了防止头文件多次包含，用<code>#ifndef</code>和<code>#endif</code>把文件的内容括起来，来保护。如：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -351,7 +351,7 @@ __STDC__    如果编译器接受标准C，那么为1
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">boolean.h
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">boolean.h
 #ifndef	BOOLEAN_H
 #define	BOOLEAN_H
 #define	TRUE	1
@@ -365,12 +365,12 @@ typedef	int	Bool;
 <p>####47. Struct可以使用赋值运算：<code>part2 = part1</code>。通常利用这个特性来实现数组的赋值：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">struct {int a[10];}a1,a2;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">struct {int a[10];}a1,a2;
 ...
 a1 = a2;
 </code></pre></td></tr></table>
@@ -379,23 +379,23 @@ a1 = a2;
 <p>####48. 为了能对两个结构使用=赋值，两者不仅仅需要定义一致，还需要结构标记一致或者使用共同的类型。比如</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">struct example{int a[10];} a1; 
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">struct example{int a[10];} a1; 
 struct example a2;
 </code></pre></td></tr></table>
 </div>
 </div><p>或者</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">typedef struct {int a[10];} example; 
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">typedef struct {int a[10];} example; 
 example a1; 
 example a2;
 </code></pre></td></tr></table>
@@ -404,11 +404,11 @@ example a2;
 <p>####49.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback"> Struct part {int a[10];} a1;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"> Struct part {int a[10];} a1;
 int part;
 </code></pre></td></tr></table>
 </div>
@@ -416,13 +416,13 @@ int part;
 <p>####50. 在结构中使用联合可以节省大量空间。比如同一个数组保存三类不同物品的信息时，可以将三类物品的定义整合为联合。为了区别表示其中保存的物品，可以在结构定义一个枚举变量来表明联合中存储的类型。如</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">struct{
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">struct{
 enum (INT_KIND,FLOAT_KIND) kind;
     union{int i; float t;} u;
 } number;
@@ -450,13 +450,13 @@ enum (INT_KIND,FLOAT_KIND) kind;
 <p>####62. qsort不可以直接调用strcmp进行排序，因此需要下列函数进行辅助：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">Int compare_strings(const void *p,const void *q)
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Int compare_strings(const void *p,const void *q)
 {
     Return strcmp(*(char **) p,*(char **)q);
 }
@@ -498,11 +498,11 @@ enum (INT_KIND,FLOAT_KIND) kind;
 <p>####72. 可以用下列技巧来在一个工程中合理的分配公有私有的函数：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">#define PUBLIC /*empty*/
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#define PUBLIC /*empty*/
 #define PRIVATE static
 </code></pre></td></tr></table>
 </div>
@@ -522,7 +522,7 @@ enum (INT_KIND,FLOAT_KIND) kind;
 <p>####80. 对于直接从用户输入缓冲得到的字符，需要用volatile 限定符声明中间变量。否则循环中中间变量没有变化过，可能被编译器优化后，使得每次读取中间变量时都是读取第一次的值。用volatile声明后编译器就会强制每次读取p的值时都从内存中重新获取。如：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -530,7 +530,7 @@ enum (INT_KIND,FLOAT_KIND) kind;
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">while (缓冲区未满) 
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">while (缓冲区未满) 
 {
  等待输入;
  buffer[i] = *p;
@@ -849,7 +849,7 @@ enum (INT_KIND,FLOAT_KIND) kind;
 <p>####92. 可以用sprintf和sscanf对字符串进行读写操作。比如<code>sprintf(str,&quot;%d&quot;,i);</code>sscanf则实现了对一次输入的多重检测读取，如：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -857,7 +857,7 @@ enum (INT_KIND,FLOAT_KIND) kind;
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">if(sscanf(str,&#34;%d /%d/%d&#34;, &amp;month,&amp;day,&amp;year) == 3)
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">if(sscanf(str,&#34;%d /%d/%d&#34;, &amp;month,&amp;day,&amp;year) == 3)
     printf(&#34;Month: %d, day: %d, year: %d\n&#34;,month,day,year);
 else if (sscanf(str,&#34;%d -%d -%d&#34;, &amp;month,&amp;day,&amp;year) == 3)
     printf(&#34;Month: %d, day: %d, year: %d\n&#34;,month,day,year);
@@ -870,14 +870,14 @@ else
 <p>####95. size_t strxfrm(char *s1, const char *s2, size_t n);该函数将s2转换后存在s1，返回转换后的字符数量。一般都是用两次：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">size_t len;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">size_t len;
 char *transformed;
 len = strxfrm(NULL, original, 0);
 transformed = malloc(len+1);
@@ -887,7 +887,7 @@ strxfrm(transformed, original, len);
 </div><p>####96. strpbrk函数用来查找第一个参数中与第二个参数中任意一个字符相匹配的最左边的一个字符；strspn和strcspn会返回一个表示字符串中特定位置的整数(size_t类型)，strspn返回第一个不属于给定字符集的字符下标；strcspn函数返回第一个属于给定字符集中的字符下标，如：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -895,7 +895,7 @@ strxfrm(transformed, original, len);
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">size_t len;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">size_t len;
 char str[] = &#34;Form follows function.&#34;;
 len = strspn(str, &#34;morF&#34;);	/*len=4*/
 len = strspn(str,&#34; \t\n&#34;;	/*len=0*/
@@ -912,7 +912,7 @@ len = strcspn(str, &#34; \t\n&#34;);	/*len=4*/
 <p>####103. 用来检测多字符和宽字符：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -932,7 +932,7 @@ len = strcspn(str, &#34; \t\n&#34;);	/*len=4*/
 </span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">int mbcheck(const char *s)
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">int mbcheck(const char *s)
 {
     int n;
     for (mblen(NULL, 0) ; ; s += n)
@@ -957,12 +957,12 @@ int wccheck(wchar_t *wcs)
 <p>####104. &lt;stdarg.h&gt;提供的三种宏可以视为三个函数：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">void va_start(va_list ap, parmN);
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">void va_start(va_list ap, parmN);
 类型 va_arg(va_list ap, 类型);
 void va_end(va_list ap);
 </code></pre></td></tr></table>
@@ -974,12 +974,12 @@ void va_end(va_list ap);
 <p>####108. 搜索和排序：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">void *bsearch(const void *key, const void *base,size_t nmemb, size_t size, int (*compar)(const void *, const void *,));
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">void *bsearch(const void *key, const void *base,size_t nmemb, size_t size, int (*compar)(const void *, const void *,));
 
 void qsort (void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *));
 </code></pre></td></tr></table>

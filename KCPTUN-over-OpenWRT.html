@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.81.0 with theme even" />
+<meta name="generator" content="Hugo 0.89.4 with theme even" />
 
 
 <link rel="canonical" href="https://blog.shrp.me/KCPTUN-over-OpenWRT.html" />
@@ -35,7 +35,7 @@
 
 
 
-<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -43,12 +43,12 @@
 <meta property="og:description" content="年前刚好看到有个KCPTUN项目，用于高ping网络的加速，趁过年也给家里的路由器加个速。 先到要加速的服务器上安装server端。先下载服务" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.shrp.me/KCPTUN-over-OpenWRT.html" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2017-01-29T00:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2021-06-12T15:13:29&#43;08:00" />
+<meta property="article:published_time" content="2017-01-29T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-06-12T15:13:29+08:00" />
 
 <meta itemprop="name" content="OpenWRT折腾KCPTUN">
-<meta itemprop="description" content="年前刚好看到有个KCPTUN项目，用于高ping网络的加速，趁过年也给家里的路由器加个速。 先到要加速的服务器上安装server端。先下载服务"><meta itemprop="datePublished" content="2017-01-29T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2021-06-12T15:13:29&#43;08:00" />
+<meta itemprop="description" content="年前刚好看到有个KCPTUN项目，用于高ping网络的加速，趁过年也给家里的路由器加个速。 先到要加速的服务器上安装server端。先下载服务"><meta itemprop="datePublished" content="2017-01-29T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-06-12T15:13:29+08:00" />
 <meta itemprop="wordCount" content="432">
 <meta itemprop="keywords" content="OpenWRT,KCPTUN," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="OpenWRT折腾KCPTUN"/>
@@ -151,7 +151,7 @@
   </div>
 </div>
   <div class="post-outdated">
-    <div class="hint">
+    <div class="warn">
       <p>【注意】最后更新于 <span class="timeago" datetime="2021-06-12T15:13:29" title="June 12, 2021">June 12, 2021</span>，文中内容可能已过时，请谨慎使用。</p>
     </div>
   </div>
@@ -160,12 +160,12 @@
 <p>　　先到要加速的服务器上安装server端。先下载服务端程序并且解压缩</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">wget https://github.com/xtaci/kcptun/releases/download/v20170120/kcptun-linux-386-20170120.tar.gz
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">wget https://github.com/xtaci/kcptun/releases/download/v20170120/kcptun-linux-386-20170120.tar.gz
 
 tar -zxcf kcptun-linux-386-20170120.tar.gz
 </code></pre></td></tr></table>
@@ -173,39 +173,39 @@ tar -zxcf kcptun-linux-386-20170120.tar.gz
 </div><p>得到了两个程序</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">-rwxr-xr-x 1  2908832  1月 20 03:45 client_linux_386
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">-rwxr-xr-x 1  2908832  1月 20 03:45 client_linux_386
 -rwxr-xr-x 1  2896448  1月 20 03:45 server_linux_386
 </code></pre></td></tr></table>
 </div>
 </div><p>使用如下命令开始服务端的转发</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">/root/kcptun/server_linux_386 -t &#34;shadowsocks服务器ip:端口&#34; -l &#34;:加速端口&#34; --mode fast2 --key &#34;密码&#34; --nocomp &amp;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">/root/kcptun/server_linux_386 -t &#34;shadowsocks服务器ip:端口&#34; -l &#34;:加速端口&#34; --mode fast2 --key &#34;密码&#34; --nocomp &amp;
 </code></pre></td></tr></table>
 </div>
 </div><p>　　然后在OpenWRT路由器上安装客户端，原项目没有ar71xx的程序，可以到<a href="https://github.com/bettermanbao/openwrt-kcptun/releases">https://github.com/bettermanbao/openwrt-kcptun/releases</a>下载，解压后也是两个程序，我们只需要如下这个程序就足够了</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">-rwxrwxr-x    1 1000     1000       1241980 Jan 20 10:03 client_linux_mips
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">-rwxrwxr-x    1 1000     1000       1241980 Jan 20 10:03 client_linux_mips
 </code></pre></td></tr></table>
 </div>
 </div><p>使用如下命令启动客户端</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">./client_linux_mips -r &#34;服务端ip:端口&#34; -l &#34;:444&#34; --mode fast2 --key &#34;密码&#34; --nocomp &amp;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">./client_linux_mips -r &#34;服务端ip:端口&#34; -l &#34;:444&#34; --mode fast2 --key &#34;密码&#34; --nocomp &amp;
 </code></pre></td></tr></table>
 </div>
 </div><p>如果不加&ndash;nocomp，会在client端遇到

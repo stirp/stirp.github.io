@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.81.0 with theme even" />
+<meta name="generator" content="Hugo 0.89.4 with theme even" />
 
 
 <link rel="canonical" href="https://blog.shrp.me/" />
@@ -37,7 +37,7 @@
 
 
 
-<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -130,6 +130,27 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E8%A7%A3%E5%86%B3linux%E6%97%A0%E6%B3%95%E8%BF%9C%E7%A8%8Bvnc%E7%9A%84%E9%97%AE%E9%A2%98.html">解决linux无法启动tigervnc服务器的问题</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-12-29 </span>
+      
+        <span class="more-meta"> 约 666 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      使用Manjaro i3 作为在家里写代码的系统已经好几年了，公司的Mac老旧不堪，速度又慢，新的Mac又太贵，不禁想把公司的也换成DIY的机器，
+    </div>
+    <div class="read-more">
+      <a href="/post/%E8%A7%A3%E5%86%B3linux%E6%97%A0%E6%B3%95%E8%BF%9C%E7%A8%8Bvnc%E7%9A%84%E9%97%AE%E9%A2%98.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/%E8%B5%B0%E8%BF%91DDD.html">走近DDD</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-09-26 </span>
@@ -187,7 +208,7 @@
 <p>Lombok 是为了解决 Java 语法啰嗦而产生的工具，能够自动为编辑器和编译器产生代码，避免一部分体力劳动。比如我有一个Pojo，本来它是这个样子的：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -237,7 +258,7 @@
 </span><span class="lnt">48
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>  
         <span class="kd">final</span> <span class="n">Pojo</span> <span class="n">build</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pojo</span><span class="o">();</span>  
                 <span class="n">build</span><span class="o">.</span><span class="na">setA</span><span class="o">(</span><span class="s">&#34;a&#34;</span><span class="o">);</span>  
@@ -290,7 +311,7 @@
 </div><p>但是我用了Lombok以后，它是这个样子的：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -313,7 +334,7 @@
 </span><span class="lnt">21
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>  
         <span class="kd">final</span> <span class="n">Pojo</span> <span class="n">build</span> <span class="o">=</span> <span class="n">Pojo</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>  
                 <span class="o">.</span><span class="na">a</span><span class="o">(</span><span class="s">&#34;a&#34;</span><span class="o">)</span>  
@@ -351,7 +372,7 @@
 <p>最常用的，莫过于Getter和Setter，正如名字所示，它们可以为类和字段生成getter和setter。默认可以通过AccessLevel控制生成的函数的公开程度。示例如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -370,7 +391,7 @@
 </span><span class="lnt">17
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>  
         <span class="kd">final</span> <span class="n">Pojo</span> <span class="n">pojo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pojo</span><span class="o">();</span>  
         <span class="n">pojo</span><span class="o">.</span><span class="na">setA</span><span class="o">(</span><span class="s">&#34;a&#34;</span><span class="o">);</span>  
@@ -394,7 +415,7 @@
 <p>这三个构造函数的注解还有一个能力，可以通过staticName，来生成一个静态的工厂，此工厂可以根据参数来使用相应的构造函数。这个能力通常是用来接受一些类型参数来构造一个具有某种类型信息的Pojo。示例如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -415,7 +436,7 @@
 </span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>  
         <span class="kd">final</span> <span class="n">Pojo</span> <span class="n">pojo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pojo</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="s">&#34;name1&#34;</span><span class="o">,</span><span class="s">&#34;name2&#34;</span><span class="o">));</span>  
         <span class="n">pojo</span><span class="o">.</span><span class="na">setA</span><span class="o">(</span><span class="s">&#34;a&#34;</span><span class="o">);</span>  
@@ -440,7 +461,7 @@
 <p>这两个注解能够为被注解的类增加toString，equals和hashCode函数。如果有继承关系，一般还要把callSupper=true打开，可以将父类的字段囊括到计算中。如果对象里有一些字段是不用参与相等判断的，可以用exclude来排除一些字段。示例如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -461,7 +482,7 @@
 </span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>  
         <span class="kd">final</span> <span class="n">Pojo</span> <span class="n">pojo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pojo</span><span class="o">();</span>  
         <span class="n">pojo</span><span class="o">.</span><span class="na">setA</span><span class="o">(</span><span class="s">&#34;a&#34;</span><span class="o">);</span>  
@@ -493,12 +514,12 @@
 <p>这是为了给被打注解的类注入一个logger。对于lombok.log.custom.declaration=my.cool.Logger my.cool.LoggerFactory.getLogger(NAME)的配置来说，会对目标类</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@CustomLog</span>  
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@CustomLog</span>  
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">LogExample</span> <span class="o">{</span>  
 <span class="o">}</span>
 </code></pre></td></tr></table>
@@ -506,10 +527,10 @@
 </div><p>生成如下代码</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">my</span><span class="o">.</span><span class="na">cool</span><span class="o">.</span><span class="na">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="n">my</span><span class="o">.</span><span class="na">cool</span><span class="o">.</span><span class="na">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="n">LogExample</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">my</span><span class="o">.</span><span class="na">cool</span><span class="o">.</span><span class="na">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="n">my</span><span class="o">.</span><span class="na">cool</span><span class="o">.</span><span class="na">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="n">LogExample</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>但是现在通常使用已经封装好的Logger，所以，它有@Log，@CommonsLog，@Log4j，@Log4j2，@Slf4j，@XSlf4j，@JBossLog，@Flogger一系列注解，可以直接使用项目里已有的logger。</p>
@@ -517,7 +538,7 @@
 <p>Java面试题里经常问，怎么才能偷偷在一个没有声明Throws的函数上抛出一个checkedException？这个大家知道了原理，但是用的时候，大可不必自己造轮子，因为Lombok已经把轮子造好了，原理是利用了泛型抹除。但是我觉得这个注解应该慎用，因为用了这个注解，就把函数里的异常抛出情况掩盖了。比如</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -540,7 +561,7 @@
 </span><span class="lnt">21
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>  
         <span class="kd">final</span> <span class="n">Pojo</span> <span class="n">pojo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pojo</span><span class="o">();</span>  
         <span class="n">pojo</span><span class="o">.</span><span class="na">setA</span><span class="o">(</span><span class="s">&#34;a&#34;</span><span class="o">);</span>  
@@ -568,7 +589,7 @@
 <p>这个注释名字大家太熟悉了，我们先看个例子：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -607,7 +628,7 @@
 </span><span class="lnt">37
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
     <span class="nd">@SneakyThrows</span>  
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>  
         <span class="kd">final</span> <span class="n">Pojo</span> <span class="n">pojo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pojo</span><span class="o">();</span>  
@@ -653,7 +674,7 @@
 <p>在try with语法之前，关闭closable通常都写得很罗嗦，尤其是有嵌套的时候——这种情况还挺常见。即便是现在有了try with语法，多层嵌套还是很难看。但是用了@Cleanup，那就简单多了。比如这个例子：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -677,7 +698,7 @@
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>  
     <span class="nd">@SneakyThrows</span>  
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>  
         <span class="nd">@Cleanup</span> <span class="kd">final</span> <span class="n">Pojo</span> <span class="n">pojo1</span> <span class="o">=</span> <span class="n">Pojo</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">name</span><span class="o">(</span><span class="s">&#34;pojo1&#34;</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>  
@@ -704,7 +725,7 @@
 </div><p>最后输出是</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -712,7 +733,7 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">Test.Pojo(name=pojo1) created.
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Test.Pojo(name=pojo1) created.
 Test.Pojo(name=pojo2) created.
 Test.Pojo(name=pojo1)
 Test.Pojo(name=pojo2)
@@ -875,27 +896,6 @@ Test.Pojo(name=pojo1) closed.
     </div>
     <div class="read-more">
       <a href="/adjust-embedded-tomcat-version.html" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html">拨公司 VPN 后，指定了外网 dns，却无法访问内网域名的解决办法</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-02-02 </span>
-      
-        <span class="more-meta"> 约 366 字 </span>
-        <span class="more-meta"> 预计阅读 1 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      今天我遇到一个情况，就是使用公司 VPN 后再指定家里的 DNS 后，公司的内网域名反而无法访问的问题。 这是因为我家路由器上的 DNSMASQ 配置了rebind_prot
-    </div>
-    <div class="read-more">
-      <a href="/Changing_DNS_After_VPN_CAUSE_INTRANET_DOMAIN_Resorve_Fail.html" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>

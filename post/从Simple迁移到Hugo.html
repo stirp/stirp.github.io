@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.81.0 with theme even" />
+<meta name="generator" content="Hugo 0.89.4 with theme even" />
 
 
 <link rel="canonical" href="https://blog.shrp.me/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html" />
@@ -35,7 +35,7 @@
 
 
 
-<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -43,12 +43,12 @@
 <meta property="og:description" content="为什么不继续用Simple Simple是一个非常简单又纯粹的博客托管方案,然而它严重依赖 github 的API登录方案&ndash;而这个方案已经在去年" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.shrp.me/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-04-05T17:54:47&#43;00:00" />
-<meta property="article:modified_time" content="2021-06-10T17:54:47&#43;00:00" />
+<meta property="article:published_time" content="2021-04-05T17:54:47+00:00" />
+<meta property="article:modified_time" content="2021-06-10T17:54:47+00:00" />
 
 <meta itemprop="name" content="从Simple迁移到Hugo">
-<meta itemprop="description" content="为什么不继续用Simple Simple是一个非常简单又纯粹的博客托管方案,然而它严重依赖 github 的API登录方案&ndash;而这个方案已经在去年"><meta itemprop="datePublished" content="2021-04-05T17:54:47&#43;00:00" />
-<meta itemprop="dateModified" content="2021-06-10T17:54:47&#43;00:00" />
+<meta itemprop="description" content="为什么不继续用Simple Simple是一个非常简单又纯粹的博客托管方案,然而它严重依赖 github 的API登录方案&ndash;而这个方案已经在去年"><meta itemprop="datePublished" content="2021-04-05T17:54:47+00:00" />
+<meta itemprop="dateModified" content="2021-06-10T17:54:47+00:00" />
 <meta itemprop="wordCount" content="2767">
 <meta itemprop="keywords" content="hugo,Simple,迁移," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="从Simple迁移到Hugo"/>
@@ -166,7 +166,7 @@
   </div>
 </div>
   <div class="post-outdated">
-    <div class="hint">
+    <div class="warn">
       <p>【注意】最后更新于 <span class="timeago" datetime="2021-06-10T17:54:47" title="June 10, 2021">June 10, 2021</span>，文中内容可能已过时，请谨慎使用。</p>
     </div>
   </div>
@@ -179,21 +179,21 @@
 <p>　　不论如何, 导出原有的文章是必须的.Simple作为基于GitHub API的静态博客，它自己是没有数据库来存储文章的，而是将markdown作为注释放在正文里的。我们恰好可以借助这一特性，将相应的md文件提取出来：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">cat fileName.html <span class="p">|</span> awk <span class="s1">&#39;/&lt;!-- markdown --&gt;/,/&lt;!-- markdown end --&gt;/&#39;</span> &gt; exports/fileName.md
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">cat fileName.html <span class="p">|</span> awk <span class="s1">&#39;/&lt;!-- markdown --&gt;/,/&lt;!-- markdown end --&gt;/&#39;</span> &gt; exports/fileName.md
 </code></pre></td></tr></table>
 </div>
 </div><p>　　怎么遍历文件名就不赘述了，bash脚本跑循环就好。</p>
 <p>　　不过这样导出的文件里还有markdown的注解,可以使用如下命令来清除:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sed -i <span class="s2">&#34;s/&lt;!-- markdown --&gt;//g&#34;</span> *.md
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">sed -i <span class="s2">&#34;s/&lt;!-- markdown --&gt;//g&#34;</span> *.md
 sed -i <span class="s2">&#34;s/&lt;!-- markdown end --&gt;//g&#34;</span> *.md
 </code></pre></td></tr></table>
 </div>
@@ -203,7 +203,7 @@ sed -i <span class="s2">&#34;s/&lt;!-- markdown end --&gt;//g&#34;</span> *.md
 <p>　　原来Simple有一个main.json是专门存储元数据的，我们可以从它解析到相应的参数，填入目标文档。经过一番探究，我写了如下的脚本生成相应的目标文档：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -212,7 +212,7 @@ sed -i <span class="s2">&#34;s/&lt;!-- markdown end --&gt;//g&#34;</span> *.md
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">&#34;---&#34;</span> &gt;hugo/content/imported/<span class="nv">$filename</span>.md <span class="o">&amp;&amp;</span> <span class="se">\
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">&#34;---&#34;</span> &gt;hugo/content/imported/<span class="nv">$filename</span>.md <span class="o">&amp;&amp;</span> <span class="se">\
 </span><span class="se"></span><span class="nb">echo</span> <span class="s2">&#34;title: \&#34;</span><span class="k">$(</span>jq -r <span class="s1">&#39;.posts|map(select(.path == &#34;&#39;</span><span class="nv">$filename</span><span class="s1">&#39;.html&#34;).title)[0]&#39;</span> main.json<span class="k">)</span><span class="s2">\&#34;&#34;</span> &gt;&gt; hugo/content/imported/<span class="nv">$filename</span>.md <span class="o">&amp;&amp;</span> <span class="se">\
 </span><span class="se"></span><span class="nb">echo</span> <span class="s2">&#34;date: \&#34;</span><span class="k">$(</span>jq -r <span class="s1">&#39;.posts|map(select(.path == &#34;&#39;</span><span class="nv">$filename</span><span class="s1">&#39;.html&#34;).date)[0]&#39;</span> main.json<span class="k">)</span><span class="s2">T00:00:00Z\&#34;&#34;</span> &gt;&gt; hugo/content/imported/<span class="nv">$filename</span>.md <span class="o">&amp;&amp;</span> <span class="se">\
 </span><span class="se"></span><span class="nb">echo</span> <span class="s2">&#34;draft: false&#34;</span> &gt;&gt; hugo/content/imported/<span class="nv">$filename</span>.md <span class="o">&amp;&amp;</span> <span class="se">\
@@ -231,7 +231,7 @@ sed -i <span class="s2">&#34;s/&lt;!-- markdown end --&gt;//g&#34;</span> *.md
 <p>　　RSS默认只输出部分,这种体验对于我们这种不求访问量的网站的订阅者来说,是非常不友好的.因此需要调整为全文输出.按照网友的经验,在layouts目录下新建index.rss.xml就可以解决这个问题:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -272,7 +272,7 @@ sed -i <span class="s2">&#34;s/&lt;!-- markdown end --&gt;//g&#34;</span> *.md
 </span><span class="lnt">39
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-xml" data-lang="xml">{{- $pctx := . -}}
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml">{{- $pctx := . -}}
 {{- if .IsHome -}}{{ $pctx = .Site }}{{- end -}}
 {{- $pages := slice -}}
 {{- if or $.IsHome $.IsSection -}}
@@ -316,10 +316,10 @@ sed -i <span class="s2">&#34;s/&lt;!-- markdown end --&gt;//g&#34;</span> *.md
 </div><p>但是我们发现有个问题,about之类的静态页面也被当成博文输出到RSS里了,这个体验可有点奇怪.正常的解决方案是如何将这些非正常的页面不被识别为RegularPages,不过我找了半天,并没有找到怎么处理.好在这个问题已经有人<a href="https://benjamincongdon.me/blog/2020/01/14/Tips-for-Customizing-Hugo-RSS-Feeds/">解决</a>过了,将28行的代码改成</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-toml" data-lang="toml"><span class="p">{{</span> <span class="nx">range</span> <span class="err">(</span><span class="nx">where</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Pages</span> <span class="s2">&#34;.Section&#34;</span> <span class="s2">&#34;post&#34;</span><span class="err">)</span> <span class="p">}}</span>
+<pre tabindex="0" class="chroma"><code class="language-toml" data-lang="toml"><span class="p">{{</span> <span class="nx">range</span> <span class="err">(</span><span class="nx">where</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Pages</span> <span class="s2">&#34;.Section&#34;</span> <span class="s2">&#34;post&#34;</span><span class="err">)</span> <span class="p">}}</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>但是这个方案并不完美,因为开头的代码刚刚处理了limit问题,这里一改,一夜回到解放前lol.</p>
@@ -327,16 +327,16 @@ sed -i <span class="s2">&#34;s/&lt;!-- markdown end --&gt;//g&#34;</span> *.md
 <p>但是这还有个问题,因为hugo会生成每个section的landing page,名为posts.html,title是Posts,输出的RSS里总有这个文件. 这个可能跟我们刚刚改的方案有关系,少了regularpages的判断,那么条件可以改成</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-toml" data-lang="toml"><span class="err">(</span><span class="nx">where</span> <span class="err">$</span><span class="nx">pctx</span><span class="p">.</span><span class="nx">RegularPages</span> <span class="s2">&#34;.Section&#34;</span> <span class="s2">&#34;post&#34;</span><span class="err">)</span>
+<pre tabindex="0" class="chroma"><code class="language-toml" data-lang="toml"><span class="err">(</span><span class="nx">where</span> <span class="err">$</span><span class="nx">pctx</span><span class="p">.</span><span class="nx">RegularPages</span> <span class="s2">&#34;.Section&#34;</span> <span class="s2">&#34;post&#34;</span><span class="err">)</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>那自然是大功告成了,最终的模板如下:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -379,35 +379,35 @@ sed -i <span class="s2">&#34;s/&lt;!-- markdown end --&gt;//g&#34;</span> *.md
 </span><span class="lnt">41
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-toml" data-lang="toml"><span class="p">{{</span><span class="err">-</span> <span class="err">$</span><span class="nx">pctx</span> <span class="err">:</span><span class="p">=</span> <span class="p">.</span> <span class="err">-</span><span class="p">}}</span>
-<span class="p">{{</span><span class="err">-</span> <span class="nx">if</span> <span class="p">.</span><span class="nx">IsHome</span> <span class="err">-</span><span class="p">}}{{</span> <span class="err">$</span><span class="nx">pctx</span> <span class="p">=</span> <span class="p">.</span><span class="nx">Site</span> <span class="p">}}{{</span><span class="err">-</span> <span class="nx">end</span> <span class="err">-</span><span class="p">}}</span>
-<span class="p">{{</span><span class="err">-</span> <span class="err">$</span><span class="nx">pages</span> <span class="err">:</span><span class="p">=</span> <span class="nx">slice</span> <span class="err">-</span><span class="p">}}</span>
-<span class="p">{{</span><span class="err">-</span> <span class="nx">if</span> <span class="err">$</span><span class="p">.</span><span class="nx">IsHome</span> <span class="err">-</span><span class="p">}}</span>
-<span class="p">{{</span><span class="err">-</span> <span class="err">$</span><span class="nx">pages</span> <span class="p">=</span> <span class="err">(</span><span class="nx">where</span> <span class="err">$</span><span class="nx">pctx</span><span class="p">.</span><span class="nx">RegularPages</span> <span class="s2">&#34;.Section&#34;</span> <span class="s2">&#34;post&#34;</span><span class="err">)</span> <span class="err">-</span><span class="p">}}</span>
-<span class="p">{{</span><span class="err">-</span> <span class="nx">else</span> <span class="nx">if</span> <span class="err">$</span><span class="p">.</span><span class="nx">IsSection</span> <span class="err">-</span><span class="p">}}</span>
-<span class="p">{{</span><span class="err">-</span> <span class="err">$</span><span class="nx">pages</span> <span class="p">=</span> <span class="err">$</span><span class="nx">pctx</span><span class="p">.</span><span class="nx">RegularPages</span> <span class="err">-</span><span class="p">}}</span>
-<span class="p">{{</span><span class="err">-</span> <span class="nx">else</span> <span class="err">-</span><span class="p">}}</span>
-<span class="p">{{</span><span class="err">-</span> <span class="err">$</span><span class="nx">pages</span> <span class="p">=</span> <span class="err">$</span><span class="nx">pctx</span><span class="p">.</span><span class="nx">Pages</span> <span class="err">-</span><span class="p">}}</span>
-<span class="p">{{</span><span class="err">-</span> <span class="nx">end</span> <span class="err">-</span><span class="p">}}</span>
-<span class="p">{{</span><span class="err">-</span> <span class="err">$</span><span class="nx">limit</span> <span class="err">:</span><span class="p">=</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Config</span><span class="p">.</span><span class="nx">Services</span><span class="p">.</span><span class="nx">RSS</span><span class="p">.</span><span class="nx">Limit</span> <span class="err">-</span><span class="p">}}</span>
-<span class="p">{{</span><span class="err">-</span> <span class="nx">if</span> <span class="nx">ge</span> <span class="err">$</span><span class="nx">limit</span> <span class="mi">1</span> <span class="err">-</span><span class="p">}}</span>
-<span class="p">{{</span><span class="err">-</span> <span class="err">$</span><span class="nx">pages</span> <span class="p">=</span> <span class="err">$</span><span class="nx">pages</span> <span class="err">|</span> <span class="nx">first</span> <span class="err">$</span><span class="nx">limit</span> <span class="err">-</span><span class="p">}}</span>
-<span class="p">{{</span><span class="err">-</span> <span class="nx">end</span> <span class="err">-</span><span class="p">}}</span>
-<span class="p">{{</span><span class="err">-</span> <span class="nx">printf</span> <span class="s2">&#34;&lt;?xml version=\&#34;1.0\&#34; encoding=\&#34;utf-8\&#34; standalone=\&#34;yes\&#34;?&gt;&#34;</span> <span class="err">|</span> <span class="nx">safeHTML</span> <span class="p">}}</span>
+<pre tabindex="0" class="chroma"><code class="language-toml" data-lang="toml"><span class="p">{{</span><span class="nx">-</span> <span class="err">$</span><span class="nx">pctx</span> <span class="err">:</span><span class="p">=</span> <span class="p">.</span> <span class="nx">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="nx">-</span> <span class="nx">if</span> <span class="p">.</span><span class="nx">IsHome</span> <span class="nx">-</span><span class="p">}}{{</span> <span class="err">$</span><span class="nx">pctx</span> <span class="p">=</span> <span class="p">.</span><span class="nx">Site</span> <span class="p">}}{{</span><span class="nx">-</span> <span class="nx">end</span> <span class="nx">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="nx">-</span> <span class="err">$</span><span class="nx">pages</span> <span class="err">:</span><span class="p">=</span> <span class="nx">slice</span> <span class="nx">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="nx">-</span> <span class="nx">if</span> <span class="err">$</span><span class="p">.</span><span class="nx">IsHome</span> <span class="nx">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="nx">-</span> <span class="err">$</span><span class="nx">pages</span> <span class="p">=</span> <span class="err">(</span><span class="nx">where</span> <span class="err">$</span><span class="nx">pctx</span><span class="p">.</span><span class="nx">RegularPages</span> <span class="s2">&#34;.Section&#34;</span> <span class="s2">&#34;post&#34;</span><span class="err">)</span> <span class="nx">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="nx">-</span> <span class="nx">else</span> <span class="nx">if</span> <span class="err">$</span><span class="p">.</span><span class="nx">IsSection</span> <span class="nx">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="nx">-</span> <span class="err">$</span><span class="nx">pages</span> <span class="p">=</span> <span class="err">$</span><span class="nx">pctx</span><span class="p">.</span><span class="nx">RegularPages</span> <span class="nx">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="nx">-</span> <span class="nx">else</span> <span class="nx">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="nx">-</span> <span class="err">$</span><span class="nx">pages</span> <span class="p">=</span> <span class="err">$</span><span class="nx">pctx</span><span class="p">.</span><span class="nx">Pages</span> <span class="nx">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="nx">-</span> <span class="nx">end</span> <span class="nx">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="nx">-</span> <span class="err">$</span><span class="nx">limit</span> <span class="err">:</span><span class="p">=</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Config</span><span class="p">.</span><span class="nx">Services</span><span class="p">.</span><span class="nx">RSS</span><span class="p">.</span><span class="nx">Limit</span> <span class="nx">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="nx">-</span> <span class="nx">if</span> <span class="nx">ge</span> <span class="err">$</span><span class="nx">limit</span> <span class="mi">1</span> <span class="nx">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="nx">-</span> <span class="err">$</span><span class="nx">pages</span> <span class="p">=</span> <span class="err">$</span><span class="nx">pages</span> <span class="err">|</span> <span class="nx">first</span> <span class="err">$</span><span class="nx">limit</span> <span class="nx">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="nx">-</span> <span class="nx">end</span> <span class="nx">-</span><span class="p">}}</span>
+<span class="p">{{</span><span class="nx">-</span> <span class="nx">printf</span> <span class="s2">&#34;&lt;?xml version=\&#34;1.0\&#34; encoding=\&#34;utf-8\&#34; standalone=\&#34;yes\&#34;?&gt;&#34;</span> <span class="err">|</span> <span class="nx">safeHTML</span> <span class="p">}}</span>
 <span class="err">&lt;</span><span class="nx">rss</span> <span class="nx">version</span><span class="p">=</span><span class="s2">&#34;2.0&#34;</span> <span class="nx">xmlns</span><span class="err">:</span><span class="nx">atom</span><span class="p">=</span><span class="s2">&#34;http://www.w3.org/2005/Atom&#34;</span><span class="err">&gt;</span>
   <span class="err">&lt;</span><span class="nx">channel</span><span class="err">&gt;</span>
     <span class="err">&lt;</span><span class="nx">title</span><span class="err">&gt;</span><span class="p">{{</span> <span class="nx">if</span> <span class="nx">eq</span>  <span class="p">.</span><span class="nx">Title</span>  <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Title</span> <span class="p">}}{{</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Title</span> <span class="p">}}{{</span> <span class="nx">else</span> <span class="p">}}{{</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">Title</span> <span class="p">}}{{.}}</span> <span class="nx">on</span> <span class="p">{{</span> <span class="nx">end</span> <span class="p">}}{{</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Title</span> <span class="p">}}{{</span> <span class="nx">end</span> <span class="p">}}</span><span class="err">&lt;/</span><span class="nx">title</span><span class="err">&gt;</span>
     <span class="err">&lt;</span><span class="nx">link</span><span class="err">&gt;</span><span class="p">{{</span> <span class="p">.</span><span class="nx">Permalink</span> <span class="p">}}</span><span class="err">&lt;/</span><span class="nx">link</span><span class="err">&gt;</span>
     <span class="err">&lt;</span><span class="nx">description</span><span class="err">&gt;</span><span class="nx">Recent</span> <span class="nx">content</span> <span class="p">{{</span> <span class="nx">if</span> <span class="nx">ne</span>  <span class="p">.</span><span class="nx">Title</span>  <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Title</span> <span class="p">}}{{</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">Title</span> <span class="p">}}</span><span class="nx">in</span> <span class="p">{{.}}</span> <span class="p">{{</span> <span class="nx">end</span> <span class="p">}}{{</span> <span class="nx">end</span> <span class="p">}}</span><span class="nx">on</span> <span class="p">{{</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Title</span> <span class="p">}}</span><span class="err">&lt;/</span><span class="nx">description</span><span class="err">&gt;</span>
-    <span class="err">&lt;</span><span class="nx">generator</span><span class="err">&gt;</span><span class="nx">Hugo</span> <span class="err">--</span> <span class="nx">gohugo</span><span class="p">.</span><span class="nx">io</span><span class="err">&lt;/</span><span class="nx">generator</span><span class="err">&gt;</span><span class="p">{{</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">LanguageCode</span> <span class="p">}}</span>
+    <span class="err">&lt;</span><span class="nx">generator</span><span class="err">&gt;</span><span class="nx">Hugo</span> <span class="nx">--</span> <span class="nx">gohugo</span><span class="p">.</span><span class="nx">io</span><span class="err">&lt;/</span><span class="nx">generator</span><span class="err">&gt;</span><span class="p">{{</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">LanguageCode</span> <span class="p">}}</span>
     <span class="err">&lt;</span><span class="nx">language</span><span class="err">&gt;</span><span class="p">{{.}}</span><span class="err">&lt;/</span><span class="nx">language</span><span class="err">&gt;</span><span class="p">{{</span><span class="nx">end</span><span class="p">}}{{</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Author</span><span class="p">.</span><span class="nx">email</span> <span class="p">}}</span>
     <span class="err">&lt;</span><span class="nx">managingEditor</span><span class="err">&gt;</span><span class="p">{{.}}{{</span> <span class="nx">with</span> <span class="err">$</span><span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Author</span><span class="p">.</span><span class="nx">name</span> <span class="p">}}</span> <span class="err">(</span><span class="p">{{.}}</span><span class="err">)</span><span class="p">{{</span><span class="nx">end</span><span class="p">}}</span><span class="err">&lt;/</span><span class="nx">managingEditor</span><span class="err">&gt;</span><span class="p">{{</span><span class="nx">end</span><span class="p">}}{{</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Author</span><span class="p">.</span><span class="nx">email</span> <span class="p">}}</span>
     <span class="err">&lt;</span><span class="nx">webMaster</span><span class="err">&gt;</span><span class="p">{{.}}{{</span> <span class="nx">with</span> <span class="err">$</span><span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Author</span><span class="p">.</span><span class="nx">name</span> <span class="p">}}</span> <span class="err">(</span><span class="p">{{.}}</span><span class="err">)</span><span class="p">{{</span><span class="nx">end</span><span class="p">}}</span><span class="err">&lt;/</span><span class="nx">webMaster</span><span class="err">&gt;</span><span class="p">{{</span><span class="nx">end</span><span class="p">}}{{</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Copyright</span> <span class="p">}}</span>
     <span class="err">&lt;</span><span class="nx">copyright</span><span class="err">&gt;</span><span class="p">{{.}}</span><span class="err">&lt;/</span><span class="nx">copyright</span><span class="err">&gt;</span><span class="p">{{</span><span class="nx">end</span><span class="p">}}{{</span> <span class="nx">if</span> <span class="nx">not</span> <span class="p">.</span><span class="nx">Date</span><span class="p">.</span><span class="nx">IsZero</span> <span class="p">}}</span>
     <span class="err">&lt;</span><span class="nx">lastBuildDate</span><span class="err">&gt;</span><span class="p">{{</span> <span class="p">.</span><span class="nx">Date</span><span class="p">.</span><span class="nx">Format</span> <span class="s2">&#34;Mon, 02 Jan 2006 15:04:05 -0700&#34;</span> <span class="err">|</span> <span class="nx">safeHTML</span> <span class="p">}}</span><span class="err">&lt;/</span><span class="nx">lastBuildDate</span><span class="err">&gt;</span><span class="p">{{</span> <span class="nx">end</span> <span class="p">}}</span>
-    <span class="p">{{</span><span class="err">-</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">OutputFormats</span><span class="p">.</span><span class="nx">Get</span> <span class="s2">&#34;RSS&#34;</span> <span class="err">-</span><span class="p">}}</span>
+    <span class="p">{{</span><span class="nx">-</span> <span class="nx">with</span> <span class="p">.</span><span class="nx">OutputFormats</span><span class="p">.</span><span class="nx">Get</span> <span class="s2">&#34;RSS&#34;</span> <span class="nx">-</span><span class="p">}}</span>
     <span class="p">{{</span> <span class="nx">printf</span> <span class="s2">&#34;&lt;atom:link href=%q rel=\&#34;self\&#34; type=%q /&gt;&#34;</span> <span class="p">.</span><span class="nx">Permalink</span> <span class="p">.</span><span class="nx">MediaType</span> <span class="err">|</span> <span class="nx">safeHTML</span> <span class="p">}}</span>
-    <span class="p">{{</span><span class="err">-</span> <span class="nx">end</span> <span class="err">-</span><span class="p">}}</span>
+    <span class="p">{{</span><span class="nx">-</span> <span class="nx">end</span> <span class="nx">-</span><span class="p">}}</span>
     <span class="p">{{</span> <span class="nx">range</span> <span class="err">$</span><span class="nx">pages</span> <span class="p">}}</span>
     <span class="err">&lt;</span><span class="nx">item</span><span class="err">&gt;</span>
       <span class="err">&lt;</span><span class="nx">title</span><span class="err">&gt;</span><span class="p">{{</span> <span class="p">.</span><span class="nx">Title</span> <span class="p">}}</span><span class="err">&lt;/</span><span class="nx">title</span><span class="err">&gt;</span>
@@ -426,7 +426,7 @@ sed -i <span class="s2">&#34;s/&lt;!-- markdown end --&gt;//g&#34;</span> *.md
 <p>我的博客放在github上,部署的话非常简单,只要把生成的public目录推送到github即可. 可以借助刘家财的<a href="https://github.com/jiacai2050/jiacai2050.github.io/blob/hugo/deploy.sh">部署脚本</a>:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -455,7 +455,7 @@ sed -i <span class="s2">&#34;s/&lt;!-- markdown end --&gt;//g&#34;</span> *.md
 </span><span class="lnt">27
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/usr/bin/env bash
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/usr/bin/env bash
 </span><span class="cp"></span>
 <span class="c1"># If a command fails then the deploy stops</span>
 <span class="nb">set</span> -e

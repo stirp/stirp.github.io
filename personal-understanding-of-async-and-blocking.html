@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.81.0 with theme even" />
+<meta name="generator" content="Hugo 0.89.4 with theme even" />
 
 
 <link rel="canonical" href="https://blog.shrp.me/personal-understanding-of-async-and-blocking.html" />
@@ -35,7 +35,7 @@
 
 
 
-<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -43,12 +43,12 @@
 <meta property="og:description" content="最近在工作中跟同事讨论起了一个调用是否算是非阻塞、异步时，居然发现我们对同一段代码的定性是不一样的，于是就想写一篇文章把这个问题琢磨琢磨。由" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.shrp.me/personal-understanding-of-async-and-blocking.html" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2018-08-19T00:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2021-06-12T15:13:29&#43;08:00" />
+<meta property="article:published_time" content="2018-08-19T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-06-12T15:13:29+08:00" />
 
 <meta itemprop="name" content="JAVA线程和 IO 的同步异步，阻塞非阻塞的个人理解">
-<meta itemprop="description" content="最近在工作中跟同事讨论起了一个调用是否算是非阻塞、异步时，居然发现我们对同一段代码的定性是不一样的，于是就想写一篇文章把这个问题琢磨琢磨。由"><meta itemprop="datePublished" content="2018-08-19T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2021-06-12T15:13:29&#43;08:00" />
+<meta itemprop="description" content="最近在工作中跟同事讨论起了一个调用是否算是非阻塞、异步时，居然发现我们对同一段代码的定性是不一样的，于是就想写一篇文章把这个问题琢磨琢磨。由"><meta itemprop="datePublished" content="2018-08-19T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-06-12T15:13:29+08:00" />
 <meta itemprop="wordCount" content="2788">
 <meta itemprop="keywords" content="java,sync,async,blocking,non-blocking," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="JAVA线程和 IO 的同步异步，阻塞非阻塞的个人理解"/>
@@ -163,7 +163,7 @@
   </div>
 </div>
   <div class="post-outdated">
-    <div class="hint">
+    <div class="warn">
       <p>【注意】最后更新于 <span class="timeago" datetime="2021-06-12T15:13:29" title="June 12, 2021">June 12, 2021</span>，文中内容可能已过时，请谨慎使用。</p>
     </div>
   </div>
@@ -197,7 +197,7 @@
 <p>首先看一个最简单的函数：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -229,7 +229,7 @@
 </span><span class="lnt">30
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.util.concurrent.*</span><span class="o">;</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.util.concurrent.*</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Result</span><span class="o">{</span>
@@ -265,7 +265,7 @@
 <p>再看一个的：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -295,7 +295,7 @@
 </span><span class="lnt">28
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.util.concurrent.*</span><span class="o">;</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.util.concurrent.*</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Result</span><span class="o">{</span>
@@ -330,7 +330,7 @@
 <p>再来看一个例子，来自ConcurrentLinkedQueue：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -361,7 +361,7 @@
 </span><span class="lnt">29
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">offer</span><span class="o">(</span><span class="n">E</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">offer</span><span class="o">(</span><span class="n">E</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">checkNotNull</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
         <span class="kd">final</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">newNode</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;(</span><span class="n">e</span><span class="o">);</span>
 

@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.81.0 with theme even" />
+<meta name="generator" content="Hugo 0.89.4 with theme even" />
 
 
 <link rel="canonical" href="https://blog.shrp.me/post/Java%E6%B5%81%E6%B0%B4%E5%B8%90%E4%BB%A3%E7%A0%81%E7%9A%84%E9%87%8D%E6%9E%84%E4%B8%8E%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95.html" />
@@ -35,7 +35,7 @@
 
 
 
-<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -43,12 +43,12 @@
 <meta property="og:description" content="背景 大多数软件开发者都是学过很多编程思想和知识的人,绝对不是不知道什么代码是好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.shrp.me/post/Java%E6%B5%81%E6%B0%B4%E5%B8%90%E4%BB%A3%E7%A0%81%E7%9A%84%E9%87%8D%E6%9E%84%E4%B8%8E%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95.html" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-06-27T18:19:32&#43;08:00" />
-<meta property="article:modified_time" content="2021-06-27T18:19:32&#43;08:00" />
+<meta property="article:published_time" content="2021-06-27T18:19:32+08:00" />
+<meta property="article:modified_time" content="2021-06-27T18:19:32+08:00" />
 
 <meta itemprop="name" content="Java流水帐代码的重构与单元测试">
-<meta itemprop="description" content="背景 大多数软件开发者都是学过很多编程思想和知识的人,绝对不是不知道什么代码是好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解"><meta itemprop="datePublished" content="2021-06-27T18:19:32&#43;08:00" />
-<meta itemprop="dateModified" content="2021-06-27T18:19:32&#43;08:00" />
+<meta itemprop="description" content="背景 大多数软件开发者都是学过很多编程思想和知识的人,绝对不是不知道什么代码是好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解"><meta itemprop="datePublished" content="2021-06-27T18:19:32+08:00" />
+<meta itemprop="dateModified" content="2021-06-27T18:19:32+08:00" />
 <meta itemprop="wordCount" content="5243">
 <meta itemprop="keywords" content="Java,流水帐代码,单元测试,重构," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Java流水帐代码的重构与单元测试"/>
@@ -173,7 +173,7 @@
   </div>
 </div>
   <div class="post-outdated">
-    <div class="hint">
+    <div class="warn">
       <p>【注意】最后更新于 <span class="timeago" datetime="2021-06-27T18:19:32" title="June 27, 2021">June 27, 2021</span>，文中内容可能已过时，请谨慎使用。</p>
     </div>
   </div>
@@ -183,7 +183,7 @@
 <p>然而我们在工作的过程中,为了满足和解决各种现实问题,会在代码里产生引入各种妥协和交换.最后有一天,我们发现,bug产生于一大段肮脏的业务代码,就像这样:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -263,7 +263,7 @@
 </span><span class="lnt">78
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-Java" data-lang="Java">
+<pre tabindex="0" class="chroma"><code class="language-Java" data-lang="Java">
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
     <span class="c1">//输出业务计算的结果
 </span><span class="c1"></span>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
@@ -358,7 +358,7 @@
 <p>改造的<em><strong>第一步</strong></em>是先将要治理的函数内对函数参数的访问,抽取为函数的局部变量.这一步并不是最终目标,它是为了将对函数入参的直接访问,改为对中间变量的间接访问,并且每一个参数都得是可以最大复用的对象.比如说你项目都是基于公司的同一套中间件,那么抽取后的函数变量可以是中间件提供的对象;如果不是,那最好参数是都是Java自带的类,改造后提供的函数才能最大的复用.改造后的getBizResult如下:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -392,7 +392,7 @@
 </span><span class="lnt">32
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">//计算业务结果的过程
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="c1">//计算业务结果的过程
 </span><span class="c1"></span>        <span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
             <span class="c1">//一段校验逻辑
 </span><span class="c1"></span>            <span class="kd">final</span> <span class="n">String</span> <span class="n">a</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="na">a</span><span class="o">;</span>
@@ -432,7 +432,7 @@
 <p><em><strong>第二步</strong></em>就是将上述三个函数内的变量放到一个对象的属性里,这个对象我通常起名为xxContext,这个对象并不是为了在不同的位置复用的,它只供这个地方使用,所以名字可以跟业务非常耦合,比如这里叫做GetBizResultContext.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -448,7 +448,7 @@
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java">        <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">GetBizResultContext</span><span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">        <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">GetBizResultContext</span><span class="o">{</span>
             <span class="kd">public</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">a</span><span class="o">;</span>
             <span class="kd">public</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">b</span><span class="o">;</span>
             <span class="kd">public</span> <span class="kt">boolean</span> <span class="n">c</span><span class="o">;</span>
@@ -468,7 +468,7 @@
 <p>没错,在这个例子里,它确实长得是一模一样,因为这个实例代码的入参恰好只有argument一个.有时候我们的参数其实是多个,如<code>getBizResult(Argument argument,Object... otherArgs)</code>,那么,这个Context的构造函数就会是<code>xxxContext(Argument argument,Object... otherArgs)</code>,也就是理论上跟函数的入参一致.而且它的所有参数,都是public的,这是因为改造过程中idea暂时没有抽取context的能力,为了改造getBizResult的时候更稳妥(在业务函数中访问变量的前面只要加上getBizResult.),特意如此安排的.此时getBizResult函数里是这样的:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -501,7 +501,7 @@
 </span><span class="lnt">31
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
             <span class="kd">final</span> <span class="n">GetBizResultContext</span> <span class="n">getBizResultContext</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GetBizResultContext</span><span class="o">(</span><span class="n">argument</span><span class="o">);</span>
             <span class="c1">//一段校验逻辑
 </span><span class="c1"></span>            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">a</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">b</span> <span class="o">&gt;</span> <span class="n">10</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">b</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
@@ -542,7 +542,7 @@
 <p>第一个条件很容易满足,因为在idea重构的时候,如果c后续没有再次赋值的话,会自动在函数局部变量c的声明处添加final修饰符.但是第二个条件要想满足,需要非常小心赋值的语句里有没有其它跟argument有关的变量,以及这些变量是否有变化.假如有改造前有如下代码:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -552,7 +552,7 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
 <span class="c1">//参数规整
 </span><span class="c1"></span><span class="o">...</span>
     <span class="n">argument</span><span class="o">.</span><span class="na">b</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="na">b</span> <span class="o">&gt;</span> <span class="n">10</span><span class="o">?</span> <span class="o">-</span><span class="n">10</span><span class="o">:</span> <span class="n">argument</span><span class="o">.</span><span class="na">b</span><span class="o">;</span>
@@ -570,7 +570,7 @@
 <p>修改修饰符idea会帮我们很快完成,此时业务逻辑变成了这样:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -602,7 +602,7 @@
 </span><span class="lnt">30
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java">        <span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">        <span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
             <span class="kd">final</span> <span class="n">GetBizResultContext</span> <span class="n">getBizResultContext</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GetBizResultContext</span><span class="o">(</span><span class="n">argument</span><span class="o">);</span>
             <span class="c1">//一段校验逻辑
 </span><span class="c1"></span>            <span class="k">if</span> <span class="o">(</span><span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getA</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">10</span> <span class="o">||</span> <span class="n">getBizResultContext</span><span class="o">.</span><span class="na">getB</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
@@ -638,7 +638,7 @@
 <p>这步之后就非常简单了,<em><strong>第四步</strong></em>将三段不同的逻辑分别用idea的抽取函数功能,变成三段函数:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -683,7 +683,7 @@
 </span><span class="lnt">43
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">//计算业务结果的过程
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="c1">//计算业务结果的过程
 </span><span class="c1"></span>        <span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
             <span class="kd">final</span> <span class="n">GetBizResultContext</span> <span class="n">getBizResultContext</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GetBizResultContext</span><span class="o">(</span><span class="n">argument</span><span class="o">);</span>
             <span class="c1">//一段校验逻辑
@@ -731,7 +731,7 @@
 </div><p>哎,这一看,有个函数的参数还不止context,最好将其改造为只有context的方式:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -774,7 +774,7 @@
 </span><span class="lnt">41
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java">        <span class="c1">//计算业务结果的过程
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">        <span class="c1">//计算业务结果的过程
 </span><span class="c1"></span>        <span class="kd">public</span> <span class="n">String</span> <span class="nf">getBizResult</span><span class="o">(</span><span class="n">Argument</span> <span class="n">argument</span><span class="o">)</span> <span class="o">{</span>
             <span class="kd">final</span> <span class="n">GetBizResultContext</span> <span class="n">getBizResultContext</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GetBizResultContext</span><span class="o">(</span><span class="n">argument</span><span class="o">);</span>
             <span class="c1">//一段校验逻辑
@@ -821,7 +821,7 @@
 <p>接下来,也就是<strong>第五步</strong>,可以将doValidation,getResult和afterBiz单独抽取到接口的default方法里.要注意的是getResult里有一个注入的函数integerCalculator,抽取的时候需要改为接口的函数.改造后是这样的:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -857,7 +857,7 @@
 </span><span class="lnt">34
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
     <span class="c1">//业务的实现类
 </span><span class="c1"></span>    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Biz</span> <span class="kd">implements</span> <span class="n">BizAfterwards</span><span class="o">,</span><span class="n">BizProvider</span><span class="o">,</span><span class="n">BizValidator</span><span class="o">{</span>
 
@@ -897,7 +897,7 @@
 <p>重构结束了,是不是各个业务逻辑已经单独抽取了?如果需要写单元测试,那就非常简单了,比如针对BizProvider.getBizResult做单元测试:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -921,7 +921,7 @@
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">TestTest</span> <span class="kd">extends</span> <span class="n">Specification</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">TestTest</span> <span class="kd">extends</span> <span class="n">Specification</span> <span class="o">{</span>
 
     <span class="n">def</span> <span class="s">&#34;test testBizResult&#34;</span><span class="o">()</span> <span class="o">{</span>
         <span class="n">given</span><span class="o">:</span>
@@ -951,7 +951,7 @@
 <p>首先先将default函数里的context要换成interface,比如getBizResult改成某interface,然后将函数里的get函数都自动生成,再将原有的context改为实现该接口,即可将该能力提供在其它地方复用了.比如:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -978,7 +978,7 @@
 </span><span class="lnt">25
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"> <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">GetBizResultContext</span> <span class="kd">implements</span> <span class="n">BizArg</span><span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"> <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">GetBizResultContext</span> <span class="kd">implements</span> <span class="n">BizArg</span><span class="o">{</span>
  <span class="o">...</span>
  <span class="o">}</span>
  
@@ -1017,7 +1017,7 @@
 <p>最后这是完整的类:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">  1
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
 </span><span class="lnt">  2
 </span><span class="lnt">  3
 </span><span class="lnt">  4
@@ -1187,7 +1187,7 @@
 </span><span class="lnt">168
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">
 <span class="kn">import</span> <span class="nn">jetbrick.util.annotation.NotNull</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">jetbrick.util.annotation.Nullable</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">lombok.AllArgsConstructor</span><span class="o">;</span>

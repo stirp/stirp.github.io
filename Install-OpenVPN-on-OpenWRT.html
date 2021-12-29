@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.81.0 with theme even" />
+<meta name="generator" content="Hugo 0.89.4 with theme even" />
 
 
 <link rel="canonical" href="https://blog.shrp.me/Install-OpenVPN-on-OpenWRT.html" />
@@ -35,7 +35,7 @@
 
 
 
-<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -43,12 +43,12 @@
 <meta property="og:description" content="苹果升级iOS10和Mac OS X Sierra有一段时间了，我的iPhone一不小心就中招升级了，导致我在外边玩游戏速度特别差，也不能拨号回家。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.shrp.me/Install-OpenVPN-on-OpenWRT.html" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2017-01-30T00:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2021-06-12T15:13:29&#43;08:00" />
+<meta property="article:published_time" content="2017-01-30T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-06-12T15:13:29+08:00" />
 
 <meta itemprop="name" content="OpenWRT安装OpenVPN">
-<meta itemprop="description" content="苹果升级iOS10和Mac OS X Sierra有一段时间了，我的iPhone一不小心就中招升级了，导致我在外边玩游戏速度特别差，也不能拨号回家。"><meta itemprop="datePublished" content="2017-01-30T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2021-06-12T15:13:29&#43;08:00" />
+<meta itemprop="description" content="苹果升级iOS10和Mac OS X Sierra有一段时间了，我的iPhone一不小心就中招升级了，导致我在外边玩游戏速度特别差，也不能拨号回家。"><meta itemprop="datePublished" content="2017-01-30T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-06-12T15:13:29+08:00" />
 <meta itemprop="wordCount" content="1062">
 <meta itemprop="keywords" content="OpenVPN,OpenWRT," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="OpenWRT安装OpenVPN"/>
@@ -151,7 +151,7 @@
   </div>
 </div>
   <div class="post-outdated">
-    <div class="hint">
+    <div class="warn">
       <p>【注意】最后更新于 <span class="timeago" datetime="2021-06-12T15:13:29" title="June 12, 2021">June 12, 2021</span>，文中内容可能已过时，请谨慎使用。</p>
     </div>
   </div>
@@ -161,12 +161,12 @@
 <p>　　1、安装相应的软件：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">opkg update
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">opkg update
 opkg install openvpn-polarssl
 opkg install openvpn-easy-rsa
 </code></pre></td></tr></table>
@@ -175,7 +175,7 @@ opkg install openvpn-easy-rsa
 <p>　　2、修改/etc/easy-rsa/vars，把原文所说的</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -183,7 +183,7 @@ opkg install openvpn-easy-rsa
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">KEY_SIZE=2048
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">KEY_SIZE=2048
 export KEY_COUNTRY=CN
 export KEY_PROVINCE=Canton
 export KEY_CITY=city_name
@@ -194,11 +194,11 @@ export KEY_EMAIL=email_address
 </div><p>都修改一下，然后执行</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">source /etc/easy-rsa/vars
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">source /etc/easy-rsa/vars
 clean-all
 </code></pre></td></tr></table>
 </div>
@@ -206,13 +206,13 @@ clean-all
 <p>　　3、执行命令生成证书</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">pkitool –initca
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">pkitool –initca
 pkitool --server 服务端名称
 pkitool 客户端名称0
 pkitool 客户端名称1
@@ -223,17 +223,17 @@ pkitool 客户端名称1
 <p>　　5、生成ta.key</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">openvpn --genkey --secret /etc/easy-rsa/keys/ta.key
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">openvpn --genkey --secret /etc/easy-rsa/keys/ta.key
 </code></pre></td></tr></table>
 </div>
 </div><p>　　6、编辑/etc/config/network，修改lan下的option ifname ，增加tun0</p>
 <p>　　7、修改/etc/config/openvpn</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -262,7 +262,7 @@ pkitool 客户端名称1
 </span><span class="lnt">27
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">config openvpn my-server
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">config openvpn my-server
 	option enabled 1
 	option local 0.0.0.0
 	option port 1194
@@ -296,7 +296,7 @@ pkitool 客户端名称1
 <p>　　10、编辑<code>/etc/config/firewall</code>，在wan开放1194端口</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -306,7 +306,7 @@ pkitool 客户端名称1
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">config rule
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">config rule
 option enabled &#39;1&#39;
 option target &#39;ACCEPT&#39;
 option src &#39;wan&#39;
@@ -319,18 +319,18 @@ option dest_port &#39;1194&#39;
 </div><p>　　11、重启服务生效</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">/etc/init.d/openvpn enable
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">/etc/init.d/openvpn enable
 reboot（or /etc/init.d/network restart;/etc/init.d/firewall restart;/etc/init.d/openvpn start)
 </code></pre></td></tr></table>
 </div>
 </div><p>客户端只要把相应的ca.crt,ta.key,客户端.crt，客户端.key下载下来，编辑文本文件vpn.ovpn，内容如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -345,7 +345,7 @@ reboot（or /etc/init.d/network restart;/etc/init.d/firewall restart;/etc/init.d
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">client
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">client
 proto tcp
 remote 服务器ip 1194
 dev tun
@@ -363,21 +363,21 @@ verb 3
 </div><p>如果需要拨号后使用代理，只需要添加如下参数：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">dhcp-option PROXY_HTTP 代理ip 代理端口
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">dhcp-option PROXY_HTTP 代理ip 代理端口
 dhcp-option PROXY_HTTPS 代理ip 代理端口
 </code></pre></td></tr></table>
 </div>
 </div><p>如果要使用自动代理，添加如下参数：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">dhcp-option PROXY_AUTO_CONFIG_URL http://example.tld/proxy.pac
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">dhcp-option PROXY_AUTO_CONFIG_URL http://example.tld/proxy.pac
 </code></pre></td></tr></table>
 </div>
 </div><p>不过上述几个参数并非所有openVPN客户端支持。</p>

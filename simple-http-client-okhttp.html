@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.81.0 with theme even" />
+<meta name="generator" content="Hugo 0.89.4 with theme even" />
 
 
 <link rel="canonical" href="https://blog.shrp.me/simple-http-client-okhttp.html" />
@@ -35,7 +35,7 @@
 
 
 
-<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -43,12 +43,12 @@
 <meta property="og:description" content="OKHttp支持以下功能： http/2支持，同一个host可以共享一个端口 如果http/2不支持，则使用连接池降低请求延迟 透明gzip请求的" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.shrp.me/simple-http-client-okhttp.html" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2017-12-21T00:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2021-06-12T15:13:29&#43;08:00" />
+<meta property="article:published_time" content="2017-12-21T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-06-12T15:13:29+08:00" />
 
 <meta itemprop="name" content="简单的Http客户端——OKHttp">
-<meta itemprop="description" content="OKHttp支持以下功能： http/2支持，同一个host可以共享一个端口 如果http/2不支持，则使用连接池降低请求延迟 透明gzip请求的"><meta itemprop="datePublished" content="2017-12-21T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2021-06-12T15:13:29&#43;08:00" />
+<meta itemprop="description" content="OKHttp支持以下功能： http/2支持，同一个host可以共享一个端口 如果http/2不支持，则使用连接池降低请求延迟 透明gzip请求的"><meta itemprop="datePublished" content="2017-12-21T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-06-12T15:13:29+08:00" />
 <meta itemprop="wordCount" content="809">
 <meta itemprop="keywords" content="okhttp,http," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="简单的Http客户端——OKHttp"/>
@@ -151,7 +151,7 @@
   </div>
 </div>
   <div class="post-outdated">
-    <div class="hint">
+    <div class="warn">
       <p>【注意】最后更新于 <span class="timeago" datetime="2021-06-12T15:13:29" title="June 12, 2021">June 12, 2021</span>，文中内容可能已过时，请谨慎使用。</p>
     </div>
   </div>
@@ -168,14 +168,14 @@
 <p>当前最新版本是3.9.1，使用maven仓库引入即可，maven配置如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-xml" data-lang="xml">	<span class="nt">&lt;dependency&gt;</span>
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml">	<span class="nt">&lt;dependency&gt;</span>
 	    <span class="nt">&lt;groupId&gt;</span>com.squareup.okhttp3<span class="nt">&lt;/groupId&gt;</span>
 	    <span class="nt">&lt;artifactId&gt;</span>okhttp<span class="nt">&lt;/artifactId&gt;</span>
 	    <span class="nt">&lt;version&gt;</span>3.9.1<span class="nt">&lt;/version&gt;</span>
@@ -185,16 +185,16 @@
 </div><p>gradle 配置如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-json" data-lang="json"><span class="err">compile</span> <span class="err">&#39;com.squareup.okhttp</span><span class="mi">3</span><span class="err">:okhttp:</span><span class="mf">3.9</span><span class="err">.</span><span class="mi">1</span><span class="err">&#39;</span>
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="err">compile</span> <span class="err">&#39;com.squareup.okhttp</span><span class="mi">3</span><span class="err">:okhttp:</span><span class="mf">3.9</span><span class="err">.</span><span class="mi">1</span><span class="err">&#39;</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>2.先引入一个函数来表示具体的请求，后边的执行大多会使用这个函数来发起具体的请求</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -210,7 +210,7 @@
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kd">static</span> <span class="n">Response</span> <span class="nf">executeRequest</span><span class="o">(</span><span class="kd">final</span> <span class="n">OkHttpClient</span> <span class="n">okHttpClient</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Request</span> <span class="n">build</span><span class="o">)</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kd">static</span> <span class="n">Response</span> <span class="nf">executeRequest</span><span class="o">(</span><span class="kd">final</span> <span class="n">OkHttpClient</span> <span class="n">okHttpClient</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Request</span> <span class="n">build</span><span class="o">)</span> <span class="o">{</span>
         <span class="k">try</span> <span class="o">{</span>
             <span class="kd">final</span> <span class="n">Response</span> <span class="n">response</span> <span class="o">=</span> <span class="n">okHttpClient</span><span class="o">.</span><span class="na">newCall</span><span class="o">(</span><span class="n">build</span><span class="o">).</span><span class="na">execute</span><span class="o">();</span>
             <span class="k">if</span> <span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">isSuccessful</span><span class="o">())</span> <span class="o">{</span>
@@ -229,7 +229,7 @@
 </div><p>3.基本的get请求</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -237,7 +237,7 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">Request</span> <span class="n">build</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Request</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">url</span><span class="o">(</span><span class="s">&#34;http://blog.shrp.me&#34;</span><span class="o">)</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">Request</span> <span class="n">build</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Request</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">url</span><span class="o">(</span><span class="s">&#34;http://blog.shrp.me&#34;</span><span class="o">)</span>
                 <span class="o">.</span><span class="na">header</span><span class="o">(</span><span class="s">&#34;PostId&#34;</span><span class="o">,</span> <span class="s">&#34;12345&#34;</span><span class="o">)</span>
                 <span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="s">&#34;client-version&#34;</span><span class="o">,</span> <span class="s">&#34;3.9.1&#34;</span><span class="o">)</span>
                 <span class="o">.</span><span class="na">build</span><span class="o">();</span>
@@ -248,7 +248,7 @@
 </div><p>4.基本的post请求</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -259,7 +259,7 @@
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">MediaType</span> <span class="n">parse</span> <span class="o">=</span> <span class="n">MediaType</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">&#34;application/json&#34;</span><span class="o">);</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">MediaType</span> <span class="n">parse</span> <span class="o">=</span> <span class="n">MediaType</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">&#34;application/json&#34;</span><span class="o">);</span>
         <span class="kd">final</span> <span class="n">RequestBody</span> <span class="n">requestBody</span> <span class="o">=</span> <span class="n">RequestBody</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">parse</span><span class="o">,</span> <span class="s">&#34;{}&#34;</span><span class="o">);</span>
         <span class="kd">final</span> <span class="n">Request</span> <span class="n">build</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Request</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">url</span><span class="o">(</span><span class="s">&#34;http://blog.shrp.me&#34;</span><span class="o">)</span>
                 <span class="o">.</span><span class="na">post</span><span class="o">(</span><span class="n">requestBody</span><span class="o">)</span>
@@ -273,7 +273,7 @@
 </div><p>5.multipart post请求</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -284,7 +284,7 @@
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">MultipartBody</span> <span class="n">form</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MultipartBody</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">addFormDataPart</span><span class="o">(</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">MultipartBody</span> <span class="n">form</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MultipartBody</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">addFormDataPart</span><span class="o">(</span>
                 <span class="s">&#34;test&#34;</span><span class="o">,</span> <span class="s">&#34;test&#34;</span>
         <span class="o">).</span><span class="na">build</span><span class="o">();</span>
         <span class="kd">final</span> <span class="n">Request</span> <span class="n">build</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Request</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">url</span><span class="o">(</span><span class="s">&#34;http://blog.shrp.me&#34;</span><span class="o">)</span>
@@ -298,7 +298,7 @@
 </div><p>6.带有缓存功能的get</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -318,7 +318,7 @@
 </span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">File</span> <span class="n">cacheDir</span> <span class="o">=</span> <span class="n">Files</span><span class="o">.</span><span class="na">createTempDirectory</span><span class="o">(</span><span class="s">&#34;test&#34;</span><span class="o">).</span><span class="na">toFile</span><span class="o">();</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">File</span> <span class="n">cacheDir</span> <span class="o">=</span> <span class="n">Files</span><span class="o">.</span><span class="na">createTempDirectory</span><span class="o">(</span><span class="s">&#34;test&#34;</span><span class="o">).</span><span class="na">toFile</span><span class="o">();</span>
         <span class="kd">final</span> <span class="n">Cache</span> <span class="n">cache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Cache</span><span class="o">(</span><span class="n">cacheDir</span><span class="o">,</span> <span class="n">MAX_SIZE</span><span class="o">);</span>
         <span class="kd">final</span> <span class="n">OkHttpClient</span> <span class="n">okHttpClient</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OkHttpClient</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">cache</span><span class="o">(</span><span class="n">cache</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
         <span class="kd">final</span> <span class="n">Request</span> <span class="n">build</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Request</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">url</span><span class="o">(</span><span class="s">&#34;http://blog.shrp.me&#34;</span><span class="o">)</span>
@@ -341,7 +341,7 @@
 </div><p>7.异步请求</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -363,7 +363,7 @@
 </span><span class="lnt">20
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">Request</span> <span class="n">build</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Request</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">url</span><span class="o">(</span><span class="s">&#34;http://blog.shrp.me&#34;</span><span class="o">)</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">Request</span> <span class="n">build</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Request</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">url</span><span class="o">(</span><span class="s">&#34;http://blog.shrp.me&#34;</span><span class="o">)</span>
                 <span class="o">.</span><span class="na">header</span><span class="o">(</span><span class="s">&#34;PostId&#34;</span><span class="o">,</span> <span class="s">&#34;12345&#34;</span><span class="o">)</span>
                 <span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="s">&#34;client-version&#34;</span><span class="o">,</span> <span class="s">&#34;3.9.1&#34;</span><span class="o">)</span>
                 <span class="o">.</span><span class="na">build</span><span class="o">();</span>
@@ -388,7 +388,7 @@
 </div><p>8.带有拦截器的请求</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -420,7 +420,7 @@
 </span><span class="lnt">30
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"> <span class="kd">final</span> <span class="n">File</span> <span class="n">cacheDir</span> <span class="o">=</span> <span class="n">Files</span><span class="o">.</span><span class="na">createTempDirectory</span><span class="o">(</span><span class="s">&#34;test&#34;</span><span class="o">).</span><span class="na">toFile</span><span class="o">();</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"> <span class="kd">final</span> <span class="n">File</span> <span class="n">cacheDir</span> <span class="o">=</span> <span class="n">Files</span><span class="o">.</span><span class="na">createTempDirectory</span><span class="o">(</span><span class="s">&#34;test&#34;</span><span class="o">).</span><span class="na">toFile</span><span class="o">();</span>
         <span class="kd">final</span> <span class="n">Cache</span> <span class="n">cache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Cache</span><span class="o">(</span><span class="n">cacheDir</span><span class="o">,</span> <span class="n">MAX_SIZE</span><span class="o">);</span>
         <span class="kd">final</span> <span class="n">OkHttpClient</span> <span class="n">okHttpClient</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OkHttpClient</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">cache</span><span class="o">(</span><span class="n">cache</span><span class="o">)</span>
                 <span class="o">.</span><span class="na">addInterceptor</span><span class="o">(</span><span class="n">chain</span> <span class="o">-&gt;</span> <span class="o">{</span>

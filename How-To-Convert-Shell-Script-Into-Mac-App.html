@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.81.0 with theme even" />
+<meta name="generator" content="Hugo 0.89.4 with theme even" />
 
 
 <link rel="canonical" href="https://blog.shrp.me/How-To-Convert-Shell-Script-Into-Mac-App.html" />
@@ -35,7 +35,7 @@
 
 
 
-<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -43,12 +43,12 @@
 <meta property="og:description" content="有时候我们需要把一些有意义的脚本变成程序，发布出来；或者对一些已有的程序增加一点定制，比如我下载的这款 OpenProj，好用是好用，但是默认" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.shrp.me/How-To-Convert-Shell-Script-Into-Mac-App.html" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2019-01-01T00:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2021-06-12T15:13:29&#43;08:00" />
+<meta property="article:published_time" content="2019-01-01T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-06-12T15:13:29+08:00" />
 
 <meta itemprop="name" content="怎么把脚本变为 Mac 的 App">
-<meta itemprop="description" content="有时候我们需要把一些有意义的脚本变成程序，发布出来；或者对一些已有的程序增加一点定制，比如我下载的这款 OpenProj，好用是好用，但是默认"><meta itemprop="datePublished" content="2019-01-01T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2021-06-12T15:13:29&#43;08:00" />
+<meta itemprop="description" content="有时候我们需要把一些有意义的脚本变成程序，发布出来；或者对一些已有的程序增加一点定制，比如我下载的这款 OpenProj，好用是好用，但是默认"><meta itemprop="datePublished" content="2019-01-01T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-06-12T15:13:29+08:00" />
 <meta itemprop="wordCount" content="1405">
 <meta itemprop="keywords" content="脚本,Java,Mac,App," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="怎么把脚本变为 Mac 的 App"/>
@@ -151,7 +151,7 @@
   </div>
 </div>
   <div class="post-outdated">
-    <div class="hint">
+    <div class="warn">
       <p>【注意】最后更新于 <span class="timeago" datetime="2021-06-12T15:13:29" title="June 12, 2021">June 12, 2021</span>，文中内容可能已过时，请谨慎使用。</p>
     </div>
   </div>
@@ -161,13 +161,13 @@
 <p>还好难不倒我，通过在 shell 脚本前执行一段 AppleScript 脚本来获取当前应用的位置不就好了嘛！这段脚本如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">on run {input, parameters}
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">on run {input, parameters}
 		set p to POSIX path of (path to me)
 		return {p}
 end run
@@ -176,10 +176,10 @@ end run
 </div><p>然后再下边 shell 脚本的右上方选择“传递输入：作为自变量”，于是现在程序执行的地址就被当做第一个参数被传进来了。同样更新一下 shell 脚本来使用这段路径：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">java -Xms128m -Xmx768m -classpath &#34;$1Contents/Resources/Java/openproj.jar&#34;:&#34;$1Contents/Resources/Java/lib/&#34; com.projity.main.Main
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">java -Xms128m -Xmx768m -classpath &#34;$1Contents/Resources/Java/openproj.jar&#34;:&#34;$1Contents/Resources/Java/lib/&#34; com.projity.main.Main
 </code></pre></td></tr></table>
 </div>
 </div><p>执行一下，嗯，不错！不过……为啥界面是英文的？刚刚我从命令行启动的好像是中文的呀？不用想，肯定是 app 里的 shell肯定是有定制化的成分，并没有直接获取系统的语言。还好这对 Java 程序来说非常简单，增加启动参数<code>-Duser.language=zh -Duser.region=CN</code>就行了嘛。</p>
@@ -189,7 +189,7 @@ end run
 <p>AppleScript:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -202,7 +202,7 @@ end run
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">on run {input, parameters}
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">on run {input, parameters}
 	set inputCount to count of input
 	if inputCount is greater than or equal to 1 then
 		set fileName to item 1 of input
@@ -219,14 +219,14 @@ end run
 <p>shell：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">if [ -f $2 ];then 
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">if [ -f $2 ];then 
 	java -Xms128m -Xmx768m -Duser.language=zh -Duser.region=CN -classpath &#34;$1Contents/Resources/Java/openproj.jar&#34;:&#34;$1Contents/Resources/Java/lib/&#34; com.projity.main.Main &#34;$2&#34;
 else 
 	java -Xms128m -Xmx768m -Duser.language=zh -Duser.region=CN -classpath &#34;$1Contents/Resources/Java/openproj.jar&#34;:&#34;$1Contents/Resources/Java/lib/&#34; com.projity.main.Main

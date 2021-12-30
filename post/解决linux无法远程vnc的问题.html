@@ -49,7 +49,7 @@
 <meta itemprop="name" content="解决linux无法启动tigervnc服务器的问题">
 <meta itemprop="description" content="解决在Manjaro linux上使用tigervnc,但是却无法启动的问题"><meta itemprop="datePublished" content="2021-12-29T13:28:19+08:00" />
 <meta itemprop="dateModified" content="2021-12-29T13:28:19+08:00" />
-<meta itemprop="wordCount" content="666">
+<meta itemprop="wordCount" content="667">
 <meta itemprop="keywords" content="vnc,manjaro,tigervnc," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="解决linux无法启动tigervnc服务器的问题"/>
 <meta name="twitter:description" content="解决在Manjaro linux上使用tigervnc,但是却无法启动的问题"/>
@@ -138,7 +138,7 @@
       <div class="post-meta">
         <span class="post-time"> 2021-12-29 </span>
         
-          <span class="more-meta"> 约 666 字 </span>
+          <span class="more-meta"> 约 667 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         
       </div>
@@ -153,7 +153,7 @@
     <div class="post-content">
       <p>使用Manjaro i3 作为在家里写代码的系统已经好几年了，公司的Mac老旧不堪，速度又慢，新的Mac又太贵，不禁想把公司的也换成DIY的机器，安装Manjaro写代码。</p>
 <p>这个过程无需赘述，也安装了tigervnc做vnc服务器，从公司回到家里也能正常远程。既然是自己用的机器，看到有升级干嘛不升，于是升级了一下系统的内核，顺手点了重启。结果当我ssh上去，开启vnc server的时候，却提示【Invalid MIT-MAGIC-COOKIE-1 keyx0vncserver: unable to open display &ldquo;:0&rdquo;】。</p>
-<p>奇怪了，只要我在公司用过电脑，都是可以正常远程的，而重启的时候，公司的显示器是关闭的。莫非是我显示器的电源没开，所以它不认display :0？一番探索后发现，并非如此。Xorg也开着，但是这个:0 不管是普通用户还是root，都无法开启vnc服务器。一番探索后才发现，原来tigervnc必须要用户图形登录后才能提供vnc服务，原因应该是xauth了。</p>
+<p>奇怪了，只要我在公司用过电脑，都是可以正常远程的，而重启的时候，公司的显示器是关闭的。莫非是我显示器的电源没开，所以它不认display :0？一番探索后发现，并非如此。Xorg也开着，但是这个:0 不管是普通用户还是root，都无法开启vnc服务器。再一番探索后才发现，原来tigervnc必须要用户图形登录后才能提供vnc服务，原因应该是xauth了。</p>
 <p>所以最简单的办法就是调整一下思路，让电脑开机后自动登录，但是既然是在公司，登录后肯定不能让别人用啊，所以登录后再自动锁屏就行了。对于Manjaro和i3来说，这种调整非常简单。</p>
 <p>首先是自动登录，编辑/etc/lightdm/lightdm.conf文件，将autologin-user=用户名的注释打开，就能让系统开机自动登录了。</p>
 <p>然后是自动锁屏，manjaro的锁屏程序是blurlock，我的桌面管理器是i3，那么编辑~/.i3/config，增加一行exec &ndash;no-startup-id blurlock，就轻松搞定了。</p>

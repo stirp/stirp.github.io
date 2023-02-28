@@ -7,7 +7,273 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>shrp</copyright>
-    <lastBuildDate>Wed, 29 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 28 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>浅谈Java开发中Redis的使用姿势</title>
+      <link>https://blog.shrp.me/post/%E6%B5%85%E8%B0%88Java%E5%BC%80%E5%8F%91%E4%B8%ADRedis%E7%9A%84%E4%BD%BF%E7%94%A8%E5%A7%BF%E5%8A%BF.html</link>
+      <pubDate>Tue, 28 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.shrp.me/post/%E6%B5%85%E8%B0%88Java%E5%BC%80%E5%8F%91%E4%B8%ADRedis%E7%9A%84%E4%BD%BF%E7%94%A8%E5%A7%BF%E5%8A%BF.html</guid>
+      <description>&lt;p&gt;Redis是我们开发时最常使用的键值存储工具了，但是与诸多软件工具一样，它也有很多技巧和经验。本文就是将我了解的一些经验和教训分享出来。&lt;/p&gt;
+&lt;h3 id=&#34;使用建议&#34;&gt;使用建议&lt;/h3&gt;
+&lt;p&gt;如果不谨慎使用Redis，可能浪费大量的内存，甚至性能低下。以下时
+使用时的几个具体建议：&lt;/p&gt;
+&lt;h4 id=&#34;命名规范&#34;&gt;命名规范&lt;/h4&gt;
+&lt;p&gt;通常一个Redis实例有16个数据库，通常你的业务并不是独立的数据库。为了与其它业务避免冲突，通常会用前缀后缀做一些区分，比如&amp;quot;业务名称:原始key&amp;quot;作为真正存储的key。但是要注意的是，Key本身是字符串，Redis的底层数据结构是SDS。从Redis3.2开始，key长度增长时，SDS占用内存空间也会增加，所以Key的长度我们要适当控制。SDS 结构中的字符串长度和元数据大小的对应关系如下表所示：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;字符串大小（字节）&lt;/th&gt;
+&lt;th&gt;SDS结构元数据大小（字节）&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1~(2^5-1)&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(2^5)~(2^8-1)&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(2^8)~(2^16-1)&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(2^16)~(2^32-1)&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(2^32)~(2^64-1)&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id=&#34;避免使用-bigkey&#34;&gt;避免使用 bigkey&lt;/h4&gt;
+&lt;p&gt;Redis效率如此高的一个原因是，它是单线程服务的模型。如果有bigkey，读写的时候就会阻塞线程，降低redis的处理效率。bigkey有两种情况：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;键值对的值本身就很大，超过了1MB。这通常需要业务把存储的value降低到10k以下，可以采取数据压缩的办法来减少内存占用&lt;/li&gt;
+&lt;li&gt;键值对的值是集合类型，而集合的元素非常多。需要业务将value控制在1万以下比较适合，必要的话就拆分集合&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;使用高效的序列化和压缩方法&#34;&gt;使用高效的序列化和压缩方法&lt;/h4&gt;
+&lt;p&gt;Java有多种序列化方式，比如protostuff和kryo，比Java内置的序列化方法更高效。有时候业务还会使用XML或者JSON存储。有时候为了避免XML和JSON的体积过大，可以使用snappy或者gzip压缩后再存入Redis，可以减少60%的内存占用&lt;/p&gt;
+&lt;h4 id=&#34;使用整数对象共享池&#34;&gt;使用整数对象共享池&lt;/h4&gt;
+&lt;p&gt;Redis内部维护了0-9999共一万个整数对象，并且把这一万个整数作为一个共享池使用。但是也有两种情况无法使用共享池：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果Redis设置了maxmemory，而且开启了LRU策略（allkeys-LRU或者volatile-LRU），就无法使用共享池，因为无法判断LRU了&lt;/li&gt;
+&lt;li&gt;如果集合类型的数据采用ziplist编码，而集合元素是整数u，也不能使用共享池，因为ziplist使用了紧凑的内存结构，判断整数对象的共享情况效率低下&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;利用hash优化缓存&#34;&gt;利用Hash优化缓存&lt;/h4&gt;
+&lt;p&gt;如果是同一个实体的多个属性做缓存，用同一个key的hash来存储，可以减少额外的元数据占用&lt;/p&gt;
+&lt;h4 id=&#34;尽可能减少存储的数据量&#34;&gt;尽可能减少存储的数据量&lt;/h4&gt;
+&lt;p&gt;不论是string，List，Set还是Zset，底层实现都是多样的。Redis会根据数据结构中的数据量做动态调整。比如字符串，如果是少于20的整数，会直接存储在指针里；小于等于44的字符串会存储在一段连续的44长度的内存。如果你存储在这些结构里的数据量少于阈值，就可以采用更简单高效的数据结构，从而带来一定的收益。&lt;/p&gt;
+&lt;h4 id=&#34;只用来保存热数据&#34;&gt;只用来保存热数据&lt;/h4&gt;
+&lt;p&gt;Redis使用的是最昂贵的内存进行存储，RDB和AOF日志持久化保存数据都只是提供数据可靠性保障的，并不能扩充容量。因此业务最好只存储热点数据。&lt;/p&gt;
+&lt;h4 id=&#34;不同的业务数据分实例存储&#34;&gt;不同的业务数据分实例存储&lt;/h4&gt;
+&lt;p&gt;即便我们采用前缀的方式区分了存储的key，但是如果两个大量访问的业务都存储在同一个实例上，还是会对Redis的性能产生影响。因此最好不同的业务将数据存储在不同的Redis实例上。&lt;/p&gt;
+&lt;h4 id=&#34;数据保存时设置合理的过期时间&#34;&gt;数据保存时，设置合理的过期时间&lt;/h4&gt;
+&lt;p&gt;如果过期时间不合理，要么Redis在不停的换入过期，要么内存很快撑爆服务器，对业务产生影响。&lt;/p&gt;
+&lt;h4 id=&#34;控制每个redis实例的容量&#34;&gt;控制每个Redis实例的容量&lt;/h4&gt;
+&lt;p&gt;Redis单实例的内存不要太大，通常建议时2-6GB。这样无论是RDB快照，还是主从集群的数据同步，速度都很快，不会阻塞正常的请求。&lt;/p&gt;
+&lt;h4 id=&#34;线上禁用命令&#34;&gt;线上禁用命令&lt;/h4&gt;
+&lt;p&gt;Redis是单线程处理请求，因此有些命令在线上使用有可能会长时间阻塞主线程。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;KEYS，按照键值对的key进行内存的匹配，需要对Redis的全局哈希表进行扫描，严重阻塞Redis主线程，可以用SCAN命令代替，分批返回符合条件的键值对。使用SCAN后要记得主动删除游标&lt;/li&gt;
+&lt;li&gt;FLUSHALL，删除实例上所有的数据，如果数据量很大，严重阻塞Redis主线程。可以加上ASYNC选项，异步删除数据&lt;/li&gt;
+&lt;li&gt;FLUSHDB，删除当前数据库里的数据，同样可能阻塞Redis主线程。可以加上ASYNC选项，异步删除数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;慎用monitor命令&#34;&gt;慎用MONITOR命令&lt;/h4&gt;
+&lt;p&gt;monitor命令可以监控Redis的运行状态，但是它会把所有的操作返回都输出到输出缓存区域。如果操作很多，输出缓存会很快溢出，这对Redis的性能造成影响。&lt;/p&gt;
+&lt;h4 id=&#34;慎用全量操作命令&#34;&gt;慎用全量操作命令&lt;/h4&gt;
+&lt;p&gt;对于集合类型来说，如果要获取全部数据，一般不建议使用全量操纵指令，比如HGETALL，SMEMBERS。它们会对数据结构做全量扫描，集合类型数据较多的话，会阻塞Redis主线程。建议如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可以使用SSCAN，HSCAN分批返回集合的数据，减少阻塞&lt;/li&gt;
+&lt;li&gt;可以化整为零，将一个大的集合拆成多个小集合&lt;/li&gt;
+&lt;li&gt;如果存储的是多个业务的多个属性，而每次查询的时候也要返回这些属性，那么可以用String类型，将这些属性序列化后存储，使用时直接返回String即可。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;常见问题&#34;&gt;常见问题&lt;/h3&gt;
+&lt;h4 id=&#34;雪崩&#34;&gt;雪崩&lt;/h4&gt;
+&lt;p&gt;当大量缓存数据在同一时刻过期（即缓存数据失效）或者Redis故障宕机时，此时如果有大量的请求访问Redis缓存数据则会导致大量请求会直接访问数据库（即直接压入数据库），导致数据库压力剧增，严重的情况会导致数据库直接宕机，致使整个系统崩溃，这就是缓存雪崩。
+出现缓存雪崩主要是因为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Redis中大量缓存数据同一时间过期&lt;/li&gt;
+&lt;li&gt;Redis故障宕机&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;解决方案：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;过期时间设置随机值。这个方法最常用，数据的过期时间分散开来，就不会同时过期了&lt;/li&gt;
+&lt;li&gt;加互斥锁，然而在高并发的情况下，互斥锁会降低系统的吞吐能力。&lt;/li&gt;
+&lt;li&gt;双key策略，主key设置过期时间，副key不设置过期时间，两个key保存的值value是相同的，相当于副key是缓存数据的副本，当主key过期时可以直接返回副key的value（即缓存数据），而在主key更新时同时要更新主key和副key的缓存数据value。&lt;/li&gt;
+&lt;li&gt;针对Redis宕机，可以暂停对Redis的访问，直接返回错误；或者搭建高可用Redis集群，主节点宕机后可以自动切换节点。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;穿透&#34;&gt;穿透&lt;/h4&gt;
+&lt;p&gt;用户访问的数据压根不存在Redis缓存中，也不存在数据库中，导致用户发送请求访问缓存时，缓存失效，便直接访问数据库也没有拿到数据，这样的话当有大量这样的请求打入时，数据库的压力会剧增，同样可能会导致数据库崩溃从而导致系统崩溃，这就是缓存穿透。&lt;/p&gt;
+&lt;p&gt;一般导致缓存穿透的情况有两种：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;业务误操作（数据意外丢失）&lt;/li&gt;
+&lt;li&gt;黑客恶意攻击（故意访问一些不存在的数据）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;解决方案：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;设置缓存空值或者默认值，这种方案比较常用，查询不到数据的时候，可以在缓存里先放一个空值或者默认值，这样后续请求就会直接通过缓存返回了&lt;/li&gt;
+&lt;li&gt;非法请求的限制，入参前就校验是否合理，对非法请求进行拦截&lt;/li&gt;
+&lt;li&gt;设置可以访问的白名单。Redis的bitmaps类型可以定义一个可以访问的名单，如果访问的id不在bitmaps里，则不进行访问。&lt;/li&gt;
+&lt;li&gt;使用布隆过滤器，当数据写入数据库的时候，则更新布隆过滤器，当访问缓存数据不存在的时候，可以通过布隆过滤器尝试分析。布隆过滤器有一定的误判，查到数据库存在的数据有可能有一部分并不是真正存在的，但是检查不到的一定不在数据库。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;击穿&#34;&gt;击穿&lt;/h4&gt;
+&lt;p&gt;大量用户请求同一个数据（即热点数据被频繁访问），刚好缓存中的热点数据过期，此时就会导致大量直接访问数据库，这样数据库很容易被高并发搞崩溃，击穿顾名思义针对一点不断打击，这就是缓存击穿。&lt;/p&gt;
+&lt;p&gt;解决方案：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;加互斥锁，但是显然这种方式会导致吞吐能力下降&lt;/li&gt;
+&lt;li&gt;热点数据不设置过期时间，或者设计热点数据更新缓存，延长过期时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;缓存污染&#34;&gt;缓存污染&lt;/h4&gt;
+&lt;p&gt;缓存污染指的是缓存中一些只会被访问一次或者几次的的数据，被访问完后，再也不会被访问到，但这部分数据依然留存在缓存中，消耗缓存空间。缓存污染会随着数据的持续增加而逐渐显露，随着服务的不断运行，缓存中会存在大量的永远不会再次被访问的数据。缓存空间是有限的，如果缓存空间满了，再往缓存里写数据时就会有额外开销，影响Redis性能。&lt;/p&gt;
+&lt;p&gt;解决方案：&lt;/p&gt;
+&lt;p&gt;可以通过调整最大缓存值来避免内存太小影响性能，又要避免设置太大，影响同步。可以设置缓存容量为总数据量的15%-30%。&lt;/p&gt;
+&lt;h4 id=&#34;一致性问题&#34;&gt;一致性问题&lt;/h4&gt;
+&lt;p&gt;Redis作为缓存时读取数据时遇到的缓存失效后，在并发更新操作下，可以使用双写模式（即同时更新数据库和缓存），那么是先更新缓存，再更新数据库 还是 先更新数据库，再更新缓存呢？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;先更新缓存，再更新数据库，线程1和线程2并发的进行更新数据操作，由于线程1在执行过程中存在卡顿情况，导致线程2执行完操作，才到线程1执行后面的操作。通过上图可以看到执行到最后的过程得到的结果是 数据库中的数据是数据1，缓存中的数据是数据2。 出现了缓存和数据库不一致的问题。&lt;img src=&#34;https://blog.shrp.me/img/image-20230228104450896.png&#34; alt=&#34;&#34;&gt;&lt;/li&gt;
+&lt;li&gt;先更新数据库，再更新缓存，线程1和线程2并发的进行更新数据操作，同样由于线程1在执行过程中存在卡顿情况，导致线程2执行完操作，才到线程1执行后面的操作。过上图可以看到执行到最后的过程得到的结果是 数据库中的数据是数据2，缓存中的数据是数据1。 出现了缓存和数据库不一致的问题。&lt;img src=&#34;https://blog.shrp.me/img/image-20230228104300839.png&#34; alt=&#34;&#34;&gt;&lt;/li&gt;
+&lt;li&gt;考虑删除缓存和更新数据库有失败的情况下, 情况会更复杂。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;解决方法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果不要求数据具备实时性，能有一定的延迟的话，只需要在缓存中加上过期时间，这样数据最终总会一致。&lt;/li&gt;
+&lt;li&gt;如果对数据的一致性要求很高的话，则在更新缓存前加上分布式锁，保证同一时刻只允许一个线程进行操作，这样会避免了并发导致的问题，但是吞吐能力大大降低。&lt;/li&gt;
+&lt;li&gt;写入数据库如果失败的话，整个流程是肯定失败的，所有操作都应该回退。所以先写缓存的情况会更复杂。&lt;/li&gt;
+&lt;li&gt;写入数据库成功，但是删除/更新缓存失败，则应设置一定次数的重试，尝试更新缓存。如果重试次数超出，只能依赖缓存超期&lt;/li&gt;
+&lt;li&gt;先更新数据库再删除缓存的情况下，还可以利用binlog同步的机制，将数据更新到Redis里，可靠性更高&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;hotkey问题&#34;&gt;HotKey问题&lt;/h4&gt;
+&lt;p&gt;在较短的时间内，海量请求访问一个Key，这样的Key就被称为HotKey。海量请求在较短的时间内，访问一个Key，势必会导致被访问的Redis服务器压力剧增，可能会将Redis服务器击垮，从而影响线上业务；HotKey过期的一瞬间，海量请求在较短的时间内，访问这个Key，因为Key过期了，这些请求会走到数据库，可能会将数据库击垮，从而影响线上业务。&lt;/p&gt;
+&lt;p&gt;治理Hotkey，需要解决从发现到通知Hotkey的产生，再到治理的过程。&lt;/p&gt;
+&lt;p&gt;如何发现Hotkey又可以拆解为两个子问题：如何知道每个Key的使用情况，以及如何统计。想要知道每个key的使用情况，可以在Redis客户端做埋点，也可以统一做一个Redis的代理，在代理层做埋点。前者管理不太方便，后者引入了新的故障点，需要综合取舍。统计的方式也有两种，一种是实时上报，业务系统的压力较小，但是上报数据很多；或者准实时上报，几类一定量或时间再上报，对业务自己有一定的内存压力。&lt;/p&gt;
+&lt;p&gt;发现Hotkey以后，由发现Hotkey的角色，通过MQ/RPC等方案触及客户端，告诉客户端Hotkey是什么，从而使得客户端可以处理Hotkey。&lt;/p&gt;
+&lt;p&gt;当客户端收到Hotkey以后，可以采用如下方式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;本地短时缓存Hotkey的数据，避免压力全部集中在Redis&lt;/li&gt;
+&lt;li&gt;将此Hotkey多分片存储到多个Redis实例，分散Hotkey的压力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;此外，如果Redis采用主从+哨兵集群，则如果master节点挂了，就会自动切换一个slave为master，继续提供服务。这样也可以提高Redis的可用性。&lt;/p&gt;
+&lt;h4 id=&#34;事务里分布式锁失效&#34;&gt;事务里分布式锁失效&lt;/h4&gt;
+&lt;p&gt;使用Redis做分布式锁还会遇到一种情况，就是在Transactional注解里使用分布式锁。可能代码会如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;nd&#34;&gt;@Transactional&lt;/span&gt;  
+&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;updateDB&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lockKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;  
+  &lt;span class=&#34;kt&#34;&gt;boolean&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lockFlag&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;redisLock&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;lock&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lockKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;  
+  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(!&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lockFlag&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;  
+    &lt;span class=&#34;k&#34;&gt;throw&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;RuntimeException&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;“&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;请稍后再试&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;”&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;  
+  &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;  
+   &lt;span class=&#34;n&#34;&gt;doBusiness&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//业务逻辑处理  
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;   &lt;span class=&#34;n&#34;&gt;redisLock&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;unlock&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lockKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;  
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;它的问题是事务是函数返回后才执行的，但是此前分布式锁已经释放了，另一个线程完全可以做出不同的业务逻辑，导致最后事务无法提交，分布式锁等于失效了。有时候这个问题隐藏得会很深，必须得留意。&lt;/p&gt;
+&lt;h3 id=&#34;为什么是redisson而不是自己写分布式锁&#34;&gt;为什么是Redisson而不是自己写分布式锁&lt;/h3&gt;
+&lt;p&gt;说到Redis用作存储分布式锁，有时候我们会看到有人这么写：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;（&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;jedis&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;setnx&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lock_key&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lock_value&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;）&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//加锁
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;n&#34;&gt;jedis&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;expire&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lock_key&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;timeout&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;）&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//设置过期时间 
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;n&#34;&gt;doBusiness&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//业务逻辑处理 
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这里的问题是，setnx和expire不是原子的。如果这个时候网断了，服务器挂了，都可能造成一个永久的锁。&lt;/p&gt;
+&lt;p&gt;还有人可能会这么写&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;jedis&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;set&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lockKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;requestId&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;NX&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;PX&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;expireTime&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)==&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;){&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//加锁  
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;   &lt;span class=&#34;n&#34;&gt;doBusiness&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//业务逻辑处理  
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;   &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//加锁成功，处理完业务逻辑返回  
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;  
+&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//加锁失败
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;return前没有释放锁，那么下次加锁只能等待expireTime超期了。&lt;/p&gt;
+&lt;p&gt;还有一种写法，使用getSet写的：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;kt&#34;&gt;long&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;expireTime&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;currentTimeMillis&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;timeout&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//系统时间+设置的超时时间  
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;expireTimeStr&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;valueOf&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;expireTime&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//转化为String字符串  
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//锁已过期，获取上一个锁的过期时间，并设置现在锁的过期时间（不了解redis的getSet命令的小伙伴，可以去官网看下哈）  
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//加锁失败,因为锁已存在
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 如果锁已经存在，获取锁的过期时间  
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;oldExpireTimreStr&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;jedis&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lock_key&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;  
+&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//存在一个旧的锁，但是锁的超时时间已经过了
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;oldValueStr&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;jedis&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getSet&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lock_key&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;expireTimeStr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;  
+&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;oldValueStr&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;oldValueStr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;equals&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;oldExpireTimreStr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;  
+	&lt;span class=&#34;c1&#34;&gt;//考虑多线程并发的情况，只有一个线程的设置值和当前值相同，它才可以加锁  
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;  
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这段代码的问题是，如果getSet有多个终端同时请求，那么有可能最后加锁成功的线程的超时时间，跟jedis里的value并不一致。&lt;/p&gt;
+&lt;p&gt;还有一些问题跟释放锁有关系。比如：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;requestId&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;equals&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;jedis&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lockKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//判断一下是不是自己的requestId  
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;      &lt;span class=&#34;n&#34;&gt;unlock&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lockKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//释放锁  
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;有可能判断的时候锁是自己的，但是立刻过期了，然后被其它线程抢到了锁。那么最后unlock的时候，其实是解除了其它的锁。&lt;/p&gt;
+&lt;p&gt;还有锁超时释放了，但是业务没跑完，此时另一个线程会与当前业务形成竞争。这个最好是开启一个守护线程，业务没跑完的时候，就定期对锁做一些延长操作，可以避免提前释放。&lt;/p&gt;
+&lt;p&gt;就是由于有这么多问题，所以最好的办法，就是使用Redission。下边就是Redission的加锁方案：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://blog.shrp.me/img/dL71Qi904BtdAvQSLFGN.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;此外，它还有WatchDog，每10秒监控一次锁的状态，如果业务没有释放，则自动续期30秒，避免业务没完成时锁被释放导致业务问题。&lt;/p&gt;
+&lt;p&gt;释放锁的时候，它会注意锁的可重入性，如果全部的锁都释放了，就会删除锁，然后广播锁的删除事件，再取消WatchDog对锁的自动续期。通常来说分布式锁都应当采用Redisson来维护。&lt;/p&gt;
+</description>
+    </item>
+    
     <item>
       <title>解决linux无法启动tigervnc服务器的问题</title>
       <link>https://blog.shrp.me/post/%E8%A7%A3%E5%86%B3linux%E6%97%A0%E6%B3%95%E8%BF%9C%E7%A8%8Bvnc%E7%9A%84%E9%97%AE%E9%A2%98.html</link>
@@ -2832,291 +3098,6 @@ git push origin master
 &lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description>
-    </item>
-    
-    <item>
-      <title>tomcat7-maven-plugin指定 tomcat 版本</title>
-      <link>https://blog.shrp.me/adjust-embedded-tomcat-version.html</link>
-      <pubDate>Tue, 18 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.shrp.me/adjust-embedded-tomcat-version.html</guid>
-      <description>&lt;p&gt;最近用 Maven tomcat 插件启动的时候，突然发现很多关于 tomcat 扫描注解时发现一些 jar 包内 meta-info.class 的注解无效的信息，一般提示是Invalid byte tag in constant pool: 19。&lt;/p&gt;
-&lt;p&gt;这是为啥呢？原来 meta-info.class 是为了 Java9 的模块化产生的一个文件，本身在 Java8 里也用不上。所以 tomcat 扫描虽然报错了，但是却不影响启动和服务。&lt;/p&gt;
-&lt;p&gt;但是每次启动，屏幕显示一大片 ERROR，也不好排查真正的问题啊。搜索了一下，&lt;a href=&#34;https://stackoverflow.com/questions/53063324/severe-unable-to-process-jar-entry-module-info-class-in-tomcat-7-java-8&#34;&gt;原来 tomcat 早已升级支持了&lt;/a&gt;，只要指定足够高的 tomcat 版本就能避免报错了。&lt;/p&gt;
-&lt;p&gt;具体版本号如下：&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;trunk for 9.0.0.M18 onwards&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;8.5.x for 8.5.12 onwards&lt;/li&gt;
-&lt;li&gt;8.0.x for 8.0.42 onwards&lt;/li&gt;
-&lt;li&gt;7.0.x for 7.0.76 onwards&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;那么怎么指定 tomcat7-maven-plugin 的 tomcat 版本呢？tomcat &lt;a href=&#34;https://tomcat.apache.org/maven-plugin-trunk/tomcat7-maven-plugin/adjust-embedded-tomcat-version.html&#34;&gt;官网&lt;/a&gt;当然有说明啦，照猫画虎如下：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;  1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;  9
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 10
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 11
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 12
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 13
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 14
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 15
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 16
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 17
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 18
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 19
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 20
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 21
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 22
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 23
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 24
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 25
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 26
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 27
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 28
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 29
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 30
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 31
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 32
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 33
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 34
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 35
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 36
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 37
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 38
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 39
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 40
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 41
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 42
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 43
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 44
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 45
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 46
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 47
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 48
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 49
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 50
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 51
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 52
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 53
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 54
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 55
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 56
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 57
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 58
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 59
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 60
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 61
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 62
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 63
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 64
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 65
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 66
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 67
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 68
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 69
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 70
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 71
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 72
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 73
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 74
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 75
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 76
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 77
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 78
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 79
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 80
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 81
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 82
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 83
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 84
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 85
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 86
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 87
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 88
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 89
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 90
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 91
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 92
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 93
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 94
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 95
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 96
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 97
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 98
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 99
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;100
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;101
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;102
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;103
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;104
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;105
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;106
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;107
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;108
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;109
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;110
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;111
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;112
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;113
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;114
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;115
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;116
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;117
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;118
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;119
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;120
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;121
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;122
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;123
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;124
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;125
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;126
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;127
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;project&amp;gt;&lt;/span&gt;
-   [...]
-  &lt;span class=&#34;nt&#34;&gt;&amp;lt;properties&amp;gt;&lt;/span&gt;
-   &lt;span class=&#34;nt&#34;&gt;&amp;lt;tomcat.version&amp;gt;&lt;/span&gt;7.0.76&lt;span class=&#34;nt&#34;&gt;&amp;lt;/tomcat.version&amp;gt;&lt;/span&gt;
-   [...]
-  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/properties&amp;gt;&lt;/span&gt;
-   [...]
-  &lt;span class=&#34;nt&#34;&gt;&amp;lt;build&amp;gt;&lt;/span&gt;
-    &lt;span class=&#34;nt&#34;&gt;&amp;lt;pluginManagement&amp;gt;&lt;/span&gt;
-      &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugins&amp;gt;&lt;/span&gt;
-        &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat.maven&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat7-maven-plugin&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.3-SNAPSHOT&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependencies&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat.embed&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-embed-core&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-util&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-coyote&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-api&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-jdbc&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-dbcp&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-servlet-api&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-jsp-api&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-jasper&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-jasper-el&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-el-api&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-catalina&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-tribes&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-catalina-ha&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-annotations-api&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-juli&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat.embed&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-embed-logging-juli&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.tomcat.embed&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;tomcat-embed-logging-log4j&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${tomcat.version}&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependencies&amp;gt;&lt;/span&gt;
-        &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
-        [...]
-      &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
-    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/pluginManagement&amp;gt;&lt;/span&gt;
-    [...]
-  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
-  [...]
-&lt;span class=&#34;nt&#34;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;再启动，是不是顿时世界都清爽了呢？&lt;/p&gt;
-</description>
     </item>
     
   </channel>

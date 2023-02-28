@@ -17,26 +17,47 @@
   
   <url>
     <loc>https://blog.shrp.me/</loc>
-    <lastmod>2021-12-29T13:28:19+08:00</lastmod>
+    <lastmod>2023-03-01T00:47:54+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://blog.shrp.me/tags/manjaro.html</loc>
-    <lastmod>2021-12-29T13:28:19+08:00</lastmod>
+    <loc>https://blog.shrp.me/tags/Java.html</loc>
+    <lastmod>2023-03-01T00:47:54+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.shrp.me/post.html</loc>
-    <lastmod>2021-12-29T13:28:19+08:00</lastmod>
+    <lastmod>2023-03-01T00:47:54+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shrp.me/tags/Redis.html</loc>
+    <lastmod>2023-03-01T00:47:54+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.shrp.me/tags.html</loc>
+    <lastmod>2023-03-01T00:47:54+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shrp.me/post/%E6%B5%85%E8%B0%88Java%E5%BC%80%E5%8F%91%E4%B8%ADRedis%E7%9A%84%E4%BD%BF%E7%94%A8%E5%A7%BF%E5%8A%BF.html</loc>
+    <lastmod>2023-03-01T00:47:54+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shrp.me/tags/manjaro.html</loc>
     <lastmod>2021-12-29T13:28:19+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -93,13 +114,6 @@
   
   <url>
     <loc>https://blog.shrp.me/tags/Annotation.html</loc>
-    <lastmod>2021-07-31T16:18:02+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shrp.me/tags/Java.html</loc>
     <lastmod>2021-07-31T16:18:02+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

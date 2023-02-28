@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>shrp</copyright>
-    <lastBuildDate>Wed, 29 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/post/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 28 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/post/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>浅谈Java开发中Redis的使用姿势</title>
+      <link>https://blog.shrp.me/post/%E6%B5%85%E8%B0%88Java%E5%BC%80%E5%8F%91%E4%B8%ADRedis%E7%9A%84%E4%BD%BF%E7%94%A8%E5%A7%BF%E5%8A%BF.html</link>
+      <pubDate>Tue, 28 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.shrp.me/post/%E6%B5%85%E8%B0%88Java%E5%BC%80%E5%8F%91%E4%B8%ADRedis%E7%9A%84%E4%BD%BF%E7%94%A8%E5%A7%BF%E5%8A%BF.html</guid>
+      <description>Redis是我们开发时最常使用的键值存储工具了，但是与诸多软件工具一样，它也有很多技巧和经验。本文就是将我了解的一些经验和教训分享出来。 使用</description>
+    </item>
+    
     <item>
       <title>解决linux无法启动tigervnc服务器的问题</title>
       <link>https://blog.shrp.me/post/%E8%A7%A3%E5%86%B3linux%E6%97%A0%E6%B3%95%E8%BF%9C%E7%A8%8Bvnc%E7%9A%84%E9%97%AE%E9%A2%98.html</link>
@@ -649,15 +658,6 @@ Test.Pojo(name=pojo1) closed.
       
       <guid>https://blog.shrp.me/post/%E4%BB%8ESimple%E8%BF%81%E7%A7%BB%E5%88%B0Hugo.html</guid>
       <description>为什么不继续用Simple Simple是一个非常简单又纯粹的博客托管方案,然而它严重依赖 github 的API登录方案&amp;ndash;而这个方案已经在去年</description>
-    </item>
-    
-    <item>
-      <title>tomcat7-maven-plugin指定 tomcat 版本</title>
-      <link>https://blog.shrp.me/adjust-embedded-tomcat-version.html</link>
-      <pubDate>Tue, 18 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.shrp.me/adjust-embedded-tomcat-version.html</guid>
-      <description>最近用 Maven tomcat 插件启动的时候，突然发现很多关于 tomcat 扫描注解时发现一些 jar 包内 meta-info.class 的注解无效的信息，一般提示是Invalid byte tag in constant pool: 19。 这是为啥呢？</description>
     </item>
     
   </channel>

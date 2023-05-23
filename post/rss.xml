@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>shrp</copyright>
-    <lastBuildDate>Sun, 30 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/post/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 23 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.shrp.me/post/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>一个特殊字符与一下午</title>
+      <link>https://blog.shrp.me/post/%E4%B8%80%E4%B8%AA%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6%E4%B8%8E%E4%B8%80%E4%B8%8B%E5%8D%88.html</link>
+      <pubDate>Tue, 23 May 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.shrp.me/post/%E4%B8%80%E4%B8%AA%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6%E4%B8%8E%E4%B8%80%E4%B8%8B%E5%8D%88.html</guid>
+      <description>今天是这个迭代的最后一周。本来这个迭代工作交付还是比较顺利的，除了个别几个联调的需求，大家都在收尾解bug了。 我最后一个bug是一个多语问题</description>
+    </item>
+    
     <item>
       <title>Java8Stream用法整理</title>
       <link>https://blog.shrp.me/post/Java8Stream%E7%94%A8%E6%B3%95%E6%95%B4%E7%90%86.html</link>
@@ -649,15 +658,6 @@ Test.Pojo(name=pojo1) closed.
       
       <guid>https://blog.shrp.me/post/Java%E6%B5%81%E6%B0%B4%E5%B8%90%E4%BB%A3%E7%A0%81%E7%9A%84%E9%87%8D%E6%9E%84%E4%B8%8E%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95.html</guid>
       <description>背景 大多数软件开发者都是学过很多编程思想和知识的人,绝对不是不知道什么代码是好的,什么样的代码是糟糕的. 然而我们在工作的过程中,为了满足和解</description>
-    </item>
-    
-    <item>
-      <title>【分享】我在阿里做架构 | 单测最佳实践</title>
-      <link>https://blog.shrp.me/post/%E5%8D%95%E6%B5%8B%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html</link>
-      <pubDate>Thu, 17 Jun 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.shrp.me/post/%E5%8D%95%E6%B5%8B%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html</guid>
-      <description>这篇文章的结论跟我现在的实践非常的类似，预计本月我会把我的实践也更新到 blog 里。这篇文章的原文地址是这里 前言 大家仔细思考，我们究竟为什么需要编写</description>
     </item>
     
   </channel>

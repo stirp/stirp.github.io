@@ -17,8 +17,22 @@
   
   <url>
     <loc>https://blog.shrp.me/</loc>
-    <lastmod>2023-04-30T21:34:29+08:00</lastmod>
+    <lastmod>2023-05-23T23:02:38+08:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shrp.me/post.html</loc>
+    <lastmod>2023-05-23T23:02:38+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shrp.me/post/%E4%B8%80%E4%B8%AA%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6%E4%B8%8E%E4%B8%80%E4%B8%8B%E5%8D%88.html</loc>
+    <lastmod>2023-05-23T23:02:38+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -30,13 +44,6 @@
   
   <url>
     <loc>https://blog.shrp.me/post/Java8Stream%E7%94%A8%E6%B3%95%E6%95%B4%E7%90%86.html</loc>
-    <lastmod>2023-04-30T21:34:29+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shrp.me/post.html</loc>
     <lastmod>2023-04-30T21:34:29+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
